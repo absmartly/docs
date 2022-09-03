@@ -33,15 +33,13 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+          editUrl: "https://bitbucket.com/absmartly/docs/src/master",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+          editUrl: "https://bitbucket.com/absmartly/docs/src/master",
         },
         theme: {
           customCss: require.resolve("./src/scss/custom.scss"),
@@ -62,7 +60,19 @@ const config = {
         items: [
           {
             type: "doc",
-            docId: "intro",
+            docId: "getting-started",
+            position: "left",
+            label: "Getting Started",
+          },
+          {
+            type: "doc",
+            docId: "getting-started",
+            position: "left",
+            label: "API",
+          },
+          {
+            type: "doc",
+            docId: "getting-started",
             position: "left",
             label: "Docs",
           },
@@ -120,6 +130,7 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} A/B Smartly.`,
       },
       prism: {
+        additionalLanguages: ["java", "groovy"],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
