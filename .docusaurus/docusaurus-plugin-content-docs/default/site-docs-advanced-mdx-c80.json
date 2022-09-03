@@ -1,0 +1,20 @@
+{
+  "unversionedId": "advanced",
+  "id": "advanced",
+  "title": "Advanced Features",
+  "description": "",
+  "source": "@site/docs/advanced.mdx",
+  "sourceDirName": ".",
+  "slug": "/advanced",
+  "permalink": "/docs/advanced",
+  "draft": false,
+  "editUrl": "https://bitbucket.com/absmartly/docs/src/master/docs/advanced.mdx",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "API Docs",
+    "permalink": "/docs/API"
+  }
+}

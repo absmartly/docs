@@ -1,0 +1,71 @@
+{
+  "/__docusaurus/debug-810": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-9-d-f29"
+    }
+  },
+  "/__docusaurus/debug/config-674": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-9-d-f29"
+    }
+  },
+  "/__docusaurus/debug/content-af3": {
+    "__comp": "__comp---theme-debug-contentba-8-ce7",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-9-d-f29"
+    },
+    "allContent": "allContent---docusaurus-debug-content-246-9aa"
+  },
+  "/__docusaurus/debug/globalData-703": {
+    "__comp": "__comp---theme-debug-global-dataede-0fa",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-9-d-f29"
+    }
+  },
+  "/__docusaurus/debug/metadata-cff": {
+    "__comp": "__comp---theme-debug-site-metadata-68-e-3d4",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-9-d-f29"
+    }
+  },
+  "/__docusaurus/debug/registry-479": {
+    "__comp": "__comp---theme-debug-registry-679-501",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-9-d-f29"
+    }
+  },
+  "/__docusaurus/debug/routes-670": {
+    "__comp": "__comp---theme-debug-routes-946-699",
+    "__context": {
+      "plugin": "plugin---docusaurus-debuga-9-d-f29"
+    }
+  },
+  "/docs-6b3": {
+    "__comp": "__comp---theme-doc-page-1-be-9be",
+    "__context": {
+      "plugin": "plugin---docsf-58-bde"
+    },
+    "versionMetadata": "versionMetadata---docs-935-398"
+  },
+  "/docs/advanced-0c5": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-advancedc-80-2e2"
+  },
+  "/docs/API-c28": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-api-215-071"
+  },
+  "/docs/getting-started-fad": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-getting-started-302-242"
+  },
+  "/-b90": {
+    "__comp": "__comp---site-src-pages-index-tsx-1-df-d3e",
+    "__context": {
+      "plugin": "plugin---2-ec-7ad"
+    },
+    "config": "config---5-e-9-4f3"
+  }
+}
