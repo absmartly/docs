@@ -130,7 +130,7 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} A/B Smartly.`,
       },
       prism: {
-        additionalLanguages: ["java", "groovy"],
+        additionalLanguages: ["java", "gradle"],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
