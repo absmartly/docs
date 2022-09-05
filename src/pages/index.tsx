@@ -1,13 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
 
-import styles from "./index.module.css";
+import styles from "./index.module.scss";
 
-function HomepageHeader() {
+const HomepageHeader: FC<{}> = () => {
   const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
@@ -19,15 +19,15 @@ function HomepageHeader() {
             className="button button--secondary button--lg"
             to="/docs/getting-started"
           >
-            Docusaurus Tutorial - 5min ⏱️
+            Get Started
           </Link>
         </div>
       </div>
     </header>
   );
-}
+};
 
-export default function Home(): JSX.Element {
+const Home: FC<{}> = () => {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
@@ -40,4 +40,6 @@ export default function Home(): JSX.Element {
       </main>
     </Layout>
   );
-}
+};
+
+export default Home;

@@ -7,7 +7,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "A/B Smartly Documentation",
-  tagline: "A/B testing, made simple.",
+  tagline:
+    "Booking.com and Netflix's experimentation culture without the big investment.",
   url: "https://docs.absmartly.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -76,7 +77,6 @@ const config = {
             position: "left",
             label: "Docs",
           },
-          //{ to: "/blog", label: "Blog", position: "left" },
           {
             href: "https://github.com/absmartly",
             label: "GitHub",
@@ -96,23 +96,23 @@ const config = {
               },
             ],
           },
-          {
-            title: "Community",
-            items: [
-              {
-                label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/docusaurus",
-              },
-              {
-                label: "Discord",
-                href: "https://discordapp.com/invite/docusaurus",
-              },
-              {
-                label: "Twitter",
-                href: "https://twitter.com/docusaurus",
-              },
-            ],
-          },
+          //{
+          //title: "Community",
+          //items: [
+          ////{
+          ////label: "Stack Overflow",
+          ////href: "https://stackoverflow.com/questions/tagged/docusaurus",
+          ////},
+          ////{
+          ////label: "Discord",
+          ////href: "https://discordapp.com/invite/docusaurus",
+          ////},
+          ////{
+          ////label: "Twitter",
+          ////href: "https://twitter.com/docusaurus",
+          ////},
+          //],
+          //},
           {
             title: "More",
             items: [
@@ -122,7 +122,7 @@ const config = {
               //},
               {
                 label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
+                href: "https://github.com/absmartly",
               },
             ],
           },
