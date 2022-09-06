@@ -1,0 +1,329 @@
+# Basic Usage
+
+After the init call all the variants for all running experiments will be cached in memory. The init call should take single digit milliseconds on the server side, on the client side it may take a little longer (it’s another roundtrip to the server), unless you pass the data directly in the HTML, which makes it ready immediately. Any experiment that is evaluated and is not running will return variant 0 (the control group).
+
+To make sure the SDK is properly loaded before asking it for a treatment, block until the SDK is ready, as shown below. ready() returns a promise. You can also just check if it is ready with the isReady() method.
+
+After the sdk is loaded you can use the treatment method to return the proper treatment based on the experiment_name and the units data passed when instantiating the SDK.
+
+Then use an if-else-if-else block as shown below and insert the code for the different treatments that you plan to create.
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="JS">
+
+```js
+context.ready().then(function() {
+ if (context.treatment("experiment_name") == 1) {
+     // insert code to show on variant 1
+ } else if (context.treatment("experiment_name") == 2) {
+     // insert code to show on variant 2
+ } else {
+     // insert the control treatment code
+ }
+});
+
+// or using async/await
+async function() {
+    await context.ready();
+    if (context.treatment("experiment_name")) {
+        // insert code to show on variant 1
+    } else {
+        // insert the control treatment code
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue">
+
+```js
+<div v-if="!$ctx.isReady">
+  <!-- Show spinner -->
+</div>
+<div v-else-if="$ctx.treatment('test_experiment')">
+  <!-- Show treatment (variant 1) -->
+</div>
+<div v-else>
+  <!-- Show control (variant 0) -->
+</div>
+```
+
+</TabItem>
+
+</Tabs>
+
+## Triggering
+
+The context.treatment method triggers the current user (actually the current unit) in the experiment passed to it.
+
+:::caution
+When you create one experiment in the console you need to specify the unit for the experiment (usually by user_id or by device_id).
+If you are asking the SDK for a treatment that should be triggered by a unit not available in the units parameter passed during initialization, then the control treatment will be shown and the experiment will not be triggered (no change will be done in the experiment data).
+:::
+
+```js
+if (exp.treatment("experiment_name")) {
+  // show treatment here
+} else {
+  // show the control treatment here
+}
+
+// if you want to be sure the impression is published
+// before navigating away be sure to publish first.
+if (exp.treatment("experiment_name")) {
+  // show treatment here
+  exp.publish().then(function () {
+    location.replace("https://absmartly.com");
+  });
+} else {
+  // show the control treatment here
+  exp.publish();
+}
+```
+
+### Refreshing the context with fresh experiment data
+
+For long-running single-page-applications (SPA), the context is usually created once when the application is first reached.
+However, any experiments being tracked in your production code, but started after the context was created, will not be triggered.
+To mitigate this, we can call the refresh() method periodically, say, every 5 minutes.
+The refresh() method pulls updated experiment data from the A/B Smartly collector and will trigger recently started experiments when treatment() is called again.
+
+```js
+setTimeout(async () => {
+  try {
+    context.refresh();
+  } catch (error) {
+    console.error(error);
+  }
+}, 5 * 60 * 1000);
+```
+
+:::caution
+Beware that when blocking the treatment call you should also block the control treatment. The roundtrip to the server should happen in all the variants at the same time, otherwise some variants will be slower and more instrumentation requests will be lost in that variant. This causes a Sample Ratio Mismatch and the data can't be trusted anymore.
+
+This changes the control group slightly.
+Which makes us break one of the main rules in experimentation.
+
+**Never change the control group**
+
+But this is better than not being able to trust the data.
+Blocking the control group makes it impossible to measure the performance impact of the instrumentation in the experiment results. But this is what would be needed in this case otherwise the instrumentation could be the cause of the difference.
+:::
+
+## Config API
+
+If you use configuration files to change different aspects of your application, then you are better served with the config API.
+Experiment configuration values are actually meant to be used with the config API.
+When the config API is used you don't need to call the treatment() method. It will be called automatically when keys from the config are used.
+
+```js
+// Import the mergeConfig function.
+import { mergeConfig } from "@absmartly/javascript-sdk";
+
+/*
+
+Your current config might be something like:
+
+const myAppConfig = { ... };
+
+or
+
+const myAppConfig = getConfigFromFile(config.json);
+
+then you just need to add the mergeConfig function like this:
+*/
+
+const myAppConfig = mergeConfig(getConfigFromFile(config.json));
+```
+
+Let's say you use a configuration file to change some parameters in your application:
+
+```js
+let cfg = {
+    button: {
+        color: "blue",
+        cta: "Click me",
+    },
+    hero_image: "http://cdn.com/img1.png",
+    some_other_stuff: { ... },
+};
+```
+
+Then you could use the config API to run experiments that change those parameters.
+
+When starting one experiment you can assign variables to each variant. Let's say you start experiment1 with button.color: "blue" in the control group and button.color: "green" in the variant, and experiment2 with button.cta set to "Click here" and "Click me" and hero_image set to 2 different urls.
+For each user the SDK would receive a payload similar to this:
+
+```json
+{
+  "guid": "dhsUiLJ7xgQBEbivw_0cjiKo9O6UlnSg",
+  "units": [],
+  "assignments": [
+    {
+      "name": "experiment1",
+      "variant": 1,
+      "config": {
+        "button.color": "green"
+      }
+    },
+    {
+      "name": "experiment2",
+      "variant": 0,
+      "config": {
+        "button.cta": "Click here",
+        "hero_image": "http://cdn.com/img1.png"
+      }
+    }
+  ]
+}
+```
+
+This user is in variant 1 of the first experiment and in the control group for the second one. Calling exp.mergeConfig(cfg) from the Javascript SDK would return a config object like this:
+
+```json
+{
+    button: {
+        get color: () => { exp.treatment("experiment1"); return "green"; },
+        get cta: () => { exp.treatment("experiment2"); return "Click here"; },
+    }
+    get hero_image: () => { exp.treatment("experiment2"); return "http://cdn.com/img1.png"; },
+    some_other_stuff: { ... },
+}
+```
+
+So you can continue using the configuration as you were using it before, but now the right experiments will be triggered when a value is used and that value was overridden by one experiment.
+
+This greatly simplifies setting up experiments and cleaning up the code. If at some point a big part of the code is configured like this you can set up different experiments without touching one line of code.
+
+## Translations Example
+
+```js
+let translations = {
+    header1: { en: "Our nice header!", nl: "Onze leuk kop!" },
+    call_to_action1: { en: "Click here!", ... },
+};
+
+// And then somewhere after the SDK initialization
+const newTagsToFetch = context.variableKeys();
+
+const translationVariations = fetchTranslations(newTagsToFetch);
+/*
+{
+    header1_v1: { en: "Our beautiful header!", nl: "Onze mooie kop!" },
+    call_to_action1_v1: { en: "Continue", ... },
+}
+*/
+
+translations = mergeConfig(translations, translationVariations);
+/*
+{
+    get header1: () => {
+      exp.treatment("experiment1");
+      return {
+        en: "Our beautiful header!",
+        nl: "Onze mooie kop!",
+      };
+    }
+    get call_to_action1: () => {
+      exp.treatment("experiment2");
+      return {
+        en: "Click here!",
+        ...
+      };
+    }
+}
+*/
+```
+
+## Publish
+
+Call the exp.publish() method at the end of the request or every time you would like to publish all the impressions tracked up to this moment.
+This method will also be called automatically if you use the publish_every:'5m' parameter in the initialization of the SDK.
+
+```js
+// You can just publish
+exp.publish();
+// or wait for it to finish, so if you want to
+// navigate to another page without losing impressions,
+// you  can do that once the promise resolves.
+exp.publish().then(function () {
+  document.location.replace("another_page");
+});
+```
+
+## Finalize
+
+Call the exp.finalize method before letting a process using the SDK exit, as this method gracefully shuts down the SDK by clearing caches, and closing connections. It will also call exp.publish to flush the remaining unpublished impressions.
+
+```js
+// You can just finalize and remove the variable reference
+exp.finalize();
+exp = null;
+// finalize() returns a promise, so if you want to
+// navigate to another page without losing impressions, you
+// can do that once the promise resolves.
+exp.finalize().then(function () {
+  exp = null;
+  document.location.replace("another_page");
+});
+```
+
+:::caution
+After finalize() is called and finishes, any subsequent invocations to the treatment method will still return the right variant, but will result in a warning to let you know that you might be losing impressions.
+:::
+
+## Attributes
+
+To create audiences (target based on specific conditions) you need to pass custom attributes to the SDK, before making the exp.treatment call. This can be done using the method exp.attributes or by passing an attributes parameter in the SDK initialization. It’s common to use a mix of both methods. Many attributes of the user and/or request are known from the beginning and can be passed at initialization, others may depend on information only known later in the request.
+
+The attributes are compared and evaluated against the attributes used in the Web console to verify that the right conditions were added to the code.
+If the SDK fails to match the conditions in the code with the conditions used in the Web console, users with a mismatch will still be exposed to the experiment unless enforce_audiences: true is passed to the SDK at initialization. Otherwise you’ll see a warning in the console to let you know that the conditions in the code don’t match the audience that you were planning to target.
+In the example below, we are rolling out an experiment to users that are logged in, using the website in English, bought an item with a price greater than $100 and are a returning customer.
+
+```js
+exp.attributes({
+  // date attributes are handled as millis since epoch
+  created: new Date('YYYY-MM-DDTHH:mm:ss.sssZ').getTime(),
+  language: user.language, // 'en'
+  price: item.price, // 10000
+  authenticated: user.isAuthenticated, // true
+  groups: user.groups, // [ 'returning', 'frequent_buyer' ]
+};
+
+if (user.language === 'en'
+  && user.isAuthenticated()
+  && item.price >= 10000 // price in cents
+  && user.groups.some(e => e === 'returning'),
+  && exp.treatment('exp_name')) {
+   // insert treatment code here
+} else {
+   // insert control code here
+}
+```
+
+:::caution
+You should create an audience with the exact same attributes in the Web console. By default it will not enforce those conditions, but if for some reason the exp.treatment method is called for a user that doesn’t meet this criteria, the Web console will warn you about it. This means that you either didn’t specify your audience correctly in the Web console, or you have a bug in your triggering condition.
+:::
+
+## Tracking Goals
+
+Use the track method to record any actions your customers perform. Each action is known as a goal and corresponds to a goal_name. Calling track through the SDKs is the easiest way of getting experimentation data into A/B Smartly and allows you to measure the impact of your experiments on your users' actions and metrics.
+Other ways to track goals is to use the Segment.io integration or using enrichments to consume them from other event streams and/or databases.
+In the examples below you can see that the track() method can take up to two arguments. The proper data type and syntax for each are:
+
+- **goal_name**: The traffic type of the key in the track call. The expected data type is String. You should only pass values that match the names of goals that you have defined in the Web console, everything else will be ignored.
+- **properties** (Optional): An object of key value pairs that can be used to create extra metrics or to filter the goal.
+
+```js
+exp.track("goal_name", { ...properties });
+
+var properties = {
+  price: 10000,
+  category: "5 stars",
+  free_cancellation: true,
+  instance_id: 5350,
+};
+exp.track("booking", properties);
+```
