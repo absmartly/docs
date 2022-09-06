@@ -78,7 +78,7 @@ const config = {
             type: "doc",
             docId: "getting-started",
             position: "left",
-            label: "Docs",
+            label: "Getting Started",
           },
           {
             to: "https://github.com/absmartly",
@@ -114,7 +114,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ["java", "scala", "gradle", "ruby"],
+        additionalLanguages: ["java", "scala", "gradle", "ruby", "swift"],
       },
     }),
 };
