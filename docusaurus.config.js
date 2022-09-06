@@ -23,8 +23,6 @@ const config = {
     locales: ["en"],
   },
 
-  plugins: ["docusaurus-plugin-sass"],
-
   presets: [
     [
       "classic",
@@ -32,15 +30,9 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl: "https://bitbucket.com/absmartly/docs/src/master",
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl: "https://bitbucket.com/absmartly/docs/src/master",
+          docLayoutComponent: "@theme/DocPage",
+          docItemComponent: "@theme/ApiItem",
         },
         theme: {
           customCss: require.resolve("./src/scss/custom.scss"),
@@ -48,6 +40,29 @@ const config = {
       }),
     ],
   ],
+
+  plugins: [
+    "docusaurus-plugin-sass",
+    [
+      "docusaurus-plugin-openapi-docs",
+      {
+        id: "apiDocs",
+        docsPluginId: "classic",
+        config: {
+          collector: {
+            // Note: petstore key is treated as the <id> and can be used to specify an API doc instance when using CLI commands
+            specPath: "spec.yaml", // Path to designated spec file
+            outputDir: "docs/API", // Output directory for generated .mdx docs
+            sidebarOptions: {
+              //groupPathsBy: "tag",
+            },
+          },
+        },
+      },
+    ],
+  ],
+
+  themes: ["docusaurus-theme-openapi-docs"],
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -63,22 +78,10 @@ const config = {
             type: "doc",
             docId: "getting-started",
             position: "left",
-            label: "Getting Started",
-          },
-          {
-            type: "doc",
-            docId: "getting-started",
-            position: "left",
-            label: "API",
-          },
-          {
-            type: "doc",
-            docId: "getting-started",
-            position: "left",
             label: "Docs",
           },
           {
-            href: "https://github.com/absmartly",
+            to: "https://github.com/absmartly",
             label: "GitHub",
             position: "right",
           },
@@ -96,30 +99,9 @@ const config = {
               },
             ],
           },
-          //{
-          //title: "Community",
-          //items: [
-          ////{
-          ////label: "Stack Overflow",
-          ////href: "https://stackoverflow.com/questions/tagged/docusaurus",
-          ////},
-          ////{
-          ////label: "Discord",
-          ////href: "https://discordapp.com/invite/docusaurus",
-          ////},
-          ////{
-          ////label: "Twitter",
-          ////href: "https://twitter.com/docusaurus",
-          ////},
-          //],
-          //},
           {
             title: "More",
             items: [
-              //{
-              //label: "Blog",
-              //to: "/blog",
-              //},
               {
                 label: "GitHub",
                 href: "https://github.com/absmartly",
@@ -130,9 +112,9 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} A/B Smartly.`,
       },
       prism: {
-        additionalLanguages: ["java", "gradle"],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ["java", "scala", "gradle", "ruby"],
       },
     }),
 };

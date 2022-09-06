@@ -6,7 +6,7 @@ sidebar_title: Getting Started
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# Getting Started
+# A/B Smartly Documentation
 
 This guide provides detailed information about A/B Smartly’s JavaScript SDK.
 
@@ -16,7 +16,7 @@ This guide provides detailed information about A/B Smartly’s JavaScript SDK.
 
 1. Import the SDK into your project.
 
-<Tabs>
+<Tabs groupId="packageManager">
 
 <TabItem value="html" label="HTML">
 
@@ -62,6 +62,18 @@ dependencies {
 
 </TabItem>
 
+<TabItem value="ruby" label="Ruby">
+
+```bash
+bundle add absmartly
+
+# Or if not using Bundle
+
+gem install absmartly
+```
+
+</TabItem>
+
 </Tabs>
 
 :::caution
@@ -74,7 +86,7 @@ can <a href="https://github.com/stefanpenner/es6-promise">polyfill</a>.
 
 2. Instantiate the SDK and create a new A/B Smartly context.
 
-<Tabs>
+<Tabs groupId="language">
 
 <TabItem value="es6" label="ES6">
 
@@ -241,7 +253,7 @@ After the sdk is loaded you can use the treatment method to return the proper tr
 
 Then use an if-else-if-else block as shown below and insert the code for the different treatments that you plan to create.
 
-<Tabs>
+<Tabs groupId="language">
 
 <TabItem value="js" label="JS">
 
