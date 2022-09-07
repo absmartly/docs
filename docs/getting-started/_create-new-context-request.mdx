@@ -1,0 +1,248 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import RubyDocWarning from "../../src/components/RubyDocWarning.mdx";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+**Using Raw Promises**
+
+```js
+// define a new context request
+const request = {
+  units: {
+    userId: "123",
+    session_id: "5ebf06d8cb5d8137290c4abb64155584fbdb64d8",
+    email: "support@absmartly.com", // strings will be hashed
+    deviceId: "345",
+  },
+};
+
+const context = sdk.createContext(request);
+
+context
+  .ready()
+  .then((response) => {
+    console.log("ABSmartly Context ready!");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+**Using Async/Await**
+
+```js
+// define a new context request
+const request = {
+  units: {
+    userId: "123",
+    session_id: "5ebf06d8cb5d8137290c4abb64155584fbdb64d8",
+    email: "support@absmartly.com", // strings will be hashed
+    deviceId: "345",
+  },
+};
+
+const context = sdk.createContext(request);
+
+try {
+  await context.ready();
+  console.log("ABSmartly Context ready!");
+} catch (error) {
+  console.log(error);
+}
+```
+
+**With Pre-Fetched Data**
+
+When doing full-stack experimentation with A/B Smartly, we recommend creating a
+context only once on the server-side. Creating a context involves a round-trip
+to the A/B Smartly event collector. We can avoid repeating the round-trip on
+the client-side by sending the server-side data embedded in the first document,
+for example, by rendering it on the template. Then we can initialize the
+A/B Smartly context on the client-side directly with it.
+
+```html
+<head>
+  <script type="javascript">
+    const context = sdk.createContextWith({{ serverSideContext.data() }});
+  </script>
+</head>
+```
+
+:::info
+You can use whatever you want as a unit.
+You can pass an internal user id, or email address.
+This could also be a cookie you generate which stores a device_id or an app's UUID. Mind that the units used have to be declared first on A/B Smartly’s Web console.
+
+Pass all the units that are known for the current user. Some experiments may be tracked by user-id, others by device-id, etc.
+You might even want to use a pageview-id for some technical experiments.
+
+Experiments that are being tracked by a unit not being passed here, will be off in this request (the control treatment will be shown instead).
+:::
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+<RubyDocWarning />
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+**Creating a New Context**
+
+```swift
+let contextConfig: ContextConfig = ContextConfig()
+contextConfig.setUnit(unitType: "device_id", uid: UIDevice.current.identifierForVendor!.uuidString))
+
+let context = sdk.createContext(config: contextConfig)
+context.waitUntilReady().done { context in
+    print("context ready")
+}
+```
+
+**Creating a New Context With Pre-Fetched Data**
+
+When doing full-stack experimentation with A/B Smartly, we recommend creating a
+context only once on the server-side. Creating a context involves a round-trip
+to the A/B Smartly event collector. We can avoid repeating the round-trip on
+the client-side by sending the server-side data embedded with other application
+data. Then we can initialize the A/B Smartly context directly with it.
+
+```swift
+let contextConfig: ContextConfig = ContextConfig()
+contextConfig.setUnit(unitType: "device_id", uid: UIDevice.current.identifierForVendor!.uuidString)
+
+let context = sdk.createContextWithData(config: anotherContextConfig, contextData: contextData)
+```
+
+**Setting Extra Units For a Context**
+
+You can add additional units to a context by calling the `setUnit()` or the
+`setUnits()` method. This method may be used for example, when a user logs in
+to your application, and you want to use the new unit type to the context.
+
+:::info Please Note
+You cannot override an already set unit type as that would
+be a change of identity, and will crash your application. In this case, you
+must create a new context instead. The `setUnit()` and `setUnits()` methods
+can be called before the context is ready.
+:::
+
+```swift
+context.setUnit(unitType: "db_user_id", uid: "1000013");
+context.setUnits([
+    "db_user_id": "1000013"
+]);
+```
+
+</TabItem>
+<TabItem value="vue" label="Vue2">
+
+**Initializing with pre-fetched Context data**
+
+When doing full-stack experimentation with A/B Smartly, we recommend creating
+a context only once on the server-side. Creating a context involves a
+round-trip to the A/B Smartly event collector. We can avoid repeating the
+round-trip on the client-side by sending the server-side data embedded in the
+first document, for example, by rendering it on the template. Then we can
+initialize the A/B Smartly context on the client-side directly with it. The
+Vue2 SDK also supports this optimized usage.
+
+In this example, we assume the variable `prefectedContextData` contains the
+pre-fetched data previously injected.
+
+```js
+// Somewhere in your application initialization code, before mounting your Vue application
+Vue.use(absmartly.ABSmartlyVue, {
+    sdkOptions: {
+        endpoint: 'https://sandbox-api.absmartly.com/v1',
+        apiKey: ABSMARTLY_API_KEY,
+        environment: "production",
+        application: "website"",
+    },
+    context: {
+        units: {
+            session_id: '5ebf06d8cb5d8137290c4abb64155584fbdb64d8',
+        },
+    },
+    attributes: {
+        user_agent: navigator.userAgent
+    },
+    data: prefetchedContext, // assuming prefectedContext has been inject
+});
+```
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+**Synchronously**
+
+```java
+// define a new context request
+final ContextConfig contextConfig = ContextConfig.create()
+    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8"); // a unique id identifying the user
+
+final Context context = sdk.createContext(contextConfig)
+    .waitUntilReady();
+```
+
+**Asynchronously**
+
+```java
+// define a new context request
+final ContextConfig contextConfig = ContextConfig.create()
+    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8"); // a unique id identifying the user
+
+final Context context = sdk.createContext(contextConfig)
+    .waitUntilReadyAsync()
+    .thenAccept(ctx -> System.out.printf("context ready!"));
+```
+
+**With Pre-Fetched Data**
+
+Creating a context involves a round-trip to the A/B Smartly event collector.
+We can avoid repeating the round-trip on the client-side by re-using data
+previously retrieved.
+
+```java
+final ContextConfig contextConfig = ContextConfig.create()
+    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8"); // a unique id identifying the user
+
+final Context context = sdk.createContext(contextConfig)
+    .waitUntilReady();
+
+final ContextConfig anotherContextConfig = ContextConfig.create()
+    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8"); // a unique id identifying the other user
+
+final Context anotherContext = sdk.createContextWith(anotherContextConfig, context.getData());
+
+assert(anotherContext.isReady()); // no need to wait
+```
+
+**Setting extra units for a context**
+
+You can add additional units to a context by calling the `setUnit()` or the
+`setUnits()` method. This method may be used for example, when a user logs in
+to your application, and you want to use the new unit type to the context.
+Please note that you cannot override an already set unit type as that would
+be a change of identity, and will throw an exception. In this case, you must
+create a new context instead. The `setUnit()` and `setUnits()` methods can be
+called before the context is ready.
+
+```java
+context.setUnit("db_user_id", "1000013");
+
+context.setUnits(Map.of(
+		"db_user_id", "1000013"
+    ));
+```
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,92 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import RubyDocWarning from "../../src/components/RubyDocWarning.mdx";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+```js
+// Attributes are used to pass meta-data about the user and/or the request.
+// They can be used later in the web console to setup segments.
+
+context.attribute("user_agent", navigator.userAgent);
+
+context.attributes({
+  customer_age: "new_customer",
+  url: location.toString(),
+  referrer: document.referrer,
+  screenName: "...",
+  pageName: "...",
+  blockName: "...",
+  country: "gb",
+  language: headers["Accept-Language"],
+  channel: "google-ads",
+});
+```
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+<RubyDocWarning />
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+The `setAttribute()` and `setAttributes()` methods can be called before the
+context is ready.
+
+```swift
+context.setAttribute(name: "device", value: UIDevice.current.model)
+context.setAttributes(["customer_age": "new_customer", "screen": "product"])
+```
+
+</TabItem>
+<TabItem value="vue" label="Vue2">
+Attributes can be set in script.
+
+```js
+this.$absmartly.attribute("user_agent", navigator.userAgent);
+
+this.$absmartly.attributes({
+  customer_age: "new_customer",
+});
+```
+
+Or directly in templates with the attributes property of the Treatment component.
+
+```html
+<treatment name="exp_test_experiment" :attributes="{customer_age: 'returning'}">
+  <template #default="{ config, treatment, ready }">
+    <template v-if="ready">
+      <my-button v-if="treatment == 0"></my-button>
+      <my-button v-else-if="treatment == 1" :color="config.color"></my-button>
+      <my-other-button
+        v-else-if="treatment == 2"
+        :color="config.color"
+      ></my-other-button>
+    </template>
+    <template v-else><my-spinner></my-spinner></template>
+  </template>
+</treatment>
+```
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+The `setAttribute()` and `setAttributes()` methods can be called before the context is ready.
+
+```java
+context.setAttribute('user_agent', req.getHeader("User-Agent"));
+
+context.setAttributes(Map.of(
+    "customer_age", "new_customer"
+));
+```
+
+</TabItem>
+
+</Tabs>

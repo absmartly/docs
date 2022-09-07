@@ -78,7 +78,7 @@ const config = {
             type: "doc",
             docId: "getting-started",
             position: "left",
-            label: "Getting Started",
+            label: "Docs",
           },
           {
             to: "https://github.com/absmartly",
