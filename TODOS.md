@@ -29,8 +29,9 @@ in bold must be completed before deploying the site for the first time.
   - [ ] Change styles.
 - [ ] Update to `Docusaurus@latest` (When openapi has released new version).
 - [ ] Add Ruby Documentation
-  - [ ] **Remove empty Docs**
+  - [x] **Remove empty Docs**
   - [ ] Re-add Ruby Docs
+- [ ] Add VueJS language support with Prisma
 
 ## API
 
