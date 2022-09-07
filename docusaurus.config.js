@@ -50,11 +50,10 @@ const config = {
         docsPluginId: "classic",
         config: {
           collector: {
-            // Note: petstore key is treated as the <id> and can be used to specify an API doc instance when using CLI commands
             specPath: "spec.yaml", // Path to designated spec file
             outputDir: "docs/API", // Output directory for generated .mdx docs
             sidebarOptions: {
-              //groupPathsBy: "tag",
+              sidebarCollapsed: false,
             },
           },
         },
