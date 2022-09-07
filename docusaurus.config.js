@@ -76,7 +76,7 @@ const config = {
         items: [
           {
             type: "doc",
-            docId: "getting-started",
+            docId: "sdk-documentation",
             position: "left",
             label: "Docs",
           },
