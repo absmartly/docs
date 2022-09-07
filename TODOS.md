@@ -21,6 +21,7 @@ in bold must be completed before deploying the site for the first time.
 
 - [ ] **Complete revamp of [current SDK Documentation](https://absmartly.readme.io).**
 - [ ] Rewrite copy for consistency.
+- [ ] Add text under every heading.
 - [ ] Custom SCSS.
   - [x] Add Support
   - [ ] Change styles.
