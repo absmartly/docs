@@ -1,0 +1,37 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsSelectingAVariable from "!!raw-loader!./js/selectingAVariable.js";
+
+import SwiftSelectingAVariable from "!!raw-loader!./swift/selectingAVariable.swift";
+
+import JavaSelectingAVariable from "!!raw-loader!./java/selectingAVariable.java";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsSelectingAVariable}</CodeBlock>
+
+</TabItem>
+
+<Tabitem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftSelectingAVariable}</CodeBlock>
+
+</Tabitem>
+
+<TabItem value="vue" label="Vue2">
+
+<CodeBlock language="html">{}</CodeBlock>
+
+</TabItem>
+
+<Tabitem value="java" label="Java">
+
+<CodeBlock language="java">{JavaSelectingAVariable}</CodeBlock>
+
+</Tabitem>
+
+</Tabs>
