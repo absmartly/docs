@@ -1,0 +1,18 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsPublish from "!!raw-loader!./js/publish.js";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+Call the exp.publish() method at the end of the request or every time you would like to publish all the impressions tracked up to this moment.
+This method will also be called automatically if you use the publish_every:'5m' parameter in the initialization of the SDK.
+
+<CodeBlock language="js">{JsPublish}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
