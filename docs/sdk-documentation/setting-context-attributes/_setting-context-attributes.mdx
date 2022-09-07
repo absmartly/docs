@@ -1,0 +1,51 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsSetAttributes from "!!raw-loader!./js/setAttributes.js";
+
+import SwiftSetAttributes from "!!raw-loader!./swift/setAttributes.swift";
+
+import VueSetAttributesScript from "!!raw-loader!./vue/setAttributes.js";
+import VueSetAttributesTemplate from "!!raw-loader!./vue/SetAttributes.vue";
+
+import JavaSetAttributes from "!!raw-loader!./java/setAttributes.java";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+The `setAttribute()` and `setAttributes()` methods can be called before the
+context is ready.
+
+<CodeBlock language="swift">{SwiftSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+Attributes can be set in script.
+
+<CodeBlock language="js">{VueSetAttributesScript}</CodeBlock>
+
+Or directly in templates with the attributes property of the Treatment component.
+
+<CodeBlock language="html">{VueSetAttributesTemplate}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+The `setAttribute()` and `setAttributes()` methods can be called before the context is ready.
+
+<CodeBlock language="java">{JavaSetAttributes}</CodeBlock>
+
+</TabItem>
+
+</Tabs>

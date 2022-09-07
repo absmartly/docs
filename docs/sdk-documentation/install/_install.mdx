@@ -1,5 +1,18 @@
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsBashInstall from "!!raw-loader!./js/install.bash";
+import JsDirectImport from "!!raw-loader!./js/directImport.html";
+
+import SwiftPodfile from "!!raw-loader!./swift/Podfile";
+import SwiftUpdateXcode from "!!raw-loader!./swift/updateXcode.bash";
+
+import VueInstall from "!!raw-loader!./vue/install.bash";
+import VueDirectImport from "!!raw-loader!./vue/directImport.html";
+
+import JavaGradleInstall from "!!raw-loader!./java/build.gradle";
+import JavaMavenInstall from "!!raw-loader!./java/pom.xml";
 
 <Tabs groupId="language">
 
@@ -7,17 +20,13 @@ import TabItem from "@theme/TabItem";
 
 **NPM**
 
-```bash
-npm install --save @absmartly/javascript-sdk
-```
+<CodeBlock language="bash">{JsBashInstall}</CodeBlock>
 
 or
 
 **Direct Import**
 
-```html
-<script src="<YOUR-HOSTNAME>/absmartly.min.js"></script>
-```
+<CodeBlock language="html">{JsDirectImport}</CodeBlock>
 
 :::caution
 
@@ -26,18 +35,6 @@ implementation. If your environment does not support ES6 promises, you
 can <a href="https://github.com/stefanpenner/es6-promise">polyfill</a>.
 
 :::
-
-</TabItem>
-
-<TabItem value="ruby" label="Ruby">
-
-```bash
-bundle add absmartly
-
-# Or if not using Bundle
-
-gem install absmartly
-```
 
 </TabItem>
 
@@ -54,15 +51,11 @@ gem install absmartly
 
 To install the A/B Smartly SDK with CocoaPods, add the following lines to your `Podfile`:
 
-```ruby
-pod 'ABSmartlySwiftSDK', '~> 1.0.2'
-```
+<CodeBlock language="ruby">{SwiftPodfile}</CodeBlock>
 
 Run the following command to update your Xcode project:
 
-```bash
-pod install
-```
+<CodeBlock language="bash">{SwiftUpdateXcode}</CodeBlock>
 
 </TabItem>
 
@@ -70,18 +63,14 @@ pod install
 
 **Using NPM**
 
-```bash
-npm install --save @absmartly/vue2-sdk
-```
+<CodeBlock language="bash">{VueInstall}</CodeBlock>
 
 **Directly Import With <a href="https://unpkg.com" target="_blank">unpkg.com</a>
 (Optimized and Pre-Built)**
 
 Simply add the following code to your `head` section to include the latest published version.
 
-```html
-<script src="https://unpkg.com/@absmartly/vue2-sdk"></script>
-```
+<CodeBlock language="html">{VueDirectImport}</CodeBlock>
 
 </TabItem>
 
@@ -92,24 +81,14 @@ Simply add the following code to your `head` section to include the latest publi
 To install the ABSmartly SDK, place the following in your `build.gradle` and
 replace \{VERSION\} with the latest SDK version available in MavenCentral.
 
-```gradle
-dependencies {
-  compile 'com.absmartly.sdk:core-api:{VERSION}'
-}
-```
+<CodeBlock language="gradle">{JavaGradleInstall}</CodeBlock>
 
 **Maven**
 
 To install the ABSmartly SDK, place the following in your `pom.xml` and
 replace \{VERSION\} with the latest SDK version available in MavenCentral.
 
-```xml
-<dependency>
-  <groupId>com.absmartly.sdk</groupId>
-  <artifactId>core-api</artifactId>
-  <version>{VERSION}</version>
-</dependency>
-```
+<CodeBlock language="xml">{JavaMavenInstall}</CodeBlock>
 
 :::caution Android 6.0 or earlier
 

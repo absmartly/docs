@@ -1,0 +1,5 @@
+<dependency>
+  <groupId>com.absmartly.sdk</groupId>
+  <artifactId>core-api</artifactId>
+  <version>{VERSION}</version>
+</dependency>

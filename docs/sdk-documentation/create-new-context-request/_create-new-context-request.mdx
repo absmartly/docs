@@ -1,7 +1,21 @@
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
 
-import RubyDocWarning from "../../src/components/RubyDocWarning.mdx";
+import JsRawPromises from "!!raw-loader!./js/usingRawPromises.js";
+import JsAsyncAwait from "!!raw-loader!./js/usingAsyncAwait.js";
+import JsPreFetchedData from "!!raw-loader!./js/withPreFetchedData.html";
+
+import SwiftNewContext from "!!raw-loader!./swift/newContext.swift";
+import SwiftPreFetchedData from "!!raw-loader!./swift/withPreFetchedData.swift";
+import SwiftSetExtraUnits from "!!raw-loader!./swift/settingExtraUnits.swift";
+
+import VuePreFetchedData from "!!raw-loader!./vue/initializeWithPrefetchedData.js";
+
+import JavaSync from "!!raw-loader!./java/sync.java";
+import JavaAsync from "!!raw-loader!./java/async.java";
+import JavaPreFetched from "!!raw-loader!./java/preFetchedData.java";
+import JavaExtraUnits from "!!raw-loader!./java/extraUnits.java";
 
 <Tabs groupId="language">
 
@@ -9,51 +23,11 @@ import RubyDocWarning from "../../src/components/RubyDocWarning.mdx";
 
 **Using Raw Promises**
 
-```js
-// define a new context request
-const request = {
-  units: {
-    userId: "123",
-    session_id: "5ebf06d8cb5d8137290c4abb64155584fbdb64d8",
-    email: "support@absmartly.com", // strings will be hashed
-    deviceId: "345",
-  },
-};
-
-const context = sdk.createContext(request);
-
-context
-  .ready()
-  .then((response) => {
-    console.log("ABSmartly Context ready!");
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-```
+<CodeBlock language="js">{JsRawPromises}</CodeBlock>
 
 **Using Async/Await**
 
-```js
-// define a new context request
-const request = {
-  units: {
-    userId: "123",
-    session_id: "5ebf06d8cb5d8137290c4abb64155584fbdb64d8",
-    email: "support@absmartly.com", // strings will be hashed
-    deviceId: "345",
-  },
-};
-
-const context = sdk.createContext(request);
-
-try {
-  await context.ready();
-  console.log("ABSmartly Context ready!");
-} catch (error) {
-  console.log(error);
-}
-```
+<CodeBlock language="js">{JsAsyncAwait}</CodeBlock>
 
 **With Pre-Fetched Data**
 
@@ -64,13 +38,7 @@ the client-side by sending the server-side data embedded in the first document,
 for example, by rendering it on the template. Then we can initialize the
 A/B Smartly context on the client-side directly with it.
 
-```html
-<head>
-  <script type="javascript">
-    const context = sdk.createContextWith({{ serverSideContext.data() }});
-  </script>
-</head>
-```
+<CodeBlock language="html">{JsPreFetchedData}</CodeBlock>
 
 :::info
 You can use whatever you want as a unit.
@@ -85,25 +53,11 @@ Experiments that are being tracked by a unit not being passed here, will be off 
 
 </TabItem>
 
-<TabItem value="ruby" label="Ruby">
-
-<RubyDocWarning />
-
-</TabItem>
-
 <TabItem value="swift" label="Swift">
 
 **Creating a New Context**
 
-```swift
-let contextConfig: ContextConfig = ContextConfig()
-contextConfig.setUnit(unitType: "device_id", uid: UIDevice.current.identifierForVendor!.uuidString))
-
-let context = sdk.createContext(config: contextConfig)
-context.waitUntilReady().done { context in
-    print("context ready")
-}
-```
+<CodeBlock language="swift">{SwiftNewContext}</CodeBlock>
 
 **Creating a New Context With Pre-Fetched Data**
 
@@ -113,12 +67,7 @@ to the A/B Smartly event collector. We can avoid repeating the round-trip on
 the client-side by sending the server-side data embedded with other application
 data. Then we can initialize the A/B Smartly context directly with it.
 
-```swift
-let contextConfig: ContextConfig = ContextConfig()
-contextConfig.setUnit(unitType: "device_id", uid: UIDevice.current.identifierForVendor!.uuidString)
-
-let context = sdk.createContextWithData(config: anotherContextConfig, contextData: contextData)
-```
+<CodeBlock language="swift">{SwiftPreFetchedData}</CodeBlock>
 
 **Setting Extra Units For a Context**
 
@@ -133,12 +82,7 @@ must create a new context instead. The `setUnit()` and `setUnits()` methods
 can be called before the context is ready.
 :::
 
-```swift
-context.setUnit(unitType: "db_user_id", uid: "1000013");
-context.setUnits([
-    "db_user_id": "1000013"
-]);
-```
+<CodeBlock language="swift">{SwiftSetExtraUnits}</CodeBlock>
 
 </TabItem>
 <TabItem value="vue" label="Vue2">
@@ -156,26 +100,7 @@ Vue2 SDK also supports this optimized usage.
 In this example, we assume the variable `prefectedContextData` contains the
 pre-fetched data previously injected.
 
-```js
-// Somewhere in your application initialization code, before mounting your Vue application
-Vue.use(absmartly.ABSmartlyVue, {
-    sdkOptions: {
-        endpoint: 'https://sandbox-api.absmartly.com/v1',
-        apiKey: ABSMARTLY_API_KEY,
-        environment: "production",
-        application: "website"",
-    },
-    context: {
-        units: {
-            session_id: '5ebf06d8cb5d8137290c4abb64155584fbdb64d8',
-        },
-    },
-    attributes: {
-        user_agent: navigator.userAgent
-    },
-    data: prefetchedContext, // assuming prefectedContext has been inject
-});
-```
+<CodeBlock language="js">{VuePreFetchedData}</CodeBlock>
 
 </TabItem>
 
@@ -183,26 +108,11 @@ Vue.use(absmartly.ABSmartlyVue, {
 
 **Synchronously**
 
-```java
-// define a new context request
-final ContextConfig contextConfig = ContextConfig.create()
-    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8"); // a unique id identifying the user
-
-final Context context = sdk.createContext(contextConfig)
-    .waitUntilReady();
-```
+<CodeBlock language="java">{JavaSync}</CodeBlock>
 
 **Asynchronously**
 
-```java
-// define a new context request
-final ContextConfig contextConfig = ContextConfig.create()
-    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8"); // a unique id identifying the user
-
-final Context context = sdk.createContext(contextConfig)
-    .waitUntilReadyAsync()
-    .thenAccept(ctx -> System.out.printf("context ready!"));
-```
+<CodeBlock language="java">{JavaAsync}</CodeBlock>
 
 **With Pre-Fetched Data**
 
@@ -210,20 +120,7 @@ Creating a context involves a round-trip to the A/B Smartly event collector.
 We can avoid repeating the round-trip on the client-side by re-using data
 previously retrieved.
 
-```java
-final ContextConfig contextConfig = ContextConfig.create()
-    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8"); // a unique id identifying the user
-
-final Context context = sdk.createContext(contextConfig)
-    .waitUntilReady();
-
-final ContextConfig anotherContextConfig = ContextConfig.create()
-    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8"); // a unique id identifying the other user
-
-final Context anotherContext = sdk.createContextWith(anotherContextConfig, context.getData());
-
-assert(anotherContext.isReady()); // no need to wait
-```
+<CodeBlock language="java">{JavaPreFetched}</CodeBlock>
 
 **Setting extra units for a context**
 
@@ -235,13 +132,7 @@ be a change of identity, and will throw an exception. In this case, you must
 create a new context instead. The `setUnit()` and `setUnits()` methods can be
 called before the context is ready.
 
-```java
-context.setUnit("db_user_id", "1000013");
-
-context.setUnits(Map.of(
-		"db_user_id", "1000013"
-    ));
-```
+<CodeBlock language="java">{JavaExtraUnits}</CodeBlock>
 
 </TabItem>
 
