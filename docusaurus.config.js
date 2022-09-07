@@ -95,7 +95,7 @@ const config = {
             items: [
               {
                 label: "Tutorial",
-                to: "/docs/getting-started",
+                to: "/docs/sdk-documentation",
               },
             ],
           },

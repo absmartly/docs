@@ -17,7 +17,7 @@ const HomepageHeader: FC<{}> = () => {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/getting-started"
+            to="/docs/sdk-documentation"
           >
             Get Started
           </Link>
