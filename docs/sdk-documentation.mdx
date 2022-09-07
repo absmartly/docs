@@ -5,10 +5,13 @@ sidebar_position: 1
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-import Install from "./sdk-documentation/install/_install.mdx";
-import ImportAndInitialize from "./sdk-documentation/import-and-initialize/_import-and-initialize.mdx";
-import CreateNewContextRequest from "./sdk-documentation/create-new-context-request/_create-new-context-request.mdx";
-import SettingContextAttributes from "./sdk-documentation/setting-context-attributes/_setting-context-attributes.mdx";
+import Install from "./sdk-documentation/getting-started/install/_install.mdx";
+import ImportAndInitialize from "./sdk-documentation/getting-started/import-and-initialize/_import-and-initialize.mdx";
+import CreateNewContextRequest from "./sdk-documentation/getting-started/create-new-context-request/_create-new-context-request.mdx";
+import SettingContextAttributes from "./sdk-documentation/getting-started/setting-context-attributes/_setting-context-attributes.mdx";
+
+import SelectingATreatment from "./sdk-documentation/basic-usage/selecting-a-treatment/_selecting-a-treatment.mdx";
+import SelectingAVariable from "./sdk-documentation/basic-usage/selecting-a-variable/_selecting-a-variable.mdx";
 
 # SDK Documentation
 
@@ -54,55 +57,13 @@ instantiating the SDK.
 Then use an `if-else-if-else` block as shown below and insert the code for the
 different treatments that you plan to create.
 
-<Tabs groupId="language">
+### Selecting a Treatment
 
-<TabItem value="js" label="Javascript">
+<SelectingATreatment />
 
-```js
-context.ready().then(function() {
- if (context.treatment("experiment_name") == 1) {
-     // insert code to show on variant 1
- } else if (context.treatment("experiment_name") == 2) {
-     // insert code to show on variant 2
- } else {
-     // insert the control treatment code
- }
-});
+### Selecting a Treatment Variable
 
-// or using async/await
-async function() {
-    await context.ready();
-    if (context.treatment("experiment_name")) {
-        // insert code to show on variant 1
-    } else {
-        // insert the control treatment code
-    }
-}
-```
-
-</TabItem>
-
-<Tabitem value="swift" label="Swift"></Tabitem>
-
-<TabItem value="vue" label="Vue2">
-
-```js
-<div v-if="!$ctx.isReady">
-  <!-- Show spinner -->
-</div>
-<div v-else-if="$ctx.treatment('test_experiment')">
-  <!-- Show treatment (variant 1) -->
-</div>
-<div v-else>
-  <!-- Show control (variant 0) -->
-</div>
-```
-
-</TabItem>
-
-<Tabitem value="java" label="Java"></Tabitem>
-
-</Tabs>
+<SelectingAVariable />
 
 ## Triggering
 
