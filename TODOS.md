@@ -7,6 +7,8 @@ in bold must be completed before deploying the site for the first time.
 
 - [ ] Apply new brand guidelines.
 - [ ] **Deploy MVP docs site.**
+- [ ] **Revamp footer**
+- [ ] **Revamp Header**
 
 ## Landing Page
 
