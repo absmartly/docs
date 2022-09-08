@@ -1,0 +1,28 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsTrackingGoals from "!!raw-loader!./js/trackingGoals.js";
+import SwiftTrackingGoals from "!!raw-loader!./swift/trackingGoals.swift";
+import VueTrackingGoals from "!!raw-loader!./vue/trackingGoals.js";
+import JavaTrackingGoals from "!!raw-loader!./java/trackingGoals.java";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+  <CodeBlock language="js">{JsTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+  <CodeBlock language="swift">{SwiftTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+  <CodeBlock language="js">{VueTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <CodeBlock language="java">{JavaTrackingGoals}</CodeBlock>
+</TabItem>
+
+</Tabs>
