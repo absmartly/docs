@@ -26,7 +26,7 @@ in bold must be completed before deploying the site for the first time.
 
 ## Docs
 
-- [ ] Remove danger warnings
+- [ ] **Remove danger warnings**
 - [x] **Vue2 Selecting a Treatment Variable**
 - [x] **Complete revamp of [current SDK Documentation](https://absmartly.readme.io).**
 - [ ] Add documentation for translations and Config API in all SDKs
