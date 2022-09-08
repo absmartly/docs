@@ -6,14 +6,18 @@ import JsPublish from "!!raw-loader!./js/publish.js";
 
 import SwiftPublish from "!!raw-loader!./swift/publish.swift";
 
+import VuePublish from "!!raw-loader!./vue/publish.js";
+
 import JavaPublish from "!!raw-loader!./java/publish.java";
 
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
 
-Call the exp.publish() method at the end of the request or every time you would like to publish all the impressions tracked up to this moment.
-This method will also be called automatically if you use the publish_every:'5m' parameter in the initialization of the SDK.
+Call the exp.publish() method at the end of the request or every time you
+would like to publish all the impressions tracked up to this moment.
+This method will also be called automatically if you use the publish_every:'5m
+' parameter in the initialization of the SDK.
 
 <CodeBlock language="js">{JsPublish}</CodeBlock>
 
@@ -21,7 +25,9 @@ This method will also be called automatically if you use the publish_every:'5m' 
 
 <TabItem value="swift" label="Swift">
 
-Sometimes it is necessary to ensure all events have been published to the A/B Smartly collector, before proceeding. You can explicitly call the publish() method.
+Sometimes it is necessary to ensure all events have been published to the A/B
+Smartly collector, before proceeding. You can explicitly call the publish()
+method.
 
 <CodeBlock language="swift">{SwiftPublish}</CodeBlock>
 
@@ -30,14 +36,22 @@ Sometimes it is necessary to ensure all events have been published to the A/B Sm
 <TabItem value="vue" label="Vue2">
 
 :::danger
-Documentation is missing
+Cal Wrote This
 :::
+
+Sometimes it is necessary to ensure all events have been published to the A/B
+Smartly collector, before proceeding. You can explicitly call the publish()
+method.
+
+<CodeBlock language="js">{VuePublish}</CodeBlock>
 
 </TabItem>
 
 <TabItem value="java" label="Java">
 
-Sometimes it is necessary to ensure all events have been published to the A/B Smartly collector, before proceeding. You can explicitly call the publish() or publishAsync() methods.
+Sometimes it is necessary to ensure all events have been published to the A/B
+Smartly collector, before proceeding. You can explicitly call the publish() or
+publishAsync() methods.
 
 <CodeBlock language="java">{JavaPublish}</CodeBlock>
 
