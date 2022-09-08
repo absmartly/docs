@@ -10,6 +10,10 @@ in bold must be completed before deploying the site for the first time.
 - [ ] **Revamp footer**
 - [ ] **Revamp Header**
 
+## Netlify
+
+- [x] Add `npm run clean:api && npm run gen:api` to build command.
+
 ## Landing Page
 
 - [ ] **Replace Docusaurus example images.**
@@ -37,7 +41,6 @@ in bold must be completed before deploying the site for the first time.
 ## API
 
 - [ ] Change api-spec.yaml to online version.
-- [ ] Add `npm run clean:api && npm run gen:api` to build command.
 - [ ] Create Lambda or Github Action to run generation command on spec update.
 
 ## FAQ
