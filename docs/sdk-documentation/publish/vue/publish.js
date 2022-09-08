@@ -1,3 +1,3 @@
 await this.$absmartly.publish().then(() => {
-  document.location.replace("another_page");
+  window.location = "https://www.absmartly.com";
 });
