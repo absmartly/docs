@@ -4,48 +4,60 @@ import styles from "./styles.module.scss";
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<"svg">>;
+  Svg?: React.ComponentType<React.ComponentProps<"svg">>;
+  webp?: string;
   description: JSX.Element;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: "Locally Run",
-    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
+    title: "Unlimited Potential for Growth",
+    webp: require("@site/static/img/unlimited.webp").default,
     description: (
       <>
-        The world’s first single-tenant/private cloud experimentation platform.
+        Run thousands of simultaneous A/B tests across your entire
+        infrastructure with reliable results. A/B Smartly helps you plan to
+        avoid experiment interactions and detects interactions for you when they
+        happen.
       </>
     ),
   },
   {
-    title: "Unlimited Potential for Growth",
-    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
+    title: "No Flickering, No Lags",
+    webp: require("@site/static/img/noflickering.webp").default,
     description: (
       <>
-        Run thousands of simultaneous A/B tests across your entire
-        infrastructure with reliable results.
+        Third-party platforms can result in performance issues like flickering
+        or lags. It's very difficult to experiment if the process harms some of
+        your key conversion drivers — user experience and page load times.
       </>
     ),
   },
   {
     title: "Democratize Experimentation",
-    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
+    webp: require("@site/static/img/democratize.webp").default,
     description: (
       <>
         Let your designers, engineers or complete product teams be in control of
-        A/B testing.
+        A/B testing. Run tests across the entire infrastructure, from apps to
+        websites to email to ML models and beyond.
       </>
     ),
   },
 ];
 
-function Feature({ title, Svg, description }: FeatureItem) {
+function Feature({ title, Svg, description, webp }: FeatureItem) {
   return (
     <div className={clsx("col col--4")}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
+      {Svg ? (
+        <div className="text--center">
+          <Svg className={styles.featureSvg} role="img" />
+        </div>
+      ) : (
+        <div className="text--center">
+          <img src={webp} alt="example" />
+        </div>
+      )}
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
         <p>{description}</p>

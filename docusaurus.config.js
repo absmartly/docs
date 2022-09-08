@@ -6,7 +6,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "A/B Smartly Documentation",
+  title: "The A/B Smartly Docs",
   tagline:
     "Booking.com and Netflix's experimentation culture without the big investment.",
   url: "https://docs.absmartly.com",
@@ -66,7 +66,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      colorMode: {
+        respectPrefersColorScheme: true,
+      },
       navbar: {
+        hideOnScroll: true,
         title: "A/B Smartly Docs",
         logo: {
           alt: "The A B Smartly logo",
@@ -74,10 +78,45 @@ const config = {
         },
         items: [
           {
-            type: "doc",
-            docId: "sdk-documentation",
+            to: "docs/sdk-documentation",
             position: "left",
             label: "Docs",
+          },
+          {
+            type: "dropdown",
+            label: "API",
+            position: "left",
+            items: [
+              {
+                to: "docs/API/a-b-smartly-collector",
+                label: "Introduction",
+              },
+              {
+                to: "docs/API/collector-health-check",
+                label: "Collector Health Check",
+              },
+              {
+                to: "docs/API/context-create",
+                label: "Create a Context",
+              },
+              {
+                to: "docs/API/context-get",
+                label: "Get Experiment Data",
+              },
+              {
+                to: "docs/API/context-publish",
+                label: "Publish Experiment Events",
+              },
+              {
+                to: "docs/API/experiment-get",
+                label: "Get Experiment Info",
+              },
+            ],
+          },
+          {
+            to: "https://absmartly.com/blog",
+            position: "left",
+            label: "Blog",
           },
           {
             to: "https://github.com/absmartly",
@@ -90,11 +129,15 @@ const config = {
         style: "dark",
         links: [
           {
-            title: "Docs",
+            title: "Documentation",
             items: [
               {
-                label: "Tutorial",
+                label: "SDK Docs",
                 to: "/docs/sdk-documentation",
+              },
+              {
+                label: "API Docs",
+                to: "/docs/API/a-b-smartly-collector",
               },
             ],
           },
@@ -102,13 +145,52 @@ const config = {
             title: "More",
             items: [
               {
+                label: "Homepage",
+                href: "https://absmartly.com",
+              },
+              {
+                label: "Blog",
+                href: "https://www.absmartly.com/blog",
+              },
+              {
                 label: "GitHub",
                 href: "https://github.com/absmartly",
               },
             ],
           },
+          {
+            title: "Social Media",
+            items: [
+              {
+                label: "Twitter",
+                href: "https://twitter.com/absmartly",
+              },
+              {
+                label: "GitHub",
+                href: "https://github.com/absmartly",
+              },
+            ],
+          },
+          {
+            title: "Legal",
+            items: [
+              {
+                label: "Privacy",
+                href: "/privacy",
+              },
+              {
+                label: "Terms",
+                href: "/terms",
+              },
+              {
+                label: "Data Policy",
+                href: "/data",
+              },
+            ],
+          },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} A/B Smartly.`,
+        copyright: `&copy; Copyright ${new Date().getFullYear()} A/B Smartly B.V.`,
+        logo: { src: "img/logo.svg", alt: "The A B Smartly Logo" },
       },
       prism: {
         theme: lightCodeTheme,

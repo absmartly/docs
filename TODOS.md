@@ -7,8 +7,9 @@ in bold must be completed before deploying the site for the first time.
 
 - [ ] Apply new brand guidelines.
 - [ ] **Deploy MVP docs site.**
-- [ ] **Revamp footer**
-- [ ] **Revamp Header**
+- [x] **Revamp footer**
+- [ ] Add Legal pages
+- [x] **Revamp Header**
 
 ## Netlify
 
@@ -16,8 +17,8 @@ in bold must be completed before deploying the site for the first time.
 
 ## Landing Page
 
-- [ ] **Replace Docusaurus example images.**
-- [ ] **Rewrite copy.**
+- [x] **Replace Docusaurus example images.**
+- [x] **Rewrite copy.**
 
 ## Dashboard
 
@@ -25,6 +26,7 @@ in bold must be completed before deploying the site for the first time.
 
 ## Docs
 
+- [ ] Remove danger warnings
 - [x] **Vue2 Selecting a Treatment Variable**
 - [x] **Complete revamp of [current SDK Documentation](https://absmartly.readme.io).**
 - [ ] Add documentation for translations and Config API in all SDKs
