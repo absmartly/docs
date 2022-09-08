@@ -15,6 +15,10 @@ import SelectingAVariable from "./sdk-documentation/basic-usage/selecting-a-vari
 
 import Publish from "./sdk-documentation/publish/_publish.mdx";
 
+import Finalize from "./sdk-documentation/finalize/_finalize.mdx";
+
+import TrackingGoals from "./sdk-documentation/tracking-goals/_tracking-goals.mdx";
+
 # SDK Documentation
 
 This guide provides detailed information about A/B Smartly’s JavaScript SDK.
@@ -68,6 +72,10 @@ different treatments that you plan to create.
 <SelectingAVariable />
 
 ## Config API
+
+:::danger
+Only available for JS-SDK
+:::
 
 If you use configuration files to change different aspects of your application, then you are better served with the config API.
 Experiment configuration values are actually meant to be used with the config API.
@@ -154,6 +162,10 @@ This greatly simplifies setting up experiments and cleaning up the code. If at s
 
 ## Translations Example
 
+:::danger
+Only available for JS-SDK
+:::
+
 ```js
 let translations = {
     header1: { en: "Our nice header!", nl: "Onze leuk kop!" },
@@ -198,26 +210,13 @@ translations = mergeConfig(translations, translationVariations);
 
 ## Finalize
 
-Call the exp.finalize method before letting a process using the SDK exit, as this method gracefully shuts down the SDK by clearing caches, and closing connections. It will also call exp.publish to flush the remaining unpublished impressions.
-
-```js
-// You can just finalize and remove the variable reference
-exp.finalize();
-exp = null;
-// finalize() returns a promise, so if you want to
-// navigate to another page without losing impressions, you
-// can do that once the promise resolves.
-exp.finalize().then(function () {
-  exp = null;
-  document.location.replace("another_page");
-});
-```
-
-:::caution
-After finalize() is called and finishes, any subsequent invocations to the treatment method will still return the right variant, but will result in a warning to let you know that you might be losing impressions.
-:::
+<Finalize />
 
 ## Attributes
+
+:::danger
+Possibly just a repeat of **Create a New Context Request**
+:::
 
 To create audiences (target based on specific conditions) you need to pass custom attributes to the SDK, before making the exp.treatment call. This can be done using the method exp.attributes or by passing an attributes parameter in the SDK initialization. It’s common to use a mix of both methods. Many attributes of the user and/or request are known from the beginning and can be passed at initialization, others may depend on information only known later in the request.
 
@@ -259,14 +258,4 @@ In the examples below you can see that the track() method can take up to two arg
 - **goal_name**: The traffic type of the key in the track call. The expected data type is String. You should only pass values that match the names of goals that you have defined in the Web console, everything else will be ignored.
 - **properties** (Optional): An object of key value pairs that can be used to create extra metrics or to filter the goal.
 
-```js
-exp.track("goal_name", { ...properties });
-
-var properties = {
-  price: 10000,
-  category: "5 stars",
-  free_cancellation: true,
-  instance_id: 5350,
-};
-exp.track("booking", properties);
-```
+<TrackingGoals />
