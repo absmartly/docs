@@ -13,9 +13,15 @@ import SettingContextAttributes from "./sdk-documentation/getting-started/settin
 import SelectingATreatment from "./sdk-documentation/basic-usage/selecting-a-treatment/_selecting-a-treatment.mdx";
 import SelectingAVariable from "./sdk-documentation/basic-usage/selecting-a-variable/_selecting-a-variable.mdx";
 
+import ConfigApi from "./sdk-documentation/config-api/_config-api.mdx";
+
+import TranslationsExample from "./sdk-documentation/translations-example/_translations-example.mdx";
+
 import Publish from "./sdk-documentation/publish/_publish.mdx";
 
 import Finalize from "./sdk-documentation/finalize/_finalize.mdx";
+
+import Attributes from "./sdk-documentation/attributes/_attributes.mdx";
 
 import TrackingGoals from "./sdk-documentation/tracking-goals/_tracking-goals.mdx";
 
@@ -73,136 +79,23 @@ different treatments that you plan to create.
 
 ## Config API
 
-:::danger
-Only available for JS-SDK
+:::note Only available for Js-SDK
+Unfortunately, this feature is only available on the Javascript SDK for now.
+If you require it elsewhere,
+please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 :::
 
-If you use configuration files to change different aspects of your application, then you are better served with the config API.
-Experiment configuration values are actually meant to be used with the config API.
-When the config API is used you don't need to call the treatment() method. It will be called automatically when keys from the config are used.
-
-```js
-// Import the mergeConfig function.
-import { mergeConfig } from "@absmartly/javascript-sdk";
-
-/*
-
-Your current config might be something like:
-
-const myAppConfig = { ... };
-
-or
-
-const myAppConfig = getConfigFromFile(config.json);
-
-then you just need to add the mergeConfig function like this:
-*/
-
-const myAppConfig = mergeConfig(getConfigFromFile(config.json));
-```
-
-Let's say you use a configuration file to change some parameters in your application:
-
-```js
-let cfg = {
-    button: {
-        color: "blue",
-        cta: "Click me",
-    },
-    hero_image: "http://cdn.com/img1.png",
-    some_other_stuff: { ... },
-};
-```
-
-Then you could use the config API to run experiments that change those parameters.
-
-When starting one experiment you can assign variables to each variant. Let's say you start experiment1 with button.color: "blue" in the control group and button.color: "green" in the variant, and experiment2 with button.cta set to "Click here" and "Click me" and hero_image set to 2 different urls.
-For each user the SDK would receive a payload similar to this:
-
-```json
-{
-  "guid": "dhsUiLJ7xgQBEbivw_0cjiKo9O6UlnSg",
-  "units": [],
-  "assignments": [
-    {
-      "name": "experiment1",
-      "variant": 1,
-      "config": {
-        "button.color": "green"
-      }
-    },
-    {
-      "name": "experiment2",
-      "variant": 0,
-      "config": {
-        "button.cta": "Click here",
-        "hero_image": "http://cdn.com/img1.png"
-      }
-    }
-  ]
-}
-```
-
-This user is in variant 1 of the first experiment and in the control group for the second one. Calling exp.mergeConfig(cfg) from the Javascript SDK would return a config object like this:
-
-```json
-{
-    button: {
-        get color: () => { exp.treatment("experiment1"); return "green"; },
-        get cta: () => { exp.treatment("experiment2"); return "Click here"; },
-    }
-    get hero_image: () => { exp.treatment("experiment2"); return "http://cdn.com/img1.png"; },
-    some_other_stuff: { ... },
-}
-```
-
-So you can continue using the configuration as you were using it before, but now the right experiments will be triggered when a value is used and that value was overridden by one experiment.
-
-This greatly simplifies setting up experiments and cleaning up the code. If at some point a big part of the code is configured like this you can set up different experiments without touching one line of code.
+<ConfigApi />
 
 ## Translations Example
 
-:::danger
-Only available for JS-SDK
+:::note Only available for Js-SDK
+Unfortunately, this feature is only available on the Javascript SDK for now.
+If you require it elsewhere,
+please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 :::
 
-```js
-let translations = {
-    header1: { en: "Our nice header!", nl: "Onze leuk kop!" },
-    call_to_action1: { en: "Click here!", ... },
-};
-
-// And then somewhere after the SDK initialization
-const newTagsToFetch = context.variableKeys();
-
-const translationVariations = fetchTranslations(newTagsToFetch);
-/*
-{
-    header1_v1: { en: "Our beautiful header!", nl: "Onze mooie kop!" },
-    call_to_action1_v1: { en: "Continue", ... },
-}
-*/
-
-translations = mergeConfig(translations, translationVariations);
-/*
-{
-    get header1: () => {
-      exp.treatment("experiment1");
-      return {
-        en: "Our beautiful header!",
-        nl: "Onze mooie kop!",
-      };
-    }
-    get call_to_action1: () => {
-      exp.treatment("experiment2");
-      return {
-        en: "Click here!",
-        ...
-      };
-    }
-}
-*/
-```
+<TranslationsExample />
 
 ## Publish
 
@@ -214,36 +107,33 @@ translations = mergeConfig(translations, translationVariations);
 
 ## Attributes
 
-:::danger
-Possibly just a repeat of **Create a New Context Request**
+To create audiences (target based on specific conditions) you need to pass
+custom attributes to the SDK, before making the exp.treatment call. This can
+be done using the method exp.attributes or by passing an attributes parameter
+in the SDK initialization. It’s common to use a mix of both methods. Many
+attributes of the user and/or request are known from the beginning and can be
+passed at initialization, others may depend on information only known later in
+the request.
+
+The attributes are compared and evaluated against the attributes used in the
+Web console to verify that the right conditions were added to the code.
+If the SDK fails to match the conditions in the code with the conditions used
+in the Web console, users with a mismatch will still be exposed to the
+experiment unless enforce_audiences: true is passed to the SDK at
+initialization. Otherwise you’ll see a warning in the console to let you know
+that the conditions in the code don’t match the audience that you were
+planning to target.
+In the example below, we are rolling out an experiment to users that are
+logged in, using the website in English, bought an item with a price greater
+than $100 and are a returning customer.
+
+:::note Only available for Js-SDK
+Unfortunately, this feature is only available on the Javascript SDK for now.
+If you require it elsewhere,
+please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 :::
 
-To create audiences (target based on specific conditions) you need to pass custom attributes to the SDK, before making the exp.treatment call. This can be done using the method exp.attributes or by passing an attributes parameter in the SDK initialization. It’s common to use a mix of both methods. Many attributes of the user and/or request are known from the beginning and can be passed at initialization, others may depend on information only known later in the request.
-
-The attributes are compared and evaluated against the attributes used in the Web console to verify that the right conditions were added to the code.
-If the SDK fails to match the conditions in the code with the conditions used in the Web console, users with a mismatch will still be exposed to the experiment unless enforce_audiences: true is passed to the SDK at initialization. Otherwise you’ll see a warning in the console to let you know that the conditions in the code don’t match the audience that you were planning to target.
-In the example below, we are rolling out an experiment to users that are logged in, using the website in English, bought an item with a price greater than $100 and are a returning customer.
-
-```js
-exp.attributes({
-  // date attributes are handled as millis since epoch
-  created: new Date('YYYY-MM-DDTHH:mm:ss.sssZ').getTime(),
-  language: user.language, // 'en'
-  price: item.price, // 10000
-  authenticated: user.isAuthenticated, // true
-  groups: user.groups, // [ 'returning', 'frequent_buyer' ]
-};
-
-if (user.language === 'en'
-  && user.isAuthenticated()
-  && item.price >= 10000 // price in cents
-  && user.groups.some(e => e === 'returning'),
-  && exp.treatment('exp_name')) {
-   // insert treatment code here
-} else {
-   // insert control code here
-}
-```
+<Attributes />
 
 :::caution
 You should create an audience with the exact same attributes in the Web console. By default it will not enforce those conditions, but if for some reason the exp.treatment method is called for a user that doesn’t meet this criteria, the Web console will warn you about it. This means that you either didn’t specify your audience correctly in the Web console, or you have a bug in your triggering condition.
