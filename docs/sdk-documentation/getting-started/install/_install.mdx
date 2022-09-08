@@ -76,6 +76,28 @@ Simply add the following code to your `head` section to include the latest publi
 
 <TabItem value="java" label="Java">
 
+:::info Compatibility
+The A/B Smartly Java SDK is compatible with Java versions 1.6 and later. It
+provides both a blocking and an asynchronous interfaces. The asynchronous
+functions return a <a href="https://github.com/stefan-zobel/streamsupport" target="_blank">custom backport</a>
+of the Java 8 `CompletableFuture` API.
+
+**Android**
+
+The A/B Smartly SDK is compatible with Android 4.4 and later (API level 19+).
+
+The `android.permission.INTERNET` permission is required. To add this permission
+to your application ensure the following line is present in the
+`AndroidManifest.xml` file:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+If you target Android 6.0 or earlier, a few extra steps are outlined below for
+installation and initialization.
+:::
+
 **Gradle**
 
 To install the ABSmartly SDK, place the following in your `build.gradle` and
