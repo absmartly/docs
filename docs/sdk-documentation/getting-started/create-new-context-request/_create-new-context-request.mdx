@@ -41,14 +41,17 @@ A/B Smartly context on the client-side directly with it.
 <CodeBlock language="html">{JsPreFetchedData}</CodeBlock>
 
 :::info
-You can use whatever you want as a unit.
-You can pass an internal user id, or email address.
-This could also be a cookie you generate which stores a device_id or an app's UUID. Mind that the units used have to be declared first on A/B Smartly’s Web console.
+You can use whatever you want as a unit. You can pass an internal user id, or
+email address. This could also be a cookie you generate which stores a
+`device_id` or an app's `UUID`. Mind that the units used have to be declared
+first on A/B Smartly’s Web Console.
 
-Pass all the units that are known for the current user. Some experiments may be tracked by user-id, others by device-id, etc.
-You might even want to use a pageview-id for some technical experiments.
+Pass all the units that are known for the current user. Some experiments may
+be tracked by `user-id`, others by `device-id` etc. You might even want to use a
+`pageview-id` for some technical experiments.
 
-Experiments that are being tracked by a unit not being passed here, will be off in this request (the control treatment will be shown instead).
+Experiments that are being tracked by a unit not being passed here, will be
+off in this request (the control treatment will be shown instead).
 :::
 
 </TabItem>
@@ -76,15 +79,16 @@ You can add additional units to a context by calling the `setUnit()` or the
 to your application, and you want to use the new unit type to the context.
 
 :::info Please Note
-You cannot override an already set unit type as that would
-be a change of identity, and will crash your application. In this case, you
-must create a new context instead. The `setUnit()` and `setUnits()` methods
-can be called before the context is ready.
+You cannot override an already set unit type as that would be a change of
+identity, and will crash your application. In this case, you must create a new
+context instead. The `setUnit()` and `setUnits()` methods can be called before
+the context is ready.
 :::
 
 <CodeBlock language="swift">{SwiftSetExtraUnits}</CodeBlock>
 
 </TabItem>
+
 <TabItem value="vue" label="Vue2">
 
 **Initializing with pre-fetched Context data**
@@ -125,7 +129,7 @@ previously retrieved.
 **Setting extra units for a context**
 
 You can add additional units to a context by calling the `setUnit()` or the
-`setUnits()` method. This method may be used for example, when a user logs in
+`setUnits()` method. This method may be used, for example, when a user logs in
 to your application, and you want to use the new unit type to the context.
 Please note that you cannot override an already set unit type as that would
 be a change of identity, and will throw an exception. In this case, you must

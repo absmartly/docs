@@ -28,20 +28,22 @@ import JavaSelectingATreatment from "!!raw-loader!./java/selectingATreatment.jav
 
 <TabItem value="vue" label="Vue2">
 
-The preferred method to select a treatment is using the Treatment component with a named and scoped slot per treatment.
+The preferred method to select a treatment is using the `Treatment` component
+with a named and scoped slot per treatment.
 
 The slot selection rules are as follows:
 
-If the context is not ready:
-
-If the loading slot exists, select it
-Otherwise, select the default slot
-Otherwise, if the context is ready:
-
-If a slot with the treatment alias (A, B, C, ...) exists, select it
-Otherwise, if a slot with the treatment index exists, select it
-Otherwise, select the default
-If the selected slot doesn't exist, nothing will be rendered
+- If the context is not ready:
+  - If the loading slot exists, select it
+  - Otherwise, select the default slot
+- Otherwise, if the context is ready:
+  - If a slot with the treatment alias (A, B, C, ...) exists:
+    - Select it
+  - Otherwise, if a slot with the treatment index exists
+    - Select it
+  - Otherwise:
+    - Select the default
+- If the selected slot doesn't exist, nothing will be rendered
 
 Example using the treatment alias:
 
@@ -55,7 +57,8 @@ Example using only the default slot:
 
 <CodeBlock language="html">{VueUsingOnlyDefaultSlot}</CodeBlock>
 
-The scoped slot properties contain information about the A/B Smartly context and the selected treatment:
+The scoped slot properties contain information about the A/B Smartly context
+and the selected treatment:
 
 ```json
 {
@@ -68,7 +71,8 @@ The scoped slot properties contain information about the A/B Smartly context and
 }
 ```
 
-If the experiment is not running, or the context creation failed, the slot will be rendered with the following properties:
+If the experiment is not running, or the context creation failed, the slot
+will be rendered with the following properties:
 
 ```json
 {

@@ -27,7 +27,7 @@ import TrackingGoals from "./sdk-documentation/tracking-goals/_tracking-goals.md
 
 # SDK Documentation
 
-This guide provides detailed information about A/B Smartly’s JavaScript SDK.
+This guide provides detailed information about A/B Smartly’s Javascript SDK.
 
 ---
 
@@ -52,7 +52,7 @@ This guide provides detailed information about A/B Smartly’s JavaScript SDK.
 ## Basic Usage
 
 After the init call all the variants for all running experiments will be
-cached in memory. The init call should take single digit milliseconds on the
+cached in memory. The init call should take single-digit milliseconds on the
 server side, on the client side it may take a little longer (it’s another
 roundtrip to the server), unless you pass the data directly in the HTML, which
 makes it ready immediately. Any experiment that is evaluated and is not
@@ -62,8 +62,8 @@ To make sure the SDK is properly loaded before asking it for a treatment,
 block until the SDK is ready, as shown below. `ready()` returns a promise. You
 can also just check if it is ready with the `isReady()` method.
 
-After the sdk is loaded you can use the treatment method to return the proper
-treatment based on the experiment_name and the units data passed when
+After the SDK is loaded you can use the `treatment` method to return the proper
+treatment based on the `experiment_name` and the units data passed when
 instantiating the SDK.
 
 Then use an `if-else-if-else` block as shown below and insert the code for the
@@ -108,8 +108,8 @@ please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 ## Attributes
 
 To create audiences (target based on specific conditions) you need to pass
-custom attributes to the SDK, before making the exp.treatment call. This can
-be done using the method exp.attributes or by passing an attributes parameter
+custom attributes to the SDK, before making the `exp.treatment` call. This can
+be done using the method `exp.attributes` or by passing an `attributes` parameter
 in the SDK initialization. It’s common to use a mix of both methods. Many
 attributes of the user and/or request are known from the beginning and can be
 passed at initialization, others may depend on information only known later in
@@ -119,7 +119,7 @@ The attributes are compared and evaluated against the attributes used in the
 Web console to verify that the right conditions were added to the code.
 If the SDK fails to match the conditions in the code with the conditions used
 in the Web console, users with a mismatch will still be exposed to the
-experiment unless enforce_audiences: true is passed to the SDK at
+experiment unless `enforce_audiences: true` is passed to the SDK at
 initialization. Otherwise you’ll see a warning in the console to let you know
 that the conditions in the code don’t match the audience that you were
 planning to target.
@@ -138,7 +138,7 @@ please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 :::caution
 You should create an audience with the exact same attributes in the Web console.
 By default it will not enforce those conditions, but if for some reason the
-exp.treatment method is called for a user that doesn’t meet this criteria, the
+`exp.treatment` method is called for a user that doesn’t meet this criteria, the
 Web console will warn you about it. This means that you either didn’t specify
 your audience correctly in the Web console, or you have a bug in your
 triggering condition.
@@ -146,18 +146,18 @@ triggering condition.
 
 ## Tracking Goals
 
-Use the track method to record any actions your customers perform. Each action
-is known as a goal and corresponds to a goal_name. Calling track through the
+Use the `track` method to record any actions your customers perform. Each action
+is known as a goal and corresponds to a `goal_name`. Calling `track` through the
 SDKs is the easiest way of getting experimentation data into A/B Smartly and
 allows you to measure the impact of your experiments on your users' actions
 and metrics.
 Other ways to track goals is to use the Segment.io integration or using
 enrichments to consume them from other event streams and/or databases.
-In the examples below you can see that the track() method can take up to two
+In the examples below you can see that the `track()` method can take up to two
 arguments. The proper data type and syntax for each are:
 
-- **goal_name**: The traffic type of the key in the track call. The expected
-  data type is String. You should only pass values that match the names of goals
+- **goal_name**: The traffic type of the key in the `track` call. The expected
+  data type is `String`. You should only pass values that match the names of goals
   that you have defined in the Web console, everything else will be ignored.
 - **properties** (Optional): An object of key value pairs that can be used to
   create extra metrics or to filter the goal.

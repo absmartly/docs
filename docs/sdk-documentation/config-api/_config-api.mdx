@@ -13,9 +13,8 @@ import JsReturnedConfig from "!!raw-loader!./js/returnedConfig.js";
 If you use configuration files to change different aspects of your application,
 then you are better served with the config API.
 Experiment configuration values are actually meant to be used with the config
-API.
-When the config API is used you don't need to call the treatment() method. It
-will be called automatically when keys from the config are used.
+API. When the config API is used, you don't need to call the `treatment()` method.
+It will be called automatically when keys from the config are used.
 
 <CodeBlock language="js">{JsMergeConfig}</CodeBlock>
 
@@ -25,10 +24,10 @@ Let's say you use a configuration file to change some parameters in your applica
 
 Then you could use the config API to run experiments that change those parameters.
 
-When starting one experiment you can assign variables to each variant. Let's
-say you start experiment1 with button.color: "blue" in the control group and
-button.color: "green" in the variant, and experiment2 with button.cta set to
-"Click here" and "Click me" and hero_image set to 2 different urls.
+When starting one experiment, you can assign variables to each variant. Let's
+say you start experiment1 with `button.color: "blue"` in the control group and
+`button.color: "green"` in the variant, and experiment2 with `button.cta` set to
+"Click here" and "Click me" and `hero_image` set to 2 different urls.
 For each user the SDK would receive a payload similar to this:
 
 <!--Must be in file, due to raw-loader json bug-->
