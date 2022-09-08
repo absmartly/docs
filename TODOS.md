@@ -25,8 +25,9 @@ in bold must be completed before deploying the site for the first time.
 
 ## Docs
 
-- [ ] **Vue2 Selecting a Treatment Variable**
-- [ ] **Complete revamp of [current SDK Documentation](https://absmartly.readme.io).**
+- [x] **Vue2 Selecting a Treatment Variable**
+- [x] **Complete revamp of [current SDK Documentation](https://absmartly.readme.io).**
+- [ ] Add documentation for translations and Config API in all SDKs
 - [ ] Rewrite copy for consistency.
 - [ ] Add text under every heading.
 - [ ] Custom SCSS.
