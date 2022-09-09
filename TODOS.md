@@ -10,7 +10,7 @@ in bold must be completed before deploying the site for the first time.
 - [x] **Revamp footer**
 - [ ] Add Legal pages
 - [x] **Revamp Header**
-- [ ] Migrate to yarn
+- [x] Migrate to yarn
 
 ## Netlify
 
