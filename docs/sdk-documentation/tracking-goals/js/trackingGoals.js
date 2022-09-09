@@ -1,4 +1,4 @@
-exp.track("goal_name", { ...properties });
+context.track("goal_name", { ...properties });
 
 var properties = {
   price: 10000,
@@ -6,4 +6,4 @@ var properties = {
   free_cancellation: true,
   instance_id: 5350,
 };
-exp.track("booking", properties);
+context.track("booking", properties);

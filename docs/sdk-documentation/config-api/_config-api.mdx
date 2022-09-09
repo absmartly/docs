@@ -61,7 +61,7 @@ For each user the SDK would receive a payload similar to this:
 ```
 
 This user is in variant 1 of the first experiment and in the control group for
-the second one. Calling `exp.mergeConfig(cfg)` from the Javascript SDK would
+the second one. Calling `context.mergeConfig(cfg)` from the Javascript SDK would
 return a config object like this:
 
 <CodeBlock language="js">{JsReturnedConfig}</CodeBlock>
@@ -129,7 +129,7 @@ For each user the SDK would receive a payload similar to this:
 ```
 
 This user is in variant 1 of the first experiment and in the control group for
-the second one. Calling `exp.mergeConfig(cfg)` from the Javascript SDK would
+the second one. Calling `context.mergeConfig(cfg)` from the Javascript SDK would
 return a config object like this:
 
 <CodeBlock language="js">{VueReturnedConfig}</CodeBlock>

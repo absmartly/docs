@@ -118,8 +118,8 @@ please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 ## Attributes
 
 To create audiences (target based on specific conditions) you need to pass
-custom attributes to the SDK, before making the `exp.treatment` call. This can
-be done using the method `exp.attributes` or by passing an `attributes` parameter
+custom attributes to the SDK, before making the `context.treatment()` call. This can
+be done using the method `context.attributes()` or by passing an `attributes` parameter
 in the SDK initialization. It’s common to use a mix of both methods. Many
 attributes of the user and/or request are known from the beginning and can be
 passed at initialization, others may depend on information only known later in
@@ -148,7 +148,7 @@ please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 :::caution
 You should create an audience with the exact same attributes in the Web console.
 By default it will not enforce those conditions, but if for some reason the
-`exp.treatment` method is called for a user that doesn’t meet this criteria, the
+`context.treatment()` method is called for a user that doesn’t meet this criteria, the
 Web console will warn you about it. This means that you either didn’t specify
 your audience correctly in the Web console, or you have a bug in your
 triggering condition.
@@ -156,8 +156,8 @@ triggering condition.
 
 ## Tracking Goals
 
-Use the `track` method to record any actions your customers perform. Each action
-is known as a goal and corresponds to a `goal_name`. Calling `track` through the
+Use the `track()` method to record any actions your customers perform. Each action
+is known as a goal and corresponds to a `goal_name`. Calling `track()` through the
 SDKs is the easiest way of getting experimentation data into A/B Smartly and
 allows you to measure the impact of your experiments on your users' actions
 and metrics.
@@ -166,7 +166,7 @@ enrichments to consume them from other event streams and/or databases.
 In the examples below you can see that the `track()` method can take up to two
 arguments. The proper data type and syntax for each are:
 
-- **goal_name**: The traffic type of the key in the `track` call. The expected
+- **goal_name**: The traffic type of the key in the `track()` call. The expected
   data type is `String`. You should only pass values that match the names of goals
   that you have defined in the Web console, everything else will be ignored.
 - **properties** (Optional): An object of key value pairs that can be used to

@@ -14,16 +14,16 @@ import JavaFinalize from "!!raw-loader!./java/finalize.java";
 
 <TabItem value="js" label="Javascript">
 
-Call the `exp.finalize` method before letting a process using the SDK exit, as
+Call the `context.finalize()` method before letting a process using the SDK exit, as
 this method gracefully shuts down the SDK by clearing caches, and closing
-connections. It will also call `exp.publish` to flush the remaining
+connections. It will also call `context.publish()` to flush the remaining
 unpublished impressions.
 
 <CodeBlock language="js">{JsFinalize}</CodeBlock>
 
 :::caution
 After `finalize()` is called and finishes, any subsequent invocations to the
-`treatment` method will still return the right variant, but will result in a
+`treatment()` method will still return the right variant, but will result in a
 warning to let you know that you might be losing impressions.
 :::
 
@@ -50,6 +50,7 @@ throwing an error if any method that could generate an event is called.
 </TabItem>
 
 <TabItem value="java" label="Java">
+
 The `close()` and `closeAsync()` methods will ensure all events have been
 published to the A/B Smartly collector, like `publish()`, and will also "seal"
 the context, throwing an error if any method that could generate an event is
