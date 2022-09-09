@@ -12,7 +12,11 @@ const HomepageHeader: FC<{}> = () => {
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
-        <img src="img/logo.svg" alt="The A B Smartly Logo" />
+        <img
+          src="img/logo.png"
+          alt="The A B Smartly Logo"
+          className={styles.heroLogo}
+        />
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
