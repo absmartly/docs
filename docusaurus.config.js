@@ -171,23 +171,6 @@ const config = {
               },
             ],
           },
-          {
-            title: "Legal",
-            items: [
-              {
-                label: "Privacy",
-                href: "/privacy",
-              },
-              {
-                label: "Terms",
-                href: "/terms",
-              },
-              {
-                label: "Data Policy",
-                href: "/data",
-              },
-            ],
-          },
         ],
         copyright: `&copy; Copyright ${new Date().getFullYear()} A/B Smartly B.V.`,
         logo: { src: "img/logo.svg", alt: "The A B Smartly Logo" },
