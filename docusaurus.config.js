@@ -70,7 +70,6 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        hideOnScroll: true,
         title: "A/B Smartly Docs",
         logo: {
           alt: "The A B Smartly logo",
