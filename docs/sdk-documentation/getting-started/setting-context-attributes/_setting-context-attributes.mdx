@@ -11,6 +11,13 @@ import VueSetAttributesTemplate from "!!raw-loader!./vue/SetAttributes.vue";
 
 import JavaSetAttributes from "!!raw-loader!./java/setAttributes.java";
 
+Attributes are used to pass meta-data about the user and/or the request. They
+can be used later in the web console to setup segments.
+
+:::info
+These methods can be called before the context is ready.
+:::
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -20,9 +27,6 @@ import JavaSetAttributes from "!!raw-loader!./java/setAttributes.java";
 </TabItem>
 
 <TabItem value="swift" label="Swift">
-
-The `setAttribute()` and `setAttributes()` methods can be called before the
-context is ready.
 
 <CodeBlock language="swift">{SwiftSetAttributes}</CodeBlock>
 
@@ -42,9 +46,6 @@ component.
 </TabItem>
 
 <TabItem value="java" label="Java">
-
-The `setAttribute()` and `setAttributes()` methods can be called before the
-context is ready.
 
 <CodeBlock language="java">{JavaSetAttributes}</CodeBlock>
 

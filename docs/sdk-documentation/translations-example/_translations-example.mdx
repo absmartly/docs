@@ -4,12 +4,81 @@ import CodeBlock from "@theme/CodeBlock";
 
 import JsTranslationsExample from "!!raw-loader!./js/translationsExample.js";
 
-<Tabs groupId="language">
+Let's look at a slightly more complex example where you have to run an experiment
+whilst accomodating for multiple languages.
 
-<TabItem value="js" label="Javascript">
+Here, we have a languagesConfig.js file:
 
-<CodeBlock language="js">{JsTranslationsExample}</CodeBlock>
+```js title=.../src/languagesConfig.js
+export default
+// Copy text for English and Dutch
+{
+    header: {
+        en: "Our nice header!",
+        nl: "Onze leuk kop!",
+    },
+    call_to_action1: {
+        en: "Click here",
+        nl: "Klik hier"
+    }
+}
+```
 
-</TabItem>
+In our code, we can then get all of our variant variables using:
 
-</Tabs>
+```js
+// Create a function to fetch the variant translations and return them as an object.
+const fetchTranslations = (keysArray) => {
+    return keysArray.reduce(
+        (acc, key) => (
+            { ...acc, [key]: context.variableValue(key) }
+        )
+    )
+}
+
+// Get the variant variable keys from the context
+const tagsToFetch = context.variableKeys()
+
+const translationVariations = fetchTranslations(tagsToFetch)
+```
+The `translationVariations` variable would then be returned as something like:
+
+```json
+{
+     header_v1: {
+         en: "Our beautiful header!",
+         nl: "Onze mooie kop!"
+     },
+     call_to_action1_v1: {
+         en: "Continue",
+         nl: "Doorgaan"
+     },
+}
+```
+...which you could then merge with your original translations, like so:
+```js
+import appTranslations from '../languagesConfig.js'
+
+const translations = mergeConfig(appTranslations, translationVariations)
+```
+...which would return an object similar to:
+```js
+{
+    get header: () => {
+      exp.treatment("experiment1");
+      return {
+        en: "Our beautiful header!",
+        nl: "Onze mooie kop!",
+      };
+    }
+    get call_to_action1: () => {
+      exp.treatment("experiment2");
+      return {
+        en: "Click here!",
+        nl: "Klik Hier"
+      };
+    }
+}
+```
+You can now use this object to run your experiments whilst still supporting multiple
+languages!

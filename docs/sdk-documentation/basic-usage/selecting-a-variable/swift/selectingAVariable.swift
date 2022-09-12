@@ -1,1 +1,1 @@
-let variable = context.getVariableValue("my_variable", defaultValue: 10)
+let buttonColor = context.getVariableValue("button.color", defaultValue: "red")

@@ -10,13 +10,26 @@ import VueSelectingAVariable from "!!raw-loader!./vue/selectingAVariable.js";
 
 import JavaSelectingAVariable from "!!raw-loader!./java/selectingAVariable.java";
 
+Treatment variables are a powerful tool that can be used to automate your experiments.
+When creating an experiment on your A/B Smartly Web Console, you can give each variant
+a set of variables. You can then use your context to pull the values of these variables
+into your code.
+
+For example, let's say you have an experiment to find out what color of
+button generates the most clicks on your homepage. In this experiment, you have
+two variants - _Variant 1_ and _Variant 2_. On both of these variants, you
+have assigned a variable:
+
+- **_Variant 1:_** `{ "button.color": "green" }`
+- **_Variant 2:_** `{ "button.color": "blue" }`
+
+And you wish for the control group **_(Variant 0)_** to have `{ "button.color": red }`.
+
+You can select these values in your code like so:
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
-
-:::danger
-Cal wrote this
-:::
 
 <CodeBlock language="js">{JsSelectingAVariable}</CodeBlock>
 
@@ -30,10 +43,6 @@ Cal wrote this
 
 <TabItem value="vue" label="Vue2">
 
-:::danger
-Cal wrote this
-:::
-
 <CodeBlock language="js">{VueSelectingAVariable}</CodeBlock>
 
 </TabItem>
@@ -45,3 +54,13 @@ Cal wrote this
 </Tabitem>
 
 </Tabs>
+
+:::caution
+The control group cannot have variables set on the Web Console. They should
+be set using the default value parameter in the code as shown above.
+:::
+
+You can then use this variable to style your button appropriately for the
+variant that the current user is on. The benefit of this is that you can now
+make more variants of this experiment on the Web Console and they will
+automatically be implemented in your application!
