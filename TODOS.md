@@ -36,7 +36,7 @@ in bold must be completed before deploying the site for the first time.
 - [ ] Custom SCSS.
   - [x] Add Support
   - [ ] Change styles.
-- [ ] Update to `Docusaurus@latest` (When openapi has released new version).
+- [x] Update to `Docusaurus@latest` (When openapi has released new version).
 - [ ] Add Ruby Documentation
   - [x] Remove empty Docs
   - [ ] Re-add Ruby Docs
