@@ -6,10 +6,10 @@ in bold must be completed before deploying the site for the first time.
 ## General
 
 - [ ] Apply new brand guidelines.
-- [ ] **Deploy MVP docs site.**
-- [x] **Revamp footer**
+- [x] Deploy MVP docs site.
+- [x] Revamp footer
 - [ ] Add Legal pages
-- [x] **Revamp Header**
+- [x] Revamp Header
 - [x] Migrate to yarn
 
 ## Netlify
@@ -18,8 +18,8 @@ in bold must be completed before deploying the site for the first time.
 
 ## Landing Page
 
-- [x] **Replace Docusaurus example images.**
-- [x] **Rewrite copy.**
+- [x] Replace Docusaurus example images.
+- [x] Rewrite copy.
 
 ## Dashboard
 
@@ -28,17 +28,17 @@ in bold must be completed before deploying the site for the first time.
 ## Docs
 
 - [ ] **Remove danger warnings**
-- [x] **Vue2 Selecting a Treatment Variable**
-- [x] **Complete revamp of [current SDK Documentation](https://absmartly.readme.io).**
+- [x] Vue2 Selecting a Treatment Variable
+- [x] Complete revamp of [current SDK Documentation](https://absmartly.readme.io).
 - [ ] Add documentation for translations and Config API in all SDKs
-- [ ] Rewrite copy for consistency.
-- [ ] Add text under every heading.
+- [x] Rewrite copy for consistency.
+- [x] Add text under every heading.
 - [ ] Custom SCSS.
   - [x] Add Support
   - [ ] Change styles.
 - [ ] Update to `Docusaurus@latest` (When openapi has released new version).
 - [ ] Add Ruby Documentation
-  - [x] **Remove empty Docs**
+  - [x] Remove empty Docs
   - [ ] Re-add Ruby Docs
 - [ ] Add VueJS language support with Prisma
 
@@ -46,6 +46,10 @@ in bold must be completed before deploying the site for the first time.
 
 - [ ] Change api-spec.yaml to online version.
 - [ ] Create Lambda or Github Action to run generation command on spec update.
+
+## Segment.io
+
+- [ ] Create docs for Segment.io
 
 ## FAQ
 
