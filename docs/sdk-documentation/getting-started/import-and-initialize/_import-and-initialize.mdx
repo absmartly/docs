@@ -58,11 +58,11 @@ for SSL to Conscrypt by creating the Client instance as follows:
 Cal wrote this
 :::
 
-| Config      | Type                              | Required? |   Default   | Description                                                                                   |
-| :---------- | :-------------------------------- | :-------: | :---------: | :-------------------------------------------------------------------------------------------- |
-| endpoint    | `string`                          |  &#9989;  | `undefined` | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                     |
-| apiKey      | `string`                          |  &#9989;  | `undefined` | Your API key which can be found on the web console.                                           |
-| environment | `"production"` or `"development"` |  &#9989;  | `undefined` | The environment of your experiment. This is chosen on the web console.                        |
-| application | `string`                          |  &#9989;  | `undefined` | The application on which your experiments will take place. This is chosen on the web console. |
-| retries     | `number`                          | &#10060;  |     `5`     | The number of retries before the SDK stops trying to connect.                                 |
-| timeout     | `number`                          | &#10060;  |   `3000`    | An amount of time, in milliseconds, before the SDK will stop trying to connect.               |
+| Config      | Type                              | Required? |   Default   | Description                                                                                                                                                                   |
+| :---------- | :-------------------------------- | :-------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                          |  &#9989;  | `undefined` | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                          |  &#9989;  | `undefined` | Your API key which can be found on the web console.                                                                                                                           |
+| environment | `"production"` or `"development"` |  &#9989;  | `undefined` | The environment of the platform where the SDK is installed. Environments are created on the web console and should match the available environments in your infrastructure.   |
+| application | `string`                          |  &#9989;  | `undefined` | The name of the application where the SDK is installed. Applications are created on the web console and should match the applications where your experiments will be running. |
+| retries     | `number`                          | &#10060;  |     `5`     | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                          | &#10060;  |   `3000`    | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |

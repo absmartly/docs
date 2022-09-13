@@ -14,5 +14,5 @@ Vue.use(absmartly.ABSmartlyVue, {
   attributes: {
     user_agent: navigator.userAgent,
   },
-  data: prefetchedContext, // assuming prefectedContext has been inject
+  data: prefetchedContext, // assuming prefectedContext has been injected
 });
