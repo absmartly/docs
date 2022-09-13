@@ -7,6 +7,22 @@ import SwiftTrackingGoals from "!!raw-loader!./swift/trackingGoals.swift";
 import VueTrackingGoals from "!!raw-loader!./vue/trackingGoals.js";
 import JavaTrackingGoals from "!!raw-loader!./java/trackingGoals.java";
 
+Use the `track()` method to record any actions that your customers perform.
+Each action is known as a goal and corresponds to a `goal_name` as defined in
+the Web Console. Calling `track()` through the SDKs is the easiest way of
+getting experimentation data into A/B Smartly and allows you to measure the
+impact of your experiments on your users' actions and metrics. Other ways to
+track goals is to use the Segment.io integration or using enrichments to
+consume them from other event streams and/or databases. In the examples below
+you can see that the `track()` method can take up to two arguments. The proper
+data type and syntax for each are:
+
+- **goal_name**: The traffic type of the key in the `track()` call. The expected
+  data type is `String`. You should only pass values that match the names of goals
+  that you have defined in the Web console, everything else will be ignored.
+- **properties** (Optional): An object of key value pairs that can be used to
+  create extra metrics or to filter the goal.
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
