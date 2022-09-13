@@ -165,8 +165,8 @@ const config = {
                 href: "https://twitter.com/absmartly",
               },
               {
-                label: "GitHub",
-                href: "https://github.com/absmartly",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/company/absmartly",
               },
             ],
           },
