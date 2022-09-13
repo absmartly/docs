@@ -5,8 +5,8 @@ import org.conscrypt.Conscrypt;
     final ClientConfig clientConfig = ClientConfig.create()
         .setEndpoint("https://your-company.absmartly.io/v1")
         .setAPIKey("YOUR-API-KEY")
-        .setApplication("website") // created in the ABSmartly web console
-        .setEnvironment("development");  // created in the ABSmartly web console
+        .setApplication("website") // created in the ABSmartly Web Console
+        .setEnvironment("development");  // created in the ABSmartly Web Console
 
     final DefaultHTTPClientConfig httpClientConfig = DefaultHTTPClientConfig.create()
         .setSecurityProvider(Conscrypt.newProvider());

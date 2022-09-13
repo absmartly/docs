@@ -108,9 +108,9 @@ passed at initialization, others may depend on information only known later in
 the request.
 
 The attributes are compared and evaluated against the attributes used in the
-Web console to verify that the right conditions were added to the code.
+Web Console to verify that the right conditions were added to the code.
 If the SDK fails to match the conditions in the code with the conditions used
-in the Web console, users with a mismatch will still be exposed to the
+in the Web Console, users with a mismatch will still be exposed to the
 experiment unless `enforce_audiences: true` is passed to the SDK at
 initialization. Otherwise you’ll see a warning in the console to let you know
 that the conditions in the code don’t match the audience that you were
@@ -128,11 +128,11 @@ please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 <Attributes />
 
 :::caution
-You should create an audience with the exact same attributes in the Web console.
+You should create an audience with the exact same attributes in the Web Console.
 By default it will not enforce those conditions, but if for some reason the
 `context.treatment()` method is called for a user that doesn’t meet this criteria, the
-Web console will warn you about it. This means that you either didn’t specify
-your audience correctly in the Web console, or you have a bug in your
+Web Console will warn you about it. This means that you either didn’t specify
+your audience correctly in the Web Console, or you have a bug in your
 triggering condition.
 :::
 
