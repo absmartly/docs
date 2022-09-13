@@ -52,3 +52,10 @@ component.
 </TabItem>
 
 </Tabs>
+
+:::caution
+You should create audiences with the same attributes as those in the Web Console.
+By default it will not enforce these conditions, but if for some reason the
+`treatment()` method is called for a user that doesn’t meet the correct criteria, the
+Web Console will warn you about it.
+:::
