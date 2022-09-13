@@ -12,11 +12,9 @@ import VueSetAttributesTemplate from "!!raw-loader!./vue/SetAttributes.vue";
 import JavaSetAttributes from "!!raw-loader!./java/setAttributes.java";
 
 Attributes are used to pass meta-data about the user and/or the request. They
-can be used later in the web console to setup segments.
-
-:::info
-These methods can be called before the context is ready.
-:::
+can be used later in the Web Console to create segments or audiences. They can
+be set using the `attribute()` or `attributes()` methods, before or after the
+context is ready.
 
 <Tabs groupId="language">
 
@@ -52,3 +50,10 @@ component.
 </TabItem>
 
 </Tabs>
+
+:::caution
+You should create audiences with the same attributes as those in the Web Console.
+By default it will not enforce these conditions, but if for some reason the
+`treatment()` method is called for a user that doesn’t meet the correct criteria, the
+Web Console will warn you about it.
+:::

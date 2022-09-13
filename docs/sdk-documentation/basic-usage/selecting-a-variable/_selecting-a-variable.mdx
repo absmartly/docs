@@ -23,6 +23,11 @@ have assigned a variable:
 - **_Variant 1:_** `{ "button.color": "green" }`
 - **_Variant 2:_** `{ "button.color": "blue" }`
 
+<img
+  src="/img/variant-variables.png"
+  alt="An example of the variants form on the Web Console with a variable applied to each one."
+/>
+
 And you wish for the control group **_(Variant 0)_** to have `{ "button.color": red }`.
 
 You can select these values in your code like so:
@@ -56,8 +61,9 @@ You can select these values in your code like so:
 </Tabs>
 
 :::caution
-The control group cannot have variables set on the Web Console. They should
-be set using the default value parameter in the code as shown above.
+We recommend that control group does not have variables set on the Web
+Console except in very specific use cases. Usually, they should be set using
+the "default value" parameter as shown above.
 :::
 
 You can then use this variable to style your button appropriately for the

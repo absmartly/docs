@@ -56,10 +56,6 @@ teammembers!
 
 <CreateNewContextRequest />
 
-### Set Context Attributes
-
-<SettingContextAttributes />
-
 ## Basic Usage
 
 After the init call, all the variants for all running experiments will be
@@ -76,6 +72,10 @@ running will return Variant 0 (the control group).
 ### Treatment Variables
 
 <SelectingAVariable />
+
+## Context Attributes
+
+<SettingContextAttributes />
 
 ## Config API
 
@@ -96,45 +96,6 @@ running will return Variant 0 (the control group).
 ## Finalize
 
 <Finalize />
-
-## Attributes
-
-To create audiences (target based on specific conditions) you need to pass
-custom attributes to the SDK, before making the `context.treatment()` call. This can
-be done using the method `context.attributes()` or by passing an `attributes` parameter
-in the SDK initialization. It’s common to use a mix of both methods. Many
-attributes of the user and/or request are known from the beginning and can be
-passed at initialization, others may depend on information only known later in
-the request.
-
-The attributes are compared and evaluated against the attributes used in the
-Web console to verify that the right conditions were added to the code.
-If the SDK fails to match the conditions in the code with the conditions used
-in the Web console, users with a mismatch will still be exposed to the
-experiment unless `enforce_audiences: true` is passed to the SDK at
-initialization. Otherwise you’ll see a warning in the console to let you know
-that the conditions in the code don’t match the audience that you were
-planning to target.
-In the example below, we are rolling out an experiment to users that are
-logged in, using the website in English, bought an item with a price greater
-than $100 and are a returning customer.
-
-:::note Only available for Js-SDK
-Unfortunately, this feature is only available on the Javascript SDK for now.
-If you require it elsewhere,
-please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
-:::
-
-<Attributes />
-
-:::caution
-You should create an audience with the exact same attributes in the Web console.
-By default it will not enforce those conditions, but if for some reason the
-`context.treatment()` method is called for a user that doesn’t meet this criteria, the
-Web console will warn you about it. This means that you either didn’t specify
-your audience correctly in the Web console, or you have a bug in your
-triggering condition.
-:::
 
 ## Tracking Goals
 
