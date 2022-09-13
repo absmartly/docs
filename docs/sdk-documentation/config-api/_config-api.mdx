@@ -1,0 +1,147 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsMergeConfig from "!!raw-loader!./js/mergeConfig.js";
+import JsConfigParameters from "!!raw-loader!./js/configChangeParameters.js";
+import JsReturnedConfig from "!!raw-loader!./js/returnedConfig.js";
+
+import VueMergeConfig from "!!raw-loader!./vue/mergeConfig.js";
+import VueConfigParameters from "!!raw-loader!./vue/configChangeParameters.js";
+import VueReturnedConfig from "!!raw-loader!./vue/returnedConfig.js";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+If you use configuration files to change different aspects of your application,
+then you are better served with the config API.
+Experiment configuration values are actually meant to be used with the config
+API. When the config API is used, you don't need to call the `treatment()` method.
+It will be called automatically when keys from the config are used.
+
+<CodeBlock language="js">{JsMergeConfig}</CodeBlock>
+
+Let's say you use a configuration file to change some parameters in your application:
+
+<CodeBlock language="js">{JsConfigParameters}</CodeBlock>
+
+Then you could use the config API to run experiments that change those parameters.
+
+When starting one experiment, you can assign variables to each variant. Let's
+say you start experiment1 with `button.color: "blue"` in the control group and
+`button.color: "green"` in the variant, and experiment2 with `button.cta` set to
+"Click here" and "Click me" and `hero_image` set to 2 different urls.
+For each user the SDK would receive a payload similar to this:
+
+<!--Must be in file, due to raw-loader json bug-->
+
+```json
+{
+  "guid": "dhsUiLJ7xgQBEbivw_0cjiKo9O6UlnSg",
+  "units": [],
+  "assignments": [
+    {
+      "name": "experiment1",
+      "variant": 1,
+      "config": {
+        "button.color": "green"
+      }
+    },
+    {
+      "name": "experiment2",
+      "variant": 0,
+      "config": {
+        "button.cta": "Click here",
+        "hero_image": "http://cdn.com/img1.png"
+      }
+    }
+  ]
+}
+```
+
+This user is in variant 1 of the first experiment and in the control group for
+the second one. Calling `exp.mergeConfig(cfg)` from the Javascript SDK would
+return a config object like this:
+
+<CodeBlock language="js">{JsReturnedConfig}</CodeBlock>
+
+So you can continue using the configuration as you were using it before, but
+now the right experiments will be triggered when a value is used and that
+value was overridden by one experiment.
+
+This greatly simplifies setting up experiments and cleaning up the code. If at
+some point a big part of the code is configured like this you can set up
+different experiments without touching one line of code.
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+:::danger
+Cal wrote this
+:::
+
+If you use configuration files to change different aspects of your application,
+then you are better served with the config API.
+Experiment configuration values are actually meant to be used with the config
+API. When the config API is used, you don't need to call the `treatment()` method.
+It will be called automatically when keys from the config are used.
+
+<CodeBlock language="js">{VueMergeConfig}</CodeBlock>
+
+Let's say you use a configuration file to change some parameters in your application:
+
+<CodeBlock language="js">{VueConfigParameters}</CodeBlock>
+
+Then you could use the config API to run experiments that change those parameters.
+
+When starting one experiment, you can assign variables to each variant. Let's
+say you start experiment1 with `button.color: "blue"` in the control group and
+`button.color: "green"` in the variant, and experiment2 with `button.cta` set to
+"Click here" and "Click me" and `hero_image` set to 2 different urls.
+For each user the SDK would receive a payload similar to this:
+
+<!--Must be in file, due to raw-loader json bug-->
+
+```json
+{
+  "guid": "dhsUiLJ7xgQBEbivw_0cjiKo9O6UlnSg",
+  "units": [],
+  "assignments": [
+    {
+      "name": "experiment1",
+      "variant": 1,
+      "config": {
+        "button.color": "green"
+      }
+    },
+    {
+      "name": "experiment2",
+      "variant": 0,
+      "config": {
+        "button.cta": "Click here",
+        "hero_image": "http://cdn.com/img1.png"
+      }
+    }
+  ]
+}
+```
+
+This user is in variant 1 of the first experiment and in the control group for
+the second one. Calling `exp.mergeConfig(cfg)` from the Javascript SDK would
+return a config object like this:
+
+<CodeBlock language="js">{VueReturnedConfig}</CodeBlock>
+
+So you can continue using the configuration as you were using it before, but
+now the right experiments will be triggered when a value is used and that
+value was overridden by one experiment.
+
+This greatly simplifies setting up experiments and cleaning up the code. If at
+some point a big part of the code is configured like this you can set up
+different experiments without touching one line of code.
+
+</TabItem>
+
+</Tabs>

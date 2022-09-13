@@ -1,0 +1,165 @@
+---
+sidebar_position: 1
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import Install from "./sdk-documentation/getting-started/install/_install.mdx";
+import ImportAndInitialize from "./sdk-documentation/getting-started/import-and-initialize/_import-and-initialize.mdx";
+import CreateNewContextRequest from "./sdk-documentation/getting-started/create-new-context-request/_create-new-context-request.mdx";
+import SettingContextAttributes from "./sdk-documentation/getting-started/setting-context-attributes/_setting-context-attributes.mdx";
+
+import SelectingATreatment from "./sdk-documentation/basic-usage/selecting-a-treatment/_selecting-a-treatment.mdx";
+import SelectingAVariable from "./sdk-documentation/basic-usage/selecting-a-variable/_selecting-a-variable.mdx";
+
+import ConfigApi from "./sdk-documentation/config-api/_config-api.mdx";
+
+import TranslationsExample from "./sdk-documentation/translations-example/_translations-example.mdx";
+
+import Publish from "./sdk-documentation/publish/_publish.mdx";
+
+import Finalize from "./sdk-documentation/finalize/_finalize.mdx";
+
+import Attributes from "./sdk-documentation/attributes/_attributes.mdx";
+
+import TrackingGoals from "./sdk-documentation/tracking-goals/_tracking-goals.mdx";
+
+# SDK Documentation
+
+This guide provides detailed information about A/B Smartly’s Javascript SDK.
+
+---
+
+## Getting Started
+
+### Install the SDK
+
+<Install />
+
+### Import and Initialize the SDK
+
+<ImportAndInitialize />
+
+### Create a New Context Request
+
+<CreateNewContextRequest />
+
+### Set Context Attributes
+
+<SettingContextAttributes />
+
+## Basic Usage
+
+After the init call all the variants for all running experiments will be
+cached in memory. The init call should take single-digit milliseconds on the
+server side, on the client side it may take a little longer (it’s another
+roundtrip to the server), unless you pass the data directly in the HTML, which
+makes it ready immediately. Any experiment that is evaluated and is not
+running will return variant 0 (the control group).
+
+To make sure the SDK is properly loaded before asking it for a treatment,
+block until the SDK is ready, as shown below. `ready()` returns a promise. You
+can also just check if it is ready with the `isReady()` method.
+
+After the SDK is loaded you can use the `treatment` method to return the proper
+treatment based on the `experiment_name` and the units data passed when
+instantiating the SDK.
+
+Then use an `if-else-if-else` block as shown below and insert the code for the
+different treatments that you plan to create.
+
+### Selecting a Treatment
+
+<SelectingATreatment />
+
+### Selecting a Treatment Variable
+
+<SelectingAVariable />
+
+## Config API
+
+:::note Not available for all SDKs
+Unfortunately, this feature is only available on the Javascript and Vue2 SDKs
+for now. If you require it elsewhere,
+please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
+:::
+
+<ConfigApi />
+
+## Translations Example
+
+:::note Only available for Js-SDK
+Unfortunately, this feature is only available on the Javascript SDK for now.
+If you require it elsewhere,
+please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
+:::
+
+<TranslationsExample />
+
+## Publish
+
+<Publish />
+
+## Finalize
+
+<Finalize />
+
+## Attributes
+
+To create audiences (target based on specific conditions) you need to pass
+custom attributes to the SDK, before making the `exp.treatment` call. This can
+be done using the method `exp.attributes` or by passing an `attributes` parameter
+in the SDK initialization. It’s common to use a mix of both methods. Many
+attributes of the user and/or request are known from the beginning and can be
+passed at initialization, others may depend on information only known later in
+the request.
+
+The attributes are compared and evaluated against the attributes used in the
+Web console to verify that the right conditions were added to the code.
+If the SDK fails to match the conditions in the code with the conditions used
+in the Web console, users with a mismatch will still be exposed to the
+experiment unless `enforce_audiences: true` is passed to the SDK at
+initialization. Otherwise you’ll see a warning in the console to let you know
+that the conditions in the code don’t match the audience that you were
+planning to target.
+In the example below, we are rolling out an experiment to users that are
+logged in, using the website in English, bought an item with a price greater
+than $100 and are a returning customer.
+
+:::note Only available for Js-SDK
+Unfortunately, this feature is only available on the Javascript SDK for now.
+If you require it elsewhere,
+please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
+:::
+
+<Attributes />
+
+:::caution
+You should create an audience with the exact same attributes in the Web console.
+By default it will not enforce those conditions, but if for some reason the
+`exp.treatment` method is called for a user that doesn’t meet this criteria, the
+Web console will warn you about it. This means that you either didn’t specify
+your audience correctly in the Web console, or you have a bug in your
+triggering condition.
+:::
+
+## Tracking Goals
+
+Use the `track` method to record any actions your customers perform. Each action
+is known as a goal and corresponds to a `goal_name`. Calling `track` through the
+SDKs is the easiest way of getting experimentation data into A/B Smartly and
+allows you to measure the impact of your experiments on your users' actions
+and metrics.
+Other ways to track goals is to use the Segment.io integration or using
+enrichments to consume them from other event streams and/or databases.
+In the examples below you can see that the `track()` method can take up to two
+arguments. The proper data type and syntax for each are:
+
+- **goal_name**: The traffic type of the key in the `track` call. The expected
+  data type is `String`. You should only pass values that match the names of goals
+  that you have defined in the Web console, everything else will be ignored.
+- **properties** (Optional): An object of key value pairs that can be used to
+  create extra metrics or to filter the goal.
+
+<TrackingGoals />

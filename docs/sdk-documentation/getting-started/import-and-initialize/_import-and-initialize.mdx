@@ -1,0 +1,49 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsImport from "!!raw-loader!./js/import.js";
+
+import SwiftImport from "!!raw-loader!./swift/import.swift";
+
+import VueImport from "!!raw-loader!./vue/import.js";
+
+import JavaImport from "!!raw-loader!./java/import.java";
+import JavaImportAndroid6 from "!!raw-loader!./java/importForAndroid6.java";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsImport}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftImport}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+<CodeBlock language="js">{VueImport}</CodeBlock>
+
+This makes the `$absmartly` extension available in every Vue instance.
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+<CodeBlock language="java">{JavaImport}</CodeBlock>
+
+:::caution Android 6.0 or Earlier
+When targeting Android 6.0 or earlier, set the default Java Security Provider
+for SSL to Conscrypt by creating the Client instance as follows:
+
+<CodeBlock language="java">{JavaImportAndroid6}</CodeBlock>
+:::
+
+</TabItem>
+
+</Tabs>

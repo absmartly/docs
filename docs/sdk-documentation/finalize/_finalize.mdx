@@ -1,0 +1,62 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsFinalize from "!!raw-loader!./js/finalize.js";
+
+import SwiftFinalize from "!!raw-loader!./swift/finalize.swift";
+
+import VueFinalize from "!!raw-loader!./vue/finalize.js";
+
+import JavaFinalize from "!!raw-loader!./java/finalize.java";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+Call the `exp.finalize` method before letting a process using the SDK exit, as
+this method gracefully shuts down the SDK by clearing caches, and closing
+connections. It will also call `exp.publish` to flush the remaining
+unpublished impressions.
+
+<CodeBlock language="js">{JsFinalize}</CodeBlock>
+
+:::caution
+After `finalize()` is called and finishes, any subsequent invocations to the
+`treatment` method will still return the right variant, but will result in a
+warning to let you know that you might be losing impressions.
+:::
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+The `close()` methods will ensure all events have been published to the A/B
+Smartly collector, like `publish()`, and will also "seal" the context,
+throwing an error if any method that could generate an event is called.
+
+<CodeBlock language="swift">{SwiftFinalize}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+The `finalize()` method will ensure all events have been published to the A/B
+Smartly collector, like `publish()`, and will also "seal" the context,
+throwing an error if any method that could generate an event is called.
+
+<CodeBlock language="js">{VueFinalize}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+The `close()` and `closeAsync()` methods will ensure all events have been
+published to the A/B Smartly collector, like `publish()`, and will also "seal"
+the context, throwing an error if any method that could generate an event is
+called.
+
+<CodeBlock language="java">{JavaFinalize}</CodeBlock>
+
+</TabItem>
+
+</Tabs>

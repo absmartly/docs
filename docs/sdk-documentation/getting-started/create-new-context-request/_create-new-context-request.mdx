@@ -1,0 +1,143 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsRawPromises from "!!raw-loader!./js/usingRawPromises.js";
+import JsAsyncAwait from "!!raw-loader!./js/usingAsyncAwait.js";
+import JsPreFetchedData from "!!raw-loader!./js/withPreFetchedData.html";
+
+import SwiftNewContext from "!!raw-loader!./swift/newContext.swift";
+import SwiftPreFetchedData from "!!raw-loader!./swift/withPreFetchedData.swift";
+import SwiftSetExtraUnits from "!!raw-loader!./swift/settingExtraUnits.swift";
+
+import VuePreFetchedData from "!!raw-loader!./vue/initializeWithPrefetchedData.js";
+
+import JavaSync from "!!raw-loader!./java/sync.java";
+import JavaAsync from "!!raw-loader!./java/async.java";
+import JavaPreFetched from "!!raw-loader!./java/preFetchedData.java";
+import JavaExtraUnits from "!!raw-loader!./java/extraUnits.java";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+**Using Raw Promises**
+
+<CodeBlock language="js">{JsRawPromises}</CodeBlock>
+
+**Using Async/Await**
+
+<CodeBlock language="js">{JsAsyncAwait}</CodeBlock>
+
+**With Pre-Fetched Data**
+
+When doing full-stack experimentation with A/B Smartly, we recommend creating a
+context only once on the server-side. Creating a context involves a round-trip
+to the A/B Smartly event collector. We can avoid repeating the round-trip on
+the client-side by sending the server-side data embedded in the first document,
+for example, by rendering it on the template. Then we can initialize the
+A/B Smartly context on the client-side directly with it.
+
+<CodeBlock language="html">{JsPreFetchedData}</CodeBlock>
+
+:::info
+You can use whatever you want as a unit. You can pass an internal user id, or
+email address. This could also be a cookie you generate which stores a
+`device_id` or an app's `UUID`. Mind that the units used have to be declared
+first on A/B Smartly’s Web Console.
+
+Pass all the units that are known for the current user. Some experiments may
+be tracked by `user-id`, others by `device-id` etc. You might even want to use a
+`pageview-id` for some technical experiments.
+
+Experiments that are being tracked by a unit not being passed here, will be
+off in this request (the control treatment will be shown instead).
+:::
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+**Creating a New Context**
+
+<CodeBlock language="swift">{SwiftNewContext}</CodeBlock>
+
+**Creating a New Context With Pre-Fetched Data**
+
+When doing full-stack experimentation with A/B Smartly, we recommend creating a
+context only once on the server-side. Creating a context involves a round-trip
+to the A/B Smartly event collector. We can avoid repeating the round-trip on
+the client-side by sending the server-side data embedded with other application
+data. Then we can initialize the A/B Smartly context directly with it.
+
+<CodeBlock language="swift">{SwiftPreFetchedData}</CodeBlock>
+
+**Setting Extra Units For a Context**
+
+You can add additional units to a context by calling the `setUnit()` or the
+`setUnits()` method. This method may be used for example, when a user logs in
+to your application, and you want to use the new unit type to the context.
+
+:::info Please Note
+You cannot override an already set unit type as that would be a change of
+identity, and will crash your application. In this case, you must create a new
+context instead. The `setUnit()` and `setUnits()` methods can be called before
+the context is ready.
+:::
+
+<CodeBlock language="swift">{SwiftSetExtraUnits}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+**Initializing with pre-fetched Context data**
+
+When doing full-stack experimentation with A/B Smartly, we recommend creating
+a context only once on the server-side. Creating a context involves a
+round-trip to the A/B Smartly event collector. We can avoid repeating the
+round-trip on the client-side by sending the server-side data embedded in the
+first document, for example, by rendering it on the template. Then we can
+initialize the A/B Smartly context on the client-side directly with it. The
+Vue2 SDK also supports this optimized usage.
+
+In this example, we assume the variable `prefectedContextData` contains the
+pre-fetched data previously injected.
+
+<CodeBlock language="js">{VuePreFetchedData}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+**Synchronously**
+
+<CodeBlock language="java">{JavaSync}</CodeBlock>
+
+**Asynchronously**
+
+<CodeBlock language="java">{JavaAsync}</CodeBlock>
+
+**With Pre-Fetched Data**
+
+Creating a context involves a round-trip to the A/B Smartly event collector.
+We can avoid repeating the round-trip on the client-side by re-using data
+previously retrieved.
+
+<CodeBlock language="java">{JavaPreFetched}</CodeBlock>
+
+**Setting extra units for a context**
+
+You can add additional units to a context by calling the `setUnit()` or the
+`setUnits()` method. This method may be used, for example, when a user logs in
+to your application, and you want to use the new unit type to the context.
+Please note that you cannot override an already set unit type as that would
+be a change of identity, and will throw an exception. In this case, you must
+create a new context instead. The `setUnit()` and `setUnits()` methods can be
+called before the context is ready.
+
+<CodeBlock language="java">{JavaExtraUnits}</CodeBlock>
+
+</TabItem>
+
+</Tabs>

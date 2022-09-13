@@ -1,0 +1,127 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsBashInstall from "!!raw-loader!./js/install.bash";
+import JsDirectImport from "!!raw-loader!./js/directImport.html";
+
+import SwiftPodfile from "!!raw-loader!./swift/Podfile";
+import SwiftUpdateXcode from "!!raw-loader!./swift/updateXcode.bash";
+
+import VueInstall from "!!raw-loader!./vue/install.bash";
+import VueDirectImport from "!!raw-loader!./vue/directImport.html";
+
+import JavaGradleInstall from "!!raw-loader!./java/build.gradle";
+import JavaMavenInstall from "!!raw-loader!./java/pom.xml";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+**NPM**
+
+<CodeBlock language="bash">{JsBashInstall}</CodeBlock>
+
+or
+
+**Direct Import**
+
+<CodeBlock language="html">{JsDirectImport}</CodeBlock>
+
+:::caution
+
+A/B Smartly’s Javascript SDK depends on support for a native ES6 promise
+implementation. If your environment does not support ES6 promises, you
+can <a href="https://github.com/stefanpenner/es6-promise">polyfill</a>.
+:::
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+**Swift Package Manager**
+
+1. In Xcode go to: `File -> Swift Packages -> Add Package Dependency...`
+2. Enter the A/B Smartly Swift SDK GitHub repository: https://github.com/absmartly/swift-sdk
+3. Select the SDK version (latest recommended)
+4. Select the ABSmartly library
+
+**Cocoapods**
+
+To install the A/B Smartly SDK with CocoaPods, add the following lines to
+your `Podfile`:
+
+<CodeBlock language="ruby">{SwiftPodfile}</CodeBlock>
+
+Run the following command to update your Xcode project:
+
+<CodeBlock language="bash">{SwiftUpdateXcode}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+**Using NPM**
+
+<CodeBlock language="bash">{VueInstall}</CodeBlock>
+
+**Directly Import With <a href="https://unpkg.com" target="_blank">unpkg.com</a>
+(Optimized and Pre-Built)**
+
+Simply add the following code to your `head` section to include the latest
+published version.
+
+<CodeBlock language="html">{VueDirectImport}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+:::info Compatibility
+The A/B Smartly Java SDK is compatible with Java versions 1.6 and later. It
+provides both a blocking and an asynchronous interfaces. The asynchronous
+functions return a <a href="https://github.com/stefan-zobel/streamsupport" target="_blank">custom backport</a>
+of the Java 8 `CompletableFuture` API.
+
+**Android**
+
+The A/B Smartly SDK is compatible with Android 4.4 and later (API level 19+).
+
+The `android.permission.INTERNET` permission is required. To add this permission
+to your application ensure the following line is present in the
+`AndroidManifest.xml` file:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+If you target Android 6.0 or earlier, a few extra steps are outlined below for
+installation and initialization.
+:::
+
+**Gradle**
+
+To install the ABSmartly SDK, place the following in your `build.gradle` and
+replace \{VERSION\} with the latest SDK version available in MavenCentral.
+
+<CodeBlock language="gradle">{JavaGradleInstall}</CodeBlock>
+
+**Maven**
+
+To install the ABSmartly SDK, place the following in your `pom.xml` and
+replace \{VERSION\} with the latest SDK version available in MavenCentral.
+
+<CodeBlock language="xml">{JavaMavenInstall}</CodeBlock>
+
+:::caution Android 6.0 or earlier
+When targeting Android 6.0 or earlier, the default Java Security
+Provider will not work.
+Using <a href="https://github.com/google/conscrypt" target="_blank">Conscrypt</a>
+is recommended.
+Follow <a href="https://github.com/google/conscrypt/blob/master/README.md" target="_blank">these instructions</a>
+to install it as dependency.
+:::
+
+</TabItem>
+
+</Tabs>
