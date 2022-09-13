@@ -2,39 +2,24 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
-import JsTranslationsExample from "!!raw-loader!./js/translationsExample.js";
+import JsLanguagesConfig from "!!raw-loader!./js/languagesConfig.js";
+
+import JsGetVariantVariableKeys from "!!raw-loader!./js/getVariantVariableKeys.js";
+
+import JsMergeTranslationConfigs from "!!raw-loader!./js/mergeTranslationConfigs.js";
 
 Let's look at a slightly more complex example where you have to run an experiment
 whilst accomodating for multiple languages.
 
 Here, we have a languagesConfig.js file:
 
-```js title=.../src/languagesConfig.js
-export default // Copy text for English and Dutch
-{
-  header: {
-    en: "Our nice header!",
-    nl: "Onze leuk kop!",
-  },
-  call_to_action1: {
-    en: "Click here",
-    nl: "Klik hier",
-  },
-};
-```
+<CodeBlock language="js" title=".../src/languagesConfig.js">
+  {JsLanguagesConfig}
+</CodeBlock>
 
 In our code, we can then get all of our variant variables using:
 
-```js
-const fetchTranslations = () => {
-  /* ... */
-};
-
-// Get the keys of the variant variables from the context
-const tagsToFetch = context.variableKeys();
-
-const translationVariations = fetchTranslations(tagsToFetch);
-```
+<CodeBlock language="js">{JsGetVariantVariableKeys}</CodeBlock>
 
 The `translationVariations` variable would then be returned as something like:
 
@@ -53,11 +38,7 @@ The `translationVariations` variable would then be returned as something like:
 
 ...which you could then merge with your original translations, like so:
 
-```js
-import appTranslations from "../languagesConfig.js";
-
-const translations = mergeConfig(appTranslations, translationVariations);
-```
+<CodeBlock language="js">{JsMergeTranslationConfigs}</CodeBlock>
 
 ...which would return an object similar to:
 
