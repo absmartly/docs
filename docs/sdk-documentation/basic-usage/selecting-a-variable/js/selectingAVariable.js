@@ -1,3 +1,6 @@
-const exampleDefaultValue = 10;
+const defaultButtonColorValue = "red";
 
-const variable = context.variableValue("my_variable", exampleDefaultValue);
+const buttonColor = context.variableValue(
+  "button.color",
+  defaultButtonColorValue
+);

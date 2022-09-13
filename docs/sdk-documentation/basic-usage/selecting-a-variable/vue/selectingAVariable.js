@@ -1,6 +1,6 @@
-const exampleDefaultValue = 10;
+const defaultButtonColorValue = "red";
 
-const variable = this.$absmartly.variableValue(
-  "my_variable",
-  exampleDefaultValue
+const buttonColor = this.$absmartly.variableValue(
+  "button.color",
+  defaultButtonColorValue
 );

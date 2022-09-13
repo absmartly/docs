@@ -1,10 +1,10 @@
 // You can just finalize and remove the variable reference
-exp.finalize();
-exp = null;
+context.finalize();
+context = null;
 // finalize() returns a promise, so if you want to
 // navigate to another page without losing impressions, you
 // can do that once the promise resolves.
-exp.finalize().then(function () {
-  exp = null;
+context.finalize().then(function () {
+  context = null;
   document.location.replace("another_page");
 });

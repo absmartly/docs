@@ -1,5 +1,5 @@
 // Import the mergeConfig function.
-import { mergeConfig } from "@absmartly/javascript-sdk";
+import { mergeConfig } from "@absmartly/vue2-sdk";
 
 /*
 

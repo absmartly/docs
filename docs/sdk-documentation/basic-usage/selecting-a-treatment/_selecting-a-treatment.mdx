@@ -16,11 +16,28 @@ import JavaSelectingATreatment from "!!raw-loader!./java/selectingATreatment.jav
 
 <TabItem value="js" label="Javascript">
 
+:::info
+To make sure the SDK is properly loaded before asking it for a treatment,
+block your code until the SDK is ready as shown below.
+
+The `ready()` method returns a promise. You can also just check if it is
+currently ready with the `isReady()` method.
+
+After the SDK is loaded you can use the `treatment()` method to return the proper
+treatment based on the `experiment_name` and the units data that was passed when
+the SDK was instantiated.
+
+Then use an `if-else-if-else` block as shown below and insert the code for the
+different treatments that you plan to create.
+:::
+
 <CodeBlock language="js">{JsSelectingATreatment}</CodeBlock>
 
 </TabItem>
 
 <Tabitem value="swift" label="Swift">
+
+<!-- TODO: Add blocking of code before context is ready. -->
 
 <CodeBlock language="swift">{SwiftSelectingATreatment}</CodeBlock>
 
@@ -31,32 +48,30 @@ import JavaSelectingATreatment from "!!raw-loader!./java/selectingATreatment.jav
 The preferred method to select a treatment is using the `Treatment` component
 with a named and scoped slot per treatment.
 
-The slot selection rules are as follows:
-
+:::info The slot selection rules are as follows
 - If the context is not ready:
-  - If the loading slot exists, select it
-  - Otherwise, select the default slot
+  - If the loading slot exists, select it.
+  - Otherwise, select the default slot.
 - Otherwise, if the context is ready:
-  - If a slot with the treatment alias (A, B, C, ...) exists:
-    - Select it
-  - Otherwise, if a slot with the treatment index exists
-    - Select it
-  - Otherwise:
-    - Select the default
-- If the selected slot doesn't exist, nothing will be rendered
+  - If a slot with the treatment alias (A, B, C, ...) exists, select it.
+  - Otherwise, if a slot with the treatment index exists, select it.
+  - Otherwise, select the default.
+- If the selected slot doesn't exist, nothing will be rendered.
+:::
 
-Example using the treatment alias:
+**Example using the treatment alias**
 
 <CodeBlock language="html">{VueUsingTreatmentAlias}</CodeBlock>
 
-Example using the treatment index:
+**Example using the treatment index**
 
 <CodeBlock language="html">{VueUsingTreatmentIndex}</CodeBlock>
 
-Example using only the default slot:
+**Example using only the default slot**
 
 <CodeBlock language="html">{VueUsingOnlyDefaultSlot}</CodeBlock>
 
+:::info
 The scoped slot properties contain information about the A/B Smartly context
 and the selected treatment:
 
@@ -82,10 +97,13 @@ will be rendered with the following properties:
   "failed": false
 }
 ```
+:::
 
 </TabItem>
 
 <Tabitem value="java" label="Java">
+
+<!-- TODO: Add blocking of code before context is ready. -->
 
 <CodeBlock language="java">{JavaSelectingATreatment}</CodeBlock>
 

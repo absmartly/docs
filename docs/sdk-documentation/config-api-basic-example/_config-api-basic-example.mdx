@@ -1,0 +1,76 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsConfigParameters from "!!raw-loader!./js/configChangeParameters.js";
+import JsReturnedConfig from "!!raw-loader!./js/returnedConfig.js";
+
+import VueConfigParameters from "!!raw-loader!./vue/configChangeParameters.js";
+import VueReturnedConfig from "!!raw-loader!./vue/returnedConfig.js";
+
+Let's say you use a configuration file to change various parameters in your
+application:
+
+<CodeBlock title=".../src/homepageConfig.js" language="js">
+  {JsConfigParameters}
+</CodeBlock>
+
+Then you could use the Config API to run experiments that change those parameters.
+
+Imagine you start two experiments:
+
+- **button_color**
+  - _Control group_ variables = `{ button.color: "blue" }`
+  - _Variant 1_ variables = `{ button.color: "green" }`
+- **homepage_cta**
+  - _Control group_ variables = `{ button.cta: "Click me", hero_image: "https://cdn.com/img1.png" }`
+  - _Variant 1_ Variables = `{ button.cta: "Click here", hero_image: "https://cdn.com/img2.jpg" }`
+
+For each user the SDK receives a payload similar to this:
+
+<!--Must be in file, due to raw-loader json bug-->
+
+```json
+{
+  "guid": "dhsUiLJ7xgQBEbivw_0cjiKo9O6UlnSg",
+  "units": [],
+  "assignments": [
+    {
+      "name": "button_color",
+      "variant": 1,
+      "config": {
+        "button.color": "green"
+      }
+    },
+    {
+      "name": "homepage_cta",
+      "variant": 0,
+      "config": {
+        "button.cta": "Click here",
+        "hero_image": "http://cdn.com/img1.png"
+      }
+    }
+  ]
+}
+```
+
+This user is in _Variant 1_ of the **button_color** experiment and in the _
+control group_ for the **homepage_cta** experiment. Calling
+`context.mergeConfig(cfg)` from the Javascript SDK would return a config
+object like this:
+
+<CodeBlock language="js">{JsReturnedConfig}</CodeBlock>
+
+:::info notice
+When the config API is used, you don't need to call the `treatment()` method.
+It will be called automatically when keys from the config are used.
+:::
+
+So you can continue using your configuration file as you were before, but
+now, the correct experiments will be triggered when a value is being
+overridden by said experiment.
+
+This greatly simplifies the process of setting up experiments and cleaning up
+your code. If, at somepoint, a large part of the code is setup in this way
+you will be able to create different experiments without touching a single
+line of code.

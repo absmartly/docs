@@ -17,42 +17,46 @@ import JavaAsync from "!!raw-loader!./java/async.java";
 import JavaPreFetched from "!!raw-loader!./java/preFetchedData.java";
 import JavaExtraUnits from "!!raw-loader!./java/extraUnits.java";
 
+In order to start linking your experiments from the web console to your
+application, you will need to create a context. When you instantiate a context,
+you should pass all known characteristics of the current user. These
+characteristics are known as "units".
+
+You can use anything as a unit. For example, you can pass an internal user id or
+email address. You could also pass a cookie that stores a `device_id` or an
+application's `UUID`.
+
+:::info Keep In Mind
+The units that you pass must first be declared on your A/B Smartly Web Console.
+:::
+
+:::caution
+Experiments that are tracked by a unit which is not passed here will be turned
+off in this request and the control treatment will be shown instead.
+:::
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
 
-**Using Raw Promises**
+**Create A New Context With Raw Promises**
 
 <CodeBlock language="js">{JsRawPromises}</CodeBlock>
 
-**Using Async/Await**
+**Create A New Context With Async/Await**
 
 <CodeBlock language="js">{JsAsyncAwait}</CodeBlock>
 
-**With Pre-Fetched Data**
+**Create A New Context With Pre-Fetched Data**
 
-When doing full-stack experimentation with A/B Smartly, we recommend creating a
-context only once on the server-side. Creating a context involves a round-trip
+When doing full-stack experimentation with A/B Smartly, we recommend only creating a
+context once on the server-side. Creating a context involves a round-trip
 to the A/B Smartly event collector. We can avoid repeating the round-trip on
 the client-side by sending the server-side data embedded in the first document,
-for example, by rendering it on the template. Then we can initialize the
+for example, by rendering it on the template. We can then initialize the
 A/B Smartly context on the client-side directly with it.
 
 <CodeBlock language="html">{JsPreFetchedData}</CodeBlock>
-
-:::info
-You can use whatever you want as a unit. You can pass an internal user id, or
-email address. This could also be a cookie you generate which stores a
-`device_id` or an app's `UUID`. Mind that the units used have to be declared
-first on A/B Smartly’s Web Console.
-
-Pass all the units that are known for the current user. Some experiments may
-be tracked by `user-id`, others by `device-id` etc. You might even want to use a
-`pageview-id` for some technical experiments.
-
-Experiments that are being tracked by a unit not being passed here, will be
-off in this request (the control treatment will be shown instead).
-:::
 
 </TabItem>
 
@@ -68,19 +72,19 @@ When doing full-stack experimentation with A/B Smartly, we recommend creating a
 context only once on the server-side. Creating a context involves a round-trip
 to the A/B Smartly event collector. We can avoid repeating the round-trip on
 the client-side by sending the server-side data embedded with other application
-data. Then we can initialize the A/B Smartly context directly with it.
+data. We can then initialize the A/B Smartly context directly with it.
 
 <CodeBlock language="swift">{SwiftPreFetchedData}</CodeBlock>
 
-**Setting Extra Units For a Context**
+**Setting Extra Units**
 
-You can add additional units to a context by calling the `setUnit()` or the
-`setUnits()` method. This method may be used for example, when a user logs in
-to your application, and you want to use the new unit type to the context.
+You can add additional units to a context by calling the `setUnit()` or
+`setUnits()` methods. These methods may be used, for example, when a user logs in
+to your application and you want to use the new unit type in the context.
 
-:::info Please Note
+:::caution Please Note
 You cannot override an already set unit type as that would be a change of
-identity, and will crash your application. In this case, you must create a new
+identity, and would crash your application. In this case, you must create a new
 context instead. The `setUnit()` and `setUnits()` methods can be called before
 the context is ready.
 :::
@@ -110,15 +114,15 @@ pre-fetched data previously injected.
 
 <TabItem value="java" label="Java">
 
-**Synchronously**
+**Create A New Context Synchronously**
 
 <CodeBlock language="java">{JavaSync}</CodeBlock>
 
-**Asynchronously**
+**Create A New Context Asynchronously**
 
 <CodeBlock language="java">{JavaAsync}</CodeBlock>
 
-**With Pre-Fetched Data**
+**Create A New Context With Pre-Fetched Data**
 
 Creating a context involves a round-trip to the A/B Smartly event collector.
 We can avoid repeating the round-trip on the client-side by re-using data
@@ -126,15 +130,18 @@ previously retrieved.
 
 <CodeBlock language="java">{JavaPreFetched}</CodeBlock>
 
-**Setting extra units for a context**
+**Setting Extra Units**
 
-You can add additional units to a context by calling the `setUnit()` or the
-`setUnits()` method. This method may be used, for example, when a user logs in
-to your application, and you want to use the new unit type to the context.
-Please note that you cannot override an already set unit type as that would
-be a change of identity, and will throw an exception. In this case, you must
-create a new context instead. The `setUnit()` and `setUnits()` methods can be
-called before the context is ready.
+You can add additional units to a context by calling the `setUnit()` or
+`setUnits()` methods. These methods may be used, for example, when a user logs in
+to your application and you want to use the new unit type in the context.
+
+:::caution Please Note
+You cannot override an already set unit type as that would be a change of
+identity and would throw an exception. In this case, you must create a new
+context instead. The `setUnit()` and `setUnits()` methods can be called before
+the context is ready.
+:::
 
 <CodeBlock language="java">{JavaExtraUnits}</CodeBlock>
 

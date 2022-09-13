@@ -14,6 +14,7 @@ import SelectingATreatment from "./sdk-documentation/basic-usage/selecting-a-tre
 import SelectingAVariable from "./sdk-documentation/basic-usage/selecting-a-variable/_selecting-a-variable.mdx";
 
 import ConfigApi from "./sdk-documentation/config-api/_config-api.mdx";
+import ConfigApiBasicExample from "./sdk-documentation/config-api-basic-example/_config-api-basic-example.mdx";
 
 import TranslationsExample from "./sdk-documentation/translations-example/_translations-example.mdx";
 
@@ -27,11 +28,21 @@ import TrackingGoals from "./sdk-documentation/tracking-goals/_tracking-goals.md
 
 # SDK Documentation
 
-This guide provides detailed information about A/B Smartly’s Javascript SDK.
+This guide provides detailed information about A/B Smartly’s SDKs. We
+currently support Javascript, Swift, VueJS &amp; Java.
+
+Have a look at [our Github](https://github.com/absmartly/) to see our current
+SDKs and those which are still in development (here's looking at **you** Ruby
+developers)!
 
 ---
 
 ## Getting Started
+
+This guide assumes that you are already partnered with us and your Web Console
+has been setup by our team. If you are looking to start your experimentation
+journey, [request a demo](https://absmartly.com/quiz) with one of our
+teammembers!
 
 ### Install the SDK
 
@@ -51,49 +62,30 @@ This guide provides detailed information about A/B Smartly’s Javascript SDK.
 
 ## Basic Usage
 
-After the init call all the variants for all running experiments will be
-cached in memory. The init call should take single-digit milliseconds on the
-server side, on the client side it may take a little longer (it’s another
-roundtrip to the server), unless you pass the data directly in the HTML, which
+After the init call, all the variants for all running experiments will be
+cached in memory. The init call should take a single-digit number of milliseconds on the
+server side. On the client side, it may take a little longer (it’s another
+roundtrip to the server) unless you pass the data directly in the HTML which
 makes it ready immediately. Any experiment that is evaluated and is not
-running will return variant 0 (the control group).
-
-To make sure the SDK is properly loaded before asking it for a treatment,
-block until the SDK is ready, as shown below. `ready()` returns a promise. You
-can also just check if it is ready with the `isReady()` method.
-
-After the SDK is loaded you can use the `treatment` method to return the proper
-treatment based on the `experiment_name` and the units data passed when
-instantiating the SDK.
-
-Then use an `if-else-if-else` block as shown below and insert the code for the
-different treatments that you plan to create.
+running will return Variant 0 (the control group).
 
 ### Selecting a Treatment
 
 <SelectingATreatment />
 
-### Selecting a Treatment Variable
+### Treatment Variables
 
 <SelectingAVariable />
 
 ## Config API
 
-:::note Not available for all SDKs
-Unfortunately, this feature is only available on the Javascript and Vue2 SDKs
-for now. If you require it elsewhere,
-please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
-:::
-
 <ConfigApi />
 
-## Translations Example
+### Basic Example
 
-:::note Only available for Js-SDK
-Unfortunately, this feature is only available on the Javascript SDK for now.
-If you require it elsewhere,
-please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
-:::
+<ConfigApiBasicExample />
+
+### Translations Example
 
 <TranslationsExample />
 
@@ -108,8 +100,8 @@ please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 ## Attributes
 
 To create audiences (target based on specific conditions) you need to pass
-custom attributes to the SDK, before making the `exp.treatment` call. This can
-be done using the method `exp.attributes` or by passing an `attributes` parameter
+custom attributes to the SDK, before making the `context.treatment()` call. This can
+be done using the method `context.attributes()` or by passing an `attributes` parameter
 in the SDK initialization. It’s common to use a mix of both methods. Many
 attributes of the user and/or request are known from the beginning and can be
 passed at initialization, others may depend on information only known later in
@@ -138,28 +130,12 @@ please <a href="mailto:cal@absmartly.com">contact one of our teammembers</a>.
 :::caution
 You should create an audience with the exact same attributes in the Web console.
 By default it will not enforce those conditions, but if for some reason the
-`exp.treatment` method is called for a user that doesn’t meet this criteria, the
+`context.treatment()` method is called for a user that doesn’t meet this criteria, the
 Web console will warn you about it. This means that you either didn’t specify
 your audience correctly in the Web console, or you have a bug in your
 triggering condition.
 :::
 
 ## Tracking Goals
-
-Use the `track` method to record any actions your customers perform. Each action
-is known as a goal and corresponds to a `goal_name`. Calling `track` through the
-SDKs is the easiest way of getting experimentation data into A/B Smartly and
-allows you to measure the impact of your experiments on your users' actions
-and metrics.
-Other ways to track goals is to use the Segment.io integration or using
-enrichments to consume them from other event streams and/or databases.
-In the examples below you can see that the `track()` method can take up to two
-arguments. The proper data type and syntax for each are:
-
-- **goal_name**: The traffic type of the key in the `track` call. The expected
-  data type is `String`. You should only pass values that match the names of goals
-  that you have defined in the Web console, everything else will be ignored.
-- **properties** (Optional): An object of key value pairs that can be used to
-  create extra metrics or to filter the goal.
 
 <TrackingGoals />
