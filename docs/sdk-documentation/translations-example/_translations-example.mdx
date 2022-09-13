@@ -10,58 +10,57 @@ whilst accomodating for multiple languages.
 Here, we have a languagesConfig.js file:
 
 ```js title=.../src/languagesConfig.js
-export default
-// Copy text for English and Dutch
+export default // Copy text for English and Dutch
 {
-    header: {
-        en: "Our nice header!",
-        nl: "Onze leuk kop!",
-    },
-    call_to_action1: {
-        en: "Click here",
-        nl: "Klik hier"
-    }
-}
+  header: {
+    en: "Our nice header!",
+    nl: "Onze leuk kop!",
+  },
+  call_to_action1: {
+    en: "Click here",
+    nl: "Klik hier",
+  },
+};
 ```
 
 In our code, we can then get all of our variant variables using:
 
 ```js
-// Create a function to fetch the variant translations and return them as an object.
-const fetchTranslations = (keysArray) => {
-    return keysArray.reduce(
-        (acc, key) => (
-            { ...acc, [key]: context.variableValue(key) }
-        )
-    )
-}
+const fetchTranslations = () => {
+  /* ... */
+};
 
-// Get the variant variable keys from the context
-const tagsToFetch = context.variableKeys()
+// Get the keys of the variant variables from the context
+const tagsToFetch = context.variableKeys();
 
-const translationVariations = fetchTranslations(tagsToFetch)
+const translationVariations = fetchTranslations(tagsToFetch);
 ```
+
 The `translationVariations` variable would then be returned as something like:
 
 ```json
 {
-     header_v1: {
-         en: "Our beautiful header!",
-         nl: "Onze mooie kop!"
-     },
-     call_to_action1_v1: {
-         en: "Continue",
-         nl: "Doorgaan"
-     },
+  "header_v1": {
+    "en": "Our beautiful header!",
+    "nl": "Onze mooie kop!"
+  },
+  "call_to_action1_v1": {
+    "en": "Continue",
+    "nl": "Doorgaan"
+  }
 }
 ```
-...which you could then merge with your original translations, like so:
-```js
-import appTranslations from '../languagesConfig.js'
 
-const translations = mergeConfig(appTranslations, translationVariations)
+...which you could then merge with your original translations, like so:
+
+```js
+import appTranslations from "../languagesConfig.js";
+
+const translations = mergeConfig(appTranslations, translationVariations);
 ```
+
 ...which would return an object similar to:
+
 ```js
 {
     get header: () => {
@@ -80,5 +79,6 @@ const translations = mergeConfig(appTranslations, translationVariations)
     }
 }
 ```
+
 You can now use this object to run your experiments whilst still supporting multiple
 languages!
