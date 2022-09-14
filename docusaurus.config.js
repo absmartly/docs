@@ -137,7 +137,7 @@ const config = {
               },
               {
                 label: "API Docs",
-                to: "/docs/API/a-b-smartly-collector",
+                to: "/docs/SDK%20API/a-b-smartly-collector",
               },
             ],
           },
