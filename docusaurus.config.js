@@ -51,8 +51,9 @@ const config = {
         config: {
           collector: {
             specPath: "spec.yaml", // Path to designated spec file
-            outputDir: "docs/API", // Output directory for generated .mdx docs
+            outputDir: "docs/SDK API", // Output directory for generated .mdx docs
             sidebarOptions: {
+              sidebarCollapsible: false,
               sidebarCollapsed: false,
             },
           },
@@ -87,27 +88,27 @@ const config = {
             position: "left",
             items: [
               {
-                to: "docs/API/a-b-smartly-collector",
+                to: "docs/SDK%20API/a-b-smartly-collector",
                 label: "Introduction",
               },
               {
-                to: "docs/API/collector-health-check",
+                to: "docs/SDK%20API/collector-health-check",
                 label: "Collector Health Check",
               },
               {
-                to: "docs/API/context-create",
+                to: "docs/SDK%20API/context-create",
                 label: "Create a Context",
               },
               {
-                to: "docs/API/context-get",
+                to: "docs/SDK%20API/context-get",
                 label: "Get Experiment Data",
               },
               {
-                to: "docs/API/context-publish",
+                to: "docs/SDK%20API/context-publish",
                 label: "Publish Experiment Events",
               },
               {
-                to: "docs/API/experiment-get",
+                to: "docs/SDK%20API/experiment-get",
                 label: "Get Experiment Info",
               },
             ],
