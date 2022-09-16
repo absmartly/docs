@@ -13,6 +13,8 @@ import JsHttpRequestCancellation from "!!raw-loader!./js/httpRequestCancellation
 import ReactNewContext from "!!raw-loader!./react/newContext.js";
 import ReactForTernaryOperator from "!!raw-loader!./react/forTernaryOperator.js";
 
+import ReactNewContext from "!!raw-loader!./react/newContext.js";
+
 import SwiftNewContext from "!!raw-loader!./swift/newContext.swift";
 import SwiftPreFetchedData from "!!raw-loader!./swift/withPreFetchedData.swift";
 import SwiftSetExtraUnits from "!!raw-loader!./swift/settingExtraUnits.swift";
@@ -118,6 +120,17 @@ Here is an example of a cancellation scenario.
 <TabItem value="react" label="React">
 
 <CodeBlock language="jsx">{ReactNewContext}</CodeBlock>
+
+:::note
+In `React.StrictMode`, `useEffect` will run twice in development, but only once in
+production.
+:::
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="js">{ReactNewContext}</CodeBlock>
 
 :::note
 In `React.StrictMode`, `useEffect` will run twice in development, but only once in

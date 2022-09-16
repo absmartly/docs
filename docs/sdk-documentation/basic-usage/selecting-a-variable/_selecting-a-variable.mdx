@@ -64,6 +64,19 @@ You can select these values in your code like so:
 
 </TabItem>
 
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx">{ReactSelectingAVariable}</CodeBlock>
+
+:::info
+Variant variables cannot be obtained before the context is ready. In React, we
+recommend that you put the above code into your useEffect. For example:
+
+<CodeBlock language="jsx">{ReactUsingUseEffect}</CodeBlock>
+:::
+
+</TabItem>
+
 <Tabitem value="swift" label="Swift">
 
 <CodeBlock language="swift">{SwiftSelectingAVariable}</CodeBlock>
