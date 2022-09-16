@@ -4,6 +4,8 @@ import CodeBlock from "@theme/CodeBlock";
 
 import JsSetAttributes from "!!raw-loader!./js/setAttributes.js";
 
+import ReactSetAttributes from "!!raw-loader!./react/setAttributes.js";
+
 import SwiftSetAttributes from "!!raw-loader!./swift/setAttributes.swift";
 
 import VueSetAttributesScript from "!!raw-loader!./vue/setAttributes.js";
@@ -21,6 +23,17 @@ context is ready.
 <TabItem value="js" label="Javascript">
 
 <CodeBlock language="js">{JsSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx">{ReactSetAttributes}</CodeBlock>
+
+:::note
+The `attribute()` and `attributes()` methods can be called both inside, and outside
+of your useEffect.
+:::
 
 </TabItem>
 

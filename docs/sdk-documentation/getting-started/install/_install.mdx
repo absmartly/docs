@@ -5,6 +5,9 @@ import CodeBlock from "@theme/CodeBlock";
 import JsBashInstall from "!!raw-loader!./js/install.bash";
 import JsDirectImport from "!!raw-loader!./js/directImport.html";
 
+import ReactBashInstall from "!!raw-loader!./react/install.bash";
+import ReactDirectImport from "!!raw-loader!./js/directImport.html";
+
 import SwiftPodfile from "!!raw-loader!./swift/Podfile";
 import SwiftUpdateXcode from "!!raw-loader!./swift/updateXcode.bash";
 
@@ -35,6 +38,14 @@ A/B Smartly’s Javascript SDK depends on support for a native ES6 promise
 implementation. If your environment does not support ES6 promises, you
 can <a href="https://github.com/stefanpenner/es6-promise">polyfill</a>.
 :::
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+**NPM**
+
+<CodeBlock language="bash">{ReactBashInstall}</CodeBlock>
 
 </TabItem>
 

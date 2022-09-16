@@ -4,6 +4,9 @@ import CodeBlock from "@theme/CodeBlock";
 
 import JsSelectingATreatment from "!!raw-loader!./js/selectingATreatment.js";
 
+import ReactSelectingATreatment from "!!raw-loader!./react/selectingATreatment.js";
+import ReactUsingReactFragments from "!!raw-loader!./react/usingReactFragments.js";
+
 import VueUsingTreatmentAlias from "!!raw-loader!./vue/UsingTreatmentAlias.vue";
 import VueUsingTreatmentIndex from "!!raw-loader!./vue/UsingTreatmentIndex.vue";
 import VueUsingOnlyDefaultSlot from "!!raw-loader!./vue/UsingOnlyDefaultSlot.vue";
@@ -35,6 +38,29 @@ different treatments that you plan to create.
 
 </TabItem>
 
+<TabItem value="react" label="React">
+
+In React, the easiest way to select your treatment is to use the `Treatment`
+component. The children of the component will be the different variants that
+can be displayed.
+
+The first child of the component is the default variant (_Variant 0_ - the
+control group) and each following child is a new variant with an incremented
+index.
+
+<CodeBlock language="jsx">{ReactSelectingATreatment}</CodeBlock>
+
+:::note
+If the loading prop is not provided the default variant will be shown instead.
+:::
+
+If you want to have multiple components in each variant, you can use
+React Fragments to contain them.
+
+<CodeBlock language="jsx">{ReactUsingReactFragments}</CodeBlock>
+
+</TabItem>
+
 <Tabitem value="swift" label="Swift">
 
 <!-- TODO: Add blocking of code before context is ready. -->
@@ -49,6 +75,7 @@ The preferred method to select a treatment is using the `Treatment` component
 with a named and scoped slot per treatment.
 
 :::info The slot selection rules are as follows
+
 - If the context is not ready:
   - If the loading slot exists, select it.
   - Otherwise, select the default slot.
@@ -57,6 +84,7 @@ with a named and scoped slot per treatment.
   - Otherwise, if a slot with the treatment index exists, select it.
   - Otherwise, select the default.
 - If the selected slot doesn't exist, nothing will be rendered.
+
 :::
 
 **Example using the treatment alias**
@@ -97,6 +125,7 @@ will be rendered with the following properties:
   "failed": false
 }
 ```
+
 :::
 
 </TabItem>
