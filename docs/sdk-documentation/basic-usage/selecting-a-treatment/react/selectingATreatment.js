@@ -1,7 +1,17 @@
 return (
   <Treatment name="experiment_name" context={context} loading={<MySpinner />}>
-    <DefaultButton></DefaultButton> {/* Variant 0 */}
-    <VariantButton1></VariantButton1> {/* Variant 1 */}
-    <VariantButton2></VariantButton2> {/* Variant 2 */}
+    {/* The variant prop can have numbers or letters passed to it */}
+    <TreatmentVariant variant="A">
+      {/* Variant 0 */}
+      <DefaultButton />
+    </TreatmentVariant>
+    <TreatmentVariant variant="B">
+      {/* Variant 1 */}
+      <ButtonVariant1 />
+    </TreatmentVariant>
+    <TreatmentVariant variant="C">
+      {/* Variant 2 */}
+      <ButtonVariant2 />
+    </TreatmentVariant>
   </Treatment>
 );

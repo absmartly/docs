@@ -5,7 +5,7 @@ import CodeBlock from "@theme/CodeBlock";
 import JsSelectingATreatment from "!!raw-loader!./js/selectingATreatment.js";
 
 import ReactSelectingATreatment from "!!raw-loader!./react/selectingATreatment.js";
-import ReactUsingReactFragments from "!!raw-loader!./react/usingReactFragments.js";
+import ReactUsingTernaryOperator from "!!raw-loader!./react/usingTernaryOperator.js";
 
 import VueUsingTreatmentAlias from "!!raw-loader!./vue/UsingTreatmentAlias.vue";
 import VueUsingTreatmentIndex from "!!raw-loader!./vue/UsingTreatmentIndex.vue";
@@ -40,13 +40,10 @@ different treatments that you plan to create.
 
 <TabItem value="react" label="React">
 
-In React, the easiest way to select your treatment is to use the `Treatment`
-component. The children of the component will be the different variants that
-can be displayed.
+#### Using the Treatment component
 
-The first child of the component is the default variant (_Variant 0_ - the
-control group) and each following child is a new variant with an incremented
-index.
+In React, the easiest way to select your treatment is to use the `Treatment`
+and `TreatmentVariant` components.
 
 <CodeBlock language="jsx">{ReactSelectingATreatment}</CodeBlock>
 
@@ -54,10 +51,12 @@ index.
 If the loading prop is not provided the default variant will be shown instead.
 :::
 
-If you want to have multiple components in each variant, you can use
-React Fragments to contain them.
+#### Using the ternary operator
 
-<CodeBlock language="jsx">{ReactUsingReactFragments}</CodeBlock>
+If you need some more control over the way your variants are rendered, you can
+use the ternary operator, like so:
+
+<CodeBlock language="jsx">{ReactUsingTernaryOperator}</CodeBlock>
 
 </TabItem>
 

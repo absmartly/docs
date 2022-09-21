@@ -6,7 +6,7 @@ import ConfigApi from "./config-api/_config-api.mdx";
 
 import JsSelectingAVariable from "!!raw-loader!./js/selectingAVariable.js";
 
-import ReactSelectingAVariable from "!!raw-loader!./react/selectingAVariable.js";
+import ReactDirectlyInTreatmentComponent from "!!raw-loader!./react/directlyInTreatmentComponent.js";
 import ReactUsingUseEffect from "!!raw-loader!./react/inUseEffect.js";
 
 import SwiftSelectingAVariable from "!!raw-loader!./swift/selectingAVariable.swift";
@@ -47,14 +47,20 @@ You can select these values in your code like so:
 
 <TabItem value="react" label="React">
 
-<CodeBlock language="jsx">{ReactSelectingAVariable}</CodeBlock>
-
-:::info
-Variant variables cannot be obtained before the context is ready. In React, we
-recommend that you put the above code into your useEffect. For example:
+#### In a useEffect()
 
 <CodeBlock language="jsx">{ReactUsingUseEffect}</CodeBlock>
-:::
+
+#### Directly in the `Treatment` component
+
+<CodeBlock language="jsx">{ReactDirectlyInTreatmentComponent}</CodeBlock>
+
+<!--:::info-->
+<!--Variant variables cannot be obtained before the context is ready. In React, we-->
+<!--recommend that you put the above code into your useEffect. For example:-->
+
+<!--<CodeBlock language="jsx">{ReactUsingUseEffect}</CodeBlock>-->
+<!--:::-->
 
 </TabItem>
 

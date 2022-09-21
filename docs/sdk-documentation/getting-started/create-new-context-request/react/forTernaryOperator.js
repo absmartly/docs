@@ -15,7 +15,7 @@ function App() {
     },
   };
 
-  // Create a context
+  // Create a memo-ised context
   const context = sdk.createContext(request);
 
   // Check if the context is ready in a useEffect hook
