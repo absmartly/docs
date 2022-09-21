@@ -1,0 +1,87 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsCustomAssignment from "!!raw-loader!./js/customAssignment.js";
+import JsCustomAssignments from "!!raw-loader!./js/customAssignments.js";
+
+import SwiftCustomAssignment from "!!raw-loader!./swift/customAssignment.swift";
+import SwiftCustomAssignments from "!!raw-loader!./swift/customAssignments.swift";
+
+import VueCustomAssignment from "!!raw-loader!./vue/customAssignment.js";
+import VueCustomAssignments from "!!raw-loader!./vue/customAssignments.js";
+
+import JavaCustomAssignment from "!!raw-loader!./java/customAssignment.java";
+import JavaCustomAssignments from "!!raw-loader!./java/customAssignments.java";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `context.customAssignment()`
+method.
+
+<CodeBlock language="js">{JsCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `customAssignments` method.
+
+<CodeBlock language="js">{JsCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `context.setCustomAssignment()`
+method.
+
+<CodeBlock language="swift">{SwiftCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `setCustomAssignments` method.
+
+<CodeBlock language="swift">{SwiftCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `customAssignment()`
+method.
+
+<CodeBlock language="js">{VueCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `customAssignments()` method.
+
+<CodeBlock language="js">{VueCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `setCustomAssignment()`
+method.
+
+<CodeBlock language="java">{JavaCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `setCustomAssignments()` method.
+
+<CodeBlock language="java">{JavaCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
+
+:::info
+These methods can be called before or after the context is ready.
+:::
