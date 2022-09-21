@@ -52,9 +52,126 @@ teammembers!
 
 <ImportAndInitialize />
 
+#### Using a Custom Event Logger
+
+The A/B Smartly SDK can be instantiated with an event logger used for all
+contexts. In addition, an event logger can be specified when creating a
+particular context, in the `createContext` call options. The example below
+illustrates this with the implementation of the default event logger, used if
+none is specified.
+
+```js
+const sdk = new absmartly.SDK({
+  endpoint: "https://sandbox-api.absmartly.com/v1",
+  apiKey: process.env.ABSMARTLY_API_KEY,
+  environment: process.env.NODE_ENV,
+  application: process.env.APPLICATION_NAME,
+  eventLogger: (context, eventName, data) => {
+    if (eventName == "error") {
+      console.error(data);
+    }
+  },
+});
+```
+
+The data parameter depends on the type of event. Currently, the SDK logs the
+following events:
+
+| eventName    | when                                                    | data                                         |
+| ------------ | ------------------------------------------------------- | -------------------------------------------- |
+| `"error"`    | `Context` receives an error                             | error object thrown                          |
+| `"ready"`    | `Context` turns ready                                   | data used to initialize the context          |
+| `"refresh"`  | `Context.refresh()` method succeeds                     | data used to refresh the context             |
+| `"publish"`  | `Context.publish()` method succeeds                     | data sent to the A/B Smartly event collector |
+| `"exposure"` | `Context.treatment()` method succeeds on first exposure | exposure data enqueued for publishing        |
+| `"goal"`     | `Context.track()` method succeeds                       | goal data enqueued for publishing            |
+| `"finalize"` | `Context.finalize()` method succeeds the first time     | undefined                                    |
+
 ### Create a New Context Request
 
 <CreateNewContextRequest />
+
+#### Refreshing the Context with Fresh Experiment Data
+
+For long-running single-page-applications (SPA), the context is usually
+created once when the application is first reached. However, any experiments
+being tracked in your production code, but started after the context was
+created, will not be triggered. To mitigate this, we can use the
+refreshInterval option when creating the context.
+
+```js
+const request = {
+    units: {
+        session_id: '5ebf06d8cb5d8137290c4abb64155584fbdb64d8',
+    },
+};
+
+const context = sdk.createContext(request, {
+    refreshInterval: 5 _ 60 _ 1000
+});
+```
+
+Alternatively, the `refresh()` method can be called manually. The `refresh()`
+method pulls updated experiment data from the A/B Smartly collector and will
+trigger recently started experiments when `treatment()` is called again.
+
+```js
+setTimeout(async () => {
+    try {
+        context.refresh();
+    } catch(error) {
+        console.error(error);
+    }
+}, 5 _ 60 _ 1000);
+```
+
+#### HTTP request timeout
+
+It is possible to set a timeout per individual HTTP request, overriding the
+global timeout set for all request when instantiating the SDK object.
+
+Here is an example of setting a timeout only for the `createContext` request.
+
+```js
+const context = sdk.createContext(
+  request,
+  {
+    refreshInterval: 5 * 60 * 1000,
+  },
+  {
+    timeout: 1500,
+  }
+);
+```
+
+#### HTTP Request cancellation
+
+Sometimes it is useful to cancel an inflight HTTP request, for example, when
+the user is navigating away. The A/B Smartly SDK also supports a cancellation
+via an `AbortSignal`. An implementation of AbortController is provided for older
+platforms, but will use the native implementation where available.
+
+Here is an example of a cancellation scenario.
+
+```js
+const controller = new absmartly.AbortController();
+const context = sdk.createContext(
+  request,
+  {
+    refreshInterval: 5 * 60 * 1000,
+  },
+  {
+    signal: controller.signal,
+  }
+);
+
+// abort request if not ready after 1500ms
+const timeoutId = setTimeout(() => controller.abort(), 1500);
+
+await context.ready();
+
+clearTimeout(timeoutId);
+```
 
 ## Basic Usage
 
@@ -72,6 +189,35 @@ running will return Variant 0 (the control group).
 ### Treatment Variables
 
 <SelectingAVariable />
+
+### Peek at treatment variants
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment without triggering an exposure. The A/B Smartly SDK provides a
+`peek()` method for that.
+
+```js
+if (context.peek("exp_test_experiment") == 0) {
+  // user is in control group (variant 0)
+} else {
+  // user is in treatment group
+}
+```
+
+### Overriding treatment variants
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `override()` and/or `overrides()`
+methods. The `override()` and `overrides()` methods can be called before the context is
+ready.
+
+```js
+context.override("exp_test_experiment", 1); // force variant 1 of treatment
+context.overrides({
+  exp_test_experiment: 1,
+  exp_another_experiment: 0,
+});
+```
 
 ## Context Attributes
 
