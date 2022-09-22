@@ -49,7 +49,16 @@ You can select these values in your code like so:
 
 <TabItem value="react" label="React">
 
+#### Directly in the `Treatment` component
+
+<CodeBlock language="jsx">{ReactDirectlyInTreatmentComponent}</CodeBlock>
+
 #### In a useEffect()
+
+:::info
+To use the `context.variableValue` method in a `useEffect` hook, you must
+memo-ize the context in its initialization:
+:::
 
 <CodeBlock language="jsx">{ReactUsingUseEffect}</CodeBlock>
 
@@ -58,17 +67,6 @@ This can be accomplished in a class component without using react hooks.
 Replace the above useEffect hook with a `componentDidMount` lifecycle hook and
 store the variables in your component's state there.
 :::
-
-#### Directly in the `Treatment` component
-
-<CodeBlock language="jsx">{ReactDirectlyInTreatmentComponent}</CodeBlock>
-
-<!--:::info-->
-<!--Variant variables cannot be obtained before the context is ready. In React, we-->
-<!--recommend that you put the above code into your useEffect. For example:-->
-
-<!--<CodeBlock language="jsx">{ReactUsingUseEffect}</CodeBlock>-->
-<!--:::-->
 
 </TabItem>
 
