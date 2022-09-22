@@ -2,7 +2,7 @@ useEffect(() => {
   context
     .ready()
     .then(() => {
-      if (context.peek("exp_test_experiment") == 0) {
+      if (context.peek("exp_test_experiment") === 0) {
         // User is in control group (variant 0)
       } else {
         // User is in treatment group
