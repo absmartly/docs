@@ -18,18 +18,6 @@ function App() {
   // Create a context
   const context = sdk.createContext(request);
 
-  // Check if the context is ready in a useEffect hook
-  useEffect(() => {
-    context
-      .ready()
-      .then(() => {
-        console.log("ABSmartly Context ready!");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [context]);
-
   return (
     <div className="App">
       {
