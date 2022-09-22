@@ -1,0 +1,143 @@
+import CodeBlock from "@theme/CodeBlock";
+
+import JsMergeConfig from "!!raw-loader!./js/mergeConfig.js";
+import JsConfigParameters from "!!raw-loader!./js/configChangeParameters.js";
+import JsReturnedConfig from "!!raw-loader!./js/returnedConfig.js";
+import JsLanguagesConfig from "!!raw-loader!./js/languagesConfig.js";
+import JsGetVariantVariableKeys from "!!raw-loader!./js/getVariantVariableKeys.js";
+import JsMergeTranslationConfigs from "!!raw-loader!./js/mergeTranslationConfigs.js";
+
+### Config API
+
+If you use configuration files to change different aspects of your
+application, then you can use the Config API to greatly improve your workflow and
+save a lot of coding time.
+
+<CodeBlock language="js">{JsMergeConfig}</CodeBlock>
+
+#### Basic Example
+
+Let's say you use a configuration file to change various parameters in your
+application:
+
+<CodeBlock title=".../src/homepageConfig.js" language="js">
+  {JsConfigParameters}
+</CodeBlock>
+
+Then you could use the Config API to run experiments that change those parameters.
+
+Imagine you start two experiments:
+
+- **button_color**
+  - _Control group_ variables = `{ button.color: "blue" }`
+  - _Variant 1_ variables = `{ button.color: "green" }`
+- **homepage_cta**
+  - _Control group_ variables = `{ button.cta: "Click me", hero_image: "https://cdn.com/img1.png" }`
+  - _Variant 1_ Variables = `{ button.cta: "Click here", hero_image: "https://cdn.com/img2.jpg" }`
+
+For each user the SDK receives a payload similar to this:
+
+<!--Must be in file, due to raw-loader json bug-->
+
+```json
+{
+  "guid": "dhsUiLJ7xgQBEbivw_0cjiKo9O6UlnSg",
+  "units": [],
+  "assignments": [
+    {
+      "name": "button_color",
+      "variant": 1,
+      "config": {
+        "button.color": "green"
+      }
+    },
+    {
+      "name": "homepage_cta",
+      "variant": 0,
+      "config": {
+        "button.cta": "Click here",
+        "hero_image": "http://cdn.com/img1.png"
+      }
+    }
+  ]
+}
+```
+
+This user is in _Variant 1_ of the **button_color** experiment and in the _
+control group_ for the **homepage_cta** experiment. Calling
+`context.mergeConfig(cfg)` from the Javascript SDK would return a config
+object like this:
+
+<CodeBlock language="js">{JsReturnedConfig}</CodeBlock>
+
+:::info notice
+When the config API is used, you don't need to call the `treatment()` method.
+It will be called automatically when keys from the config are used.
+:::
+
+So you can continue using your configuration file as you were before, but
+now, the correct experiments will be triggered when a value is being
+overridden by said experiment.
+
+This greatly simplifies the process of setting up experiments and cleaning up
+your code. If, at somepoint, a large part of the code is setup in this way
+you will be able to create different experiments without touching a single
+line of code.
+
+#### Translations Example
+
+Let's look at a slightly more complex example where you have to run an experiment
+whilst accomodating for multiple languages.
+
+Here, we have a languagesConfig.js file:
+
+<CodeBlock language="js" title=".../src/languagesConfig.js">
+  {JsLanguagesConfig}
+</CodeBlock>
+
+In our code, we can then get all of our variant variables using:
+
+<CodeBlock language="js">{JsGetVariantVariableKeys}</CodeBlock>
+
+The `translationVariations` variable would then be returned as something like:
+
+```json
+{
+  "header_v1": {
+    "en": "Our beautiful header!",
+    "nl": "Onze mooie kop!"
+  },
+  "call_to_action1_v1": {
+    "en": "Continue",
+    "nl": "Doorgaan"
+  }
+}
+```
+
+...which you could then merge with your original translations, like so:
+
+<CodeBlock language="js">{JsMergeTranslationConfigs}</CodeBlock>
+
+...which would return an object similar to:
+
+```js
+{
+    get header: () => {
+      exp.treatment("experiment1");
+      return {
+        en: "Our beautiful header!",
+        nl: "Onze mooie kop!",
+      };
+    }
+    get call_to_action1: () => {
+      exp.treatment("experiment2");
+      return {
+        en: "Click here!",
+        nl: "Klik Hier"
+      };
+    }
+}
+```
+
+You can now use this object to run your experiments whilst still supporting multiple
+languages!
