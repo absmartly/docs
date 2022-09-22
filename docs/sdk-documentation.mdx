@@ -16,6 +16,8 @@ import SelectingAVariable from "./sdk-documentation/basic-usage/selecting-a-vari
 
 import Peeking from "./sdk-documentation/basic-usage/selecting-a-variable/peeking/_peeking.mdx";
 
+import Overriding from "./sdk-documentation/basic-usage/selecting-a-variable/overriding/_overriding.mdx";
+
 import ConfigApi from "./sdk-documentation/config-api/_config-api.mdx";
 import ConfigApiBasicExample from "./sdk-documentation/config-api-basic-example/_config-api-basic-example.mdx";
 
@@ -82,95 +84,7 @@ running will return Variant 0 (the control group).
 
 ### Overriding treatment variants
 
-<Tabs groupId="language">
-
-<TabItem value="js" label="Javascript">
-
-During development, for example, it is useful to force a treatment for an
-experiment. This can be achieved with the `override()` and/or `overrides()`
-methods. The `override()` and `overrides()` methods can be called before the context is
-ready.
-
-```js
-context.override("exp_test_experiment", 1); // force variant 1 of treatment
-context.overrides({
-  exp_test_experiment: 1,
-  exp_another_experiment: 0,
-});
-```
-
-</TabItem>
-
-<TabItem value="swift" label="Swift">
-
-During development, for example, it is useful to force a treatment for an
-experiment. This can be achieved with the `override()` and/or `overrides()`
-methods. The `setOverride()` and `setOverrides()` methods can be called before
-the context is ready.
-
-```swift
-context.setOverride(experimentName: "exp_test_experiment", variant: 1)  // force variant 1 of treatment
-context.setOverrides(["exp_test_experiment": 1, "exp_another_experiment": 0])
-```
-
-</TabItem>
-
-<TabItem value="vue" label="Vue2">
-
-During development, for example, it is useful to force a treatment for an
-experiment. This can be achieved in the initialization of the SDK or with the
-`override()` and/or `overrides()` methods.
-
-##### In the SDK initialization
-
-```js
-Vue.use(absmartly.ABSmartlyVue, {
-  sdkOptions: {
-    /* ... */
-  },
-  context: {
-    /* ... */
-  },
-  overrides: {
-    exp_test_development: 1,
-  },
-});
-```
-
-##### With the override methods
-
-```js
-this.$absmartly.override("exp_test_experiment", 1); // force variant 1 of treatment
-this.$absmartly.overrides({
-  exp_test_experiment: 1,
-  exp_another_experiment: 0,
-});
-```
-
-:::info
-The `override()` and `overrides()` methods can be called before the context is ready.
-:::
-
-</TabItem>
-
-<TabItem value="java" label="Java">
-
-During development, for example, it is useful to force a treatment for an
-experiment. This can be achieved with the `override()` and/or `overrides()`
-methods. The `setOverride()` and `setOverrides()` methods can be called before
-the context is ready.
-
-```java
-    context.setOverride("exp_test_experiment", 1); // force variant 1 of treatment
-    context.setOverrides(Map.of(
-        "exp_test_experiment", 1,
-        "exp_another_experiment", 0
-    ));
-```
-
-</TabItem>
-
-</Tabs>
+<Overriding />
 
 ## Context Attributes
 

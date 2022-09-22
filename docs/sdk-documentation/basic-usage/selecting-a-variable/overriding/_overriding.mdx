@@ -1,0 +1,69 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsOverriding from "!!raw-loader!./js/override.js";
+
+import SwiftOverriding from "!!raw-loader!./swift/override.swift";
+
+import VueOverridingInInitialization from "!!raw-loader!./vue/inInitialization.js";
+import VueWithOverrideMethods from "!!raw-loader!./vue/withOverrideMethods.js";
+
+import JavaOverriding from "!!raw-loader!./java/override.java";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `override()` and/or `overrides()`
+methods. The `override()` and `overrides()` methods can be called before the context is
+ready.
+
+<CodeBlock language="js">{JsOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `override()` and/or `overrides()`
+methods. The `setOverride()` and `setOverrides()` methods can be called before
+the context is ready.
+
+<CodeBlock language="swift">{SwiftOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved in the initialization of the SDK or with the
+`override()` and/or `overrides()` methods.
+
+##### In the SDK initialization
+
+<CodeBlock language="js">{VueOverridingInInitialization}</CodeBlock>
+
+##### With the override methods
+
+<CodeBlock language="js">{VueWithOverrideMethods}</CodeBlock>
+
+:::info
+The `override()` and `overrides()` methods can be called before the context is ready.
+:::
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `override()` and/or `overrides()`
+methods. The `setOverride()` and `setOverrides()` methods can be called before
+the context is ready.
+
+<CodeBlock language="java">{JavaOverriding}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
