@@ -10,7 +10,9 @@ import ReactDirectlyInTreatmentComponent from "!!raw-loader!./react/directlyInTr
 import ReactUsingUseEffect from "!!raw-loader!./react/inUseEffect.js";
 
 import SwiftSelectingAVariable from "!!raw-loader!./swift/selectingAVariable.swift";
+
 import VueSelectingAVariable from "!!raw-loader!./vue/selectingAVariable.js";
+
 import JavaSelectingAVariable from "!!raw-loader!./java/selectingAVariable.java";
 
 Treatment variables are a powerful tool that can be used to automate your experiments.
@@ -50,6 +52,12 @@ You can select these values in your code like so:
 #### In a useEffect()
 
 <CodeBlock language="jsx">{ReactUsingUseEffect}</CodeBlock>
+
+:::note Without react hooks
+This can be accomplished in a class component without using react hooks.
+Replace the above useEffect hook with a `componentDidMount` lifecycle hook and
+store the variables in your component's state there.
+:::
 
 #### Directly in the `Treatment` component
 
