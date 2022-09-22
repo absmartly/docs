@@ -14,12 +14,7 @@ import SettingContextAttributes from "./sdk-documentation/getting-started/settin
 import SelectingATreatment from "./sdk-documentation/basic-usage/selecting-a-treatment/_selecting-a-treatment.mdx";
 import SelectingAVariable from "./sdk-documentation/basic-usage/selecting-a-variable/_selecting-a-variable.mdx";
 
-import JsPeekAtVariables from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/js/peekAtVariables.js";
-import SwiftPeekAtVariants from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/swift/peekAtVariants.swift";
-import SwiftPeekAtVariables from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/swift/peekAtVariables.swift";
-import VuePeekAtVariables from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/vue/peekAtVariables.js";
-import JavaPeekAtVariants from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/java/peekAtVariants.java";
-import JavaPeekAtVariables from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/java/peekAtVariables.java";
+import Peeking from "./sdk-documentation/basic-usage/selecting-a-variable/peeking/_peeking.mdx";
 
 import ConfigApi from "./sdk-documentation/config-api/_config-api.mdx";
 import ConfigApiBasicExample from "./sdk-documentation/config-api-basic-example/_config-api-basic-example.mdx";
@@ -83,57 +78,7 @@ running will return Variant 0 (the control group).
 
 ### Peek at treatment variants
 
-<Tabs groupId="language">
-
-<TabItem value="js" label="Javascript">
-
-Although generally not recommended, it is sometimes necessary to peek at a
-treatment without triggering an exposure. The A/B Smartly SDK provides a
-`peek()` method for that.
-
-<CodeBlock language="js">{JsPeekAtVariables}</CodeBlock>
-
-</TabItem>
-
-<TabItem value="swift" label="Swift">
-
-Although generally not recommended, it is sometimes necessary to peek at a
-treatment without triggering an exposure. The A/B Smartly SDK provides a
-`peekTreatment()` method for that.
-
-<CodeBlock language="swift">{SwiftPeekAtVariants}</CodeBlock>
-
-##### Peeking at Variables
-
-<CodeBlock language="swift">{SwiftPeekAtVariables}</CodeBlock>
-
-</TabItem>
-
-<TabItem value="vue" label="Vue2">
-
-Although generally not recommended, it is sometimes necessary to peek at a
-treatment without triggering an exposure. The A/B Smartly SDK provides a
-`peek()` method for that.
-
-<CodeBlock language="js">{VuePeekAtVariables}</CodeBlock>
-
-</TabItem>
-
-<TabItem value="java" label="Java">
-
-Although generally not recommended, it is sometimes necessary to peek at a
-treatment or variable without triggering an exposure. The A/B Smartly SDK
-provides a `peekTreatment()` method for that.
-
-<CodeBlock language="java">{JavaPeekAtVariants}</CodeBlock>
-
-##### Peeking at variables
-
-<CodeBlock language="java">{JavaPeekAtVariables}</CodeBlock>
-
-</TabItem>
-
-</Tabs>
+<Peeking />
 
 ### Overriding treatment variants
 

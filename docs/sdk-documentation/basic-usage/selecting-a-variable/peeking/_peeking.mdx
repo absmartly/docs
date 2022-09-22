@@ -1,0 +1,62 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsPeekAtVariables from "!!raw-loader!./js/peekAtVariables.js";
+import SwiftPeekAtVariants from "!!raw-loader!./swift/peekAtVariants.swift";
+import SwiftPeekAtVariables from "!!raw-loader!./swift/peekAtVariables.swift";
+import VuePeekAtVariables from "!!raw-loader!./vue/peekAtVariables.js";
+import JavaPeekAtVariants from "!!raw-loader!./java/peekAtVariants.java";
+import JavaPeekAtVariables from "!!raw-loader!./java/peekAtVariables.java";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment without triggering an exposure. The A/B Smartly SDK provides a
+`peek()` method for that.
+
+<CodeBlock language="js">{JsPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment without triggering an exposure. The A/B Smartly SDK provides a
+`peekTreatment()` method for that.
+
+<CodeBlock language="swift">{SwiftPeekAtVariants}</CodeBlock>
+
+##### Peeking at Variables
+
+<CodeBlock language="swift">{SwiftPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment without triggering an exposure. The A/B Smartly SDK provides a
+`peek()` method for that.
+
+<CodeBlock language="js">{VuePeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment or variable without triggering an exposure. The A/B Smartly SDK
+provides a `peekTreatment()` method for that.
+
+<CodeBlock language="java">{JavaPeekAtVariants}</CodeBlock>
+
+##### Peeking at variables
+
+<CodeBlock language="java">{JavaPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
