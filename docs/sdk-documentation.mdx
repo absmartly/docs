@@ -4,6 +4,7 @@ sidebar_position: 1
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
 
 import Install from "./sdk-documentation/getting-started/install/_install.mdx";
 import ImportAndInitialize from "./sdk-documentation/getting-started/import-and-initialize/_import-and-initialize.mdx";
@@ -16,10 +17,9 @@ import CustomAssignments from "./sdk-documentation/custom-assignments/_custom-as
 import SelectingATreatment from "./sdk-documentation/basic-usage/selecting-a-treatment/_selecting-a-treatment.mdx";
 import SelectingAVariable from "./sdk-documentation/basic-usage/selecting-a-variable/_selecting-a-variable.mdx";
 
-import ConfigApi from "./sdk-documentation/config-api/_config-api.mdx";
-import ConfigApiBasicExample from "./sdk-documentation/config-api-basic-example/_config-api-basic-example.mdx";
+import Peeking from "./sdk-documentation/basic-usage/selecting-a-variable/peeking/_peeking.mdx";
 
-import TranslationsExample from "./sdk-documentation/translations-example/_translations-example.mdx";
+import Overriding from "./sdk-documentation/basic-usage/selecting-a-variable/overriding/_overriding.mdx";
 
 import Publish from "./sdk-documentation/publish/_publish.mdx";
 
@@ -76,6 +76,14 @@ running will return Variant 0 (the control group).
 
 <SelectingAVariable />
 
+### Peek at treatment variants
+
+<Peeking />
+
+### Overriding treatment variants
+
+<Overriding />
+
 ## Context Attributes
 
 <SettingContextAttributes />
@@ -83,18 +91,6 @@ running will return Variant 0 (the control group).
 ## Custom Assignments
 
 <CustomAssignments />
-
-## Config API
-
-<ConfigApi />
-
-### Basic Example
-
-<ConfigApiBasicExample />
-
-### Translations Example
-
-<TranslationsExample />
 
 ## Publish
 

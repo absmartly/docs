@@ -19,7 +19,4 @@ Vue.use(absmartly.ABSmartlyVue, {
   attributes: {
     user_agent: navigator.userAgent,
   },
-  overrides: {
-    exp_test_development: 1,
-  },
 });

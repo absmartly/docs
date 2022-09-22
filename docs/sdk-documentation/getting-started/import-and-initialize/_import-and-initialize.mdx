@@ -3,13 +3,17 @@ import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
 import JsImport from "!!raw-loader!./js/import.js";
+import JsCustomEventLogger from "!!raw-loader!./js/customEventLogger.js";
 
 import SwiftImport from "!!raw-loader!./swift/import.swift";
+import SwiftCustomEventLogger from "!!raw-loader!./swift/customEventLogger.swift";
 
 import VueImport from "!!raw-loader!./vue/import.js";
+import VueCustomEventLogger from "!!raw-loader!./vue/customEventLogger.js";
 
 import JavaImport from "!!raw-loader!./java/import.java";
 import JavaImportAndroid6 from "!!raw-loader!./java/importForAndroid6.java";
+import JavaCustomEventLogger from "!!raw-loader!./java/customEventLogger.java";
 
 Once the SDK is installed, it can be initialized in your project.
 
@@ -60,3 +64,99 @@ for SSL to Conscrypt by creating the Client instance as follows:
 | application | `string`                          |  &#9989;  | `undefined` | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
 | retries     | `number`                          | &#10060;  |     `5`     | The number of retries before the SDK stops trying to connect.                                                                                                                 |
 | timeout     | `number`                          | &#10060;  |   `3000`    | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+
+#### Using a Custom Event Logger
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+The A/B Smartly SDK can be instantiated with an event logger used for all
+contexts. In addition, an event logger can be specified when creating a
+particular context, in the `createContext` call options. The example below
+illustrates this with the implementation of the default event logger, used if
+none is specified.
+
+<CodeBlock language="js">{JsCustomEventLogger}</CodeBlock>
+
+The data parameter depends on the type of event. Currently, the SDK logs the
+following events:
+
+| eventName    | when                                                    | data                                         |
+| ------------ | ------------------------------------------------------- | -------------------------------------------- |
+| `"error"`    | `Context` receives an error                             | error object thrown                          |
+| `"ready"`    | `Context` turns ready                                   | data used to initialize the context          |
+| `"refresh"`  | `Context.refresh()` method succeeds                     | data used to refresh the context             |
+| `"publish"`  | `Context.publish()` method succeeds                     | data sent to the A/B Smartly event collector |
+| `"exposure"` | `Context.treatment()` method succeeds on first exposure | exposure data enqueued for publishing        |
+| `"goal"`     | `Context.track()` method succeeds                       | goal data enqueued for publishing            |
+| `"finalize"` | `Context.finalize()` method succeeds the first time     | undefined                                    |
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+The A/B Smartly SDK can be instantiated with an event logger used for all
+contexts. In addition, an event logger can be specified when creating a
+particular context, in the `ContextConfig`.
+
+<CodeBlock language="swift">{SwiftCustomEventLogger}</CodeBlock>
+
+The event data depends on the type of event. Currently, the SDK logs the following events:
+
+| event      | when                                                       | data                                                   |
+| ---------- | ---------------------------------------------------------- | ------------------------------------------------------ |
+| `error`    | `Context` receives an error                                | `Error` object                                         |
+| `ready`    | `Context` turns ready                                      | `ContextData` used to initialize the context           |
+| `refresh`  | `Context.refresh()` method succeeds                        | `ContextData` used to refresh the context              |
+| `publish`  | `Context.publish()` method succeeds                        | `PublishEvent` sent to the A/B Smartly event collector |
+| `exposure` | `Context.getTreatment()` method succeeds on first exposure | `Exposure` enqueued for publishing                     |
+| `goal`     | `Context.track()` method succeeds                          | `GoalAchievement` enqueued for publishing              |
+| `close`    | `Context.close()` method succeeds the first time           | `nil`                                                  |
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+The A/B Smartly SDK can be instantiated with an event logger used for all
+contexts. The example below illustrates this with the implementation of the
+default event logger, used if none is specified.
+
+<CodeBlock language="js">{VueCustomEventLogger}</CodeBlock>
+
+| eventName    | when                                                    | data                                         |
+| ------------ | ------------------------------------------------------- | -------------------------------------------- |
+| `"error"`    | `Context` receives an error                             | error object thrown                          |
+| `"ready"`    | `Context` turns ready                                   | data used to initialize the context          |
+| `"refresh"`  | `Context.refresh()` method succeeds                     | data used to refresh the context             |
+| `"publish"`  | `Context.publish()` method succeeds                     | data sent to the A/B Smartly event collector |
+| `"exposure"` | `Context.treatment()` method succeeds on first exposure | exposure data enqueued for publishing        |
+| `"goal"`     | `Context.track()` method succeeds                       | goal data enqueued for publishing            |
+| `"finalize"` | `Context.finalize()` method succeeds the first time     | undefined                                    |
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+The A/B Smartly SDK can be instantiated with an event logger used for all
+contexts. In addition, an event logger can be specified when creating a
+particular context, in the `ContextConfig`.
+
+<CodeBlock language="java">{JavaCustomEventLogger}</CodeBlock>
+
+The data parameter depends on the type of event. Currently, the SDK logs the
+following events:
+
+| event      | when                                                       | data                                                   |
+| ---------- | ---------------------------------------------------------- | ------------------------------------------------------ |
+| `Error`    | `Context` receives an error                                | `Throwable` object                                     |
+| `Ready`    | `Context` turns ready                                      | `ContextData` used to initialize the context           |
+| `Refresh`  | `Context.refresh()` method succeeds                        | `ContextData` used to refresh the context              |
+| `Publish`  | `Context.publish()` method succeeds                        | `PublishEvent` sent to the A/B Smartly event collector |
+| `Exposure` | `Context.getTreatment()` method succeeds on first exposure | `Exposure` enqueued for publishing                     |
+| `Goal`     | `Context.track()` method succeeds                          | `GoalAchievement` enqueued for publishing              |
+| `Close`    | `Context.close()` method succeeds the first time           | `null`                                                 |
+
+</TabItem>
+
+</Tabs>

@@ -2,12 +2,11 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
+import ConfigApi from "./config-api/_config-api.mdx";
+
 import JsSelectingAVariable from "!!raw-loader!./js/selectingAVariable.js";
-
 import SwiftSelectingAVariable from "!!raw-loader!./swift/selectingAVariable.swift";
-
 import VueSelectingAVariable from "!!raw-loader!./vue/selectingAVariable.js";
-
 import JavaSelectingAVariable from "!!raw-loader!./java/selectingAVariable.java";
 
 Treatment variables are a powerful tool that can be used to automate your experiments.
@@ -37,6 +36,8 @@ You can select these values in your code like so:
 <TabItem value="js" label="Javascript">
 
 <CodeBlock language="js">{JsSelectingAVariable}</CodeBlock>
+
+<ConfigApi />
 
 </TabItem>
 

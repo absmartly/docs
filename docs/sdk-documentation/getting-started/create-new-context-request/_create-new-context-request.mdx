@@ -5,17 +5,27 @@ import CodeBlock from "@theme/CodeBlock";
 import JsRawPromises from "!!raw-loader!./js/usingRawPromises.js";
 import JsAsyncAwait from "!!raw-loader!./js/usingAsyncAwait.js";
 import JsPreFetchedData from "!!raw-loader!./js/withPreFetchedData.html";
+import JsRefreshWithFreshData from "!!raw-loader!./js/refreshWithFreshData.js";
+import JsRefreshWithRefreshMethod from "!!raw-loader!./js/refreshWithRefreshMethod.js";
+import JsHttpRequestTimeout from "!!raw-loader!./js/httpRequestTimeout.js";
+import JsHttpRequestCancellation from "!!raw-loader!./js/httpRequestCancellation.js";
 
 import SwiftNewContext from "!!raw-loader!./swift/newContext.swift";
 import SwiftPreFetchedData from "!!raw-loader!./swift/withPreFetchedData.swift";
 import SwiftSetExtraUnits from "!!raw-loader!./swift/settingExtraUnits.swift";
+import SwiftRefreshWithFreshData from "!!raw-loader!./swift/refreshWithFreshData.swift";
+import SwiftRefreshWithRefreshMethod from "!!raw-loader!./swift/refreshWithRefreshMethod.swift";
 
 import VuePreFetchedData from "!!raw-loader!./vue/initializeWithPrefetchedData.js";
+import VueRefreshWithFreshData from "!!raw-loader!./vue/RefreshWithFreshData.js";
+import VueRefreshWithRefreshMethod from "!!raw-loader!./vue/refreshWithRefreshMethod.js";
 
 import JavaSync from "!!raw-loader!./java/sync.java";
 import JavaAsync from "!!raw-loader!./java/async.java";
 import JavaPreFetched from "!!raw-loader!./java/preFetchedData.java";
 import JavaExtraUnits from "!!raw-loader!./java/extraUnits.java";
+import JavaRefreshWithFreshData from "!!raw-loader!./java/refreshWithFreshData.java";
+import JavaRefreshWithRefreshMethod from "!!raw-loader!./java/refreshWithRefreshMethod.java";
 
 In order to start linking your experiments from the Web Console to your
 application, you will need to create a context. When you instantiate a context,
@@ -45,15 +55,15 @@ in this request and the control treatment will be shown instead.
 
 <TabItem value="js" label="Javascript">
 
-**Create A New Context With Raw Promises**
+#### Create A New Context With Raw Promises
 
 <CodeBlock language="js">{JsRawPromises}</CodeBlock>
 
-**Create A New Context With Async/Await**
+#### Create A New Context With Async/Await
 
 <CodeBlock language="js">{JsAsyncAwait}</CodeBlock>
 
-**Create A New Context With Pre-Fetched Data**
+#### Create A New Context With Pre-Fetched Data
 
 When doing full-stack experimentation with A/B Smartly, we recommend only creating a
 context once on the server-side. Creating a context involves a round-trip
@@ -63,6 +73,42 @@ for example, by rendering it on the template. We can then initialize the
 A/B Smartly context on the client-side directly with it.
 
 <CodeBlock language="html">{JsPreFetchedData}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+For long-running single-page-applications (SPA), the context is usually
+created once when the application is first reached. However, any experiments
+being tracked in your production code, but started after the context was
+created, will not be triggered. To mitigate this, we can use the
+refreshInterval option when creating the context.
+
+<CodeBlock language="js">{JsRefreshWithFreshData}</CodeBlock>
+
+Alternatively, the `refresh()` method can be called manually. The `refresh()`
+method pulls updated experiment data from the A/B Smartly collector and will
+trigger recently started experiments when `treatment()` is called again.
+
+<CodeBlock language="js">{JsRefreshWithRefreshMethod}</CodeBlock>
+
+#### HTTP request timeout
+
+It is possible to set a timeout per individual HTTP request, overriding the
+global timeout set for all request when instantiating the SDK object.
+
+Here is an example of setting a timeout only for the `createContext` request.
+
+<CodeBlock language="js">{JsHttpRequestTimeout}</CodeBlock>
+
+#### HTTP Request cancellation
+
+Sometimes it is useful to cancel an inflight HTTP request, for example, when
+the user is navigating away. The A/B Smartly SDK also supports a cancellation
+via an `AbortSignal`. An implementation of AbortController is provided for older
+platforms, but will use the native implementation where available.
+
+Here is an example of a cancellation scenario.
+
+<CodeBlock language="js">{JsHttpRequestCancellation}</CodeBlock>
 
 </TabItem>
 
@@ -97,6 +143,20 @@ the context is ready.
 
 <CodeBlock language="swift">{SwiftSetExtraUnits}</CodeBlock>
 
+#### Refreshing the context with fresh experiment data
+
+For long-running contexts, the context is usually created once when the
+application is first reached. However, any experiments being tracked in your
+production code, but started after the context was created, will not be
+triggered. To mitigate this, we can use the `setRefreshInterval()` method on the
+context config.
+
+<CodeBlock language="swift">{SwiftRefreshWithFreshData}</CodeBlock>
+
+Alternatively, the `refresh()` method can be called manually.
+
+<CodeBlock language="swift">{SwiftRefreshWithRefreshMethod}</CodeBlock>
+
 </TabItem>
 
 <TabItem value="vue" label="Vue2">
@@ -115,6 +175,22 @@ In this example, we assume the variable `prefectedContextData` contains the
 pre-fetched data previously injected.
 
 <CodeBlock language="js">{VuePreFetchedData}</CodeBlock>
+
+#### Refreshing the context with fresh experiment data
+
+For long-running single-page-applications (SPA), the context is usually
+created once when the application is first reached. However, any experiments
+being tracked in your production code, but started after the context was
+created, will not be triggered. To mitigate this, we can use the
+refreshInterval option when initializing the SDK.
+
+<CodeBlock language="js">{VueRefreshWithFreshData}</CodeBlock>
+
+Alternatively, the `refresh()` method can be called manually. The `refresh()`
+method pulls updated experiment data from the A/B Smartly collector and will
+trigger recently started experiments when `treatment()` is called again.
+
+<CodeBlock language="js">{VueRefreshWithRefreshMethod}</CodeBlock>
 
 </TabItem>
 
@@ -150,6 +226,22 @@ the context is ready.
 :::
 
 <CodeBlock language="java">{JavaExtraUnits}</CodeBlock>
+
+#### Refreshing the context with fresh experiment data
+
+For long-running contexts, the context is usually created once when the
+application is first started. However, any experiments being tracked in your
+production code, but started after the context was created, will not be
+triggered. To mitigate this, we can use the `setRefreshInterval()` method on the
+context config.
+
+<CodeBlock language="java">{JavaRefreshWithFreshData}</CodeBlock>
+
+Alternatively, the `refresh()` method can be called manually. The `refresh()`
+method pulls updated experiment data from the A/B Smartly collector and will
+trigger recently started experiments when `getTreatment()` is called again.
+
+<CodeBlock language="java">{JavaRefreshWithRefreshMethod}</CodeBlock>
 
 </TabItem>
 
