@@ -4,6 +4,7 @@ sidebar_position: 1
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
 
 import Install from "./sdk-documentation/getting-started/install/_install.mdx";
 import ImportAndInitialize from "./sdk-documentation/getting-started/import-and-initialize/_import-and-initialize.mdx";
@@ -12,6 +13,13 @@ import SettingContextAttributes from "./sdk-documentation/getting-started/settin
 
 import SelectingATreatment from "./sdk-documentation/basic-usage/selecting-a-treatment/_selecting-a-treatment.mdx";
 import SelectingAVariable from "./sdk-documentation/basic-usage/selecting-a-variable/_selecting-a-variable.mdx";
+
+import JsPeekAtVariables from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/js/peekAtVariables.js";
+import SwiftPeekAtVariants from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/swift/peekAtVariants.swift";
+import SwiftPeekAtVariables from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/swift/peekAtVariables.swift";
+import VuePeekAtVariables from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/vue/peekAtVariables.js";
+import JavaPeekAtVariants from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/java/peekAtVariants.java";
+import JavaPeekAtVariables from "!!raw-loader!./sdk-documentation/basic-usage/selecting-a-variable/java/peekAtVariables.java";
 
 import ConfigApi from "./sdk-documentation/config-api/_config-api.mdx";
 import ConfigApiBasicExample from "./sdk-documentation/config-api-basic-example/_config-api-basic-example.mdx";
@@ -56,88 +64,6 @@ teammembers!
 
 <CreateNewContextRequest />
 
-#### Refreshing the Context with Fresh Experiment Data
-
-For long-running single-page-applications (SPA), the context is usually
-created once when the application is first reached. However, any experiments
-being tracked in your production code, but started after the context was
-created, will not be triggered. To mitigate this, we can use the
-refreshInterval option when creating the context.
-
-```js
-const request = {
-    units: {
-        session_id: '5ebf06d8cb5d8137290c4abb64155584fbdb64d8',
-    },
-};
-
-const context = sdk.createContext(request, {
-    refreshInterval: 5 _ 60 _ 1000
-});
-```
-
-Alternatively, the `refresh()` method can be called manually. The `refresh()`
-method pulls updated experiment data from the A/B Smartly collector and will
-trigger recently started experiments when `treatment()` is called again.
-
-```js
-setTimeout(async () => {
-    try {
-        context.refresh();
-    } catch(error) {
-        console.error(error);
-    }
-}, 5 _ 60 _ 1000);
-```
-
-#### HTTP request timeout
-
-It is possible to set a timeout per individual HTTP request, overriding the
-global timeout set for all request when instantiating the SDK object.
-
-Here is an example of setting a timeout only for the `createContext` request.
-
-```js
-const context = sdk.createContext(
-  request,
-  {
-    refreshInterval: 5 * 60 * 1000,
-  },
-  {
-    timeout: 1500,
-  }
-);
-```
-
-#### HTTP Request cancellation
-
-Sometimes it is useful to cancel an inflight HTTP request, for example, when
-the user is navigating away. The A/B Smartly SDK also supports a cancellation
-via an `AbortSignal`. An implementation of AbortController is provided for older
-platforms, but will use the native implementation where available.
-
-Here is an example of a cancellation scenario.
-
-```js
-const controller = new absmartly.AbortController();
-const context = sdk.createContext(
-  request,
-  {
-    refreshInterval: 5 * 60 * 1000,
-  },
-  {
-    signal: controller.signal,
-  }
-);
-
-// abort request if not ready after 1500ms
-const timeoutId = setTimeout(() => controller.abort(), 1500);
-
-await context.ready();
-
-clearTimeout(timeoutId);
-```
-
 ## Basic Usage
 
 After the init call, all the variants for all running experiments will be
@@ -157,19 +83,63 @@ running will return Variant 0 (the control group).
 
 ### Peek at treatment variants
 
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
 Although generally not recommended, it is sometimes necessary to peek at a
 treatment without triggering an exposure. The A/B Smartly SDK provides a
 `peek()` method for that.
 
-```js
-if (context.peek("exp_test_experiment") == 0) {
-  // user is in control group (variant 0)
-} else {
-  // user is in treatment group
-}
-```
+<CodeBlock language="js">{JsPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment without triggering an exposure. The A/B Smartly SDK provides a
+`peekTreatment()` method for that.
+
+<CodeBlock language="swift">{SwiftPeekAtVariants}</CodeBlock>
+
+##### Peeking at Variables
+
+<CodeBlock language="swift">{SwiftPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment without triggering an exposure. The A/B Smartly SDK provides a
+`peek()` method for that.
+
+<CodeBlock language="js">{VuePeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment or variable without triggering an exposure. The A/B Smartly SDK
+provides a `peekTreatment()` method for that.
+
+<CodeBlock language="java">{JavaPeekAtVariants}</CodeBlock>
+
+##### Peeking at variables
+
+<CodeBlock language="java">{JavaPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
 
 ### Overriding treatment variants
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
 
 During development, for example, it is useful to force a treatment for an
 experiment. This can be achieved with the `override()` and/or `overrides()`
@@ -183,6 +153,79 @@ context.overrides({
   exp_another_experiment: 0,
 });
 ```
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `override()` and/or `overrides()`
+methods. The `setOverride()` and `setOverrides()` methods can be called before
+the context is ready.
+
+```swift
+context.setOverride(experimentName: "exp_test_experiment", variant: 1)  // force variant 1 of treatment
+context.setOverrides(["exp_test_experiment": 1, "exp_another_experiment": 0])
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved in the initialization of the SDK or with the
+`override()` and/or `overrides()` methods.
+
+##### In the SDK initialization
+
+```js
+Vue.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    /* ... */
+  },
+  context: {
+    /* ... */
+  },
+  overrides: {
+    exp_test_development: 1,
+  },
+});
+```
+
+##### With the override methods
+
+```js
+this.$absmartly.override("exp_test_experiment", 1); // force variant 1 of treatment
+this.$absmartly.overrides({
+  exp_test_experiment: 1,
+  exp_another_experiment: 0,
+});
+```
+
+:::info
+The `override()` and `overrides()` methods can be called before the context is ready.
+:::
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `override()` and/or `overrides()`
+methods. The `setOverride()` and `setOverrides()` methods can be called before
+the context is ready.
+
+```java
+    context.setOverride("exp_test_experiment", 1); // force variant 1 of treatment
+    context.setOverrides(Map.of(
+        "exp_test_experiment", 1,
+        "exp_another_experiment", 0
+    ));
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Context Attributes
 
