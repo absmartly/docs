@@ -5,6 +5,9 @@ import CodeBlock from "@theme/CodeBlock";
 import JsImport from "!!raw-loader!./js/import.js";
 import JsCustomEventLogger from "!!raw-loader!./js/customEventLogger.js";
 
+import ReactImport from "!!raw-loader!./react/import.jsx";
+import ReactCustomEventLogger from "!!raw-loader!./react/customEventLogger.jsx";
+
 import SwiftImport from "!!raw-loader!./swift/import.swift";
 import SwiftCustomEventLogger from "!!raw-loader!./swift/customEventLogger.swift";
 
@@ -22,6 +25,14 @@ Once the SDK is installed, it can be initialized in your project.
 <TabItem value="js" label="Javascript">
 
 <CodeBlock language="js">{JsImport}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx" title="src/index.js">
+  {ReactImport}
+</CodeBlock>
 
 </TabItem>
 
@@ -78,6 +89,31 @@ illustrates this with the implementation of the default event logger, used if
 none is specified.
 
 <CodeBlock language="js">{JsCustomEventLogger}</CodeBlock>
+
+The data parameter depends on the type of event. Currently, the SDK logs the
+following events:
+
+| eventName    | when                                                    | data                                         |
+| ------------ | ------------------------------------------------------- | -------------------------------------------- |
+| `"error"`    | `Context` receives an error                             | error object thrown                          |
+| `"ready"`    | `Context` turns ready                                   | data used to initialize the context          |
+| `"refresh"`  | `Context.refresh()` method succeeds                     | data used to refresh the context             |
+| `"publish"`  | `Context.publish()` method succeeds                     | data sent to the A/B Smartly event collector |
+| `"exposure"` | `Context.treatment()` method succeeds on first exposure | exposure data enqueued for publishing        |
+| `"goal"`     | `Context.track()` method succeeds                       | goal data enqueued for publishing            |
+| `"finalize"` | `Context.finalize()` method succeeds the first time     | undefined                                    |
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+The A/B Smartly SDK can be instantiated with an event logger used for all
+contexts. In addition, an event logger can be specified when creating a
+particular context, in the `createContext` call options. The example below
+illustrates this with the implementation of the default event logger, used if
+none is specified.
+
+<CodeBlock language="jsx">{ReactCustomEventLogger}</CodeBlock>
 
 The data parameter depends on the type of event. Currently, the SDK logs the
 following events:

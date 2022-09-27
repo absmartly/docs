@@ -3,6 +3,7 @@ import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
 import JsPeekAtVariables from "!!raw-loader!./js/peekAtVariables.js";
+import ReactPeekAtVariables from "!!raw-loader!./react/peekAtVariables.js";
 import SwiftPeekAtVariants from "!!raw-loader!./swift/peekAtVariants.swift";
 import SwiftPeekAtVariables from "!!raw-loader!./swift/peekAtVariables.swift";
 import VuePeekAtVariables from "!!raw-loader!./vue/peekAtVariables.js";
@@ -18,6 +19,16 @@ treatment without triggering an exposure. The A/B Smartly SDK provides a
 `peek()` method for that.
 
 <CodeBlock language="js">{JsPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment without triggering an exposure. The A/B Smartly SDK provides a
+`peek()` method for that.
+
+<CodeBlock language="jsx">{ReactPeekAtVariables}</CodeBlock>
 
 </TabItem>
 

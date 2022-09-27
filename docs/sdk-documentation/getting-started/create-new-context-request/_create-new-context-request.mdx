@@ -10,6 +10,10 @@ import JsRefreshWithRefreshMethod from "!!raw-loader!./js/refreshWithRefreshMeth
 import JsHttpRequestTimeout from "!!raw-loader!./js/httpRequestTimeout.js";
 import JsHttpRequestCancellation from "!!raw-loader!./js/httpRequestCancellation.js";
 
+import ReactNewContext from "!!raw-loader!./react/newContext.js";
+import ReactWithABSmartly from "!!raw-loader!./react/withABSmartly.js";
+import ReactForTernaryOperator from "!!raw-loader!./react/forTernaryOperator.js";
+
 import SwiftNewContext from "!!raw-loader!./swift/newContext.swift";
 import SwiftPreFetchedData from "!!raw-loader!./swift/withPreFetchedData.swift";
 import SwiftSetExtraUnits from "!!raw-loader!./swift/settingExtraUnits.swift";
@@ -109,6 +113,27 @@ platforms, but will use the native implementation where available.
 Here is an example of a cancellation scenario.
 
 <CodeBlock language="js">{JsHttpRequestCancellation}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+#### Using React Hooks (Recommended)
+
+<CodeBlock language="jsx">{ReactNewContext}</CodeBlock>
+
+:::note
+In `React.StrictMode`, `useEffect` will run twice in development, but only once in
+production.
+:::
+
+#### Using `withABSmartly`
+
+If you are unable to use React Hooks in your application, you can get access
+to the `sdk` object by wrapping your component in the `withABSmartly` HOC
+before exporting it.
+
+<CodeBlock language="jsx">{ReactWithABSmartly}</CodeBlock>
 
 </TabItem>
 

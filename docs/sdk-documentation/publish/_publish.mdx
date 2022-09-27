@@ -4,6 +4,8 @@ import CodeBlock from "@theme/CodeBlock";
 
 import JsPublish from "!!raw-loader!./js/publish.js";
 
+import ReactPublish from "!!raw-loader!./react/publish.js";
+
 import SwiftPublish from "!!raw-loader!./swift/publish.swift";
 
 import VuePublish from "!!raw-loader!./vue/publish.js";
@@ -17,12 +19,13 @@ the impressions that have been tracked so far.
 
 <TabItem value="js" label="Javascript">
 
-<!--:::info
-This method will also be called automatically if you use the
-`publish_every:'5m'` parameter in the initialization of the SDK.
-:::-->
-
 <CodeBlock language="js">{JsPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx">{ReactPublish}</CodeBlock>
 
 </TabItem>
 

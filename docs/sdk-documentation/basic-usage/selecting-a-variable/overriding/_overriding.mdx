@@ -4,6 +4,8 @@ import CodeBlock from "@theme/CodeBlock";
 
 import JsOverriding from "!!raw-loader!./js/override.js";
 
+import ReactOverriding from "!!raw-loader!./react/override.js";
+
 import SwiftOverriding from "!!raw-loader!./swift/override.swift";
 
 import VueOverridingInInitialization from "!!raw-loader!./vue/inInitialization.js";
@@ -21,6 +23,17 @@ methods. The `override()` and `overrides()` methods can be called before the con
 ready.
 
 <CodeBlock language="js">{JsOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `override()` and/or `overrides()`
+methods. The `override()` and `overrides()` methods can be called before the context is
+ready.
+
+<CodeBlock language="jsx">{ReactOverriding}</CodeBlock>
 
 </TabItem>
 

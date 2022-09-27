@@ -4,6 +4,8 @@ import CodeBlock from "@theme/CodeBlock";
 
 import JsFinalize from "!!raw-loader!./js/finalize.js";
 
+import ReactFinalize from "!!raw-loader!./react/finalize.js";
+
 import SwiftFinalize from "!!raw-loader!./swift/finalize.swift";
 
 import VueFinalize from "!!raw-loader!./vue/finalize.js";
@@ -20,6 +22,23 @@ connections. It will also call `context.publish()` to flush the remaining
 unpublished impressions.
 
 <CodeBlock language="js">{JsFinalize}</CodeBlock>
+
+:::caution
+After `finalize()` is called and finishes, any subsequent invocations to the
+`treatment()` method will still return the right variant, but will result in a
+warning to let you know that you might be losing impressions.
+:::
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+Call the `context.finalize()` method before letting a process using the SDK exit, as
+this method gracefully shuts down the SDK by clearing caches, and closing
+connections. It will also call `context.publish()` to flush the remaining
+unpublished impressions.
+
+<CodeBlock language="jsx">{ReactFinalize}</CodeBlock>
 
 :::caution
 After `finalize()` is called and finishes, any subsequent invocations to the
