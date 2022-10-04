@@ -14,7 +14,7 @@ function App({ sdk }) {
   };
 
   // Create a context
-  const context = sdk.createContext(request);
+  const context = sdk?.createContext(request);
 
   return (
     <div className="App">

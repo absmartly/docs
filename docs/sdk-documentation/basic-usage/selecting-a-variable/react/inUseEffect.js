@@ -1,5 +1,5 @@
 const context = React.useMemo(
-  () => sdk.createContext({ units: { user_id: "1234" } }),
+  () => sdk?.createContext({ units: { user_id: "1234" } }),
   [sdk]
 );
 
