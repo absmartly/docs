@@ -82,6 +82,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        appId: "A47TZVJSFX",
+        apiKey: "3b31040c2db84765897ab2b3d77208b2",
+        indexName: "docs_absmartly",
+      },
       colorMode: {
         respectPrefersColorScheme: true,
       },
