@@ -1,4 +1,3 @@
-
 openapi: 3.0.0
 info:
   title: A/B Smartly Collector
@@ -7,12 +6,12 @@ info:
   contact:
     email: api@absmartly.com
   license:
-    name: Proprietary
+    name: proprietary
 externalDocs:
   description: Find out more about A/B Smartly
   url: 'https://www.absmartly.com'
 servers:
-  - url: 'https://sandbox.absmartly.com/v1'
+  - url: 'https://sandbox.absmartly.io/v1'
 security:
   - ApiKey: []
 tags:
@@ -30,9 +29,9 @@ paths:
       operationId: collectorHealthCheck
       responses:
         200:
-          description: Server is healhty
+          description: Server is healthy
         500:
-          description: Server is not healhty
+          description: Server is not healthy
   /context:
     get:
       tags:
