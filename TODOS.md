@@ -30,7 +30,7 @@ in bold must be completed before deploying the site for the first time.
 - [x] **Remove danger warnings**
 - [x] Vue2 Selecting a Treatment Variable
 - [x] Complete revamp of [current SDK Documentation](https://absmartly.readme.io).
-- [ ] Add documentation for translations and Config API in all SDKs
+- [x] Add documentation for translations and Config API in all SDKs
 - [x] Rewrite copy for consistency.
 - [x] Add text under every heading.
 - [ ] Custom SCSS.
