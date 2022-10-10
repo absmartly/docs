@@ -2,82 +2,11 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
-import JsImport from "!!raw-loader!./js/import.js";
 import JsCustomEventLogger from "!!raw-loader!./js/customEventLogger.js";
-
-import ReactImport from "!!raw-loader!./react/import.jsx";
 import ReactCustomEventLogger from "!!raw-loader!./react/customEventLogger.jsx";
-
-import SwiftImport from "!!raw-loader!./swift/import.swift";
 import SwiftCustomEventLogger from "!!raw-loader!./swift/customEventLogger.swift";
-
-import VueImport from "!!raw-loader!./vue/import.js";
 import VueCustomEventLogger from "!!raw-loader!./vue/customEventLogger.js";
-
-import JavaImport from "!!raw-loader!./java/import.java";
-import JavaImportAndroid6 from "!!raw-loader!./java/importForAndroid6.java";
 import JavaCustomEventLogger from "!!raw-loader!./java/customEventLogger.java";
-
-Once the SDK is installed, it can be initialized in your project.
-
-<Tabs groupId="language">
-
-<TabItem value="js" label="Javascript">
-
-<CodeBlock language="js">{JsImport}</CodeBlock>
-
-</TabItem>
-
-<TabItem value="react" label="React">
-
-<CodeBlock language="jsx" title="src/index.js">
-  {ReactImport}
-</CodeBlock>
-
-</TabItem>
-
-<TabItem value="swift" label="Swift">
-
-<CodeBlock language="swift">{SwiftImport}</CodeBlock>
-
-</TabItem>
-
-<TabItem value="vue" label="Vue2">
-
-<CodeBlock language="js">{VueImport}</CodeBlock>
-
-This makes the `$absmartly` extension available in every Vue instance.
-
-</TabItem>
-
-<TabItem value="java" label="Java">
-
-<CodeBlock language="java">{JavaImport}</CodeBlock>
-
-:::caution Android 6.0 or Earlier
-When targeting Android 6.0 or earlier, set the default Java Security Provider
-for SSL to Conscrypt by creating the Client instance as follows:
-
-<CodeBlock language="java">{JavaImportAndroid6}</CodeBlock>
-:::
-
-</TabItem>
-
-</Tabs>
-
-**SDK Options**
-
-| Config      | Type                                 | Required? |                 Default                 | Description                                                                                                                                                                   |
-| :---------- | :----------------------------------- | :-------: | :-------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| endpoint    | `string`                             |  &#9989;  |               `undefined`               | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
-| apiKey      | `string`                             |  &#9989;  |               `undefined`               | Your API key which can be found on the Web Console.                                                                                                                           |
-| environment | `"production"` or `"development"`    |  &#9989;  |               `undefined`               | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
-| application | `string`                             |  &#9989;  |               `undefined`               | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
-| retries     | `number`                             | &#10060;  |                   `5`                   | The number of retries before the SDK stops trying to connect.                                                                                                                 |
-| timeout     | `number`                             | &#10060;  |                 `3000`                  | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
-| eventLogger | `(context, eventName, data) => void` | &#10060;  | See "Using a Custom Event Logger" below | A callback function which runs after SDK events.                                                                                                                              |
-
-#### Using a Custom Event Logger
 
 <Tabs groupId="language">
 

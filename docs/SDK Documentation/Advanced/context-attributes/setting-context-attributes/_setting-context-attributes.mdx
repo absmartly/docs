@@ -1,0 +1,72 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsSetAttributes from "!!raw-loader!./js/setAttributes.js";
+
+import ReactSetAttributes from "!!raw-loader!./react/setAttributes.js";
+
+import SwiftSetAttributes from "!!raw-loader!./swift/setAttributes.swift";
+
+import VueSetAttributesScript from "!!raw-loader!./vue/setAttributes.js";
+import VueSetAttributesTemplate from "!!raw-loader!./vue/SetAttributes.vue";
+
+import JavaSetAttributes from "!!raw-loader!./java/setAttributes.java";
+
+Attributes are used to pass meta-data about the user and/or the request. They
+can be used later in the Web Console to create segments or audiences. They can
+be set using the `attribute()` or `attributes()` methods, before or after the
+context is ready.
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx">{ReactSetAttributes}</CodeBlock>
+
+:::note
+The `attribute()` and `attributes()` methods can be called both inside, and outside
+of your useEffect.
+:::
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+Attributes can be set in script.
+
+<CodeBlock language="js">{VueSetAttributesScript}</CodeBlock>
+
+Or directly in templates with the `:attributes` property of the `Treatment`
+component.
+
+<CodeBlock language="html">{VueSetAttributesTemplate}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+<CodeBlock language="java">{JavaSetAttributes}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
+
+:::caution
+You should create audiences with the same attributes as those in the Web Console.
+By default it will not enforce these conditions, but if for some reason the
+`treatment()` method is called for a user that doesn’t meet the correct criteria, the
+Web Console will warn you about it.
+:::

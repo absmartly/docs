@@ -98,7 +98,7 @@ const config = {
         },
         items: [
           {
-            to: "docs/sdk-documentation",
+            to: "docs/SDK Documentation",
             position: "left",
             label: "Docs",
           },
@@ -153,7 +153,7 @@ const config = {
             items: [
               {
                 label: "SDK Docs",
-                to: "/docs/sdk-documentation",
+                to: "/docs/SDK Documentation",
               },
               {
                 label: "API Docs",

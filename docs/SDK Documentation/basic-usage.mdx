@@ -1,0 +1,36 @@
+---
+sidebar_position: 3
+---
+
+import SelectingATreatment from "./basic-usage/selecting-a-treatment/_selecting-a-treatment.mdx";
+
+import SelectingAVariable from "./basic-usage/selecting-a-variable/_selecting-a-variable.mdx";
+
+import Peeking from "./basic-usage/peeking/_peeking.mdx";
+
+import Overriding from "./basic-usage/overriding/_overriding.mdx";
+
+# Basic Usage
+
+After the init call, all the variants for all running experiments will be
+cached in memory. The init call should take a single-digit number of milliseconds on the
+server side. On the client side, it may take a little longer (it’s another
+roundtrip to the server) unless you pass the data directly in the HTML which
+makes it ready immediately. Any experiment that is evaluated and is not
+running will return Variant 0 (the control group).
+
+## Selecting a Treatment
+
+<SelectingATreatment />
+
+## Treatment Variables
+
+<SelectingAVariable />
+
+## Peek at Treatment Variants
+
+<Peeking />
+
+## Overriding Treatment Variants
+
+<Overriding />
