@@ -65,7 +65,7 @@ const config = {
         docsPluginId: "classic",
         config: {
           collector: {
-            specPath: "spec.yaml", // Path to designated spec file
+            specPath: "api-spec.yaml", // Path to designated spec file
             outputDir: "docs/SDK API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
