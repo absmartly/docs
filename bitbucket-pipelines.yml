@@ -2,8 +2,6 @@ pipelines:
   default:
     - step:
         script:
-          - docker version
-          - echo $APPLICATION_ID
-          - echo $API_KEY
+          - docker run -it --env API_KEY=$API_KEY --env APPLICATION_ID=$APPLICATION_ID -e "CONFIG=$(cat ./config.json | jq -r tostring)" algolia/docsearch-scraper
         services:
           - docker
