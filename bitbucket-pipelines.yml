@@ -1,8 +1,9 @@
 pipelines:
-  default:
-    - step:
-        script:
-          - apt-get install -y jq
-          - docker run -i --env API_KEY=$API_KEY --env APPLICATION_ID=$APPLICATION_ID -e "CONFIG=$(cat ./config.json | jq -r tostring)" algolia/docsearch-scraper
-        services:
-          - docker
+  branches:
+    master:
+      - step:
+          script:
+            - apt-get install -y jq
+            - docker run -i --env API_KEY=$API_KEY --env APPLICATION_ID=$APPLICATION_ID -e "CONFIG=$(cat ./config.json | jq -r tostring)" algolia/docsearch-scraper
+          services:
+            - docker
