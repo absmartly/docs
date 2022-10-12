@@ -3,5 +3,7 @@ pipelines:
     - step:
         script:
           - docker version
+          - echo $APPLICATION_ID
+          - echo $API_KEY
         services:
           - docker
