@@ -1,0 +1,152 @@
+# Dashboard Settings
+
+The dashboard settings page is your place to set up parts of your experiments.
+
+## Applications
+
+Here you can declare all of the platforms where your experiments may run. When
+creating an experiment, you will be asked to name all applications where the
+experiment will be run.
+
+## API Keys
+
+API keys are used to allow access to the API from your applications.
+
+Each key can have 3 permissions:
+
+- Making requests to the SDK
+- Accessing the SDK context endpoint
+- Fetching experiment data from the API
+
+API keys are independent of environments. The same key can be used in both `production`
+and `development` environments.
+
+## CORS Origins
+
+In CORS Origins, you can declare all the domains which are allowed to access
+the API. These can be written as a specific domain or you can pass in a
+[RegEx](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet)
+pattern to allow for a myriad of domains.
+
+## Environments
+
+Environments can be of type `production` or `development`. You can have as many
+environments of each type as necessary.
+
+Production environments will only be running `production` experiments.
+Development environments run both `production` and `development` experiments, but
+`development` experiments only collect data from `development` environments, and
+`production` experiments only collect data from `production` environments.
+
+## Goals
+
+Goals can be used to give you insights about your business, your users'
+behavior, the performance of your system, impact on customer support, and
+more!
+
+Each goal starts with a name and an impact. The goal name will be used in your
+code so we recommend using a keyword-like or kebab-case name. For example,
+`newsletter_subscription`, `cpu_load_time` or `bookings`.
+
+### Metrics
+
+Three metrics per goal are tracked by default:
+
+| Conversion Rate                                      | Achievements                                                                          | Time to Achieve Goal                                                                    |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| How many users [(units)](#units) achieved this goal. | How many times those units achieved the goal. Some might have done it more than once. | The time between the units being exposed to the experiment and the goal being achieved. |
+
+These default metrics can be renamed to be more descriptive of their goal. For
+example, for a **Booking** goal, you may wish to rename the Conversion Rate
+metric to **Bookers**, and the Achievements metric to **Bookings**.
+
+Furthermore, you can add your own metrics to goals. These metrics can be
+passed as properties in the [track method](/docs/SDK%20Documentation/Advanced/tracking-goals)
+in your code.
+
+## Roles
+
+The Roles section allows you to customize and give specific permissions to the users of your
+Web Console.
+
+## Segments
+
+Segments are used to slice up your metrics based on different attributes. For example, you may be passing the following as attributes in an experiment:
+
+```js
+context.attributes({
+	customer_age: 'new_customer',
+	url: location.toString(),
+	user_agent: navigator.userAgent
+	referrer: document.referrer,
+	screenName,
+	pageName,
+	country: headers['HTTP_CF_IPCOUNTRY'],
+	language: headers['Accept-Language'],
+ 	channel: query_params.utm_medium,
+})
+```
+
+If the `utm_medium` is something that would be interesting to segment the data
+on, you could create a **Channel** segment with the **Source attribute** set to
+**channel**.
+
+Additionally, if you have the User-Agent parser turned on, A/B Smartly will parse the UA
+string passed on the `user_agent` attribute and automatically create the
+following attributes for you:
+
+- `user_agent/browser`: Chrome, Edge, Firefox, Safari...
+- `user_agent/browser_type`: Browser, Email, Crawler...
+- `user_agent/device_type`: Desktop, Mobile, Tablet...
+- `user_agent/platform`: Android, iOS, Mac OS X, Windows...
+- `user_agent/crawler`: yes, no
+
+Pass one of those keys in the **Source attribute** field to automatically
+create a segment based on the respective information from the User-Agent
+string.
+
+## Tags
+
+Both experiments and goals can be given tags. This can be useful for searching
+through your goals and experiments to find a specific one.
+
+We recommend prefixing each tag with the tag's type. For example,
+`location:Header`, `stack:Backend` or `psychological:Trust`.
+
+## Teams
+
+In the teams section, you can declare the teams that will be running
+experiments. This will allow you to assign and search for experiments by a
+specific team.
+
+## Units
+
+Units are the unique identifier Units are the identifiers that are going to be used to generate the variant.
+For experiments running across platforms (iOS, Android, web, email, etc.) the
+unit should be known across all the platforms. Most likely the authenticated
+user's `user-id`. For experiments running in apps or parts of the website where
+the user is not authenticated, you might want to create a unit by device.
+`anonymous-id` or `device-id` are common names for those.
+
+For experiments running in email newsletters, you could even have a unit based
+on the user’s email address, but if you are interested in collecting metrics
+tracked in the website that the newsletter is linking to, it’s better to use
+the same unit that is being used for the experiments running in the website.
+
+Have a look at the [Tracking Unit](/docs/Web%20Console%20Docs/creating-your-first-experiment#tracking-unit)
+section of the **Creating an Experiment** docs for more information.
+
+## Users
+
+In Users, you can create and give permissions to the users who should have
+access to the platform.
+
+## Webhooks
+
+Webhooks can be used for custom integrations. For example:
+
+- Invalidating the CDN’s cache of the data file with any experiment being
+  started or stopped.
+- Sending all actions, notifications, and comments to a Slack channel.
+- Synchronizing the status of a Jira ticket with the status of the respective
+  experiment.
