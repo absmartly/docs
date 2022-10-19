@@ -1,0 +1,199 @@
+---
+sidebar_position: 2
+---
+
+import Image from "@theme/IdealImage";
+
+# The Dashboard
+
+Welcome to your Web Console dashboard! This is where you will create, view and
+monitor your experiments. If there aren't any experiments in your list, learn
+how to create one in the [creating an experiment](docs/Web%20Console%20Docs/creating-an-experiment)
+docs.
+
+<Image img={require("../../static/img/dashboard.png")} />
+
+---
+
+## Experiment Dashboard
+
+To enter the experiment dashboard, just click on one of your experiments.
+
+---
+
+### Information at a glance
+
+At the top of the experiment dashboard, you can see some of the most important
+information about your experiment.
+
+|                                                Runtime                                                 |                            Number of Participants                            |                                   Metrics Summary                                    |                                                                   Primary Metric Power                                                                    |
+| :----------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| The amount of time since that experiment was started in either production or development environments. | How many users have experienced the experiment, including the control group. | A tally of your primary and secondary metrics which are either positive or negative. | How conclusive your primary metric data is. The higher the percentage, the more likely you it is that you are able to make a decision on this experiment. |
+
+<Image img={require("../../static/img/experiment_main_info.png")} />
+
+---
+
+### Impact on Main Metrics
+
+The impact on main metrics graph shows how your experiment has performed in
+relation to your specified metrics. See the
+[goals section of the Dashboard Settings docs](/docs/Web%20Console%20Docs/settings#goals)
+to learn more about metrics.
+
+<Image img={require("../../static/img/impact_on_main_metrics.png")} />
+
+#### Color Code
+
+The color-coding of the graph is as follows:
+
+- The graph is purple when the API is confident that this metric has been positively effected.
+- The graph is pink when the API is confident that this metric has been negatively effected.
+- The graph is gray when the API is unsure whether this metric has been negatively or positively effected.
+
+---
+
+### Participants
+
+<Image img={require("../../static/img/participants.png")} />
+
+The participants view shows your participants' data in real-time. This
+includes the number of participants per experiment and when they experienced
+their variant of the experiment.
+
+#### Sample Size Reached
+
+When your experiment has reached a sample size that is large enough to make a
+decision on the experiment. That moment will be shown on the graph as a dotted
+green line as depicted above.
+
+#### Tagging
+
+<Image img={require("../../static/img/participants.png")} />
+
+In the participants graph you can add tags to the data. This can give insights
+to your team about why the participants graph looks the way it does. For
+example, you could add a tag to a day when a lot of participants experienced
+the experiment, letting everybody know that a new ad campaign was released
+that day. When creating a tag, you can decide whether you want this tag to be
+shown on all experiments, or just the one that you are currently viewing.
+
+---
+
+### Goals
+
+<Image img={require("../../static/img/goal_summary.png")} />
+
+In the goals section, you can see information about how your experiment has
+effected your goals ([See goals in the dashboard settings docs](docs/Web%20Console%20Docs/settings.mdx#goals)).
+After expanding a certain goal, you can gain insight into its specified
+[metrics](docs/Web%20Console%20Docs/settings.mdx#metrics) on the left hand
+side of the screen.
+
+#### Summary
+
+The summary view gives you a list of your variants and the data that has been
+collected by each. The columns can be described as follows:
+
+| Name           | Definition                                                                                                                                                                        |
+| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Variant**    | The name of your variants. This could be a custom name, or simply Variant A, Variant B etc.                                                                                       |
+| **Value**      | The value of this particular metric per variant. This can be formatted in the goal's settings using the format string.                                                            |
+| **Mean**       | The value of this metric divided by the number of participants. For example, the number of bookings made divided by the number of users who experienced the variant.              |
+| **Confidence** | The confidence that these values give you to make a decision about the experiment. This is calculated using [Fieller’s Theorem](https://www.wikiwand.com/en/Fieller%27s_theorem). |
+| **Impact**     | The impact each variant has had on this metric.                                                                                                                                   |
+
+#### Graphs
+
+In the graphs tab, you will see your metric displayed as 3 graphs:
+
+- Impact and Confidence over Time in a selected variant
+- Value over Time from all variants
+- Participants over Time in all variants
+
+These graphs can be used together to give you some insight into how your
+metrics have been affected by the experiment.
+
+#### Segments
+
+The segments tab shows the confidence and impact on this metric per variant,
+but it splits the data to give you a more specific insight into what kind of
+users are having a positive or negative experience.
+
+<Image img={require("../../static/img/segments.png")} />
+
+In the example above, you can see that our "Bookings" metric has been
+positively impacted by our variant, but when we look at the segments
+chart, we find that users who are visiting from the most commonly used
+platforms are not impacted very much. It's users in the "Other" category who
+have had the most significant change.
+
+See [Segments](docs/Web%20Console%20Docs/settings.mdx#segments) in the
+Dashboard Settings docs for information on creating segments, or checkout the
+[Attributes](docs/SDK%20Documentation/Advanced/context-attributes.mdx) section
+of the SDK docs for information on how to use them in your code.
+
+---
+
+### Warnings
+
+In order to help you optimize the data that your experiments are bringing in,
+and to clean up your code, we have provided various warning flags to give you
+insights into your experiments.
+
+:::success Sample Size Reached
+The "Sample Size Reached" warning is green and tells you that your experiment
+has been exposed to enough participants for you to make a decision about it.
+:::
+
+:::info Code Cleanup Needed
+The "Code Cleanup Needed" warning is blue and it reminds you to cleanup your
+code after a decision has been made on an experiment. If a decision was made
+too long ago and the api is still receiving exposure calls from this
+experiment, this flag will come up.
+:::
+
+:::caution Audience Mistmatch
+The "Audience Mistmatch" warning is yellow and tells you that your experiment
+has been exposed to some participants who shouldn't have experienced it. This
+can happen when a [targeting audience](docs/Web%20Console%20Docs/creating-an-experiment.mdx#targeting-audience)
+has been set with Strict Mode off. This serves as a reminder to put the
+required checks in your code to separate that targeting audience.
+:::
+
+:::danger Sample Ratio Mismatch
+The "Sample Ratio Mismatch" warning is red and tells you that the split ratio
+between your variants is not accurate. For example, if you had an experiment
+with 2 variants and a 50/50 split, but Variant A had had 1,000 impressions and
+Variant B had had 2,000 impressions, a sample ratio mismatch would be flagged.
+
+This usually means that the experiment has been implemented incorrectly and
+typically has a severely negative effect on the statistical validity of your
+presented results.
+:::
+
+---
+
+## Description Tab
+
+The description tabs is where your hypothesis, prediction and other important
+pieces of information (tracking unit, traffic allocation, applications etc.)
+are kept. This is useful as anyone in your team can find out why an experiment
+is running and what the owner of that experiment is trying to achieve.
+
+---
+
+## Activity Tab
+
+The Activity Tab is where your team can come together. A/B Smartly is more
+than just an experimentation platform - It's a knowledge base. Giving each
+member of your team more insight into why an experiment exists, what it's
+testing for and what the outcome is so far.
+
+The activity tab has support for:
+
+- Rich-text commenting with [Markdown](https://www.markdownguide.org/cheat-sheet/)
+- Replies
+- Reports
+- Graph embeds
+- @User team-member tags
