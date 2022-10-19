@@ -8,7 +8,7 @@ import Image from "@theme/IdealImage";
 
 Welcome to your Web Console dashboard! This is where you will create, view and
 monitor your experiments. If there aren't any experiments in your list, learn
-how to create one in the [creating an experiment](docs/Web%20Console%20Docs/creating-an-experiment)
+how to create one in the [creating an experiment](creating-an-experiment)
 docs.
 
 <Image img={require("../../static/img/dashboard.png")} />
@@ -17,9 +17,7 @@ docs.
 
 ## Experiment Dashboard
 
-To enter the experiment dashboard, just click on one of your experiments.
-
----
+To enter the experiment dashboard, click on the name of one of your experiments.
 
 ### Information at a glance
 
@@ -69,7 +67,7 @@ green line as depicted above.
 
 #### Tagging
 
-<Image img={require("../../static/img/participants.png")} />
+<Image img={require("../../static/img/graph_tag.png")} />
 
 In the participants graph you can add tags to the data. This can give insights
 to your team about why the participants graph looks the way it does. For
@@ -112,7 +110,7 @@ In the graphs tab, you will see your metric displayed as 3 graphs:
 - Participants over Time in all variants
 
 These graphs can be used together to give you some insight into how your
-metrics have been affected by the experiment.
+metrics have been effected by the experiment.
 
 #### Segments
 
@@ -129,9 +127,9 @@ platforms are not impacted very much. It's users in the "Other" category who
 have had the most significant change.
 
 See [Segments](docs/Web%20Console%20Docs/settings.mdx#segments) in the
-Dashboard Settings docs for information on creating segments, or checkout the
+Dashboard Settings docs for information on creating segments, or check out the
 [Attributes](docs/SDK%20Documentation/Advanced/context-attributes.mdx) section
-of the SDK docs for information on how to use them in your code.
+of the SDK docs for information on how to pass them to the SDK in your code.
 
 ---
 
@@ -149,7 +147,7 @@ has been exposed to enough participants for you to make a decision about it.
 :::info Code Cleanup Needed
 The "Code Cleanup Needed" warning is blue and it reminds you to cleanup your
 code after a decision has been made on an experiment. If a decision was made
-too long ago and the api is still receiving exposure calls from this
+too long ago and the SDK is still receiving exposure calls from this
 experiment, this flag will come up.
 :::
 

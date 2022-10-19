@@ -2,6 +2,7 @@
 sidebar_position: 2
 ---
 
+import Image from "@theme/IdealImage";
 import FutureDate from "../../src/components/FutureDate";
 
 # Creating An Experiment
@@ -33,18 +34,20 @@ If the experiment is to be run across multiple platforms (Such as iOS, Android,
 Web, Email etc.), then this unit should be available on all of them. Most
 likely, the `user_id` of the authenticated user.
 
-Conversely, if you wish for a user to experience different variants, depending
+Conversely, if you wish for a user to experience different variants depending
 on their device, you could use their `device_id` as a unit.
 
 Even further, to avoid experiment biases from users talking to eachother about
 their experience, companies such as LinkedIn, group their users into clusters
 and would use a `cluster_id` as their tracking unit.
 
+You can create new tracking units in your [dashboard settings](settings.mdx#units).
+
 ## Applications
 
 Applications are the places where this experiment will be run. These could be
-"android", "ios" and "web", for example, and are created in the dashboard
-settings.
+"android", "ios" and "web", for example, and are also created in your [dashboard
+settings](settings.mdx#applications).
 
 ## Variants
 
@@ -73,12 +76,13 @@ in the SDK Documentation for more information.
 
 ## Metrics
 
-Your primary metric is the statistic which is used to make a decision on your
-experiment and are inherantly linked to [goals](/docs/goals).
+Metrics are inherantly linked to your company's [goals](docs/Web%20Console%20Docs/settings.mdx#goals).
+Your primary metric is the statistic used to make a decision about your
+experiment.
 
 Secondary metrics are not used to make a decision on your experiment, but they
 may be affected by it. Setting them here allows for you to easily visualise
-them in the [experiment view](/docs/goals).
+them in the [experiment dashboard](docs/Web%20Console%20Docs/dashboard.mdx#impact-on-main-metrics).
 
 ## Minimum Detectable Effect
 
@@ -91,36 +95,37 @@ To calculate the MDE of your experiment, you can use the
 
 ## Targeting Audience
 
-Here you can define an audience who will experience the experiment. You could,
-for example, only test the experiment on British users. In this case you might
-set the filter group to:
+Here you can define a specific audience who will experience the experiment. For
+example, you could decide to only test the experiment on British users. In this
+case you might set the filter group to:
 
-- language IS EQUAL en-gb
+<Image img={require("../../static/img/targeting_audience.png")} />
 
-  AND
-
-- country IS EQUAL gb
+These parameters can then be passed to the SDK in your code using
+[context attributes](docs/SDK%20Documentation/Advanced/context-attributes.mdx).
 
 ### Strict Mode
 
-When strict mode is **on**, only users in the filter groups will be able to
-participate in the experiment. They will be shown the control variant, but
+When strict mode is **on**, only users in the filter groups will **be able** to
+participate in the experiment. Others will be shown the control variant, but
 their data will not be tracked.
 
 When strict mode is **off**, any user can participate in the experiment, but
 the web console may warn you that your experiment is being shown to the wrong
-people.
+people. This helps you and your developers to remember to add the appropriate
+checks in your code when a decision has been made on the experiment. For
+example, to only show the tested variant to British users.
 
 ## Metadata
 
-The metadata section allows you to select the owners of this experiment and
-assign it to a particular team.
+The metadata section allows you to select the owners of this experiment,
+assign it to a particular team and add tags to help with searching and filtering
+later on.
 
 ### Tags
 
-Tags are useful for searching for your experiments in the future and can be
-named anything you like. Often it can be useful to prefix your tags with the
-meaning of that tag. Some examples of tags could be:
+Tags can be named anything you like. Often it can be useful to prefix your
+tags with the meaning of that tag. Some examples of tags could be:
 
 - `stack:backend`
 - `theme:urgency`
@@ -128,7 +133,7 @@ meaning of that tag. Some examples of tags could be:
 - `psychological:trust`
 
 These allow for you to filter your experiments in the experiments list page,
-but also give you an insight into why that experiment was tagged as such.
+but they also give you an insight into why that experiment was tagged as such.
 
 ## Description
 
@@ -153,8 +158,8 @@ Your prediction states what will happen if your hypothesis proves to be true.
 
 For example:
 
-> Changing our call-to-action buttons to red will cause a higher click-through-rate
-> from our visitors.
+> Changing our call-to-action buttons to red will cause a higher
+> click-through-rate to our checkout page from our visitors.
 
 ### Purpose
 
@@ -167,7 +172,8 @@ For example:
 
 ### Implementation Details
 
-In your implementation details, you can define the parameters of your experiment's implementation, like:
+In your implementation details, you can define the parameters of your
+experiment's implementation, like:
 
 - How long it will take to implement
 - What's the impact that we can expect from this implementation?
