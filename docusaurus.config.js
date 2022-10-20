@@ -90,6 +90,12 @@ const config = {
       colorMode: {
         respectPrefersColorScheme: true,
       },
+      docs: {
+        sidebar: {
+          autoCollapseCategories: true,
+          hideable: true,
+        },
+      },
       navbar: {
         title: "A/B Smartly Docs",
         logo: {
@@ -98,40 +104,19 @@ const config = {
         },
         items: [
           {
-            to: "docs/SDK Documentation",
+            to: "docs/Web Console Docs/tutorial",
             position: "left",
-            label: "Docs",
+            label: "Web Console Tutorial",
           },
           {
-            type: "dropdown",
-            label: "API",
+            to: "docs/SDK Documentation",
             position: "left",
-            items: [
-              {
-                to: "docs/SDK%20API/a-b-smartly-collector",
-                label: "Introduction",
-              },
-              {
-                to: "docs/SDK%20API/collector-health-check",
-                label: "Collector Health Check",
-              },
-              {
-                to: "docs/SDK%20API/context-create",
-                label: "Create a Context",
-              },
-              {
-                to: "docs/SDK%20API/context-get",
-                label: "Get Experiment Data",
-              },
-              {
-                to: "docs/SDK%20API/context-publish",
-                label: "Publish Experiment Events",
-              },
-              {
-                to: "docs/SDK%20API/experiment-get",
-                label: "Get Experiment Info",
-              },
-            ],
+            label: "SDK Docs",
+          },
+          {
+            to: "docs/SDK API/a-b-smartly-collector",
+            position: "left",
+            label: "API Docs",
           },
           {
             to: "https://absmartly.com/blog",

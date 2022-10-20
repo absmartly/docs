@@ -28,10 +28,10 @@ const HomepageHeader: FC<{}> = () => {
             Read the Docs
           </Link>
           <Link
-            to="docs/Web Console Docs/"
+            to="docs/Web Console Docs/tutorial"
             className="button button--dark button--lg"
           >
-            Dashboard Tutorial
+            Web Console Tutorial
           </Link>
         </div>
       </div>
