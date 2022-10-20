@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-import Image from "@theme/IdealImage";
+import Image from "../../src/components/Image";
 import FutureDate from "../../src/components/FutureDate";
 
 # Creating An Experiment
@@ -99,7 +99,13 @@ Here you can define a specific audience who will experience the experiment. For
 example, you could decide to only test the experiment on British users. In this
 case you might set the filter group to:
 
-<Image img={require("../../static/img/targeting_audience.png")} />
+<Image
+  img="targeting_audience.png"
+  maxWidth="40rem"
+  centered
+  alt="An example of a specified targeting audience. This one is specific to
+  British users and it says, language is equal en-gb and country is equal gb."
+/>
 
 These parameters can then be passed to the SDK in your code using
 [context attributes](docs/SDK%20Documentation/Advanced/context-attributes.mdx).
