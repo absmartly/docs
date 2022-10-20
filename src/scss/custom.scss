@@ -28,3 +28,22 @@
   --ifm-color-primary-lightest: #c7fdff;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+.button {
+  transition-property: transform, box-shadow;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  &:hover,
+  &:focus,
+  &:active {
+    transform: scale(1.07);
+    //box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+  }
+  &--light {
+    background-color: var(--ifm-color-primary-light);
+  }
+  &--dark {
+    background-color: var(--ifm-color-primary-darkest);
+    transition: transform 0.3s ease-in-out;
+  }
+}
