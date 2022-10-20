@@ -41,12 +41,17 @@ Development environments run both `production` and `development` experiments, bu
 ## Goals
 
 Goals can be used to give you insights about your business, your users'
-behavior, the performance of your system, impact on customer support, and
-more!
+behavior, the performance of your system and more!
 
 Each goal starts with a name and an impact. The goal name will be used in your
 code so we recommend using a keyword-like or kebab-case name. For example,
 `newsletter_subscription`, `cpu_load_time` or `bookings`.
+
+As for a goal's impact, you have three choices - positive, negative or unknown.
+
+|                                                                                        Positive                                                                                         |                                                                         Negative                                                                         |                                                                                                                  Unknown                                                                                                                  |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| A goal with a positive impact means that if it is increased, it's good for your business. For example, `booking`, `checkout` and `subscribing` would all be positively impacting goals. | Goals with a negative impact, on the other hand, are bad for business if they increase in frequency. For example, `unsubscribing` or `deleting_account`. | Goals with an unknown impact are used when the effect of the goal could be either positive or negative. For example, `time_on_page` could be positive or negative depending on whether the user is engaged, versus whether they are lost. |
 
 ### Metrics
 
@@ -121,8 +126,8 @@ specific team.
 
 ## Units
 
-Units are the unique identifier Units are the identifiers that are going to be used to generate the variant.
-For experiments running across platforms (iOS, Android, web, email, etc.) the
+Units are the unique identifiers that are going to be used to generate a variant.
+For experiments running across different platforms (iOS, Android, web, email, etc.) the
 unit should be known across all the platforms. Most likely the authenticated
 user's `user-id`. For experiments running in apps or parts of the website where
 the user is not authenticated, you might want to create a unit by device.
