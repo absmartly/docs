@@ -1,0 +1,93 @@
+---
+sidebar_position: 0
+---
+
+import Image from "../../src/components/Image";
+
+# Getting Started
+
+Welcome to your Web Console dashboard! This is where you will create, view and monitor
+your experiments.
+
+<Image
+  img="empty_dashboard.png"
+  alt="A screenshot of a web console dashboard that has no experiments in it."
+/>
+
+---
+
+You're almost ready to start [creating your first experiment](creating-an-experiment)!
+But first we have to tell the dashboard **how**, **where** and **why** you want to run
+your tests.
+
+## 1. Creating A Unit
+
+Units are the unique identifiers that are going to be used to generate a variant.
+For experiments running across different platforms (iOS, Android, web, email, etc.) the
+unit should be known across all of them. Most likely the authenticated
+user's `user_id`.
+
+Have a look at the [Tracking Unit](/docs/Web%20Console%20Docs/creating-an-experiment#tracking-unit)
+section of the **Creating an Experiment** docs for more information.
+
+To define your first Unit go to `Settings > Units` and click on `Create Unit`.
+All that needs set here is the name of your unit. We recommend that you give
+it the same name as it's referenced in your code.
+
+:::info Tip
+Feel free to add a description, so the rest of your team knows **what** the unit
+will reference to and **why** it exists.
+:::
+
+## 2. Setting Your Applications
+
+When creating an experiment, you will be asked which platforms the experiment
+will run on.
+
+To set these up, navigate to `Settings > Applications` and click `Create Application`.
+
+Similarly to Units, you can name these whatever you want and add a description
+to define it more for your team. Some examples of application names might be
+`ios`, `android` or `www`.
+
+Once your applications are defined, you're ready to move on to...
+
+## 3. Setting Your Goals
+
+Goals can be used to give you insights about your business, your users'
+behavior, the performance of your system and more!
+
+To setup your first goal, head to `Settings > Goals` and click on `Create Goal`.
+
+Each goal starts with a name and an impact. The goal name will be used in your
+code so we recommend using a keyword-like or kebab-case name. For example,
+`newsletter_subscription`, `cpu_load_time` or `bookings`.
+
+:::info Tip
+[Tags](settings#tags) are useful for searching, filtering and classifying your
+goals. We recommend prefixing each tag with the tag's type. For example,
+`location:Header`, `stack:Backend` or `psychological:Trust`.
+:::
+
+Next, you need to give your goal an impact. For this, you have three choices -
+positive, negative or unknown.
+
+|                                                                                        Positive                                                                                         |                                                                         Negative                                                                         |                                                                                                                  Unknown                                                                                                                  |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| A goal with a positive impact means that if it is increased, it's good for your business. For example, `booking`, `checkout` and `subscribing` would all be positively impacting goals. | Goals with a negative impact, on the other hand, are bad for business if they increase in frequency. For example, `unsubscribing` or `deleting_account`. | Goals with an unknown impact are used when the effect of the goal could be either positive or negative. For example, `time_on_page` could be positive or negative depending on whether the user is engaged, versus whether they are lost. |
+
+### Metrics
+
+Metrics are a reference to the actual data that is being tracked. Three metrics are tracked by default per goal:
+
+|                   Conversion Rate                    |                                     Achievements                                      |                                  Time to Achieve Goal                                   |
+| :--------------------------------------------------: | :-----------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: |
+| How many users [(units)](#units) achieved this goal. | How many times those units achieved the goal. Some might have done it more than once. | The time between the units being exposed to the experiment and the goal being achieved. |
+
+:::note
+For more information on metrics and how to create your own, check out the
+[dashboard settings documentation](settings.mdx#metrics).
+:::
+
+Now you have your units, applications and goals set up, you're ready to move
+on to the next chapter - [creating an experiment](creating-an-experiment)!
