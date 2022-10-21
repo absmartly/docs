@@ -61,9 +61,9 @@ experiment has started running without biasing the data. If you wish to ease-in
 an experiment, it's better to use the [traffic allocation](#traffic-allocation)
 option instead.
 
-:::caution
+:::note
 The more variants you have, the less traffic each variant will be
-exposed to.
+exposed to and the longer it will take for the experiment to finish.
 :::
 
 ### Variant Variables
@@ -73,6 +73,11 @@ example use a configuration file, you can pass a variant variable here and
 have it overwrite your code. See
 [treatment variables](/docs/sdk%20documentation/basic-usage#treatment-variables)
 in the SDK Documentation for more information.
+
+:::caution
+Generally, we do not recommend changing variables on your control variant
+(**Variant A**).
+:::
 
 ## Metrics
 

@@ -8,9 +8,10 @@ function App() {
   // Define a new context request
   const request = {
     units: {
+      // All data will be hashed
       userId: "123",
       session_id: "5ebf06d8cb5d8137290c4abb64155584fbdb64d8",
-      email: "support@absmartly.com", // strings will be hashed
+      email: "support@absmartly.com",
       deviceId: "345",
     },
   };
