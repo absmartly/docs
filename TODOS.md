@@ -11,6 +11,7 @@ in bold must be completed before deploying the site for the first time.
 - [ ] Add Legal pages
 - [x] Revamp Header
 - [x] Migrate to yarn
+- [ ] Add index pages for the Web Console and API docs
 
 ## Netlify
 
@@ -23,7 +24,7 @@ in bold must be completed before deploying the site for the first time.
 
 ## Dashboard
 
-- [ ] Create docs for the Dashboard.
+- [x] Create docs for the Dashboard.
 
 ## Docs
 
