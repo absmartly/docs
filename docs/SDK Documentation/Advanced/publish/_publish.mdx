@@ -12,6 +12,8 @@ import VuePublish from "!!raw-loader!./vue/publish.js";
 
 import JavaPublish from "!!raw-loader!./java/publish.java";
 
+import GoPublish from "!!raw-loader!./go/publish.go";
+
 Call the `publish()` method any time you would like to publish all of
 the impressions that have been tracked so far.
 
@@ -46,6 +48,16 @@ the impressions that have been tracked so far.
 You can use either the `context.publish()` or the `context.publishAsync()` method.
 
 <CodeBlock language="java">{JavaPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+Sometimes it is necessary to ensure all events have been published to the A/B
+Smartly collector, before proceeding. You can explicitly call the `Publish()` or
+`PublishAsync()` methods.
+
+<CodeBlock language="go">{GoPublish}</CodeBlock>
 
 </TabItem>
 

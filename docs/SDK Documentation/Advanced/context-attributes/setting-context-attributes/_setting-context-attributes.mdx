@@ -13,6 +13,8 @@ import VueSetAttributesTemplate from "!!raw-loader!./vue/SetAttributes.vue";
 
 import JavaSetAttributes from "!!raw-loader!./java/setAttributes.java";
 
+import GoSetAttributes from "!!raw-loader!./go/setAttributes.go";
+
 Attributes are used to pass meta-data about the user and/or the request. They
 can be used later in the Web Console to create segments or audiences. They can
 be set using the `attribute()` or `attributes()` methods, before or after the
@@ -59,6 +61,12 @@ component.
 <TabItem value="java" label="Java">
 
 <CodeBlock language="java">{JavaSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+<CodeBlock language="go">{GoSetAttributes}</CodeBlock>
 
 </TabItem>
 

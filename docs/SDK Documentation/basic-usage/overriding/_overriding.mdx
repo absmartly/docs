@@ -13,6 +13,8 @@ import VueWithOverrideMethods from "!!raw-loader!./vue/withOverrideMethods.js";
 
 import JavaOverriding from "!!raw-loader!./java/override.java";
 
+import GoOverriding from "!!raw-loader!./go/override.go";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -76,6 +78,17 @@ methods. The `setOverride()` and `setOverrides()` methods can be called before
 the context is ready.
 
 <CodeBlock language="java">{JavaOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `Override()` and/or `Overrides()`
+methods. The `SetOverride()` and `SetOverrides()` methods can be called before
+the context is ready.
+
+<CodeBlock language="go">{GoOverriding}</CodeBlock>
 
 </TabItem>
 
