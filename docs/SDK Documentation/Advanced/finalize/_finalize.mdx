@@ -12,6 +12,8 @@ import VueFinalize from "!!raw-loader!./vue/finalize.js";
 
 import JavaFinalize from "!!raw-loader!./java/finalize.java";
 
+import GoFinalize from "!!raw-loader!./go/finalize.go";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -76,6 +78,17 @@ the context, throwing an error if any method that could generate an event is
 called.
 
 <CodeBlock language="java">{JavaFinalize}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+The `Close()` and `CloseAsync()` methods will ensure all events have been
+published to the A/B Smartly collector, like `Publish()`, and will also "seal"
+the context, throwing an error if any method that could generate an event is
+called.
+
+<CodeBlock language="go">{GoFinalize}</CodeBlock>
 
 </TabItem>
 

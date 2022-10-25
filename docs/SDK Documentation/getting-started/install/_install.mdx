@@ -17,6 +17,9 @@ import VueDirectImport from "!!raw-loader!./vue/directImport.html";
 import JavaGradleInstall from "!!raw-loader!./java/build.gradle";
 import JavaMavenInstall from "!!raw-loader!./java/pom.xml";
 
+import GoModulesInstall from "!!raw-loader!./go/go.mod";
+import GoDependenciesInstall from "!!raw-loader!./go/dependencies.bash";
+
 Once your Web Console is setup and you have created some experiments, you can
 install our SDKs through your package manager, a CDN or by directly importing
 it.
@@ -131,6 +134,23 @@ is recommended.
 Follow <a href="https://github.com/google/conscrypt/blob/master/README.md" target="_blank">these instructions</a>
 to install it as dependency.
 :::
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+:::info Compatibility
+The A/B Smartly Go SDK is compatible with Go versions 1.15 and later. It
+provides both a blocking and an asynchronous interfaces.
+:::
+
+**Go Modules**
+
+<CodeBlock language="go-module">{GoModulesInstall}</CodeBlock>
+
+**Dependencies**
+
+<CodeBlock language="bash">{GoDependenciesInstall}</CodeBlock>
 
 </TabItem>
 

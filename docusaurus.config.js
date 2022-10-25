@@ -183,7 +183,15 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ["java", "scala", "gradle", "ruby", "swift"],
+        additionalLanguages: [
+          "go",
+          "go-module",
+          "java",
+          "scala",
+          "gradle",
+          "ruby",
+          "swift",
+        ],
       },
     }),
 };

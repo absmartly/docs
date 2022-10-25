@@ -17,6 +17,9 @@ import VueCustomAssignments from "!!raw-loader!./vue/customAssignments.js";
 import JavaCustomAssignment from "!!raw-loader!./java/customAssignment.java";
 import JavaCustomAssignments from "!!raw-loader!./java/customAssignments.java";
 
+import GoCustomAssignment from "!!raw-loader!./go/customAssignment.go";
+import GoCustomAssignments from "!!raw-loader!./go/customAssignments.go";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -96,6 +99,22 @@ If you are running multiple experiments and need to choose different custom
 assignments for each one, you can do so using the `setCustomAssignments()` method.
 
 <CodeBlock language="java">{JavaCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `SetCustomAssignment()`
+method.
+
+<CodeBlock language="go">{GoCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `SetCustomAssignments()` method.
+
+<CodeBlock language="go">{GoCustomAssignments}</CodeBlock>
 
 </TabItem>
 

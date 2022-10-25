@@ -32,6 +32,12 @@ import JavaExtraUnits from "!!raw-loader!./java/extraUnits.java";
 import JavaRefreshWithFreshData from "!!raw-loader!./java/refreshWithFreshData.java";
 import JavaRefreshWithRefreshMethod from "!!raw-loader!./java/refreshWithRefreshMethod.java";
 
+import GoSync from "!!raw-loader!./go/sync.go";
+import GoAsync from "!!raw-loader!./go/async.go";
+import GoExtraUnits from "!!raw-loader!./go/extraUnits.go";
+import GoRefreshWithFreshData from "!!raw-loader!./go/refreshWithFreshData.go";
+import GoRefreshWithRefreshMethod from "!!raw-loader!./go/refreshWithRefreshMethod.go";
+
 In order to start linking your experiments from the Web Console to your
 application, you will need to create a context. When you instantiate a context,
 you should pass all known characteristics of the current user. These
@@ -260,6 +266,49 @@ method pulls updated experiment data from the A/B Smartly collector and will
 trigger recently started experiments when `getTreatment()` is called again.
 
 <CodeBlock language="java">{JavaRefreshWithRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+**Create A New Context Synchronously**
+
+<CodeBlock language="go">{GoSync}</CodeBlock>
+
+**Create A New Context Asynchronously**
+
+<CodeBlock language="go">{GoAsync}</CodeBlock>
+
+**Setting Extra Units**
+
+You can add additional units to a context by calling the `SetUnit()` or the
+`SetUnits()` method. This method may be used for example, when a user logs in to
+your application, and you want to use the new unit type to the context.
+
+:::caution Please Note
+You cannot override an already set unit type as that would be a
+change of identity, and will throw an exception. In this case, you must create
+a new context instead. The `SetUnit()` and `SetUnits()` methods can be called
+before the context is ready.
+:::
+
+<CodeBlock language="go">{GoExtraUnits}</CodeBlock>
+
+#### Refreshing the context with fresh experiment data
+
+For long-running contexts, the context is usually created once when the
+application is first started. However, any experiments being tracked in your
+production code, but started after the context was created, will not be
+triggered. To mitigate this, we can use the `setRefreshInterval()` method on
+the context config.
+
+<CodeBlock language="go">{GoRefreshWithFreshData}</CodeBlock>
+
+Alternatively, the `Refresh()` method can be called manually. The `Refresh()`
+method pulls updated experiment data from the A/B Smartly collector and will
+trigger recently started experiments when `GetTreatment()` is called again.
+
+<CodeBlock language="go">{GoRefreshWithRefreshMethod}</CodeBlock>
 
 </TabItem>
 
