@@ -191,6 +191,7 @@ const config = {
           "gradle",
           "ruby",
           "swift",
+          "csharp",
         ],
       },
     }),
