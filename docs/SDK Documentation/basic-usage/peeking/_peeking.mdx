@@ -11,6 +11,8 @@ import JavaPeekAtVariants from "!!raw-loader!./java/peekAtVariants.java";
 import JavaPeekAtVariables from "!!raw-loader!./java/peekAtVariables.java";
 import GoPeekAtVariants from "!!raw-loader!./go/peekAtVariants.go";
 import GoPeekAtVariables from "!!raw-loader!./go/peekAtVariables.go";
+import DotNetPeekAtVariants from "!!raw-loader!./dotnet/peekAtVariants.cs";
+import DotNetPeekAtVariables from "!!raw-loader!./dotnet/peekAtVariables.cs";
 
 <Tabs groupId="language">
 
@@ -88,7 +90,15 @@ provides a `PeekTreatment()` method for that.
 
 <TabItem value="dotnet" label=".NET">
 
-<CodeBlock language="csharp"></CodeBlock>
+Although generally not recommended, it is sometimes necessary to peek at
+a treatment or variable without triggering an exposure. The A/B Smartly
+SDK provides a `PeekTreatment()` method for that.
+
+<CodeBlock language="csharp">{DotNetPeekAtVariants}</CodeBlock>
+
+##### Peeking at variables
+
+<CodeBlock language="csharp">{DotNetPeekAtVariables}</CodeBlock>
 
 </TabItem>
 

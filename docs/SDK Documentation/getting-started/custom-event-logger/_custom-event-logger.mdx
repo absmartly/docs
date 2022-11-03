@@ -9,6 +9,9 @@ import VueCustomEventLogger from "!!raw-loader!./vue/customEventLogger.js";
 import JavaCustomEventLogger from "!!raw-loader!./java/customEventLogger.java";
 import GoCustomEventLogger from "!!raw-loader!./go/customEventLogger.go";
 
+import DotNetCustomEventLogger from "!!raw-loader!./dotnet/customEventLogger.cs";
+import DotNetCustomEventLoggerWithInjection from "!!raw-loader!./dotnet/customEventLoggerInjection.cs";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -151,10 +154,26 @@ following events:
 
 <TabItem value="dotnet" label=".NET">
 
-<CodeBlock language="csharp"></CodeBlock>
+The A/B Smartly SDK can be instantiated with an event logger used for all
+contexts. In addition, an event logger can be specified when creating a
+particular context, in the `ContextConfig`.
 
-| event | when | data |
-| ----- | ---- | ---- |
+<CodeBlock language="csharp">{DotNetCustomEventLogger}</CodeBlock>
+
+<CodeBlock language="csharp">{DotNetCustomEventLoggerWithInjection}</CodeBlock>
+
+The data parameter depends on the type of event. Currently, the SDK logs
+the following events:
+
+| event      | when                                                          | data                                                   |
+| ---------- | ------------------------------------------------------------- | ------------------------------------------------------ |
+| `Error`    | `Context` receives an error                                   | `Exception` object                                     |
+| `Ready`    | `Context` turns ready                                         | `ContextData` used to initialize the context           |
+| `Refresh`  | `Context.Refresh()` method succeeds                           | `ContextData` used to refresh the context              |
+| `Publish`  | `Context.Publish()` or Context.PublishAsync() method succeeds | `PublishEvent` sent to the A/B Smartly event collector |
+| `Exposure` | `Context.GetTreatment()` method succeeds on first exposure    | `Exposure` enqueued for publishing                     |
+| `Goal`     | `Context.Track()` method succeeds                             | `GoalAchievement` enqueued for publishing              |
+| `Close`    | `Context` disposal succeeds                                   | `null`                                                 |
 
 </TabItem>
 

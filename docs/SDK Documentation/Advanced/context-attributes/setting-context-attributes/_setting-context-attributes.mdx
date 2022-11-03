@@ -15,6 +15,8 @@ import JavaSetAttributes from "!!raw-loader!./java/setAttributes.java";
 
 import GoSetAttributes from "!!raw-loader!./go/setAttributes.go";
 
+import DotNetSetAttributes from "!!raw-loader!./dotnet/setAttributes.cs";
+
 Attributes are used to pass meta-data about the user and/or the request. They
 can be used later in the Web Console to create segments or audiences. They can
 be set using the `attribute()` or `attributes()` methods, before or after the
@@ -67,6 +69,12 @@ component.
 <TabItem value="go" label="Go">
 
 <CodeBlock language="go">{GoSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+<CodeBlock language="csharp">{DotNetSetAttributes}</CodeBlock>
 
 </TabItem>
 

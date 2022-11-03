@@ -14,6 +14,8 @@ import JavaFinalize from "!!raw-loader!./java/finalize.java";
 
 import GoFinalize from "!!raw-loader!./go/finalize.go";
 
+import DotNetFinalize from "!!raw-loader!./dotnet/finalize.cs";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -93,8 +95,14 @@ called.
 </TabItem>
 
 <TabItem value="dotnet" label=".NET">
+Context implements IDisposable and IAsyncDisposable interfaces to ensure
+all events have been published to the A/B Smartly collector, like `Publish()`,
+and will also "seal" the context, throwing an error if any method that
+could generate an event is called.
 
-<CodeBlock language="csharp"></CodeBlock>
+Instead calling `Publish()` directly, using pattern can be used.
+
+<CodeBlock language="csharp">{DotNetFinalize}</CodeBlock>
 
 </TabItem>
 

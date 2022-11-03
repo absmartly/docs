@@ -38,6 +38,13 @@ import GoExtraUnits from "!!raw-loader!./go/extraUnits.go";
 import GoRefreshWithFreshData from "!!raw-loader!./go/refreshWithFreshData.go";
 import GoRefreshWithRefreshMethod from "!!raw-loader!./go/refreshWithRefreshMethod.go";
 
+import DotNetSync from "!!raw-loader!./dotnet/sync.cs";
+import DotNetAsync from "!!raw-loader!./dotnet/async.cs";
+import DotNetPrefetchedData from "!!raw-loader!./dotnet/prefetchedData.cs";
+import DotNetExtraUnits from "!!raw-loader!./dotnet/extraUnits.cs";
+import DotNetRefreshWithFreshData from "!!raw-loader!./dotnet/refreshWithFreshData.cs";
+import DotNetRefreshWithRefreshMethod from "!!raw-loader!./dotnet/refreshWithRefreshMethod.cs";
+
 In order to start linking your experiments from the Web Console to your
 application, you will need to create a context. When you instantiate a context,
 you should pass all known characteristics of the current user. These
@@ -314,8 +321,52 @@ trigger recently started experiments when `GetTreatment()` is called again.
 
 <TabItem value="dotnet" label=".NET">
 
-<CodeBlock language="csharp"></CodeBlock>
+**Create A New Context Synchronously**
 
+<CodeBlock language="csharp">{DotNetSync}</CodeBlock>
+
+**Create A New Context Asynchronously**
+
+<CodeBlock language="csharp">{DotNetAsync}</CodeBlock>
+
+**Creating A New Context With Pre-Fetched Data**
+
+Creating a context involves a round-trip to the A/B Smartly event
+collector. We can avoid repeating the round-trip on the client-side by
+re-using data previously retrieved.
+
+<CodeBlock language="csharp">{DotNetPrefetchedData}</CodeBlock>
+
+**Setting Extra Units**
+
+You can add additional units to a context by calling the `SetUnit()` or the
+`SetUnits()` method. This method may be used for example, when a user logs in to
+your application, and you want to use the new unit type to the context.
+
+:::caution Please Note
+You cannot override an already set unit type as that would be a
+change of identity, and will throw an exception. In this case, you must create
+a new context instead. The `SetUnit()` and `SetUnits()` methods can be called
+before the context is ready.
+:::
+
+<CodeBlock language="csharp">{DotNetExtraUnits}</CodeBlock>
+
+**Refreshing The Context With Fresh Experiment Data**
+
+For long-running contexts, the context is usually created once when the
+application is first started. However, any experiments being tracked in your
+production code, but started after the context was created, will not be
+triggered. To mitigate this, we can use the `RefreshInterval()` method on
+the context config.
+
+<CodeBlock language="csharp">{DotNetRefreshWithFreshData}</CodeBlock>
+
+Alternatively, the `Refresh()` method can be called manually. The `Refresh()`
+method pulls updated experiment data from the A/B Smartly collector and will
+trigger recently started experiments when `GetTreatment()` is called again.
+
+<CodeBlock language="csharp">{DotNetRefreshWithRefreshMethod}</CodeBlock>
 </TabItem>
 
 </Tabs>
