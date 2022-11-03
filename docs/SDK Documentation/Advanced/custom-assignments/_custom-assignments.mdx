@@ -20,6 +20,9 @@ import JavaCustomAssignments from "!!raw-loader!./java/customAssignments.java";
 import GoCustomAssignment from "!!raw-loader!./go/customAssignment.go";
 import GoCustomAssignments from "!!raw-loader!./go/customAssignments.go";
 
+import DotNetCustomAssignment from "!!raw-loader!./dotnet/customAssignment.cs";
+import DotNetCustomAssignments from "!!raw-loader!./dotnet/customAssignments.cs";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -115,6 +118,22 @@ If you are running multiple experiments and need to choose different custom
 assignments for each one, you can do so using the `SetCustomAssignments()` method.
 
 <CodeBlock language="go">{GoCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `SetCustomAssignment()`
+method.
+
+<CodeBlock language="csharp">{DotNetCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `SetCustomAssignments()` method.
+
+<CodeBlock language="csharp">{DotNetCustomAssignments}</CodeBlock>
 
 </TabItem>
 

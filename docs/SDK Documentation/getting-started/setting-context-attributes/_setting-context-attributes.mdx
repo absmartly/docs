@@ -13,6 +13,8 @@ import VueSetAttributesTemplate from "!!raw-loader!./vue/SetAttributes.vue";
 
 import JavaSetAttributes from "!!raw-loader!./java/setAttributes.java";
 
+import DotNetSetAttributes from "!!raw-loader!./dotnet/setAttributes.cs";
+
 Attributes are used to pass meta-data about the user and/or the request. They
 can be used later in the Web Console to create segments or audiences. They can
 be set using the `attribute()` or `attributes()` methods, before or after the
@@ -59,6 +61,14 @@ component.
 <TabItem value="java" label="Java">
 
 <CodeBlock language="java">{JavaSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+The `SetAttribute()` and `SetAttributes()` methods can be called before the context is ready.
+
+<CodeBlock language="csharp">{DotNetSetAttributes}</CodeBlock>
 
 </TabItem>
 

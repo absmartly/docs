@@ -20,6 +20,8 @@ import JavaMavenInstall from "!!raw-loader!./java/pom.xml";
 import GoModulesInstall from "!!raw-loader!./go/go.mod";
 import GoDependenciesInstall from "!!raw-loader!./go/dependencies.bash";
 
+import DotNetInstall from "!!raw-loader!./dotnet/install.bash";
+
 Once your Web Console is setup and you have created some experiments, you can
 install our SDKs through your package manager, a CDN or by directly importing
 it.
@@ -151,6 +153,18 @@ provides both a blocking and an asynchronous interfaces.
 **Dependencies**
 
 <CodeBlock language="bash">{GoDependenciesInstall}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+:::info Compatibility
+SDK targets .NET Standard 2.0 and .NET 5.
+:::
+
+**Nuget**
+
+<CodeBlock language="bash">{DotNetInstall}</CodeBlock>
 
 </TabItem>
 

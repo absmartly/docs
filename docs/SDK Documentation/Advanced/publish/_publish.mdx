@@ -14,6 +14,8 @@ import JavaPublish from "!!raw-loader!./java/publish.java";
 
 import GoPublish from "!!raw-loader!./go/publish.go";
 
+import DotNetPublish from "!!raw-loader!./dotnet/publish.cs";
+
 Call the `publish()` method any time you would like to publish all of
 the impressions that have been tracked so far.
 
@@ -58,6 +60,16 @@ Smartly collector, before proceeding. You can explicitly call the `Publish()` or
 `PublishAsync()` methods.
 
 <CodeBlock language="go">{GoPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+Sometimes it is necessary to ensure all events have been published to the
+A/B Smartly collector, before proceeding. You can explicitly call the
+`Publish()` or `PublishAsync()` methods.
+
+<CodeBlock language="csharp">{DotNetPublish}</CodeBlock>
 
 </TabItem>
 

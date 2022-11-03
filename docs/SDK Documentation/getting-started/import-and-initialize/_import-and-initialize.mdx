@@ -15,6 +15,10 @@ import JavaImportAndroid6 from "!!raw-loader!./java/importForAndroid6.java";
 
 import GoImport from "!!raw-loader!./go/initialize.go";
 
+import DotNetStartupCode from "!!raw-loader!./dotnet/startupCode.cs";
+import DotNetSDKInjection from "!!raw-loader!./dotnet/sdkInjection.cs";
+import DotNetManualSDKInstance from "!!raw-loader!./dotnet/manualSDKInstance.cs";
+
 Once the SDK is installed, it can be initialized in your project.
 
 <Tabs groupId="language">
@@ -63,6 +67,49 @@ for SSL to Conscrypt by creating the Client instance as follows:
 <TabItem value="go" label="Go">
 
 <CodeBlock language="go">{GoImport}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+Following examples assume an Api Key, an Application, and an Environment have been created in the A/B Smartly web console.
+
+Given that project uses .NET dependency injection, the default setup for the SDK can be used:
+
+<CodeBlock language="csharp">{DotNetStartupCode}</CodeBlock>
+
+```json title="appsettings.json"
+{
+  "ABSmartly": {
+    "Environment": "development",
+    "Application": "website",
+    "Endpoint": "https://your-company.absmartly.io/v1",
+    "ApiKey": "YOUR-API-KEY"
+  }
+}
+```
+
+ABSdk instance is added as a singleton then, and can be injected at usage places:
+
+<CodeBlock language="csharp">{DotNetSDKInjection}</CodeBlock>
+
+AddABSmartly extension method allows to configure SDK settings, HTTP connection settings,
+inject custom implementation if context-specific services, and also configure additional
+HTTP requests policies using Polly.
+
+Alternatively, SDK instance can be created manually like in the following
+example.
+
+<CodeBlock language="csharp">{DotNetManualSDKInstance}</CodeBlock>
+
+SDK uses IHttpClientFactory abstraction to effectively manage HTTP
+connections pool. This factory is injected using IABSdkHttpClientFactory
+as seen in the example above. In case custom behavior or implementation
+is required, inject own implementation of either IHttpClientFactory or
+IABSdkHttpClientFactory.
+In case of injecting IABSdkHttpClientFactory implementation make sure it
+creates named IHttpClient instances with name `ABSmartlySDK.HttpClient`
+(you can use static field in ABSdk class, `ABSdk.HttpClientName`).
 
 </TabItem>
 
