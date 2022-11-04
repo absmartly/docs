@@ -95,12 +95,13 @@ called.
 </TabItem>
 
 <TabItem value="dotnet" label=".NET">
-Context implements IDisposable and IAsyncDisposable interfaces to ensure
-all events have been published to the A/B Smartly collector, like `Publish()`,
-and will also "seal" the context, throwing an error if any method that
+
+The A/B Smartly Context implements `IDisposable` and `IAsyncDisposable` interfaces to ensure
+that all events have been published to the A/B Smartly collector, like `Publish()`,
+and the context has been "sealed". An error will then be thrown if any method that
 could generate an event is called.
 
-Instead calling `Publish()` directly, using pattern can be used.
+To implement this, instead of calling `Publish()` directly, the `using` pattern can be used.
 
 <CodeBlock language="csharp">{DotNetFinalize}</CodeBlock>
 

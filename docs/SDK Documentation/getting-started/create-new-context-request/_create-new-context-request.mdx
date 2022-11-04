@@ -333,7 +333,7 @@ trigger recently started experiments when `GetTreatment()` is called again.
 
 Creating a context involves a round-trip to the A/B Smartly event
 collector. We can avoid repeating the round-trip on the client-side by
-re-using data previously retrieved.
+re-using previously retrieved data.
 
 <CodeBlock language="csharp">{DotNetPrefetchedData}</CodeBlock>
 
@@ -341,7 +341,7 @@ re-using data previously retrieved.
 
 You can add additional units to a context by calling the `SetUnit()` or the
 `SetUnits()` method. This method may be used for example, when a user logs in to
-your application, and you want to use the new unit type to the context.
+your application, and you want to add the new unit type to the context.
 
 :::caution Please Note
 You cannot override an already set unit type as that would be a

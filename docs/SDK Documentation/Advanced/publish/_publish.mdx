@@ -16,12 +16,12 @@ import GoPublish from "!!raw-loader!./go/publish.go";
 
 import DotNetPublish from "!!raw-loader!./dotnet/publish.cs";
 
-Call the `publish()` method any time you would like to publish all of
-the impressions that have been tracked so far.
-
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
+
+Sometimes it is necessary to ensure all events have been published to the A/B
+Smartly collector before proceeding. To do this, you can explicitly call the `context.publish()` method.
 
 <CodeBlock language="js">{JsPublish}</CodeBlock>
 
@@ -29,11 +29,17 @@ the impressions that have been tracked so far.
 
 <TabItem value="react" label="React">
 
+Sometimes it is necessary to ensure all events have been published to the A/B
+Smartly collector before proceeding. To do this, you can explicitly call the `context.publish()` method.
+
 <CodeBlock language="jsx">{ReactPublish}</CodeBlock>
 
 </TabItem>
 
 <TabItem value="swift" label="Swift">
+
+Sometimes it is necessary to ensure all events have been published to the A/B
+Smartly collector before proceeding. To do this, you can explicitly call the `context.publish()` method.
 
 <CodeBlock language="swift">{SwiftPublish}</CodeBlock>
 
@@ -41,13 +47,18 @@ the impressions that have been tracked so far.
 
 <TabItem value="vue" label="Vue2">
 
+Sometimes it is necessary to ensure all events have been published to the A/B
+Smartly collector before proceeding. To do this, you can explicitly call the `publish()` method.
+
 <CodeBlock language="js">{VuePublish}</CodeBlock>
 
 </TabItem>
 
 <TabItem value="java" label="Java">
 
-You can use either the `context.publish()` or the `context.publishAsync()` method.
+Sometimes it is necessary to ensure all events have been published to the A/B
+Smartly collector before proceeding. To do this, you can explicitly call the `context.publish()` or
+`context.publishAsync()` methods.
 
 <CodeBlock language="java">{JavaPublish}</CodeBlock>
 
@@ -56,7 +67,7 @@ You can use either the `context.publish()` or the `context.publishAsync()` metho
 <TabItem value="go" label="Go">
 
 Sometimes it is necessary to ensure all events have been published to the A/B
-Smartly collector, before proceeding. You can explicitly call the `Publish()` or
+Smartly collector before proceeding. To do this, you can explicitly call the `Publish()` or
 `PublishAsync()` methods.
 
 <CodeBlock language="go">{GoPublish}</CodeBlock>
@@ -66,7 +77,7 @@ Smartly collector, before proceeding. You can explicitly call the `Publish()` or
 <TabItem value="dotnet" label=".NET">
 
 Sometimes it is necessary to ensure all events have been published to the
-A/B Smartly collector, before proceeding. You can explicitly call the
+A/B Smartly collector before proceeding. To do this, you can explicitly call the
 `Publish()` or `PublishAsync()` methods.
 
 <CodeBlock language="csharp">{DotNetPublish}</CodeBlock>
