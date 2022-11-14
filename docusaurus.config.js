@@ -72,6 +72,14 @@ const config = {
               sidebarCollapsed: false,
             },
           },
+          nodeapi: {
+            specPath: "nodeapi-spec.yaml",
+            outputDir: "docs/Node API", // Output directory for generated .mdx docs
+            sidebarOptions: {
+              sidebarCollapsible: false,
+              sidebarCollapsed: false,
+            },
+          },
         },
       },
     ],
