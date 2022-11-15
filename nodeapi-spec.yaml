@@ -1,8 +1,16 @@
 openapi: 3.0.0
 info:
   title: A/B Smartly OpenAPI Spec
-  description: An openapi spec that describes the A/B Smartly API for working with your experiments
-  version: 0.0.1
+  version: 1.0.0
+  description: An OpenAPI Specification that describes the A/B Smartly API for working with your experiments programmatically.
+  contact:
+    name: API Support
+    email: api@absmartly.com
+  license:
+    name: Proprietary
+externalDocs:
+  description: Find out more about A/B Smartly
+  url: "https://www.absmartly.com"
 servers:
   - url: https://sandbox.absmartly.com/v1
 
