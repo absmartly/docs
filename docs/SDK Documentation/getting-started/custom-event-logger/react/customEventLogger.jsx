@@ -11,6 +11,7 @@ ReactDOM.render(
         }
       },
     }}
+    contextOptions={contextOptions}
   >
     <App />
   </ABSmartly>,
