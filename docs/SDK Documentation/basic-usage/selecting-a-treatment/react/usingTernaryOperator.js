@@ -1,5 +1,5 @@
 return (
-  <Treatment
+  <TreatmentFunction
     context={context}
     name="experiment_name"
     loadingComponent={<MySpinner />}
@@ -13,5 +13,5 @@ return (
         <DefaultButton />
       )
     }
-  </Treatment>
+  </TreatmentFunction>
 );
