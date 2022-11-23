@@ -163,34 +163,6 @@ const secondContext = sdk?.createContext({
 });
 ```
 
-**Creating a New Context With Pre-Fetched Data**
-
-When doing full-stack experimentation with A/B Smartly, we recommend creating a
-context only once on the server-side. Creating a context involves a round-trip
-to the A/B Smartly event collector. We can avoid repeating the round-trip on
-the client-side by sending the server-side data embedded with other application
-data. We can then initialize the A/B Smartly context directly with it.
-
-Context data can be obtained by running `context.data()` on an existing context.
-
-```jsx
-ReactDOM.render(
-  <ABSmartly
-    sdkOptions={{
-      endpoint: "https://sandbox.absmartly.io/v1",
-      apiKey: process.env.ABSMARTLY_API_KEY,
-      application: process.env.APPLICATION_NAME,
-      environment: process.env.NODE_ENV,
-    }}
-    contextOptions={contextOptions}
-    contextData={contextData}
-  >
-    <App />
-  </ABSmartly>,
-  document.getElementById("root")
-);
-```
-
 </TabItem>
 
 <TabItem value="swift" label="Swift">
