@@ -14,7 +14,7 @@ externalDocs:
 servers:
   - url: https://sandbox.absmartly.com/v1
 security:
-  - ApiKeyAuth: []
+  - UserApiKey: []
 
 paths:
   /experiments:
@@ -1507,11 +1507,12 @@ paths:
 
 components:
   securitySchemes:
-    ApiKeyAuth:
+    UserApiKey:
       type: apiKey
       in: header
-      description: A User API Key for API authorization.
+      description: A User API Key for API authorization. **Must be in the format "Api-Key your_user_api_key"**
       name: Authorization
+      scheme: ^Api-Key\s\S+
   schemas:
     Experiment:
       type: object
