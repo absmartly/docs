@@ -129,6 +129,9 @@ Here is an example of a cancellation scenario.
 
 <TabItem value="react" label="React">
 
+The SDK's Provider component automatically creates a new context for you. This
+can be accessed in one of two ways:
+
 #### Using React Hooks (Recommended)
 
 <CodeBlock language="jsx">{ReactNewContext}</CodeBlock>
@@ -136,10 +139,29 @@ Here is an example of a cancellation scenario.
 #### Using `withABSmartly`
 
 If you are unable to use React Hooks in your application, you can get access
-to the `sdk` object by wrapping your component in the `withABSmartly` HOC
+to the `context` object by wrapping your component in the `withABSmartly` HOC
 before exporting it.
 
 <CodeBlock language="jsx">{ReactWithABSmartly}</CodeBlock>
+
+#### Creating An Extra Context
+
+If you need to create an extra context, you can do so by accessing the SDK
+object which is provided by both of the above methods.
+
+```jsx
+const { context, sdk } = useABSmartly();
+
+// or using the withABSmartly HOC
+// const { context, sdk } = absmartly
+
+const secondContext = sdk?.createContext({
+  units: {
+    user_id: "example_user_id",
+    anonymous_id: "example_anonymous_id",
+  },
+});
+```
 
 </TabItem>
 

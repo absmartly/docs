@@ -1,7 +1,7 @@
 const defaultButtonColorValue = "red";
 
 return (
-  <Treatment
+  <TreatmentFunction
     context={context}
     name="experiment_name"
     loadingComponent={<MySpinner />}
@@ -11,5 +11,5 @@ return (
         buttonColor={variables["button.color"] || defaultButtonColorValue}
       />
     )}
-  </Treatment>
+  </TreatmentFunction>
 );

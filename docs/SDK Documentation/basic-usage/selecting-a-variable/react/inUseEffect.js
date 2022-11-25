@@ -1,8 +1,3 @@
-const context = React.useMemo(
-  () => sdk?.createContext({ units: { user_id: "1234" } }),
-  [sdk]
-);
-
 const [buttonColor, setButtonColor] = React.useState("red");
 
 useEffect(() => {
