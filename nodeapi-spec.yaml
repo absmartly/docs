@@ -14,7 +14,7 @@ externalDocs:
 servers:
   - url: https://sandbox.absmartly.com/v1
 security:
-  - UserApiKey: []
+  - ApiKeyAuth: []
 
 paths:
   /experiments:
@@ -1365,6 +1365,12 @@ paths:
       summary: GET User API keys
       description: "**Required Permissions**: `User Get` or `User Admin`"
       parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of the User that you wish to get the API Keys of.
       responses:
         "200":
           description: A JSON Object containing an array of all API keys that are linked to a user.
@@ -1501,12 +1507,11 @@ paths:
 
 components:
   securitySchemes:
-    UserApiKey:
+    ApiKeyAuth:
       type: apiKey
       in: header
+      description: A User API Key for API authorization.
       name: Authorization
-      schema:
-        pattern: ^Api-Key\s\S+
   schemas:
     Experiment:
       type: object
@@ -2059,7 +2064,19 @@ components:
         experiment_id:
           type: integer
         action:
-          enum: [create, development, start, restart, edit, stop, full_on, comment, archive, unarchive]
+          enum:
+            [
+              create,
+              development,
+              start,
+              restart,
+              edit,
+              stop,
+              full_on,
+              comment,
+              archive,
+              unarchive,
+            ]
         created_at:
           type: string
           format: date-time
@@ -2104,7 +2121,13 @@ components:
         experiment_id:
           type: integer
         type:
-          enum: [cleanup_needed, audience_mismatch, sample_size_reached, sample_ratio_mismatch]
+          enum:
+            [
+              cleanup_needed,
+              audience_mismatch,
+              sample_size_reached,
+              sample_ratio_mismatch,
+            ]
         created_at:
           type: string
           format: date-time
