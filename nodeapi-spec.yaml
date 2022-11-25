@@ -13,6 +13,8 @@ externalDocs:
   url: "https://www.absmartly.com"
 servers:
   - url: https://sandbox.absmartly.com/v1
+security:
+  - UserApiKey: []
 
 paths:
   /experiments:
@@ -20,14 +22,6 @@ paths:
       summary: LIST Experiments
       description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: search
           in: query
           schema:
@@ -35,7 +29,7 @@ paths:
             example: "call_to_action"
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -57,13 +51,13 @@ paths:
         - name: iterations_of
           in: query
           required: false
-          description: The `id` of the experiment that you want to get the iterations of
+          description: The `id` of the experiment that you want to get the iterations of.
           schema:
             type: integer
         - name: owners
           in: query
           required: false
-          description: An array of `user` ids who are owners of the experiments to get.
+          description: An array of `user` ids to sort results by.
           schema:
             type: array
             items:
@@ -71,7 +65,7 @@ paths:
         - name: teams
           in: query
           required: false
-          description: An array of `team` ids representing the teams you wish to search for.
+          description: Array of `team` ids to sort results by.
           schema:
             type: array
             items:
@@ -79,7 +73,7 @@ paths:
         - name: tags
           in: query
           required: false
-          description: An array of `tag` ids representing the tags you wish to search for.
+          description: An array of `tag` ids to sort results by.
           schema:
             type: array
             items:
@@ -87,7 +81,7 @@ paths:
         - name: applications
           in: query
           required: false
-          description: An array of `application` ids representing the applications you wish to search for.
+          description: An array of `application` ids to sort results by.
           schema:
             type: array
             items:
@@ -95,7 +89,7 @@ paths:
         - name: unit_types
           in: query
           required: false
-          description: An array of `unit_type` ids representing the applications you wish to search for.
+          description: An array of `unit_type` ids to sort results by.
           schema:
             type: array
             items:
@@ -109,7 +103,7 @@ paths:
         - name: impact
           in: query
           required: false
-          description: A tuple value which allows you to specific a `from` and a `to` range of impacts to filter by. **This must be used with a preview query of `1`**
+          description: A tuple value which allows you to specify a `from` and a `to` range of impacts to filter by. **This must be used with a preview query of `1`**
           schema:
             type: array
             minItems: 2
@@ -119,7 +113,7 @@ paths:
         - name: confidence
           in: query
           required: false
-          description: A tuple value which allows you to specific a `from` and a `to` range of confidences to filter by. **This must be used with a preview query of `1`**
+          description: A tuple value which allows you to specify a `from` and a `to` range of confidences to filter by. **This must be used with a preview query of `1`**
           schema:
             type: array
             minItems: 2
@@ -164,12 +158,6 @@ paths:
           description:
           schema:
             enum: [0, 1]
-        - name: sort
-          in: query
-          required: false
-          description: A string value allowing you to sort the list of experiments
-          schema:
-            enum: [unit_count, owners, confidence, impact, state, duration]
         - name: sort_asc
           in: query
           required: false
@@ -203,14 +191,6 @@ paths:
       summary: GET Experiment
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: experimentId
           in: path
           required: true
@@ -235,14 +215,6 @@ paths:
       summary: GET Experiment Activity
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: experimentId
           in: path
           required: true
@@ -273,17 +245,9 @@ paths:
       summary: LIST API Keys
       description: "**Required Permissions**: `ApiKey List` or `ApiKey Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -327,14 +291,6 @@ paths:
       summary: GET Api Key
       description: "**Required Permissions**: `ApiKey Get` or `ApiKey Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: apiKeyId
           in: path
           required: true
@@ -357,17 +313,9 @@ paths:
       summary: LIST Applications
       description: "**Required Permissions**: `Application List` or `Application Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -411,14 +359,6 @@ paths:
       summary: GET Application
       description: "**Required Permissions**: `Application Get` or `Application Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: applicationId
           in: path
           required: true
@@ -441,17 +381,9 @@ paths:
       summary: LIST CORS Allowed Origins
       description: "**Required Permissions**: `CorsAllowedOrigin List` or `CorsAllowedOrigin Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -495,14 +427,6 @@ paths:
       summary: GET CORS Allowed Origin
       description: "**Required Permissions**: `CorsAllowedOrigin Get` or `CorsAllowedOrigin Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: applicationId
           in: path
           required: true
@@ -525,17 +449,9 @@ paths:
       description: "**Required Permissions**: `Environment List` or `Environment Admin`"
       summary: LIST Environments
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -579,14 +495,6 @@ paths:
       summary: GET Environment
       description: "**Required Permissions**: `Environment Get` or `Environment Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: environmentId
           in: path
           required: true
@@ -609,17 +517,9 @@ paths:
       summary: LIST Experiment Annotations
       description: "**Required Permissions**: `Annotation List` or `Annotation Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -669,14 +569,6 @@ paths:
       summary: GET Experiment Annotation
       description: "**Required Permissions**: `Annotation Get` or `Annotation Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: experimentAnnotationId
           in: path
           required: true
@@ -699,17 +591,9 @@ paths:
       summary: LIST Experiment Tags
       description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -753,14 +637,6 @@ paths:
       summary: GET Experiment Tag
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: experimentTagId
           in: path
           required: true
@@ -783,17 +659,9 @@ paths:
       summary: LIST Goal Tags
       description: "**Required Permissions**: `Goal List` or `Goal Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -837,14 +705,6 @@ paths:
       summary: GET Goal Tag
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: goalTagId
           in: path
           required: true
@@ -867,17 +727,9 @@ paths:
       summary: LIST Goals
       description: "**Required Permissions**: `Goal List` or `Goal Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -921,14 +773,6 @@ paths:
       summary: GET Goal
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: goalId
           in: path
           required: true
@@ -951,17 +795,9 @@ paths:
       summary: LIST Metric Tags
       description: "**Required Permissions**: `Metric List` or `Metric Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1005,14 +841,6 @@ paths:
       summary: GET Metric Tag
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: metricTagId
           in: path
           required: true
@@ -1035,17 +863,9 @@ paths:
       summary: LIST Metrics
       description: "**Required Permissions**: `Metric List` or `Metric Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1107,14 +927,6 @@ paths:
       summary: GET Metric
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: metricId
           in: path
           required: true
@@ -1136,17 +948,9 @@ paths:
     get:
       summary: LIST Permission Categories
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1182,17 +986,9 @@ paths:
     get:
       summary: LIST Permissions
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1229,17 +1025,9 @@ paths:
       summary: LIST Roles
       description: "**Required Permissions**: `Role List` or `Role Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1283,14 +1071,6 @@ paths:
       summary: GET Role
       description: "**Required Permissions**: `Role Get` or `Role Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: roleId
           in: path
           required: true
@@ -1313,17 +1093,9 @@ paths:
       summary: LIST Segments
       description: "**Required Permissions**: `Segment List` or `Segment Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1367,14 +1139,6 @@ paths:
       summary: GET Segment
       description: "**Required Permissions**: `Segment Get` or `Segment Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: segmentId
           in: path
           required: true
@@ -1392,65 +1156,14 @@ paths:
                   segment:
                     $ref: "#/components/schemas/Segment"
 
-  #/segments/{segmentId}/values:
-  #get:
-  #summary: GET the values from a particular Segment
-  #parameters:
-  #- name: Authorization
-  #in: header
-  #schema:
-  #type: string
-  #pattern: ^Api-Key\s\S+
-  #required: true
-  #example: Api-Key user_api_key
-  #description: A user API key which can be created in your profile on the A/B Smartly Web Console.
-  #- name: segmentId
-  #in: path
-  #required: true
-  #schema:
-  #type: integer
-  #description: The id of the Segment that you wish to get data from.
-  #- name: experiment_id
-  #in: query
-  #required: false
-  #schema:
-  #type: integer
-  #description: The id of a specific experiment that you wish to get Segment data from.
-  #responses:
-  #"200":
-  #content:
-  #application/json:
-  #schema:
-  #type: object
-  #properties:
-  #segment_values:
-  #type: array
-  #items:
-  #type: object
-  #properties:
-  #value:
-  #type: string
-  #example: en-GB
-  #last_event_at:
-  #type: string
-  #example: 1650879033026
-
   /teams:
     get:
       summary: LIST Teams
       description: "**Required Permissions**: `Team List` or `Team Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1494,14 +1207,6 @@ paths:
       summary: GET Team
       description: "**Required Permissions**: `Team Get` or `Team Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: teamId
           in: path
           required: true
@@ -1524,17 +1229,9 @@ paths:
       summary: LIST Units
       description: "**Required Permissions**: `UnitType List` or `UnitType Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1578,14 +1275,6 @@ paths:
       summary: GET Unit
       description: "**Required Permissions**: `UnitType Get` or `UnitType Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: unitTypeId
           in: path
           required: true
@@ -1608,17 +1297,9 @@ paths:
       summary: LIST Users
       description: "**Required Permissions**: `User List` or `User Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1662,14 +1343,6 @@ paths:
       summary: GET User
       description: "**Required Permissions**: `User Get` or `User Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: userId
           in: path
           required: true
@@ -1692,14 +1365,6 @@ paths:
       summary: GET User API keys
       description: "**Required Permissions**: `User Get` or `User Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
       responses:
         "200":
           description: A JSON Object containing an array of all API keys that are linked to a user.
@@ -1725,17 +1390,9 @@ paths:
       summary: LIST Webhook Events
       description: "**Required Permissions**: `Webhook List` or `Webhook Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1779,17 +1436,9 @@ paths:
       summary: LIST Webhooks
       description: "**Required Permissions**: `Webhook List` or `Webhook Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: sort
           in: query
-          description: The object key that you would like your array to be sorted by.
+          description: The object key to sort the results by.
           schema:
             type: string
             example: name
@@ -1833,14 +1482,6 @@ paths:
       summary: GET Webhook
       description: "**Required Permissions**: `Webhook Get` or `Webhook Admin`"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-            pattern: ^Api-Key\s\S+
-          required: true
-          example: Api-Key user_api_key
-          description: A user API key which can be created in your profile on the A/B Smartly Web Console.
         - name: webhookId
           in: path
           required: true
@@ -1859,6 +1500,13 @@ paths:
                     $ref: "#/components/schemas/Webhook"
 
 components:
+  securitySchemes:
+    UserApiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      schema:
+        pattern: ^Api-Key\s\S+
   schemas:
     Experiment:
       type: object
