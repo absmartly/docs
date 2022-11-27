@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-checkdocus
 // Note: type annotations allow type checking and IDEs autocompletion
 
 const lightCodeTheme = require("prism-react-renderer/themes/github");
@@ -74,7 +74,7 @@ const config = {
           },
           nodeapi: {
             specPath: "nodeapi-spec.yaml",
-            outputDir: "docs/Node API", // Output directory for generated .mdx docs
+            outputDir: "docs/Web Console API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,
@@ -124,7 +124,12 @@ const config = {
           {
             to: "docs/SDK API/a-b-smartly-collector",
             position: "left",
-            label: "API Docs",
+            label: "SDK API",
+          },
+          {
+            to: "docs/Web Console API/a-b-smartly-open-api-spec",
+            position: "left",
+            label: "Web Console API",
           },
           {
             to: "https://absmartly.com/blog",
