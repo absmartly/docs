@@ -1,3 +1,7 @@
+---
+sidebar_position: 4
+---
+
 # Dashboard Settings
 
 The dashboard settings page is your place to set up parts of your experiments.
@@ -155,3 +159,206 @@ Webhooks can be used for custom integrations. For example:
 - Sending all actions, notifications, and comments to a Slack channel.
 - Synchronizing the status of a Jira ticket with the status of the respective
   experiment.
+
+Webhooks are available for all experiment events on the Web Console, namely:
+
+- Experiment Created
+- Experiment Started in Development
+- Experiment Started
+- Experiment Stopped
+- Experiment Restarted
+- Experiment Put Full On
+- Experiment Edited
+- Experiment Commented On
+- Experiment Archived
+- Experiment Unarchived
+- Experiment Alert Created
+
+### Payloads
+
+The JSON payloads of each Webhook event are as follows:
+
+#### Experiment Created
+
+```json
+{
+  "event_name": "ExperimentCreated",
+  "event_at": 1608560579651,
+  "id": 7,
+  "name": "example_experiment",
+  "user_id": 1,
+  "comment": "example note"
+}
+```
+
+#### Experiment Started in Development
+
+```json
+{
+  "event_name": "ExperimentDevelopment",
+  "event_at": 1608560579651,
+  "id": 7,
+  "name": "example_experiment",
+  "user_id": 1,
+  "comment": "test note"
+}
+```
+
+#### Experiment Started
+
+```json
+{
+  "event_name": "ExperimentStarted",
+  "event_at": 1608560579651,
+  "id": 7,
+  "name": "example_experiment",
+  "user_id": 1,
+  "comment": "test note"
+}
+```
+
+#### Experiment Stopped
+
+```json
+{
+  "event_name": "ExperimentStopped",
+  "event_at": 1608560579651,
+  "id": 7,
+  "name": "example_experiment",
+  "user_id": 1,
+  "comment": "test note"
+}
+```
+
+#### Experiment Restarted
+
+```json
+{
+  "event_name": "ExperimentRestarted",
+  "event_at": 1608560579651,
+  "id": 7,
+  "name": "example_experiment",
+  "user_id": 1,
+  "comment": "test note",
+  "new_experiment_id": 8,
+  "new_experiment_state": "development"
+}
+```
+
+#### Experiment Put Full On
+
+```json
+{
+  "event_name": "ExperimentFullOn",
+  "event_at": 1608560579651,
+  "id": 7,
+  "name": "example_experiment",
+  "user_id": 1,
+  "comment": "test note",
+  "full_on_variant": 2
+}
+```
+
+#### Experiment Edited
+
+```json
+{
+  "event_name": "ExperimentEdited",
+  "event_at": 1608560579651,
+  "id": 7,
+  "name": "example_experiment",
+  "user_id": 1,
+  "comment": "test note",
+  "changes": {
+    "description": "test description updated",
+    "applications": [1, 2],
+    "other": "test other updated",
+    "prediction": "test prediction updated",
+    "percentages": "50/50",
+    "percentage_of_traffic": 95,
+    "implementation_details": "test implementation details updated",
+    "hypothesis": "test hypothesis updated",
+    "action_points": "test action points updated",
+    "owners": [1, 19],
+    "secondary_metrics": [
+      {
+        "goal_id": 1,
+        "goal_value_id": 9
+      },
+      {
+        "goal_id": 5,
+        "goal_value_id": 17
+      }
+    ],
+    "tags": [1, 2],
+    "teams": [1, 5],
+    "variants": [
+      {
+        "variant": 0,
+        "name": "control",
+        "config": null
+      },
+      {
+        "variant": 1,
+        "name": "variant",
+        "config": "{\"a\": \"b\"}"
+      }
+    ]
+  }
+}
+```
+
+#### Experiment Commented On
+
+```json
+{
+  "event_name": "ExperimentCommented",
+  "event_at": 1608560579651,
+  "id": 626,
+  "experiment_id": 7,
+  "user_id": 1,
+  "reply_to_note_id": 5,
+  "comment": "test comment"
+}
+```
+
+#### Experiment Archived
+
+```json
+{
+  "event_name": "ExperimentArchived",
+  "event_at": 1608560579651,
+  "id": 7,
+  "name": "example_experiment",
+  "user_id": 1,
+  "comment": "test note"
+}
+```
+
+#### Experiment Unarchived
+
+```json
+{
+  "event_name": "ExperimentUnarchived",
+  "event_at": 1608560579651,
+  "id": 7,
+  "name": "example_experiment",
+  "user_id": 1,
+  "comment": "test note"
+}
+```
+
+#### Experiment Alert Created
+
+```json
+{
+  "event_name": "ExperimentAlertCreated",
+  "event_at": 1608560579651,
+  "id": 102,
+  "type": "audience_mismatch",
+  "experiment_id": 288,
+  "created_at": 1661958869000,
+  "updated_at": 1663243653000,
+  "metadata": "{ \"ramala\": \"jamala\" }"
+}
+```
