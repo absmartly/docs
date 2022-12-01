@@ -20,7 +20,7 @@ You're almost ready to start [creating your first experiment](creating-an-experi
 But first we have to tell the dashboard **how**, **where** and **why** you want to run
 your tests.
 
-## 1. Creating A Unit
+## Creating A Unit
 
 Units are the unique identifiers that are going to be used to generate a variant.
 For experiments running across different platforms (iOS, Android, web, email, etc.) the
@@ -39,7 +39,7 @@ Feel free to add a description, so the rest of your team knows **what** the unit
 will reference to and **why** it exists.
 :::
 
-## 2. Setting Your Applications
+## Setting Your Applications
 
 When creating an experiment, you will be asked which platforms the experiment
 will run on.
@@ -52,16 +52,15 @@ to define it more for your team. Some examples of application names might be
 
 Once your applications are defined, you're ready to move on to...
 
-## 3. Setting Your Goals
+## Setting Your Goals
 
-Goals can be used to give you insights about your business, your users'
-behavior, the performance of your system and more!
+Goals are the names given to processes that you will later track in your code.
 
 To setup your first goal, head to `Settings > Goals` and click on `Create Goal`.
 
-Each goal starts with a name and an impact. The goal name will be used in your
-code so we recommend using a keyword-like or kebab-case name. For example,
-`newsletter_subscription`, `cpu_load_time` or `bookings`.
+The goal name will be used in your code, so we recommend using a keyword-like
+or kebab-case name. For example, `newsletter_subscription`, `cpu_load_time` or
+`bookings`.
 
 :::info Tip
 [Tags](settings#tags) are useful for searching, filtering and classifying your
@@ -69,25 +68,146 @@ goals. We recommend prefixing each tag with the tag's type. For example,
 `location:Header`, `stack:Backend` or `psychological:Trust`.
 :::
 
-Next, you need to give your goal an impact. For this, you have three choices -
+## Creating A Metric
+
+Lastly, you will need to creat some Metrics! Metrics are the parameters that
+will be used to track your goals. They can give you insights about your
+business, your users' behavior, the performance of your system and more!
+
+To create a metric, head to `Settings > Metrics` and click on `Create Metric`.
+
+Each metric needs a name. Some examples of metrics trackable metrics
+might be `Bookers`, `Bookings` or `Time to Book`. You can also give your
+metric a description for clarity across your team.
+
+### Metric Impact
+
+Next, you need to choose your metric's impact. For this, you have three choices -
 positive, negative or unknown.
 
-|                                                                                        Positive                                                                                         |                                                                         Negative                                                                         |                                                                                                                  Unknown                                                                                                                  |
-| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| A goal with a positive impact means that if it is increased, it's good for your business. For example, `booking`, `checkout` and `subscribing` would all be positively impacting goals. | Goals with a negative impact, on the other hand, are bad for business if they increase in frequency. For example, `unsubscribing` or `deleting_account`. | Goals with an unknown impact are used when the effect of the goal could be either positive or negative. For example, `time_on_page` could be positive or negative depending on whether the user is engaged, versus whether they are lost. |
+|                                                                                    Positive                                                                                     |                                                                           Negative                                                                            |                                                                                                                    Unknown                                                                                                                    |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| A metric with a positive impact means that if it is increased, it's good for your business. For example, `Bookings`, `Revenue` and `Subscribers` would all be positive metrics. | Metrics with a negative impact, on the other hand, are bad for business if they increase in frequency. For example, `Unsubscriptions` or `Account Deletions`. | Metrics with an unknown impact are used when the effect of the metric could be either positive or negative. For example, `Time on Page` could be positive or negative depending on whether the user is engaged, versus whether they are lost. |
 
-### Metrics
+### Metric Type
 
-Metrics are a reference to the actual data that is being tracked. Three metrics are tracked by default per goal:
+Next up is the metric's type. There are 4 types to choose from:
 
-|                   Conversion Rate                    |                                     Achievements                                      |                                  Time to Achieve Goal                                   |
-| :--------------------------------------------------: | :-----------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: |
-| How many users [(units)](#units) achieved this goal. | How many times those units achieved the goal. Some might have done it more than once. | The time between the units being exposed to the experiment and the goal being achieved. |
+#### Goal Unique Count
 
-:::note
-For more information on metrics and how to create your own, check out the
-[dashboard settings documentation](settings.mdx#metrics).
+`Goal Unique Count` is used when you want to automatically track the amount
+of unique users [(units)](#units) who performed a goal. `Bookers` is a good
+example of this as you want to track the amount of people who booked, not the
+total amount of bookings. For that you would choose...
+
+#### Goal Count
+
+`Goal Count` is used for when you want to track every instance of a goal being
+achieved. `Bookings` is a good example for this one, as a single user may
+have made multiple bookings.
+
+#### Goal Time to Achievement
+
+`Goal Time to Achievement` is the amount of time between the user being
+exposed to your experiment and achieving a goal. This is tracked
+automatically by all of our SDKs.
+
+#### Goal Property
+
+`Goal Property` is used when you want to use your own properties for tracking
+a metric. For example, you may wish to track the `Revenue` made during your
+experiment. This will be done by passing the revenue as a property when tracking
+your goal. For example, in the Javascript SDK it would look like this:
+
+```js
+context.track("goal_name", { revenue: 99.99 });
+```
+
+Selecting `Goal Property` in the Metric Type field adds some extra fields to
+the form. You can learn more about these in the
+[goal property fields section](#goal-property-fields).
+
+### Metric Goal
+
+The `Metric Goal` is the goal which your metric relates to. This field will
+provide a dropdown of any goals that you set up in the [Setting Your Goals section](#3-setting-your-goals).
+
+### Goal Property Fields
+
+If your metric is of `Goal Property` type, you will have to fill in some
+extra information on where the property value will come from and how you want
+it to be formatted on the dashboard.
+
+Upon selection, you will be presented with 4 more fields.
+
+#### Source Property
+
+This field defines where the property value comes from in your track call.
+For example, if you were to call the track method in your code with the
+following parameters:
+
+```js
+context.track("revenue", {
+  payment: {
+    provider: "paypal",
+    revenue: 99.99,
+    currency: "USD",
+  },
+});
+```
+
+And you want to use the revenue made as your metric's source property, you
+would pass `payment/revenue` into the Source Property field.
+
+#### Format String
+
+The format string defines how you would like your values to be presented in
+the Web Console. The curly braces `{}` represent the value and you can put
+whatever you like around it. For example, if you wanted to track your
+incoming revenue in dollars, you might want your Format String to be `${}`.
+This would cause a value of `1000` to be presented on the dashboard as `$1000`.
+
+Below the Formatting fields, you can see a preview of how your value will be
+formatted.
+
+#### Scale of Value
+
+The scale of value is a multiplier for your value. This is useful if,
+for example, your revenue is tracked in cents. You could set the metric's
+scale of value to `0.01` and a revenue value of `100000` cents would show itself
+as `$1000`.
+
+#### Precision
+
+The precision option allows you to set a number of decimal places that your
+value can have. Set this to `2` and a revenue value of `1000.455` will be
+presented as `$1000.46`.
+
+### Property Filters
+
+Property Filters allow you to filter your metrics to make them more specific.
+Let's take our example `track` call from earlier:
+
+```js
+context.track("revenue", {
+  payment: {
+    provider: "paypal",
+    revenue: 99.99,
+    currency: "USD",
+  },
+});
+```
+
+If you are tracking your revenue, you may want to limit the metric to amounts
+that were paid in dollars. This can be done by adding a property filter where
+`payment/currency` - `Is` - `USD`. Now, only amounts paid in dollars will be
+tracked by this metric.
+
+:::info NOTE
+In this use-case, you might want to rename the metric to `Revenue in Dollars`.
 :::
 
-Now you have your units, applications and goals set up, you're ready to move
+## The Next Step
+
+Now you have your units, applications, goals and metrics set up, you're ready to move
 on to the next chapter - [creating an experiment](creating-an-experiment)!
