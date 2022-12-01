@@ -204,7 +204,23 @@ paths:
 
           **Exposures**
 
-          Exposures tell the collector information about which variant of an experiment was shown to the user, and when.
+          Exposures tell the collector information about which variant of an experiment was shown to the user, and when:
+
+          ```json
+          {
+            "id": 3, // The ID of the exposed experiment.
+            "name": "exp_banner_color", // The name of the exposed experiment.
+            "unit": "user_id", // The unit that was used to select the exposure's variant
+            "variant": 1, // The variant that was shown.
+            "exposedAt": 1609244179528, // The time at which the exposure happened.
+            "assigned": true, //
+            "eligible": true, //
+            "overridden": false, // Whether the variant was overridden or not.
+            "fullOn": false, // Whether this variant is the Full On variant.
+            "custom": false, // Whether this variant was a custom assignment.
+            "audienceMismatch": false // Whether this variant was shown outside of it's specified target audience.
+          }
+          ```
 
           **Goals**
 
