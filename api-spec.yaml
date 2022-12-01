@@ -118,7 +118,7 @@ paths:
             format: int64
       requestBody:
         required: true
-        description: Units information for which to create the context and variant assignments.
+        description: Units data for which to create the context and variant assignments. Unit types can be found and created in your A/B Smartly Web Console settings.
         content:
           application/json:
             schema:
@@ -183,7 +183,36 @@ paths:
             format: int64
       requestBody:
         required: true
-        description: The data to publish.
+        description: |
+          The data to be published.
+
+          **Hashed**
+
+          The hashed value describes whether your values have already been hashed, or if they are to be hashed by the Collector.
+
+          **Historic**
+
+          The historic value tells the Collector whether this is new or old data.
+
+          **Published At**
+
+          The publishedAt value is the time at which the request was made.
+
+          **Units**
+
+          Units are the values which are used to choose the variant assignments for each user. Unit types can be found and created in your A/B Smartly Web Console settings.
+
+          **Exposures**
+
+          Exposures tell the collector information about which variant of an experiment was shown to the user, and when.
+
+          **Goals**
+
+          Goals are used to track various metrics that are related to your experiment. Goals can be created and found in your A/B Smartly Web Console settings.
+
+          **Attributes**
+
+          Attributes allow for segmentation of your data on the Web Console.
         content:
           application/json:
             schema:
@@ -391,6 +420,7 @@ components:
           example: 4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408
     Exposure:
       type: object
+      description: Hello world
       required:
         - id
         - name
