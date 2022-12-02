@@ -118,7 +118,15 @@ paths:
             format: int64
       requestBody:
         required: true
-        description: Units data for which to create the context and variant assignments. Unit types can be found and created in your A/B Smartly Web Console settings.
+        description: |
+          Units data for which to create the context and variant assignments. Unit types can be found and created in your A/B Smartly Web Console settings.
+
+          ```json
+          {
+            "type": "user_id" // The name of the unit type
+            "uid": "4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408" // The value of the unit that you are tracking.
+          }
+          ```
         content:
           application/json:
             schema:
@@ -200,7 +208,16 @@ paths:
 
           **Units**
 
-          Units are the values which are used to choose the variant assignments for each user. Unit types can be found and created in your A/B Smartly Web Console settings.
+          Units are the values which are used to choose the variant
+          assignments for each user. Unit types can be found and created in
+          your A/B Smartly Web Console settings. The payload takes the form of:
+
+          ```json
+          {
+            "type": "user_id" // The name of the unit type
+            "uid": "4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408" // The value of the unit that you are tracking.
+          }
+          ```
 
           **Exposures**
 
@@ -210,25 +227,44 @@ paths:
           {
             "id": 3, // The ID of the exposed experiment.
             "name": "exp_banner_color", // The name of the exposed experiment.
-            "unit": "user_id", // The unit that was used to select the exposure's variant
+            "unit": "user_id", // The unit that was used together with the experiment seed to generate the variant.
             "variant": 1, // The variant that was shown.
             "exposedAt": 1609244179528, // The time at which the exposure happened.
-            "assigned": true, //
-            "eligible": true, //
+            "assigned": true, // Whether the user was exposed to the experiment in this specific request.
+            "eligible": true, // Whether the experiment is in the right part of the traffic allocation to this experiment and can be triggered.
             "overridden": false, // Whether the variant was overridden or not.
-            "fullOn": false, // Whether this variant is the Full On variant.
+            "fullOn": false, // True if this experiment is fullOn and the winning variant is being forced to everyone.
             "custom": false, // Whether this variant was a custom assignment.
-            "audienceMismatch": false // Whether this variant was shown outside of it's specified target audience.
+            "audienceMismatch": false // Whether this variant was shown outside of it’s specified target audience.
           }
           ```
 
           **Goals**
 
-          Goals are used to track various metrics that are related to your experiment. Goals can be created and found in your A/B Smartly Web Console settings.
+          Goals are used to track various metrics that are related to your
+          experiment. Goals can be created and found in your A/B Smartly Web
+          Console settings:
+
+          ```json
+          {
+            "name": "banner_click", // The name of the goal that you are tracking.
+            "achievedAt": 1609254179528, // The time that the goal was achieved.
+            "properties": {} // Any properties that you wish to pass along with this goal.
+          }
+          ```
 
           **Attributes**
 
-          Attributes allow for segmentation of your data on the Web Console.
+          Attributes allow for segmentation of your data on the Web Console:
+
+          ```json
+          {
+            "name": "age", // The name of the attribute.
+            "value": 39, // The attribute's value.
+            "setAt": 1609244179528 // The time at which the value was set.
+          }
+          ```
+
         content:
           application/json:
             schema:
@@ -295,7 +331,80 @@ paths:
             format: int64
       requestBody:
         required: true
-        description: An array of data to publish.
+        description: |
+          An array of data to publish.
+
+          **Hashed**
+
+          The hashed value describes whether your values have already been hashed, or if they are to be hashed by the Collector.
+
+          **Historic**
+
+          The historic value tells the Collector whether this is new or old data.
+
+          **Published At**
+
+          The publishedAt value is the time at which the request was made.
+
+          **Units**
+
+          Units are the values which are used to choose the variant
+          assignments for each user. Unit types can be found and created in
+          your A/B Smartly Web Console settings. The payload takes the form of:
+
+          ```json
+          {
+            "type": "user_id" // The name of the unit type
+            "uid": "4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408" // The value of the unit that you are tracking.
+          }
+          ```
+
+          **Exposures**
+
+          Exposures tell the collector information about which variant of an experiment was shown to the user, and when:
+
+          ```json
+          {
+            "id": 3, // The ID of the exposed experiment.
+            "name": "exp_banner_color", // The name of the exposed experiment.
+            "unit": "user_id", // The unit that was used together with the experiment seed to generate the variant.
+            "variant": 1, // The variant that was shown.
+            "exposedAt": 1609244179528, // The time at which the exposure happened.
+            "assigned": true, // Whether the user was exposed to the experiment in this specific request.
+            "eligible": true, // Whether the experiment is in the right part of the traffic allocation to this experiment and can be triggered.
+            "overridden": false, // Whether the variant was overridden or not.
+            "fullOn": false, // True if this experiment is fullOn and the winning variant is being forced to everyone.
+            "custom": false, // Whether this variant was a custom assignment.
+            "audienceMismatch": false // Whether this variant was shown outside of it’s specified target audience.
+          }
+          ```
+
+          **Goals**
+
+          Goals are used to track various metrics that are related to your
+          experiment. Goals can be created and found in your A/B Smartly Web
+          Console settings:
+
+          ```json
+          {
+            "name": "banner_click", // The name of the goal that you are tracking.
+            "achievedAt": 1609254179528, // The time that the goal was achieved.
+            "properties": {} // Any properties that you wish to pass along with this goal.
+          }
+          ```
+
+          **Attributes**
+
+          Attributes allow for segmentation of your data on the Web Console:
+
+          ```json
+          {
+            "name": "age", // The name of the attribute.
+            "value": 39, // The attribute's value.
+            "setAt": 1609244179528 // The time at which the value was set.
+          }
+          ```
+
         content:
           application/json:
             schema:
