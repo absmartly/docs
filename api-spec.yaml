@@ -39,7 +39,6 @@ paths:
     get:
       tags:
         - context
-      security: []
       summary: Get Context Experiment Data
       description: A GET request for obtaining data on your experiments.
       operationId: contextGet
@@ -230,7 +229,7 @@ paths:
             "unit": "user_id", // The unit that was used together with the experiment seed to generate the variant.
             "variant": 1, // The variant that was shown.
             "exposedAt": 1609244179528, // The time at which the exposure happened.
-            "assigned": true, // Whether the user was exposed to the experiment in this specific request.
+            "assigned": true, // Whether the user was exposed to the experiment in this specific request, it could be that the user was not assigned because it doesn’t match the audience, or the experiment is already fullOn, or the variant was overriden, etc.
             "eligible": true, // Whether the experiment is in the right part of the traffic allocation to this experiment and can be triggered.
             "overridden": false, // Whether the variant was overridden or not.
             "fullOn": false, // True if this experiment is fullOn and the winning variant is being forced to everyone.
@@ -370,7 +369,7 @@ paths:
             "unit": "user_id", // The unit that was used together with the experiment seed to generate the variant.
             "variant": 1, // The variant that was shown.
             "exposedAt": 1609244179528, // The time at which the exposure happened.
-            "assigned": true, // Whether the user was exposed to the experiment in this specific request.
+            "assigned": true, // Whether the user was exposed to the experiment in this specific request, it could be that the user was not assigned because it doesn’t match the audience, or the experiment is already fullOn, or the variant was overriden, etc.
             "eligible": true, // Whether the experiment is in the right part of the traffic allocation to this experiment and can be triggered.
             "overridden": false, // Whether the variant was overridden or not.
             "fullOn": false, // True if this experiment is fullOn and the winning variant is being forced to everyone.
