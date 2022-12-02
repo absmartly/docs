@@ -1,17 +1,18 @@
 openapi: 3.0.0
 info:
-  title: A/B Smartly Collector
+  title: A/B Smartly Collector API
   version: 1.0.0
-  description: A/B Smartly Collector API Specification
+  description: An OpenAPI Specification that describes the A/B Smartly Collector API. This API is mainly used when using A/B Smartly in a language that does not yet have a supported SDK.
   contact:
+    name: API Support
     email: api@absmartly.com
   license:
-    name: proprietary
+    name: Proprietary
 externalDocs:
   description: Find out more about A/B Smartly
-  url: 'https://www.absmartly.com'
+  url: "https://www.absmartly.com"
 servers:
-  - url: 'https://sandbox.absmartly.io/v1'
+  - url: https://sandbox.absmartly.io/v1
 security:
   - ApiKey: []
 tags:
@@ -19,35 +20,41 @@ tags:
     description: Context API
   - name: experiment
     description: Experiment API
+
 paths:
   /healthy:
     get:
       tags:
         - collector
-      security: []
-      summary: Check if service is healthy
+      summary: Check Service Health
+      description: A GET request to check that the service is running as expected.
       operationId: collectorHealthCheck
       responses:
         200:
           description: Server is healthy
         500:
           description: Server is not healthy
+
   /context:
     get:
       tags:
         - context
-      security: []
-      summary: Get context experiment data for application
+      summary: Get Context Experiment Data
+      description: A GET request for obtaining data on your experiments.
       operationId: contextGet
       parameters:
         - name: environment
           in: query
           required: false
+          description: An environment to filter the results by. These can be found and created in your A/B Smartly Web Console settings.
+          example: development
           schema:
             type: string
         - name: application
           in: query
           required: false
+          description: An application to filter the results by. These can be found and created in your A/B Smartly Web Console settings.
+          example: www
           schema:
             type: string
       responses:
@@ -56,13 +63,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContextGetResponse'
+                $ref: "#/components/schemas/ContextGetResponse"
         400:
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
         401:
           description: Unauthorized
         default:
@@ -70,56 +77,72 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
+
     post:
       tags:
         - context
-      summary: Create a new context with experiment assignments
+      summary: Create a Context
+      description: A POST request for creating a new context and assigning variants to your users.
       operationId: contextCreate
       parameters:
         - name: X-Agent
           in: header
           required: true
+          description: The User-Agent of your SDK.
+          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246
           schema:
             type: string
         - name: X-Environment
           in: header
           required: true
+          description: The environment in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          example: development
           schema:
             type: string
         - name: X-Application
           in: header
           required: true
+          description: The application in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          example: www
           schema:
             type: string
         - name: X-Application-Version
           in: header
           required: true
+          description: The application version which you are running your experiments on.
+          example: 0
           schema:
             type: integer
             format: int64
       requestBody:
         required: true
-        description: >-
-          Unit and application information to create the context and assignments
-          for
+        description: |
+          Units data for which to create the context and variant assignments. Unit types can be found and created in your A/B Smartly Web Console settings.
+
+          ```json
+          {
+            "type": "user_id" // The name of the unit type
+            "uid": "4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408" // The value of the unit that you are tracking.
+          }
+          ```
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContextRequest'
+              $ref: "#/components/schemas/ContextRequest"
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContextResponse'
+                $ref: "#/components/schemas/ContextResponse"
         400:
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
         401:
           description: Unauthorized
         default:
@@ -127,54 +150,137 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
+
     put:
       tags:
         - context
-      summary: Publish experiment events for context
+      summary: Publish Experiment Events
+      description: A PUT request for publishing your exposures, goals and attributes.
       operationId: contextPublish
       parameters:
         - name: X-Agent
           in: header
           required: true
+          description: The User-Agent of your SDK.
+          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246
           schema:
             type: string
         - name: X-Environment
           in: header
           required: true
+          description: The environment in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          example: development
           schema:
             type: string
         - name: X-Application
           in: header
-          required: false
+          required: true
+          description: The application in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          example: www
           schema:
             type: string
         - name: X-Application-Version
           in: header
-          required: false
+          required: true
+          description: The application version which you are running your experiments on.
+          example: 0
           schema:
             type: integer
             format: int64
       requestBody:
         required: true
-        description: The request information
+        description: |
+          The data to be published.
+
+          **Hashed**
+
+          The hashed value describes whether your values have already been hashed, or if they are to be hashed by the Collector.
+
+          **Historic**
+
+          The historic value tells the Collector whether this is new or old data.
+
+          **Published At**
+
+          The publishedAt value is the time at which the request was made.
+
+          **Units**
+
+          Units are the values which are used to choose the variant
+          assignments for each user. Unit types can be found and created in
+          your A/B Smartly Web Console settings. The payload takes the form of:
+
+          ```json
+          {
+            "type": "user_id" // The name of the unit type
+            "uid": "4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408" // The value of the unit that you are tracking.
+          }
+          ```
+
+          **Exposures**
+
+          Exposures tell the collector information about which variant of an experiment was shown to the user, and when:
+
+          ```json
+          {
+            "id": 3, // The ID of the exposed experiment.
+            "name": "exp_banner_color", // The name of the exposed experiment.
+            "unit": "user_id", // The unit that was used together with the experiment seed to generate the variant.
+            "variant": 1, // The variant that was shown.
+            "exposedAt": 1609244179528, // The time at which the exposure happened.
+            "assigned": true, // Whether the user was exposed to the experiment in this specific request, it could be that the user was not assigned because it doesn’t match the audience, or the experiment is already fullOn, or the variant was overriden, etc.
+            "eligible": true, // Whether the experiment is in the right part of the traffic allocation to this experiment and can be triggered.
+            "overridden": false, // Whether the variant was overridden or not.
+            "fullOn": false, // True if this experiment is fullOn and the winning variant is being forced to everyone.
+            "custom": false, // Whether this variant was a custom assignment.
+            "audienceMismatch": false // Whether this variant was shown outside of it’s specified target audience.
+          }
+          ```
+
+          **Goals**
+
+          Goals are used to track various metrics that are related to your
+          experiment. Goals can be created and found in your A/B Smartly Web
+          Console settings:
+
+          ```json
+          {
+            "name": "banner_click", // The name of the goal that you are tracking.
+            "achievedAt": 1609254179528, // The time that the goal was achieved.
+            "properties": {} // Any properties that you wish to pass along with this goal.
+          }
+          ```
+
+          **Attributes**
+
+          Attributes allow for segmentation of your data on the Web Console:
+
+          ```json
+          {
+            "name": "age", // The name of the attribute.
+            "value": 39, // The attribute's value.
+            "setAt": 1609244179528 // The time at which the value was set.
+          }
+          ```
+
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PublishRequest'
+              $ref: "#/components/schemas/PublishRequest"
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PublishResponse'
+                $ref: "#/components/schemas/PublishResponse"
         400:
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PublishResponse'
+                $ref: "#/components/schemas/PublishResponse"
         401:
           description: Unauthorized
         default:
@@ -182,56 +288,139 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
+
   /context/batch:
     put:
       tags:
         - context
         - batch
-      summary: Publish experiment events for multiple contexts
+      summary: Publish Experiment Events for Multiple Contexts
+      description: A PUT request for publishing your exposures, goals and attributes from multiple contexts.
       operationId: contextPublishBatch
       parameters:
         - name: X-Agent
           in: header
           required: true
+          description: The User-Agent of your SDK.
+          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246
           schema:
             type: string
         - name: X-Environment
           in: header
           required: true
+          description: The environment in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          example: development
           schema:
             type: string
         - name: X-Application
           in: header
-          required: false
+          required: true
+          description: The application in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          example: www
           schema:
             type: string
         - name: X-Application-Version
           in: header
-          required: false
+          required: true
+          description: The application version which you are running your experiments on.
+          example: 0
           schema:
             type: integer
             format: int64
       requestBody:
         required: true
-        description: The request information
+        description: |
+          An array of data to publish.
+
+          **Hashed**
+
+          The hashed value describes whether your values have already been hashed, or if they are to be hashed by the Collector.
+
+          **Historic**
+
+          The historic value tells the Collector whether this is new or old data.
+
+          **Published At**
+
+          The publishedAt value is the time at which the request was made.
+
+          **Units**
+
+          Units are the values which are used to choose the variant
+          assignments for each user. Unit types can be found and created in
+          your A/B Smartly Web Console settings. The payload takes the form of:
+
+          ```json
+          {
+            "type": "user_id" // The name of the unit type
+            "uid": "4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408" // The value of the unit that you are tracking.
+          }
+          ```
+
+          **Exposures**
+
+          Exposures tell the collector information about which variant of an experiment was shown to the user, and when:
+
+          ```json
+          {
+            "id": 3, // The ID of the exposed experiment.
+            "name": "exp_banner_color", // The name of the exposed experiment.
+            "unit": "user_id", // The unit that was used together with the experiment seed to generate the variant.
+            "variant": 1, // The variant that was shown.
+            "exposedAt": 1609244179528, // The time at which the exposure happened.
+            "assigned": true, // Whether the user was exposed to the experiment in this specific request, it could be that the user was not assigned because it doesn’t match the audience, or the experiment is already fullOn, or the variant was overriden, etc.
+            "eligible": true, // Whether the experiment is in the right part of the traffic allocation to this experiment and can be triggered.
+            "overridden": false, // Whether the variant was overridden or not.
+            "fullOn": false, // True if this experiment is fullOn and the winning variant is being forced to everyone.
+            "custom": false, // Whether this variant was a custom assignment.
+            "audienceMismatch": false // Whether this variant was shown outside of it’s specified target audience.
+          }
+          ```
+
+          **Goals**
+
+          Goals are used to track various metrics that are related to your
+          experiment. Goals can be created and found in your A/B Smartly Web
+          Console settings:
+
+          ```json
+          {
+            "name": "banner_click", // The name of the goal that you are tracking.
+            "achievedAt": 1609254179528, // The time that the goal was achieved.
+            "properties": {} // Any properties that you wish to pass along with this goal.
+          }
+          ```
+
+          **Attributes**
+
+          Attributes allow for segmentation of your data on the Web Console:
+
+          ```json
+          {
+            "name": "age", // The name of the attribute.
+            "value": 39, // The attribute's value.
+            "setAt": 1609244179528 // The time at which the value was set.
+          }
+          ```
+
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PublishBatchRequest'
+              $ref: "#/components/schemas/PublishBatchRequest"
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PublishResponse'
+                $ref: "#/components/schemas/PublishResponse"
         400:
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PublishResponse'
+                $ref: "#/components/schemas/PublishResponse"
         401:
           description: Unauthorized
         default:
@@ -239,43 +428,52 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /experiment:
     get:
       tags:
         - experiment
       operationId: experimentGet
+      summary: Get Experiment Data
+      description: A GET request for obtaining data on all running experiments.
       parameters:
         - name: X-Agent
           in: header
           required: true
+          description: The User-Agent of your SDK.
+          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246
           schema:
             type: string
         - name: X-Environment
           in: header
           required: true
+          description: The environment in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          example: development
           schema:
             type: string
         - name: X-Application
           in: header
           required: true
+          description: The application in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          example: www
           schema:
             type: string
         - name: X-Application-Version
           in: header
           required: true
+          description: The application version which you are running your experiments on.
+          example: 0
           schema:
             type: integer
             format: int64
-      summary: Get information about currently running experiments
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExperimentsResponse'
+                $ref: "#/components/schemas/ExperimentsResponse"
         401:
           description: Unauthorized
         default:
@@ -283,7 +481,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     ExperimentAssignment:
@@ -337,7 +536,7 @@ components:
       properties:
         type:
           type: string
-          example: session_id
+          example: user_id
         uid:
           type: string
           minLength: 1
@@ -345,6 +544,7 @@ components:
           example: 4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408
     Exposure:
       type: object
+      description: Hello world
       required:
         - id
         - name
@@ -364,7 +564,7 @@ components:
         unit:
           type: string
           nullable: true
-          example: session_id
+          example: user_id
         variant:
           type: integer
           format: int32
@@ -449,17 +649,17 @@ components:
           items:
             type: number
             format: double
-          example: [0.5,0.5]
+          example: [0.5, 0.5]
         trafficSplit:
           type: array
           items:
             type: number
             format: double
-          example: [0.0,1.0]
+          example: [0.0, 1.0]
         variants:
           type: array
           items:
-            $ref: '#/components/schemas/ExperimentVariant'
+            $ref: "#/components/schemas/ExperimentVariant"
     ExperimentVariant:
       type: object
       required:
@@ -471,7 +671,7 @@ components:
         config:
           type: string
           nullable: true
-          example: "{\"color\":\"red\"}"
+          example: '{"color":"red"}'
     ContextRequest:
       type: object
       required:
@@ -480,7 +680,7 @@ components:
         units:
           type: array
           items:
-            $ref: '#/components/schemas/Unit'
+            $ref: "#/components/schemas/Unit"
     ContextResponse:
       type: object
       required:
@@ -490,11 +690,11 @@ components:
         units:
           type: array
           items:
-            $ref: '#/components/schemas/Unit'
+            $ref: "#/components/schemas/Unit"
         assignments:
           type: array
           items:
-            $ref: '#/components/schemas/ExperimentAssignment'
+            $ref: "#/components/schemas/ExperimentAssignment"
     ContextGetResponse:
       type: object
       required:
@@ -503,7 +703,7 @@ components:
         experiments:
           type: array
           items:
-            $ref: '#/components/schemas/ContextExperiment'
+            $ref: "#/components/schemas/ContextExperiment"
     ContextExperiment:
       type: object
       required:
@@ -533,7 +733,7 @@ components:
           example: 0
         unitType:
           type: string
-          example: session_id
+          example: user_id
         environment:
           type: string
           example: production
@@ -546,7 +746,7 @@ components:
           items:
             type: number
             format: double
-          example: [0.5,0.5]
+          example: [0.5, 0.5]
         trafficSeed:
           type: integer
           format: int64
@@ -556,7 +756,7 @@ components:
           items:
             type: number
             format: double
-          example: [0.0,1.0]
+          example: [0.0, 1.0]
         fullOnVariant:
           type: integer
           format: int32
@@ -566,11 +766,11 @@ components:
         applications:
           type: array
           items:
-            $ref: '#/components/schemas/ExperimentApplication'
+            $ref: "#/components/schemas/ExperimentApplication"
         variants:
           type: array
           items:
-            $ref: '#/components/schemas/ExperimentVariant'
+            $ref: "#/components/schemas/ExperimentVariant"
         audience:
           type: string
           example: '{ "filter": [{ "gt": [{ "var": "age" }, { "value": 20 }] }] }'
@@ -599,22 +799,26 @@ components:
           type: boolean
           nullable: true
           default: false
+        publishedAt:
+          type: integer
+          format: int64
+          example: 1609244179528
         units:
           type: array
           items:
-            $ref: '#/components/schemas/Unit'
+            $ref: "#/components/schemas/Unit"
         exposures:
           type: array
           items:
-            $ref: '#/components/schemas/Exposure'
+            $ref: "#/components/schemas/Exposure"
         goals:
           type: array
           items:
-            $ref: '#/components/schemas/GoalAchievement'
+            $ref: "#/components/schemas/GoalAchievement"
         attributes:
           type: array
           items:
-            $ref: '#/components/schemas/Attribute'
+            $ref: "#/components/schemas/Attribute"
     PublishResponseMessage:
       type: object
       required:
@@ -641,11 +845,11 @@ components:
         warnings:
           type: array
           items:
-            $ref: '#/components/schemas/PublishResponseMessage'
+            $ref: "#/components/schemas/PublishResponseMessage"
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/PublishResponseMessage'
+            $ref: "#/components/schemas/PublishResponseMessage"
     PublishBatchRequest:
       type: object
       required:
@@ -656,7 +860,7 @@ components:
           minItems: 1
           maxItems: 500
           items:
-            $ref: '#/components/schemas/PublishRequest'
+            $ref: "#/components/schemas/PublishRequest"
     ExperimentsResponse:
       type: object
       required:
@@ -666,7 +870,7 @@ components:
         experiments:
           type: array
           items:
-            $ref: '#/components/schemas/Experiment'
+            $ref: "#/components/schemas/Experiment"
     Error:
       type: object
       required:
@@ -683,3 +887,4 @@ components:
       type: apiKey
       name: X-API-Key
       in: header
+      required: true
