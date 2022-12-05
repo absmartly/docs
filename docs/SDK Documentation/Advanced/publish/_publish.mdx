@@ -16,6 +16,8 @@ import GoPublish from "!!raw-loader!./go/publish.go";
 
 import DotNetPublish from "!!raw-loader!./dotnet/publish.cs";
 
+import PHPPublish from "!!raw-loader!./php/publish.php";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -81,6 +83,14 @@ A/B Smartly collector before proceeding. To do this, you can explicitly call the
 `Publish()` or `PublishAsync()` methods.
 
 <CodeBlock language="csharp">{DotNetPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+Sometimes it is necessary to ensure all events have been published to the A/B Smartly collector, before proceeding. You can explicitly call the `Context->publish()` method.
+
+<CodeBlock language="php">{PHPPublish}</CodeBlock>
 
 </TabItem>
 

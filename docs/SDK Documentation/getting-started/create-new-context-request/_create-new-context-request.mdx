@@ -45,6 +45,11 @@ import DotNetExtraUnits from "!!raw-loader!./dotnet/extraUnits.cs";
 import DotNetRefreshWithFreshData from "!!raw-loader!./dotnet/refreshWithFreshData.cs";
 import DotNetRefreshWithRefreshMethod from "!!raw-loader!./dotnet/refreshWithRefreshMethod.cs";
 
+import PHPSync from "!!raw-loader!./php/sync.php";
+import PHPRefresh from "!!raw-loader!./php/refresh.php";
+import PHPExtraUnits from "!!raw-loader!./php/extraUnits.php";
+import PHPPrefetchedData from "!!raw-loader!./php/prefetchedData.php";
+
 In order to start linking your experiments from the Web Console to your
 application, you will need to create a context. When you instantiate a context,
 you should pass all known characteristics of the current user. These
@@ -389,6 +394,39 @@ method pulls updated experiment data from the A/B Smartly collector and will
 trigger recently started experiments when `GetTreatment()` is called again.
 
 <CodeBlock language="csharp">{DotNetRefreshWithRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+**Create A New Context Synchronously**
+
+<CodeBlock language="php">{PHPSync}</CodeBlock>
+
+**Create A Context With Prefetched Data**
+
+<CodeBlock language="php">{PHPPrefetchedData}</CodeBlock>
+
+**Refreshing the Context with Fresh Experiment Data**
+
+For long-running contexts, the context is usually created once when the
+application is first started. However, any experiments being tracked in your production code, but started after the context was created, will not be triggered.
+
+To mitigate this, we can use the `Context->refresh()` method on the `Context`.
+
+<CodeBlock language="php">{PHPRefresh}</CodeBlock>
+
+The `Context->refresh()` method pulls updated experiment data from the A/B Smartly collector and will trigger recently started experiments when `Context->getTreatment` is called again.
+
+**Setting Extra Units**
+
+You can add additional units to a context by calling the `Context->setUnit` or `Context->setUnits` methods. These methods may be used, for example, when a user logs in to your application, and you want to use the new unit type in the context.
+
+Please note, you cannot override an already set unit type as that would be a change of identity and would throw an exception. In this case, you must create a new context instead. The `Context->setUnit` and
+`Context->setUnits` methods can be called before the context is ready.
+
+<CodeBlock language="php">{PHPExtraUnits}</CodeBlock>
+
 </TabItem>
 
 </Tabs>

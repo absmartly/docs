@@ -17,6 +17,8 @@ import GoOverriding from "!!raw-loader!./go/override.go";
 
 import DotNetOverriding from "!!raw-loader!./dotnet/override.cs";
 
+import PHPOverriding from "!!raw-loader!./php/override.php";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -102,6 +104,17 @@ experiment. This can be achieved with the `SetOverride()` and/or
 be called before the context is ready.
 
 <CodeBlock language="csharp">{DotNetOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `Context->setOverride()` and/or
+`Context->setOverrides()` methods. These methods can be called before the
+context is ready.
+
+<CodeBlock language="php">{PHPOverriding}</CodeBlock>
 
 </TabItem>
 
