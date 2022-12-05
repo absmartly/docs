@@ -13,6 +13,8 @@ import GoPeekAtVariants from "!!raw-loader!./go/peekAtVariants.go";
 import GoPeekAtVariables from "!!raw-loader!./go/peekAtVariables.go";
 import DotNetPeekAtVariants from "!!raw-loader!./dotnet/peekAtVariants.cs";
 import DotNetPeekAtVariables from "!!raw-loader!./dotnet/peekAtVariables.cs";
+import PHPPeekAtVariant from "!!raw-loader!./php/peekAtVariant.php";
+import PHPPeekAtVariable from "!!raw-loader!./php/peekAtVariable.php";
 
 <Tabs groupId="language">
 
@@ -99,6 +101,20 @@ SDK provides a `PeekTreatment()` method for that.
 ##### Peeking at variables
 
 <CodeBlock language="csharp">{DotNetPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment or variable without triggering an exposure. The A/B Smartly SDK
+provides a `Context->peekTreatment()` method for that.
+
+<CodeBlock language="php">{PHPPeekAtVariant}</CodeBlock>
+
+#### Peeking at variables
+
+<CodeBlock language="php">{PHPPeekAtVariable}</CodeBlock>
 
 </TabItem>
 
