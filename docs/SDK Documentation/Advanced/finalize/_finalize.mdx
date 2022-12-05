@@ -16,6 +16,8 @@ import GoFinalize from "!!raw-loader!./go/finalize.go";
 
 import DotNetFinalize from "!!raw-loader!./dotnet/finalize.cs";
 
+import PHPFinalize from "!!raw-loader!./php/finalize.php";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -104,6 +106,16 @@ could generate an event is called.
 To implement this, instead of calling `Publish()` directly, the `using` pattern can be used.
 
 <CodeBlock language="csharp">{DotNetFinalize}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+The `close()` method will ensure all events have been published to the A/B
+Smartly collector, like `Context->publish()`, and will also "seal" the context,
+throwing an error if any method that could generate an event is called.
+
+<CodeBlock language="php">{PHPFinalize}</CodeBlock>
 
 </TabItem>
 
