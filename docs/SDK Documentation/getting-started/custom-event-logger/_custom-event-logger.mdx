@@ -12,6 +12,9 @@ import GoCustomEventLogger from "!!raw-loader!./go/customEventLogger.go";
 import DotNetCustomEventLogger from "!!raw-loader!./dotnet/customEventLogger.cs";
 import DotNetCustomEventLoggerWithInjection from "!!raw-loader!./dotnet/customEventLoggerInjection.cs";
 
+import PHPCustomEventLogger from "!!raw-loader!./php/customEventLogger.php";
+import PHPHandleEvent from "!!raw-loader!./php/handleEvent.php";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -174,6 +177,30 @@ the following events:
 | `Exposure` | `Context.GetTreatment()` method succeeds on first exposure    | `Exposure` enqueued for publishing                     |
 | `Goal`     | `Context.Track()` method succeeds                             | `GoalAchievement` enqueued for publishing              |
 | `Close`    | `Context` disposal succeeds                                   | `null`                                                 |
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+The A/B Smartly SDK can be instantiated with an event logger used for all contexts. In addition, an event logger can be specified when creating a particular context in the `ContextConfig`.
+
+<CodeBlock language="php">{PHPCustomEventLogger}</CodeBlock>
+
+Alternately, it is possible to implement `\ABSmartly\SDK\Context\ContextEventLogger` interface with `handleEvent()` method that receives the `Context` object itself, along with a `ContextEventLoggerEvent` object as shown below:
+
+<CodeBlock language="php">{PHPHandleEvent}</CodeBlock>
+
+The data parameter depends on the type of event. Currently, the SDK logs the following events:
+
+| eventName    | when                                                        | data                                                        |
+| ------------ | ----------------------------------------------------------- | ----------------------------------------------------------- |
+| `"Error"`    | `Context` receives an error                                 | `Exception` object thrown                                   |
+| `"Ready"`    | `Context` turns ready                                       | `ContextData` object used to initialize the context         |
+| `"Refresh"`  | `Context->refresh()` method succeeds                        | `ContextData` used to refresh the context                   |
+| `"Publish"`  | `Context->publish()` method succeeds                        | `PublishEvent` data sent to the A/B Smartly event collector |
+| `"Exposure"` | `Context->getTreatment()` method succeeds on first exposure | `Exposure` data enqueued for publishing                     |
+| `"Goal"`     | `Context->Track()` method succeeds                          | `GoalAchivement` goal data enqueued for publishing          |
+| `"Close"`    | `Context->lose()` method succeeds the first time            | `null`                                                      |
 
 </TabItem>
 
