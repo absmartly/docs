@@ -183,6 +183,50 @@ The precision option allows you to set a number of decimal places that your
 value can have. Set this to `2` and a revenue value of `1000.455` will be
 presented as `$1000.46`.
 
+### Outliers
+
+The outliers section allows you to define what to do when an outlying metric
+value is tracked.
+
+Take the following scenario as an example. If you are tracking a revenue
+metric from product sales and a user comes and buys `$1,000,000` worth of
+products, your metric's data will be skewed by this outlying value.
+
+To avoid this problem, you can set an outlier capping method so that any
+outlying values are not tracked.
+
+There are 3 methods to choose from:
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Uncapped</th>
+      <td>Allow any outliers to be tracked as normal.</td>
+    </tr>
+    <tr>
+      <th>99th Percentile</th>
+      <td>
+        Stop any values that are outside 99% of other values from being tracked.
+      </td>
+    </tr>
+    <tr>
+      <th>Standard Deviation</th>
+      <td>
+        Stop any values that are higher or lower than the standard deviation of
+        your other values from being tracked. When choosing this option you are
+        also given a <code>multiplier</code> field, allowing you to expand your
+        boundaries to a multiple of your metric's standard deviation.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ### Property Filters
 
 Property Filters allow you to filter your metrics to make them more specific.
