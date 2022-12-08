@@ -90,7 +90,7 @@ paths:
           in: header
           required: true
           description: The User-Agent of your SDK.
-          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246
+          example: absmartly-Java-SDK v1.0.1
           schema:
             type: string
         - name: X-Environment
@@ -163,7 +163,7 @@ paths:
           in: header
           required: true
           description: The User-Agent of your SDK.
-          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246
+          example: absmartly-Java-SDK v1.0.1
           schema:
             type: string
         - name: X-Environment
@@ -303,7 +303,7 @@ paths:
           in: header
           required: true
           description: The User-Agent of your SDK.
-          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246
+          example: absmartly-Java-SDK v1.0.1
           schema:
             type: string
         - name: X-Environment
@@ -442,7 +442,7 @@ paths:
           in: header
           required: true
           description: The User-Agent of your SDK.
-          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246
+          example: absmartly-Java-SDK v1.0.1
           schema:
             type: string
         - name: X-Environment
