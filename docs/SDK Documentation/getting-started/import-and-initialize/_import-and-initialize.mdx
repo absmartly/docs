@@ -25,6 +25,12 @@ import PHPGranularChoice from "!!raw-loader!./php/granularChoice.php";
 
 Once the SDK is installed, it can be initialized in your project.
 
+:::info
+The following examples assume that an [Api Key with SDK permissions](/docs/Web%20Console%20Docs/settings#api-keys),
+an [Application](/docs/Web%20Console%20Docs/tutorial#2-setting-your-applications), and an
+[Environment](/docs/Web%20Console%20Docs/settings#environments) have been created in the A/B Smartly Web Console.
+:::
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -162,9 +168,6 @@ for SSL to Conscrypt by creating the Client instance as follows:
 
 <TabItem value="dotnet" label=".NET">
 
-The following examples assume that an [Api Key](/docs/Web%20Console%20Docs/settings#api-keys), an [Application](/docs/Web%20Console%20Docs/tutorial#2-setting-your-applications), and an
-[Environment](/docs/Web%20Console%20Docs/settings#environments) have been created in the A/B Smartly Web Console.
-
 If your project uses .NET dependency injection, the default setup for the SDK can be used:
 
 <CodeBlock language="csharp">{DotNetStartupCode}</CodeBlock>
@@ -219,9 +222,6 @@ sure it creates named `IHttpClient` instances with the name `ABSmartlySDK.HttpCl
 </TabItem>
 
 <TabItem value="php" label="PHP">
-
-The following examples assume that an [Api Key](/docs/Web%20Console%20Docs/settings#api-keys), an [Application](/docs/Web%20Console%20Docs/tutorial#2-setting-your-applications), and an
-[Environment](/docs/Web%20Console%20Docs/settings#environments) have been created in the A/B Smartly Web Console.
 
 <CodeBlock language="php">{PHPImportAndInitialize}</CodeBlock>
 
