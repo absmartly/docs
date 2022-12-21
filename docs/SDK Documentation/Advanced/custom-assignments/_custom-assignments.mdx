@@ -26,6 +26,9 @@ import DotNetCustomAssignments from "!!raw-loader!./dotnet/customAssignments.cs"
 import PHPCustomAssignment from "!!raw-loader!./php/customAssignment.php";
 import PHPCustomAssignments from "!!raw-loader!./php/customAssignments.php";
 
+import RubyCustomAssignment from "!!raw-loader!./ruby/customAssignment.rb";
+import RubyCustomAssignments from "!!raw-loader!./ruby/customAssignments.rb";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -154,6 +157,23 @@ assignments for each one, you can do so using the
 `Context->setCustomAssignments()` method.
 
 <CodeBlock language="php">{PHPCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+Sometimes it may be necessary to override the automatic selection of a
+variant. For example, if you wish to have your variant chosen based on data
+from an API call. This can be accomplished using the `set_custom_assignment()`
+method.
+
+<CodeBlock language="ruby">{RubyCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `set_custom_assignments()`
+method.
+
+<CodeBlock language="ruby">{RubyCustomAssignments}</CodeBlock>
 
 </TabItem>
 
