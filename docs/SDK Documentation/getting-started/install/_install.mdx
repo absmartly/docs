@@ -24,6 +24,9 @@ import DotNetInstall from "!!raw-loader!./dotnet/install.bash";
 
 import PHPInstall from "!!raw-loader!./php/install.bash";
 
+import RubyBundlerInstall from "!!raw-loader!./ruby/bundler.sh";
+import RubyGemInstall from "!!raw-loader!./ruby/gem.sh";
+
 Once your Web Console is setup and you have created some experiments, you can
 install our SDKs through your package manager, a CDN or by directly importing
 it.
@@ -188,6 +191,25 @@ it is compatible with the latest PHP version.
 A/B Smartly PHP SDK can be installed with [composer](https://getcomposer.org/):
 
 <CodeBlock language="bash">{PHPInstall}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+:::info Compatibility
+The A/B Smartly Ruby SDK is compatible with **Ruby versions 2.7 and later**. For
+the best performance and code readability, **Ruby 3 or later** is recommended.
+This SDK is being constantly tested with the nightly builds of Ruby, to
+ensure it is compatible with the latest Ruby version.
+:::
+
+**With Bundler**
+
+<CodeBlock language="bash">{RubyBundlerInstall}</CodeBlock>
+
+**Without Bundler**
+
+<CodeBlock language="bash">{RubyGemInstall}</CodeBlock>
 
 </TabItem>
 
