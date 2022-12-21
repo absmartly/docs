@@ -18,6 +18,8 @@ import DotNetFinalize from "!!raw-loader!./dotnet/finalize.cs";
 
 import PHPFinalize from "!!raw-loader!./php/finalize.php";
 
+import RubyFinalize from "!!raw-loader!./ruby/finalize.rb";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -116,6 +118,16 @@ Smartly collector, like `Context->publish()`, and will also "seal" the context,
 throwing an error if any method that could generate an event is called.
 
 <CodeBlock language="php">{PHPFinalize}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+The `close()` method will ensure all events have been published to the A/B
+Smartly collector, like `publish()`, and will also "seal" the context, throwing
+an error if any method that could generate an event is called.
+
+<CodeBlock language="ruby">{RubyFinalize}</CodeBlock>
 
 </TabItem>
 
