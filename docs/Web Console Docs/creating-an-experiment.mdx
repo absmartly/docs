@@ -87,8 +87,26 @@ Your **Primary Metric** is the statistic that you will use to make a decision
 on your experiment.
 
 **Secondary Metrics** are _not_ used to make a decision, but they
-may be affected by it. Selecting them here allows for you to easily visualise
-them in the [experiment dashboard](docs/Web%20Console%20Docs/dashboard.mdx#impact-on-main-metrics).
+may be affected by it. For example, if your Primary Metric is `revenue_per_user` it could go up because
+there are more customers making purchases or it could go up because customers
+are buying more expensive items. In this case, it might be useful to have
+`users_that_convert` and `number_of_purchases` as secondary metrics.
+
+**Guardrail Metrics** are for giving you warnings about other parts of your
+business from the the Primary metric. If your new feature increases a user's
+`time_on_page`, but also increases your `page_load_time` significantly - the
+data may be showing you a false positive for that experiment.
+
+**Exploratory Metrics** are the last of the metric types and are simply used
+for curiosity. They have no impact on your decision making process, but they
+might be interesting to look at the data of anyway.
+
+:::note
+Selecting any of the above metric types allows for them to be easily visualised
+on the [experiment dashboard](docs/Web%20Console%20Docs/dashboard.mdx#impact-on-main-metrics),
+but more metrics can always be selected at the bottom of the experiment
+details page.
+:::
 
 ## Minimum Detectable Effect
 
