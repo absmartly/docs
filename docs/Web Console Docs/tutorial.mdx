@@ -185,8 +185,8 @@ presented as `$1000.46`.
 
 ### Outliers
 
-Here you can specify what is an outlier for this metric and which strategy
-should be used to cap the values.
+Outlier limits force extreme metric values to be within a specified range to
+reduce variance. There are four options to choose from:
 
 <table>
   <thead>
@@ -197,18 +197,30 @@ should be used to cap the values.
   </thead>
   <tbody>
     <tr>
-      <th>Uncapped</th>
-      <td>No outlier treatment is performed</td>
+      <th>Unlimited</th>
+      <td>
+        No outlier treatment is performed and outliers are included in the data
+        as normal.
+      </td>
     </tr>
     <tr>
-      <th>99th Percentile</th>
-      <td>Cap each value to the 99th percentile of all seen values</td>
+      <th>Quantile</th>
+      <td>
+        Limits outliers to quantiles, where you can choose your own lower and
+        upper quantile limits.
+      </td>
     </tr>
     <tr>
       <th>Standard Deviation</th>
       <td>
         Cap each value to a multiple of the standard deviation of all seen
-        values
+        values.
+      </td>
+    </tr>
+    <tr>
+      <th>Fixed</th>
+      <td>
+        Allows you to limit outlier values to specific upper and lower values.
       </td>
     </tr>
   </tbody>
