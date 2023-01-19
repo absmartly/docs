@@ -16,7 +16,18 @@ jobs:
       - name: Install Deps
         uses: borales/actions-yarn@v4
         with:
-          cmd: install
+          cmd: install  
+          
+      - name: Clean API
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: clean:api  
+          
+      - name: Generate API
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: gen:api
+          
       - name: Build production bundle
         uses: borales/actions-yarn@v4
         with:
