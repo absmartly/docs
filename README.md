@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/3171614f-c5ee-4e28-93a5-1b12dda9f055/deploy-status)](https://app.netlify.com/sites/absmartly-docs/deploys)
+
 # Website
 
 This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
