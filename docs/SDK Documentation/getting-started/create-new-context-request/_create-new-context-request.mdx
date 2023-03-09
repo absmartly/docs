@@ -50,6 +50,11 @@ import PHPRefresh from "!!raw-loader!./php/refresh.php";
 import PHPExtraUnits from "!!raw-loader!./php/extraUnits.php";
 import PHPPrefetchedData from "!!raw-loader!./php/prefetchedData.php";
 
+import RubyContext from "!!raw-loader!./ruby/createContext.rb";
+import RubyPreFetchedData from "!!raw-loader!./ruby/prefetchedData.rb";
+import RubyExtraUnits from "!!raw-loader!./ruby/extraUnits.rb";
+import RubyExtraUnitsAlt from "!!raw-loader!./ruby/extraUnitsAlt.rb";
+
 In order to start linking your experiments from the Web Console to your
 application, you will need to create a context. When you instantiate a context,
 you should pass all known characteristics of the current user. These
@@ -426,6 +431,46 @@ Please note, you cannot override an already set unit type as that would be a cha
 `Context->setUnits` methods can be called before the context is ready.
 
 <CodeBlock language="php">{PHPExtraUnits}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+**Create A New Context**
+
+<CodeBlock language="ruby">{RubyContext}</CodeBlock>
+
+**Create A Context With Prefetched Data**
+
+<CodeBlock language="ruby">{RubyPreFetchedData}</CodeBlock>
+
+#### Refreshing the context with fresh experiment data
+
+For long-running contexts, the context is usually created once when the
+application is first started. However, any experiments being tracked in your
+production code, but started after the context was created, will not be
+triggered.
+
+Alternatively, the `refresh` method can be called manually. The `refresh` method
+pulls updated experiment data from the A/B Smartly collector and will trigger
+recently started experiments when `treatment` is called again.
+
+**Setting Extra Units**
+
+You can add additional units to a context by calling the `set_unit()` or
+`set_units()` methods. These methods may be used, for example, when a user logs
+in to your application and you want to use the new unit type in the context.
+
+Please note, you cannot override an already set unit type as that would be a
+change of identity and would throw an exception. In this case, you must
+create a new context instead. The `set_unit()` and `set_units()` methods can be
+called before the context is ready.
+
+<CodeBlock language="rb">{RubyExtraUnits}</CodeBlock>
+
+or
+
+<CodeBlock language="rb">{RubyExtraUnitsAlt}</CodeBlock>
 
 </TabItem>
 

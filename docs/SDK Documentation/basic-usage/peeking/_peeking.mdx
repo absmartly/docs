@@ -15,6 +15,8 @@ import DotNetPeekAtVariants from "!!raw-loader!./dotnet/peekAtVariants.cs";
 import DotNetPeekAtVariables from "!!raw-loader!./dotnet/peekAtVariables.cs";
 import PHPPeekAtVariant from "!!raw-loader!./php/peekAtVariant.php";
 import PHPPeekAtVariable from "!!raw-loader!./php/peekAtVariable.php";
+import RubyPeekAtVariant from "!!raw-loader!./ruby/peekAtVariants.rb";
+import RubyPeekAtVariable from "!!raw-loader!./ruby/peekAtVariables.rb";
 
 <Tabs groupId="language">
 
@@ -115,6 +117,20 @@ provides a `Context->peekTreatment()` method for that.
 #### Peeking at variables
 
 <CodeBlock language="php">{PHPPeekAtVariable}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment or variable without triggering an exposure. The A/B Smartly SDK
+provides a `peek_treatment()` method for that.
+
+<CodeBlock language="ruby">{RubyPeekAtVariant}</CodeBlock>
+
+#### Peeking at variables
+
+<CodeBlock language="ruby">{RubyPeekAtVariable}</CodeBlock>
 
 </TabItem>
 
