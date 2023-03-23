@@ -247,7 +247,7 @@ paths:
                 data:
                   $ref: '#/components/schemas/ExperimentEditWritable'
                 note:
-                  $ref: '#/components/schemas/ExperimentNoteResponse'
+                  type: string
       responses:
         "200":
           description: A JSON Object with experiment data.
