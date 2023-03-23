@@ -225,7 +225,7 @@ paths:
                   experiment:
                     $ref: "#/components/schemas/Experiment"
     put:
-      summary: EDIT Experiment
+      summary: Experiment Edit
       description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
       parameters:
         - name: experimentId
