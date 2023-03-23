@@ -19,7 +19,7 @@ security:
 paths:
   /experiments:
     get:
-      summary: Experiments
+      summary: Experiments List
       description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
       parameters:
         - name: search
@@ -203,7 +203,7 @@ paths:
 
   /experiments/{experimentId}:
     get:
-      summary: Experiment
+      summary: Experiment Get
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
         - name: experimentId
@@ -505,7 +505,7 @@ paths:
 
   /experiments/{experimentId}/activity:
     get:
-      summary: Experiment Activity
+      summary: Experiment Activity Get
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
         - name: experimentId
@@ -535,7 +535,7 @@ paths:
 
   /api_keys:
     get:
-      summary: API Keys
+      summary: API Keys List
       description: "**Required Permissions**: `ApiKey List` or `ApiKey Admin`"
       parameters:
         - name: sort
@@ -581,7 +581,7 @@ paths:
 
   /api_keys/{apiKeyId}:
     get:
-      summary: Api Key
+      summary: Api Key Get
       description: "**Required Permissions**: `ApiKey Get` or `ApiKey Admin`"
       parameters:
         - name: apiKeyId
@@ -603,7 +603,7 @@ paths:
 
   /applications:
     get:
-      summary: Applications
+      summary: Applications List
       description: "**Required Permissions**: `Application List` or `Application Admin`"
       parameters:
         - name: sort
@@ -649,7 +649,7 @@ paths:
 
   /applications/{applicationId}:
     get:
-      summary: Application
+      summary: Application Get
       description: "**Required Permissions**: `Application Get` or `Application Admin`"
       parameters:
         - name: applicationId
@@ -671,7 +671,7 @@ paths:
 
   /cors:
     get:
-      summary: CORS Allowed Origins
+      summary: CORS Allowed Origins List
       description: "**Required Permissions**: `CorsAllowedOrigin List` or `CorsAllowedOrigin Admin`"
       parameters:
         - name: sort
@@ -717,7 +717,7 @@ paths:
 
   /cors/{corsId}:
     get:
-      summary: CORS Allowed Origin
+      summary: CORS Allowed Origin Get
       description: "**Required Permissions**: `CorsAllowedOrigin Get` or `CorsAllowedOrigin Admin`"
       parameters:
         - name: corsId
@@ -740,7 +740,7 @@ paths:
   /environments:
     get:
       description: "**Required Permissions**: `Environment List` or `Environment Admin`"
-      summary: Environments
+      summary: Environments List
       parameters:
         - name: sort
           in: query
@@ -785,7 +785,7 @@ paths:
 
   /environments/{environmentId}:
     get:
-      summary: Environment
+      summary: Environment Get
       description: "**Required Permissions**: `Environment Get` or `Environment Admin`"
       parameters:
         - name: environmentId
@@ -807,7 +807,7 @@ paths:
 
   /experiment_annotations:
     get:
-      summary: Experiment Annotations
+      summary: Experiment Annotations List
       description: "**Required Permissions**: `Annotation List` or `Annotation Admin`"
       parameters:
         - name: sort
@@ -859,7 +859,7 @@ paths:
 
   /experiment_annotations/{experimentAnnotationId}:
     get:
-      summary: Experiment Annotation
+      summary: Experiment Annotation Get
       description: "**Required Permissions**: `Annotation Get` or `Annotation Admin`"
       parameters:
         - name: experimentAnnotationId
@@ -881,7 +881,7 @@ paths:
 
   /experiment_tags:
     get:
-      summary: Experiment Tags
+      summary: Experiment Tags List
       description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
       parameters:
         - name: sort
@@ -927,7 +927,7 @@ paths:
 
   /experiment_tags/{experimentTagId}:
     get:
-      summary: Experiment Tag
+      summary: Experiment Tag Get
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
         - name: experimentTagId
@@ -949,7 +949,7 @@ paths:
 
   /goal_tags:
     get:
-      summary: Goal Tags
+      summary: Goal Tags List
       description: "**Required Permissions**: `Goal List` or `Goal Admin`"
       parameters:
         - name: sort
@@ -995,7 +995,7 @@ paths:
 
   /goal_tags/{goalTagId}:
     get:
-      summary: Goal Tag
+      summary: Goal Tag Get
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
       parameters:
         - name: goalTagId
@@ -1017,7 +1017,7 @@ paths:
 
   /goals:
     get:
-      summary: Goals
+      summary: Goals List
       description: "**Required Permissions**: `Goal List` or `Goal Admin`"
       parameters:
         - name: sort
@@ -1063,7 +1063,7 @@ paths:
 
   /goals/{goalId}:
     get:
-      summary: Goal
+      summary: Goal Get
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
       parameters:
         - name: goalId
@@ -1085,7 +1085,7 @@ paths:
 
   /metric_tags:
     get:
-      summary: Metric Tags
+      summary: Metric Tags List
       description: "**Required Permissions**: `Metric List` or `Metric Admin`"
       parameters:
         - name: sort
@@ -1131,7 +1131,7 @@ paths:
 
   /metric_tags/{metricTagId}:
     get:
-      summary: Metric Tag
+      summary: Metric Tag Get
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
       parameters:
         - name: metricTagId
@@ -1153,7 +1153,7 @@ paths:
 
   /metrics:
     get:
-      summary: Metrics
+      summary: Metrics List
       description: "**Required Permissions**: `Metric List` or `Metric Admin`"
       parameters:
         - name: sort
@@ -1217,7 +1217,7 @@ paths:
 
   /metrics/{metricId}:
     get:
-      summary: Metric
+      summary: Metric Get
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
       parameters:
         - name: metricId
@@ -1239,7 +1239,7 @@ paths:
 
   /permission_categories:
     get:
-      summary: Permission Categories
+      summary: Permission Categories List
       parameters:
         - name: sort
           in: query
@@ -1277,7 +1277,7 @@ paths:
 
   /permissions:
     get:
-      summary: Permissions
+      summary: Permissions List
       parameters:
         - name: sort
           in: query
@@ -1315,7 +1315,7 @@ paths:
 
   /roles:
     get:
-      summary: Roles
+      summary: Roles List
       description: "**Required Permissions**: `Role List` or `Role Admin`"
       parameters:
         - name: sort
@@ -1361,7 +1361,7 @@ paths:
 
   /roles/{roleId}:
     get:
-      summary: Role
+      summary: Role Get
       description: "**Required Permissions**: `Role Get` or `Role Admin`"
       parameters:
         - name: roleId
@@ -1383,7 +1383,7 @@ paths:
 
   /segments:
     get:
-      summary: Segments
+      summary: Segments List
       description: "**Required Permissions**: `Segment List` or `Segment Admin`"
       parameters:
         - name: sort
@@ -1429,7 +1429,7 @@ paths:
 
   /segments/{segmentId}:
     get:
-      summary: Segment
+      summary: Segment Get
       description: "**Required Permissions**: `Segment Get` or `Segment Admin`"
       parameters:
         - name: segmentId
@@ -1451,7 +1451,7 @@ paths:
 
   /teams:
     get:
-      summary: Teams
+      summary: Teams List
       description: "**Required Permissions**: `Team List` or `Team Admin`"
       parameters:
         - name: sort
@@ -1497,7 +1497,7 @@ paths:
 
   /teams/{teamId}:
     get:
-      summary: Team
+      summary: Team Get
       description: "**Required Permissions**: `Team Get` or `Team Admin`"
       parameters:
         - name: teamId
@@ -1519,7 +1519,7 @@ paths:
 
   /unit_types:
     get:
-      summary: Units
+      summary: Units List
       description: "**Required Permissions**: `UnitType List` or `UnitType Admin`"
       parameters:
         - name: sort
@@ -1565,7 +1565,7 @@ paths:
 
   /unit_types/{unitTypeId}:
     get:
-      summary: Unit
+      summary: Unit Get
       description: "**Required Permissions**: `UnitType Get` or `UnitType Admin`"
       parameters:
         - name: unitTypeId
@@ -1587,7 +1587,7 @@ paths:
 
   /users:
     get:
-      summary: Users
+      summary: Users List
       description: "**Required Permissions**: `User List` or `User Admin`"
       parameters:
         - name: sort
@@ -1633,7 +1633,7 @@ paths:
 
   /users/{userId}:
     get:
-      summary: User
+      summary: User Get
       description: "**Required Permissions**: `User Get` or `User Admin`"
       parameters:
         - name: userId
@@ -1655,7 +1655,7 @@ paths:
 
   /users/{userId}/api_keys:
     get:
-      summary: User API keys
+      summary: User API Keys List
       description: "**Required Permissions**: `User Get` or `User Admin`"
       parameters:
         - name: userId
@@ -1686,7 +1686,7 @@ paths:
 
   /webhook_events:
     get:
-      summary: Webhook Events
+      summary: Webhook Events List
       description: "**Required Permissions**: `Webhook List` or `Webhook Admin`"
       parameters:
         - name: sort
@@ -1732,7 +1732,7 @@ paths:
 
   /webhooks:
     get:
-      summary: Webhooks
+      summary: Webhooks List
       description: "**Required Permissions**: `Webhook List` or `Webhook Admin`"
       parameters:
         - name: sort
@@ -1778,7 +1778,7 @@ paths:
 
   /webhooks/{webhookId}:
     get:
-      summary: Webhook
+      summary: Webhook Get
       description: "**Required Permissions**: `Webhook Get` or `Webhook Admin`"
       parameters:
         - name: webhookId
