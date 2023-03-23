@@ -12,7 +12,7 @@ externalDocs:
   description: Find out more about A/B Smartly
   url: "https://www.absmartly.com"
 servers:
-  - url: https://sandbox.absmartly.io/v1
+  - url: https://dev-1.absmartly.io/v1
 security:
   - UserApiKey: []
 
@@ -33,21 +33,6 @@ paths:
           schema:
             type: string
             example: name
-        - name: sort_asc
-          in: query
-          schema:
-            type: boolean
-            example: true
-        - name: page
-          in: query
-          schema:
-            type: integer
-            example: 1
-        - name: items
-          in: query
-          schema:
-            type: integer
-            example: 5
         - name: iterations_of
           in: query
           required: false
@@ -123,7 +108,7 @@ paths:
         - name: significance
           in: query
           required: false
-          description: An array of significances allowing you to filter by positive, negative or unsignificant experiments. **This must be used with a preview query of `1`**
+          description: "An array of significances allowing you to filter by positive, negative or unsignificant experiments. **This must be used with a preview query of `1`**"
           schema:
             type: array
             items:
@@ -131,31 +116,30 @@ paths:
         - name: sample_ratio_mismatch
           in: query
           required: false
-          description: A boolean value which allows you to filter for experiments with a `Sample Ratio Mismatch` alert. **This must be used with a preview query of `1`**
+          description: "A boolean value which allows you to filter for experiments with a `Sample Ratio Mismatch` alert. **This must be used with a preview query of `1`**"
           schema:
             type: boolean
         - name: cleanup_needed
           in: query
           required: false
-          description: A boolean value which allows you to filter for experiments with a `Code Cleanup Needed` alert. **This must be used with a preview query of `1`**
+          description: "A boolean value which allows you to filter for experiments with a `Code Cleanup Needed` alert. **This must be used with a preview query of `1`**"
           schema:
             type: boolean
         - name: audience_mismatch
           in: query
           required: false
-          description: A boolean value which allows you to filter for experiments with a `Target Audience Mismatch` alert. **This must be used with a preview query of `1`**
+          description: "A boolean value which allows you to filter for experiments with a `Target Audience Mismatch` alert. **This must be used with a preview query of `1`**"
           schema:
             type: boolean
         - name: sample_size_reached
           in: query
           required: false
-          description: A boolean value which allows you to filter for experiments with a `Sample Size Reached` alert. **This must be used with a preview query of `1`**
+          description: "A boolean value which allows you to filter for experiments with a `Sample Size Reached` alert. **This must be used with a preview query of `1`**"
           schema:
             type: boolean
         - name: iterations
           in: query
           required: false
-          description:
           schema:
             enum: [0, 1]
         - name: sort_asc
@@ -186,6 +170,37 @@ paths:
                 items:
                   $ref: "#/components/schemas/Experiment"
 
+    post:
+      summary: POST Experiment
+      description: "**Required Permissions**: `Experiment Create` or `Experiment Admin`"
+      requestBody:
+        description: Create an Experiment
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExperimentWritable"
+      responses:
+        "200":
+          description: A JSON Object with experiment data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment:
+                    $ref: "#/components/schemas/ExperimentResponse"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
   /experiments/{experimentId}:
     get:
       summary: GET Experiment
@@ -209,6 +224,284 @@ paths:
                 properties:
                   experiment:
                     $ref: "#/components/schemas/Experiment"
+    put:
+      summary: EDIT Experiment
+      description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to edit.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: Edit an Experiment
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/ExperimentEditWritable'
+                note:
+                  $ref: '#/components/schemas/ExperimentNoteResponse'
+      responses:
+        "200":
+          description: A JSON Object with experiment data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment:
+                    $ref: "#/components/schemas/ExperimentResponse"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /experiments/{experimentId}/start:
+    put:
+      summary: START Experiment
+      description: "**Required Permissions**: `Experiment Start` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to start.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        "200":
+          description: A JSON Object with experiment data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment:
+                    $ref: "#/components/schemas/ExperimentResponse"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /experiments/{experimentId}/stop:
+    put:
+      summary: STOP Experiment
+      description: "**Required Permissions**: `Experiment Stop` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to stop.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        "200":
+          description: A JSON Object with experiment data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment:
+                    $ref: "#/components/schemas/ExperimentResponse"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /experiments/{experimentId}/development:
+    put:
+      summary: START Experiment in Development
+      description: "**Required Permissions**: `Experiment Development` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to stop.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        "200":
+          description: A JSON Object with experiment data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment:
+                    $ref: "#/components/schemas/ExperimentResponse"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /experiments/{experimentId}/full_on:
+    put:
+      summary: SET Experiment as Full On
+      description: "**Required Permissions**: `Experiment FullOn` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to set as full on.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: The variant you want to set the experiment to full on as.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_on_variant:
+                  type: integer
+                  example: 1
+      responses:
+        "200":
+          description: A JSON Object with experiment data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment:
+                    $ref: "#/components/schemas/ExperimentResponse"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /experiments/{experimentId}/restart:
+    put:
+      summary: RESTART Experiment
+      description: "**Required Permissions**: `Experiment Restart` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to restart.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: The new data you wish to restart the experiment with.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentWritable'
+      responses:
+        "200":
+          description: A JSON Object with experiment data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment:
+                    $ref: "#/components/schemas/ExperimentResponse"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /experiments/{experimentId}/archive:
+    put:
+      summary: ARCHIVE Experiment
+      description: "**Required Permissions**: `Experiment Archive` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to archive.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                archive:
+                  type: boolean
+                  example: true
+                note:
+                  type: string
+      responses:
+        "200":
+          description: A JSON Object with experiment data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment:
+                    $ref: "#/components/schemas/ExperimentResponse"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
 
   /experiments/{experimentId}/activity:
     get:
@@ -427,7 +720,7 @@ paths:
       summary: GET CORS Allowed Origin
       description: "**Required Permissions**: `CorsAllowedOrigin Get` or `CorsAllowedOrigin Admin`"
       parameters:
-        - name: applicationId
+        - name: corsId
           in: path
           required: true
           schema:
@@ -1512,8 +1805,120 @@ components:
       in: header
       description: A User API Key for API authorization. **Must be in the format "Api-Key your_user_api_key"**
       name: Authorization
-      scheme: ^Api-Key\s\S+
   schemas:
+    ExperimentResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: test_experiment
+        iteration:
+          type: integer
+          minimum: 1
+        state:
+          type: string
+          example: running
+        development_at:
+          type: string
+          format: date-time
+          nullable: true
+        start_at:
+          type: string
+          format: date-time
+          nullable: true
+        stop_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+        full_on_at:
+          nullable: true
+          type: string
+          format: date-time
+          example: null
+        full_on_variant:
+          nullable: true
+          type: integer
+          minimum: 0
+          maximum: 3
+        last_seen_in_code_at:
+          type: string
+          format: date-time
+          nullable: true
+        nr_variants:
+          type: integer
+          maximum: 3
+          minimum: 1
+          example: 3
+        percentages:
+          type: string
+          pattern: '\d{2}\/\d{2}\/\d{2}'
+          example: 34/33/33
+          nullable: true
+        percentage_of_traffic:
+          type: integer
+          example: 100
+        seed:
+          type: string
+          format: bigint
+        traffic_seed:
+          type: string
+          format: bigint
+        created_at:
+          type: string
+          format: date-time
+        created_by_user_id:
+          type: integer
+          minimum: 1
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+        updated_by_user_id:
+          type: integer
+          minimum: 1
+          nullable: true
+        description:
+          type: string
+          example: This experiment's description
+        unit_type_id:
+          type: integer
+          example: 1
+        primary_metric_id:
+          type: integer
+          example: 20
+        audience:
+          type: string
+          pattern: '\{"filter":{and:\[]}}'
+        audience_strict:
+          type: boolean
+          example: false
+        hypothesis:
+          type: string
+        prediction:
+          type: string
+        action_points:
+          type: string
+        implementation_details:
+          type: string
+        other:
+          type: string
+        minimum_detectable_effect:
+          type: integer
+          example: 10
+          nullable: true
+        archived:
+          type: boolean
+          example: false
+        split:
+          type: array
+          items: 
+            type: number
+            example: [0.5, 0.5]
+        
     Experiment:
       type: object
       properties:
@@ -2047,6 +2452,59 @@ components:
           type: string
           format: date-time
 
+    ExperimentNoteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        reply_to_note_id:
+          type: integer
+          nullable: true
+          example: null
+        experiment_id:
+          type: integer
+        action:
+          enum:
+            [
+              create,
+              development,
+              start,
+              restart,
+              edit,
+              stop,
+              full_on,
+              comment,
+              archive,
+              unarchive,
+            ]
+        created_at:
+          type: string
+          format: date-time
+        created_by_user_id:
+          type: integer
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+        updated_by_user_id:
+          type: integer
+          nullable: true
+        note:
+          type: string
+          nullable: true
+        variant:
+          type: integer
+          nullable: true
+        new_experiment_id:
+          nullable: true
+          type: integer
+        created_by:
+          $ref: "#/components/schemas/User"
+        updated_by:
+          $ref: "#/components/schemas/User"
+          nullable: true
+          example: null
+
     ExperimentNote:
       type: object
       properties:
@@ -2245,34 +2703,40 @@ components:
             $ref: "#/components/schemas/ExperimentApplication"
 
     ExperimentTeam:
-      experiment:
-        $ref: "#/components/schemas/Experiment"
-      experiment_id:
-        type: integer
-      team:
-        $ref: "#/components/schemas/Team"
-      team_id:
-        type: integer
+      type: object
+      properties:
+        experiment:
+          $ref: "#/components/schemas/Experiment"
+        experiment_id:
+          type: integer
+        team:
+          $ref: "#/components/schemas/Team"
+        team_id:
+          type: integer
 
     ExperimentOwner:
-      experiment:
-        $ref: "#/components/schemas/Experiment"
-      experiment_id:
-        type: integer
-      user:
-        $ref: "#/components/schemas/User"
-      user_id:
-        type: integer
+      type: object
+      properties:
+        experiment:
+          $ref: "#/components/schemas/Experiment"
+        experiment_id:
+          type: integer
+        user:
+          $ref: "#/components/schemas/User"
+        user_id:
+          type: integer
 
     ExperimentExperimentTag:
-      experiment:
-        $ref: "#/components/schemas/Experiment"
-      experiment_id:
-        type: integer
-      experiment_tag:
-        $ref: "#/components/schemas/ExperimentTag"
-      experiment_tag_id:
-        type: integer
+      type: object
+      properties:
+        experiment:
+          $ref: "#/components/schemas/Experiment"
+        experiment_id:
+          type: integer
+        experiment_tag:
+          $ref: "#/components/schemas/ExperimentTag"
+        experiment_tag_id:
+          type: integer
 
     User:
       type: object
@@ -2448,6 +2912,66 @@ components:
         metric_id:
           type: integer
 
+    ExperimentEditWritable:
+      type: object
+      properties:
+        name:
+          type: string
+          example: experiment_name
+        iteration:
+          type: integer
+          minimum: 2
+        percentage_of_traffic:
+          type: integer
+          example: 100
+        description:
+          type: string
+          example: An experiment into whether changing our cta_button to red will effect our monthly revenue
+        owners:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentWritableOwner"
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentWritableTeam"
+        experiment_tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentWritableTag"
+        hypothesis:
+          type: string
+        prediction:
+          type: string
+        action_points:
+          type: string
+        audience:
+          type: string
+        implementation_details:
+          type: string
+        other:
+          type: string
+        applications:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentWritableApplication"
+        secondary_metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentWritableMetric"
+        exploratory_metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentWritableMetric"
+        guardrail_metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentWritableMetric"
+        variant_screenshots:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentVariantScreenshotWritable"
+
     ExperimentWritable:
       type: object
       properties:
@@ -2458,7 +2982,7 @@ components:
           type: integer
           minimum: 1
         state:
-          enum: [created, development, running, stopped]
+          enum: ["created", "development", "running", "stopped", "draft", "ready"]
         nr_variants:
           type: integer
           example: 1
@@ -2507,6 +3031,14 @@ components:
         primary_metric:
           $ref: "#/components/schemas/ExperimentWritableMetric"
         secondary_metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentWritableMetric"
+        exploratory_metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentWritableMetric"
+        guardrail_metrics:
           type: array
           items:
             $ref: "#/components/schemas/ExperimentWritableMetric"
