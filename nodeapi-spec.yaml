@@ -1060,6 +1060,34 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Goal"
+    post:
+      summary: Goal Create
+      description: "**Required Permissions**: `Goal Create` or `Goal Admin`"
+      requestBody:
+        description: Create a Goal
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GoalWritable"
+      responses:
+        "200":
+          description: A JSON Object with Goal data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  goal:
+                    $ref: "#/components/schemas/Goal"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
 
   /goals/{goalId}:
     get:
@@ -1082,6 +1110,88 @@ paths:
                 properties:
                   goal:
                     $ref: "#/components/schemas/Goal"
+
+    put:
+      summary: Goal Edit
+      description: "**Required Permissions**: `Goal Edit` or `Goal Admin`"
+      parameters:
+        - name: goalId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of the goal that you wish to edit.
+      requestBody:
+        description: Edit a Goal
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/GoalWritable"
+      responses:
+        "200":
+          description: A JSON Object with Goal data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  goal:
+                    $ref: "#/components/schemas/Goal"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /goals/{goalId}/archive:
+    put:
+      summary: Goal Archive
+      description: "**Required Permissions**: `Goal Archive` or `Goal Admin`"
+      parameters:
+        - name: goalId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of the goal that you wish to archive.
+      requestBody:
+        description: Archive a Goal
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                archive:
+                  type: boolean
+      responses:
+        "200":
+          description: A JSON Object with Goal data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  goal:
+                    $ref: "#/components/schemas/Goal"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+
+
 
   /metric_tags:
     get:
@@ -1214,6 +1324,34 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Metric"
+    post:
+      summary: Metric Create
+      description: "**Required Permissions**: `Metric Create` or `Metric Admin`"
+      requestBody:
+        description: Create a Metric
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MetricWritable"
+      responses:
+        "200":
+          description: A JSON Object with Metric data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  metric:
+                    $ref: "#/components/schemas/Metric"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
 
   /metrics/{metricId}:
     get:
@@ -1236,6 +1374,86 @@ paths:
                 properties:
                   metric:
                     $ref: "#/components/schemas/Metric"
+
+    put:
+      summary: Metric Edit
+      description: "**Required Permissions**: `Metric Edit` or `Metric Admin`"
+      parameters:
+        - name: metricId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of the metric that you wish to edit.
+      requestBody:
+        description: Edit a Metric
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/MetricWritable"
+      responses:
+        "200":
+          description: A JSON Object with Metric data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  metric:
+                    $ref: "#/components/schemas/Metric"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /metrics/{metricId}/archive:
+    put:
+      summary: Metric Archive
+      description: "**Required Permissions**: `Metric Archive` or `Metric Admin`"
+      parameters:
+        - name: metricId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of the metric that you wish to archive.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                archive:
+                  type: boolean
+                  example: true
+      responses:
+        "200":
+          description: A JSON Object with Metric data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  metric:
+                    $ref: "#/components/schemas/Metric"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
 
   /permission_categories:
     get:
@@ -2340,6 +2558,35 @@ components:
           items:
             $ref: "#/components/schemas/Metric"
 
+    GoalWritable:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: object
+            properties:
+              tag_id:
+                type: integer
+        teams:
+          type: array
+          items:
+            type: object
+            properties:
+              team_id:
+                type: integer
+        owners:
+          type: array
+          items:
+            type: object
+            properties:
+              user_id:
+                type: integer
+
     GoalGoalTag:
       type: object
       properties:
@@ -2806,6 +3053,60 @@ components:
         archived:
           type: boolean
           example: false
+
+    MetricWritable:
+      type: object
+      required: [name, format_str, scale, precision, value_source_property,effect,type,goal,owners,property_filter,outlier_limit_method]
+      properties:
+        name: 
+          type: string
+        description: 
+          type: string
+        format_str: 
+          type: string
+        scale: 
+          type: number
+        precision: 
+          type: integer
+        value_source_property: 
+          type: string
+        effect: 
+          enum: ["positive","negative","unknown"]
+        type: 
+          enum: ["goal_count", "goal_unique_count", "goal_time_to_achievement", "goal_property"]
+        goal_id: 
+          type: integer
+        tags: 
+          type: array
+          items:
+            type: object
+            properties:
+              tag_id: 
+                type: integer
+        owners: 
+          type: array
+          items:
+            type: object
+            properties:
+              user_id: 
+                type: integer
+        teams: 
+          type: array
+          items:
+            type: object
+            properties:
+              team_id: 
+                type: integer
+        property_filter: 
+          type: string
+        outlier_limit_method: 
+          enum: ["unlimited", "quantile", "stdev", "fixed"]
+        outlier_limit_lower_arg: 
+          type: string
+          nullable: true
+        outlier_limit_upper_arg: 
+          type: string
+          nullable: true
 
     Metric:
       type: object
