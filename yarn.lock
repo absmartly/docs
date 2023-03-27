@@ -4070,10 +4070,10 @@ dns-packet@^5.2.2:
   dependencies:
     "@leichtgewicht/ip-codec" "^2.0.1"
 
-docusaurus-plugin-openapi-docs@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/docusaurus-plugin-openapi-docs/-/docusaurus-plugin-openapi-docs-1.6.1.tgz#3be6234c878aabafe5ebc65be3c234dbbf19e970"
-  integrity sha512-3zQ+s2pXXcSNLWzO39tkIAku8O5jysCQyIyaiK9mfxLMqQH8VBXge64wwVWlWYWtGzlEwNkeyu2fiFYOkfiifw==
+docusaurus-plugin-openapi-docs@^1.6.1, docusaurus-plugin-openapi-docs@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/docusaurus-plugin-openapi-docs/-/docusaurus-plugin-openapi-docs-1.7.0.tgz#fa5f1264c2e0ab5914e5d6ffcc246c31d9d30071"
+  integrity sha512-MrPnMieFGpV1ch3Som17tKSR3Vln6POudgiIv1OXBzO08BrzUJegamSqgWSUU2JkKQLEZGGnXJ+gsAbhlRfvTw==
   dependencies:
     "@apidevtools/json-schema-ref-parser" "^9.0.9"
     "@docusaurus/mdx-loader" ">=2.0.1 <2.3.0"
