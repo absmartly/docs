@@ -532,6 +532,121 @@ paths:
                       $ref: "#/components/schemas/ExperimentNote"
                   offset:
                     type: integer
+    post:
+      summary: Experiment Activity Create
+      description: "**Required Permissions**: `Experiment Create` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Create an Experiment Activity
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExperimentActivityWritable"
+      responses:
+        "200":
+          description: A JSON Object with Experiment Activity data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /experiments/{experimentId}/activity/{activityId}:
+    put:
+      summary: Experiment Activity Edit
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update an Experiment Activity
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExperimentActivityWritable"
+      responses:
+        "200":
+          description: A JSON Object with Experiment Activity data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
+
+  /experiments/{experimentId}/activity/{activityId}/reply:
+    post:
+      summary: Experiment Activity Reply Create
+      description: "**Required Permissions**: `Experiment Create` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Reply to an Experiment Activity
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExperimentActivityWritable"
+      responses:
+        "200":
+          description: A JSON Object with Experiment Activity data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNoteResponse"
+                  errors:
+                    type: array
+                    items: 
+                      type: string
+                    example: []
 
   /api_keys:
     get:
@@ -1189,9 +1304,6 @@ paths:
                     items: 
                       type: string
                     example: []
-
-
-
 
   /metric_tags:
     get:
@@ -2698,6 +2810,12 @@ components:
           nullable: true
           type: string
           format: date-time
+
+    ExperimentActivityWritable:
+      type: object
+      properties:
+        note:
+          type: string
 
     ExperimentNoteResponse:
       type: object
