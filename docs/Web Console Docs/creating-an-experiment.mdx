@@ -11,13 +11,15 @@ How about we start creating some experiments? At the top of the dashboard, you
 will find the **New Experiment** button. Here you will be able to fine tune,
 edit and start your experiment.
 
-## Experiment Name
+## Basics
+
+### Experiment Name
 
 The experiment name can be anything that you want! As it will be used in your
 code, we recommend using a keyword-like name with underscores. For example,
 `large_homepage_carousel`.
 
-## Traffic Allocation
+### Traffic Allocation
 
 The traffic allocation is the total amount of audience who will experience the
 experiment, including the control group. Usually, this is kept at 100% unless
@@ -25,7 +27,47 @@ the change is considered dangerous. In which case, you could start it at 10%,
 move it up to 50% and eventually to 100% as you grow more confident in the
 change.
 
-## Tracking Unit
+### Type of Experiment
+
+### Type of Analysis
+
+## Variants
+
+### Variants
+
+The variants section is where you will choose your amount of variants, the
+percentage of traffic that each variant will have, your variant names and set
+any variant variables which can be used in your code.
+
+You can have up to 4 variants at any one time and your split percentage can be
+whatever you want. But note, the split percentage cannot be changed after an
+experiment has started running without biasing the data. If you wish to ease-in
+an experiment, it's better to use the [traffic allocation](#traffic-allocation)
+option instead.
+
+:::note
+The more variants you have, the less traffic each variant will be
+exposed to and the longer it will take for the experiment to finish.
+:::
+
+#### Variant Variables
+
+Variant variables can be used to automate your experiments. If you, for
+example use a configuration file, you can pass a variant variable here and
+have it overwrite your code. See
+[treatment variables](/docs/sdk%20documentation/basic-usage#treatment-variables)
+in the SDK Documentation for more information.
+
+:::caution
+Generally, we do not recommend changing variables on your control variant
+(**Variant A**).
+:::
+
+#### Variant Screenshots
+
+## Audiences
+
+### Tracking Unit
 
 The experiment's tracking unit is the unique identifier that will be used to
 assign the user to a variant.
@@ -43,41 +85,41 @@ and would use a `cluster_id` as their tracking unit.
 
 You can create new tracking units in your [dashboard settings](settings.mdx#units).
 
-## Applications
+### Applications
 
 Applications are the places where this experiment will be run. These could be
 "android", "ios" and "web", for example, and are also created in your [dashboard
 settings](settings.mdx#applications).
 
-## Variants
+### Audience Filters
 
-The variants section is where you will choose your amount of variants, the
-percentage of traffic that each variant will have, your variant names and set
-any variant variables which can be used in your code.
+Here you can define a specific audience who will experience the experiment. For
+example, you could decide to only test the experiment on British users. In this
+case you might set the filter group to:
 
-You can have up to 4 variants at any one time and your split percentage can be
-whatever you want. But note, the split percentage cannot be changed after an
-experiment has started running without biasing the data. If you wish to ease-in
-an experiment, it's better to use the [traffic allocation](#traffic-allocation)
-option instead.
+<Image
+  img="targeting_audience.png"
+  maxWidth="40rem"
+  centered
+  alt="An example of a specified targeting audience. This one is specific to
+  British users and it says, language is equal en-gb and country is equal gb."
+/>
 
-:::note
-The more variants you have, the less traffic each variant will be
-exposed to and the longer it will take for the experiment to finish.
-:::
+These parameters can then be passed to the SDK in your code using
+[context attributes](docs/SDK%20Documentation/Advanced/context-attributes.mdx).
 
-### Variant Variables
+#### Strict Mode
 
-Variant variables can be used to automate your experiments. If you, for
-example use a configuration file, you can pass a variant variable here and
-have it overwrite your code. See
-[treatment variables](/docs/sdk%20documentation/basic-usage#treatment-variables)
-in the SDK Documentation for more information.
+When strict mode is **on**, only users in the filter groups will **be able** to
+participate in the experiment. Others will be shown the control variant, but
+their data will not be tracked.
 
-:::caution
-Generally, we do not recommend changing variables on your control variant
-(**Variant A**).
-:::
+When strict mode is **off**, any user can participate in the experiment, but
+the web console may warn you that your experiment is being shown to the wrong
+people. This helps you and your developers to remember to add the appropriate
+checks in your code when a decision has been made on the experiment. For
+example, to only show the tested variant to British users.
+
 
 ## Metrics
 
@@ -108,51 +150,30 @@ but more metrics can always be selected at the bottom of the experiment
 details page.
 :::
 
-## Minimum Detectable Effect
 
-The Minimum Detectable Effect (MDE) is used to calculate the minimum required
-sample-size for your experiments and therefore, how long the experiment should
-run for.
+## Analysis
 
-To calculate the MDE of your experiment, you can use the
-[Booking.com Power Calculator](https://bookingcom.github.io/powercalculator/).
+### Error Control
 
-## Targeting Audience
+### Monitoring (Sequential Only)
 
-Here you can define a specific audience who will experience the experiment. For
-example, you could decide to only test the experiment on British users. In this
-case you might set the filter group to:
+### Primary Metric
 
-<Image
-  img="targeting_audience.png"
-  maxWidth="40rem"
-  centered
-  alt="An example of a specified targeting audience. This one is specific to
-  British users and it says, language is equal en-gb and country is equal gb."
-/>
+### Sample Size Calculation
 
-These parameters can then be passed to the SDK in your code using
-[context attributes](docs/SDK%20Documentation/Advanced/context-attributes.mdx).
+#### Basic
 
-### Strict Mode
+#### Advanced
 
-When strict mode is **on**, only users in the filter groups will **be able** to
-participate in the experiment. Others will be shown the control variant, but
-their data will not be tracked.
+## Description
 
-When strict mode is **off**, any user can participate in the experiment, but
-the web console may warn you that your experiment is being shown to the wrong
-people. This helps you and your developers to remember to add the appropriate
-checks in your code when a decision has been made on the experiment. For
-example, to only show the tested variant to British users.
-
-## Metadata
+### Metadata
 
 The metadata section allows you to select the owners of this experiment,
 assign it to a particular team and add tags to help with searching and filtering
 later on.
 
-### Tags
+#### Tags
 
 Tags can be named anything you like. Often it can be useful to prefix your
 tags with the meaning of that tag. Some examples of tags could be:
@@ -165,14 +186,14 @@ tags with the meaning of that tag. Some examples of tags could be:
 These allow for you to filter your experiments in the experiments list page,
 but they also give you an insight into why that experiment was tagged as such.
 
-## Description
+### Description
 
 When creating a new experiment, the description section acts as your contract
 for the test. Allowing you to define for yourself and your team why you are
 running this experiment, what you hope for the result to be and what will be
 done after any of the experiment's possible outcomes.
 
-### Hypothesis
+#### Hypothesis
 
 Your hypothesis is the assumed answer to the question that the experiment is asking.
 
@@ -182,7 +203,7 @@ For example:
 > the color spectrum, we believe that red call-to-action buttons are more
 > noticeable on screen than blue ones.
 
-### Prediction
+#### Prediction
 
 Your prediction states what will happen if your hypothesis proves to be true.
 
@@ -191,7 +212,7 @@ For example:
 > Changing our call-to-action buttons to red will cause a higher
 > click-through-rate to our checkout page from our visitors.
 
-### Purpose
+#### Purpose
 
 Your experiment's purpose is the reason for why this experiment should take
 place. What customer or business needs are being addressed.
@@ -200,7 +221,7 @@ For example:
 
 > Optimizing the efficiency of our sales pipeline.
 
-### Implementation Details
+#### Implementation Details
 
 In your implementation details, you can define the parameters of your
 experiment's implementation, like:
@@ -217,7 +238,7 @@ For example:
 >
 > At a minimum, we should see a 5% increase if we are to keep the change.
 
-### Action Points
+#### Action Points
 
 Action Points are a list of actions that will be taken depending on the experiment's outcome.
 
@@ -228,3 +249,16 @@ For example:
 > If the primary metric is significantly negative we will drop the experiment.
 >
 > If the primary metric is inconclusive we will drop the experiment.
+
+## Review
+
+
+### Minimum Detectable Effect
+
+The Minimum Detectable Effect (MDE) is used to calculate the minimum required
+sample-size for your experiments and therefore, how long the experiment should
+run for.
+
+To calculate the MDE of your experiment, you can use the
+[Booking.com Power Calculator](https://bookingcom.github.io/powercalculator/).
+
