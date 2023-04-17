@@ -11,7 +11,11 @@ How about we start creating some experiments? At the top of the dashboard, you
 will find the **New Experiment** button. Here you will be able to fine tune,
 edit and start your experiment.
 
+<Image img="basics.png" alt="A screenshot of the basics experiment creation page" />
+
 ## Basics
+
+The Basics step is where you will set some of the most important values for your experiment. The experiment name, the traffic allocation and the analysis type.
 
 ### Experiment Name
 
@@ -27,17 +31,31 @@ the change is considered dangerous. In which case, you could start it at 10%,
 move it up to 50% and eventually to 100% as you grow more confident in the
 change.
 
-### Type of Experiment
-
 ### Type of Analysis
 
-## Variants
+Here, you can choose which type of analysis your experiment will use. A/B Smartly
+supports both `fixed horizon` and `group sequential` experiments:
 
-### Variants
+| Fixed Horizon | Group Sequential |
+| :-: | :-: |
+| Fixed horizon experiments have a predetermined end date, based on the sample size needed to make a decision. With this type of experiment, you will only make a decision once the sample size has been reached. | Group sequential experiments have multiple check-in points, at each point you can make the decision to continue the experiment, or to terminate it early. |
+
+<Image img="variants.png" alt="A screenshot of the Variants experiment creation page" />
+
+## Variants
 
 The variants section is where you will choose your amount of variants, the
 percentage of traffic that each variant will have, your variant names and set
 any variant variables which can be used in your code.
+
+<Image 
+  maxWidth="40rem"
+  centered
+img="variantsSelector.png" alt="A screenshot of the Variant Split Manager" />
+
+### Variant Split Manager
+
+The Variant Split Manager is where you can select your number of variants and the split percentage across them.
 
 You can have up to 4 variants at any one time and your split percentage can be
 whatever you want. But note, the split percentage cannot be changed after an
@@ -50,10 +68,10 @@ The more variants you have, the less traffic each variant will be
 exposed to and the longer it will take for the experiment to finish.
 :::
 
-#### Variant Variables
+### Variant Variables
 
 Variant variables can be used to automate your experiments. If you, for
-example use a configuration file, you can pass a variant variable here and
+example, use a configuration file, you can pass a variant variable here and
 have it overwrite your code. See
 [treatment variables](/docs/sdk%20documentation/basic-usage#treatment-variables)
 in the SDK Documentation for more information.
@@ -63,9 +81,15 @@ Generally, we do not recommend changing variables on your control variant
 (**Variant A**).
 :::
 
-#### Variant Screenshots
+### Variant Screenshots
+
+Screenshots can be added to each variant in an experiment, to help in identifying any changes to your UI during the experiment.
+
+<Image img="audiences.png" alt="A screenshot of the Audiences experiment creation page" />
 
 ## Audiences
+
+The audiences step is where you will control who can and cannot be a part of your experiment as well as the parameters which are used to define who sees what variant.
 
 ### Tracking Unit
 
@@ -120,6 +144,7 @@ people. This helps you and your developers to remember to add the appropriate
 checks in your code when a decision has been made on the experiment. For
 example, to only show the tested variant to British users.
 
+<Image img="metrics.png" alt="A screenshot of the Metrics experiment creation page" />
 
 ## Metrics
 
@@ -150,22 +175,127 @@ but more metrics can always be selected at the bottom of the experiment
 details page.
 :::
 
+<Image img="analysis.png" alt="A screenshot of the Analysis experiment creation page" />
 
 ## Analysis
 
+The analysis step allows you to control statistical details of your experiment. The fields in this step will change depending on your selected [type of analysis](#type-of-analysis).
+
+<Image 
+  maxWidth="40rem"
+  centered
+img="errorControl.png" alt="A screenshot of the Error Control section of the analysis step" />
+
 ### Error Control
+
+In this section, you can choose your confidence and power levels for your experiment. The default values are usually fine, but if you wish to do some tweaking, this is the place to do it.
+
+:::caution
+Increasing these values will cause your experiment to take longer to complete.
+:::
+
+<Image 
+  maxWidth="40rem"
+  centered
+img="monitoring.png" alt="A screenshot of the Monitoring section of the analysis step" />
 
 ### Monitoring (Sequential Only)
 
-### Primary Metric
+If you have selected `Group Sequential` as your experiment type, you will see the monitoring section here. 
+
+#### Number of Analyses
+
+This is where you will be able to configure the number of analyses (decision points) that you will make before the experiment's final decision.
+
+#### Futility Type
+
+Futility type is an important concept in group sequential tests. Imagine you're 
+watching a race between two tortoises, A and B. If A is way ahead of B, you 
+can confidently say that A is the faster tortoise. Futility comes into play 
+when A is only slightly ahead or even behind B. In such a case, it's not worth 
+continuing the race, because it's unlikely that A will eventually win by a 
+significant margin.
+
+Futility types can be classified as either **binding** or **non-binding**.
+
+**Binding** futility is like a strict rulebook that you must follow when deciding 
+to stop a test early. If the test reaches a pre-determined futility boundary, 
+you must stop it, no exceptions. This helps maintain control over the 
+experiment and ensures that resources are not wasted on a test that's unlikely to 
+yield meaningful results.
+
+**Non-binding** futility, on the other hand, is more like a friendly suggestion. 
+We alert you when the test might be futile, but you are not obligated to stop it. 
+You can choose to continue if you believe there's still a chance for a 
+meaningful difference to emerge. Non-binding futility offers more flexibility, 
+but it can also increase the risk of making incorrect decisions if you choose 
+to ignore the futility signal.
 
 ### Sample Size Calculation
 
+This is the section where you will determine how long the experiment will run for. The Web Console provides two ways of doing this.
+
+<Image 
+  maxWidth="40rem"
+  centered
+img="mde.png" alt="A screenshot of the mde selector on the analysis page of experiment creation" />
+
 #### Basic
+
+The basic section allows you to simply select your **Minimum Detectable Effect**.
+
+The minimum detectable effect (MDE) is the smallest difference in performance 
+between the variations that an A/B test can reliably detect, given its 
+sample size and statistical power. MDE helps determine whether the test is 
+sensitive enough to identify meaningful differences in the results.
+
+To calculate the MDE of your experiment, you can use the
+[Booking.com Power Calculator](https://bookingcom.github.io/powercalculator/).
+
+:::caution
+The lower your MDE, the higher the required sample size will be, and the 
+longer the experiment will take.
+:::
+
+<Image 
+  maxWidth="40rem"
+  centered
+img="sampleSizePlan.png" alt="A screenshot of the sample size plan in the analysis step of experiment creation" />
 
 #### Advanced
 
+In the advanced section, you can input some details about your selected [Primary Metric](#metrics) and have us calculate the MDE for you based on how long you want the experiment to take.
+
+##### Estimate Minimum Detectable Effect
+
+If you choose to estimate the MDE, the values on the top of the table will be 
+various power levels, including the one you selected in the [Error Control](#error-control) 
+section. The values on the left side of the table represent the number of 
+participants **per variant** that will be required to complete the experiment.
+The rest of the data are MDEs for you to choose from to satisfy your needs for the 
+experiment.
+
+:::note
+These sample sizes are **estimates** and may change slightly, depending on the data that comes in.
+:::
+
+##### Estimate Maximum Experiment Duration
+
+If you choose to estimate the Maximum Experiment Duration, the values on the top of the table will still be various power levels, but now, the values on the left side of the table are MDEs.
+The rest of the table's values are the number of participants **per variant** that will be required to complete your experiment.
+
+:::info Tip
+You can also select to see the amount of participants in amounts of time. You 
+can then input your number of users per day, per week or per month and have 
+the estimated runtime calculated for you.
+:::
+
+<Image img="description.png" alt="A screenshot of the Description experiment creation page" />
+
 ## Description
+
+The description step is where you can fill in details about your experiment 
+that may help others to understand what you hope to achieve with it.
 
 ### Metadata
 
@@ -250,15 +380,41 @@ For example:
 >
 > If the primary metric is inconclusive we will drop the experiment.
 
+<Image img="review.png" alt="A screenshot of the Review experiment creation page" />
+
 ## Review
 
+The review step is where you can go over the experiment you have created and check its details before starting or saving it.
 
-### Minimum Detectable Effect
+### Experiment Actions
 
-The Minimum Detectable Effect (MDE) is used to calculate the minimum required
-sample-size for your experiments and therefore, how long the experiment should
-run for.
+When you are happy with your experiment, you have 4 possible actions that you can take on it:
 
-To calculate the MDE of your experiment, you can use the
-[Booking.com Power Calculator](https://bookingcom.github.io/powercalculator/).
+- Save it as a draft
+- Save it as ready
+- Start it in development mode
+- Start it
 
+#### Saving a draft
+
+Saving your experiment as a draft means that you can come back to this experiment, to give it some final tweaks. When saving as a draft, all fields will still be editable when coming back to this experiment. 
+
+#### Saving as ready
+
+Saving you experiment **as ready** is similar to saving it as a draft, but it signifies that the experiment is ready to be started. You cannot save an experiment as ready with invalid settings. 
+
+#### Starting in development
+
+Starting your experiment in development allows you to test your experiment in 
+your development [environments](/docs/Web%20Console%20Docs/settings#environments).
+
+An experiment in development mode will not run on a production environment, and the control variant will always be shown.
+This allows for you to test the implementation of an experiment before deploying it to production.
+
+#### Starting
+
+Starting your experiment will activate it in all environments and start collecting data from your users.
+
+## Up Next
+
+The dashboard and how to read your experimentation data!
