@@ -132,13 +132,13 @@ case you might set the filter group to:
 These parameters can then be passed to the SDK in your code using
 [context attributes](docs/SDK%20Documentation/Advanced/context-attributes.mdx).
 
-#### Strict Mode
+#### Audience Enforced
 
-When strict mode is **on**, only users in the filter groups will **be able** to
+When audience enforced is **on**, only users in the filter groups will **be able** to
 participate in the experiment. Others will be shown the control variant, but
 their data will not be tracked.
 
-When strict mode is **off**, any user can participate in the experiment, but
+When audience enforced is **off**, any user can participate in the experiment, but
 the web console may warn you that your experiment is being shown to the wrong
 people. This helps you and your developers to remember to add the appropriate
 checks in your code when a decision has been made on the experiment. For
