@@ -30,7 +30,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://bitbucket.com/absmartly/docs/src/master",
+          editUrl: "https://github.com/absmartly/docs",
           docLayoutComponent: "@theme/DocPage",
           docItemComponent: "@theme/ApiItem",
         },
@@ -112,22 +112,22 @@ const config = {
         },
         items: [
           {
-            to: "docs/Web Console Docs/tutorial",
+            to: "docs/web-console-docs/tutorial",
             position: "left",
             label: "Web Console Tutorial",
           },
           {
-            to: "docs/SDK Documentation",
+            to: "docs/SDK-documentation",
             position: "left",
             label: "SDK Docs",
           },
           {
-            to: "docs/SDK API/a-b-smartly-collector-api",
+            to: "docs/SDK-API/a-b-smartly-collector-api",
             position: "left",
             label: "SDK API",
           },
           {
-            to: "docs/Web Console API/a-b-smartly-web-console-api",
+            to: "docs/Web-Console-API/a-b-smartly-web-console-api",
             position: "left",
             label: "Web Console API",
           },
