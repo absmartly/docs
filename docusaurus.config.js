@@ -66,7 +66,7 @@ const config = {
         config: {
           collector: {
             specPath: "api-spec.yaml", // Path to designated spec file
-            outputDir: "docs/SDK API", // Output directory for generated .mdx docs
+            outputDir: "docs/SDK-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,
@@ -74,7 +74,7 @@ const config = {
           },
           nodeapi: {
             specPath: "nodeapi-spec.yaml",
-            outputDir: "docs/Web Console API", // Output directory for generated .mdx docs
+            outputDir: "docs/Web-Console-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,
@@ -151,11 +151,11 @@ const config = {
             items: [
               {
                 label: "SDK Docs",
-                to: "/docs/SDK Documentation",
+                to: "/docs/SDK-Documentation",
               },
               {
                 label: "API Docs",
-                to: "/docs/SDK API/a-b-smartly-collector-api",
+                to: "/docs/SDK-API/a-b-smartly-collector-api",
               },
             ],
           },
