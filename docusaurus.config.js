@@ -30,7 +30,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://bitbucket.com/absmartly/docs/src/master",
+          editUrl: "https://github.com/absmartly/docs",
           docLayoutComponent: "@theme/DocPage",
           docItemComponent: "@theme/ApiItem",
         },
@@ -66,7 +66,7 @@ const config = {
         config: {
           collector: {
             specPath: "api-spec.yaml", // Path to designated spec file
-            outputDir: "docs/SDK API", // Output directory for generated .mdx docs
+            outputDir: "docs/SDK-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,
@@ -74,7 +74,7 @@ const config = {
           },
           nodeapi: {
             specPath: "nodeapi-spec.yaml",
-            outputDir: "docs/Web Console API", // Output directory for generated .mdx docs
+            outputDir: "docs/Web-Console-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,
@@ -112,22 +112,22 @@ const config = {
         },
         items: [
           {
-            to: "docs/Web Console Docs/tutorial",
+            to: "docs/web-console-docs/tutorial",
             position: "left",
             label: "Web Console Tutorial",
           },
           {
-            to: "docs/SDK Documentation",
+            to: "docs/SDK-documentation",
             position: "left",
             label: "SDK Docs",
           },
           {
-            to: "docs/SDK API/a-b-smartly-collector-api",
+            to: "docs/SDK-API/a-b-smartly-collector-api",
             position: "left",
             label: "SDK API",
           },
           {
-            to: "docs/Web Console API/a-b-smartly-web-console-api",
+            to: "docs/Web-Console-API/a-b-smartly-web-console-api",
             position: "left",
             label: "Web Console API",
           },
@@ -151,11 +151,11 @@ const config = {
             items: [
               {
                 label: "SDK Docs",
-                to: "/docs/SDK Documentation",
+                to: "/docs/SDK-Documentation",
               },
               {
                 label: "API Docs",
-                to: "/docs/SDK API/a-b-smartly-collector-api",
+                to: "/docs/SDK-API/a-b-smartly-collector-api",
               },
             ],
           },
