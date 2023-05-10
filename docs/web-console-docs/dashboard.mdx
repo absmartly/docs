@@ -27,10 +27,6 @@ To enter the experiment dashboard, click on the name of one of your experiments.
 At the top of the experiment dashboard, you can see some of the most important
 information about your experiment.
 
-|                                                Runtime                                                 |                            Number of Participants                            |                                   Metrics Summary                                    |                                                                   Primary Metric Power                                                                    |
-| :----------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| The amount of time since that experiment was started in either production or development environments. | How many users have experienced the experiment, including the control group. | A tally of your primary and secondary metrics which are either positive or negative. | How conclusive your primary metric data is. The higher the percentage, the more likely you it is that you are able to make a decision on this experiment. |
-
 <Image
   img="experiment_main_info.png"
   alt="A screenshot of the main data at the top of an experiment. Listed here
@@ -39,7 +35,102 @@ information about your experiment.
   metric power."
 />
 
----
+#### Recommended Actions
+
+When an experiment has reached a point where a desicion can be made, a 
+recommended action will pop up, telling you what the best action to take is.
+
+The recommended actions are as follows:
+
+| Positive | Negative | Insignificant |
+| :-: | :-: | :-: |
+|A winning variant was found and the experiment can be put full-on.| No variant is superior to the control variant and the experiment should be stopped. | The control variant is equal to the new variants and the experiment should be stopped. |
+
+
+#### Experiment Data Summary
+
+This is where you will find key information about your experiment including 
+its duration, when it was created, when it was last edited, how many 
+participants have taken part in the experiment and when the first and last 
+participant were recorded.
+
+#### Power Progress Circle (Fixed Horizon Only)
+
+The power progress circle is used to inform you of how much longer the 
+experiment will take. The current power percentage is displayed in the middle 
+of the circle and your objective power (your goal) is displayed underneath. 
+Once the current power has reached the objective power, the experiment will 
+have gathered enough information for you to make a decision on it. Hovering 
+over the power progress circle will provide you with more specific details 
+about the current power.
+
+### Group Sequential Experiments
+
+Group sequential experiments are a powerful tool for analyzing data in clinical 
+trials and experiments, allowing researchers to make informed decisions based 
+on interim results. These experiments divide the trial into several stages, with 
+each stage offering the opportunity to assess the data and decide whether to 
+continue or stop the trial. Two types of boundaries are utilized in this 
+process: efficacy and futility boundaries.
+
+Efficacy boundaries determine whether the experimental treatment is 
+statistically significantly better than the control, based on the predefined 
+confidence or significance threshold. If the efficacy boundary is crossed at 
+any stage, the experiment is stopped automatically, as the experimental treatment 
+has demonstrated a notable improvement over the control. Consequently, no 
+further data would be gathered, and the study's resources could be conserved.
+
+Futility boundaries, on the other hand, help identify when there is little to 
+no chance of the experimental treatment outperforming the control by the end 
+of the trial. Crossing the futility boundary indicates that it is unlikely 
+that continuing the trial would yield a significant result, suggesting that it 
+is best to stop the study early and redirect resources.
+
+Group sequential experiments offer several benefits, including increased efficiency 
+in resource allocation, reduced exposure to ineffective treatments, and the 
+potential to reach conclusions faster. By monitoring both efficacy and 
+futility boundaries, researchers can make evidence-based decisions about 
+whether to continue or halt a trial, ultimately leading to more accurate and 
+ethical results in various fields, from medicine to marketing.
+
+#### Group Sequential Progress (Group Sequential Only)
+
+<Image
+  img="group_sequential_progress.png"
+  alt="A graph showing the progress of a group sequential experiment. This experiment has had 6 analyses and seems to be doing well."
+/>
+
+When viewing a group sequential experiment, this section will be your place to 
+check on how it is doing. You can select a variant at the top of the card and 
+you will be able to see various values related to this analysis point.
+
+##### Mean
+
+The mean is the estimated bias-adjusted mean. When a group sequential 
+experiment is stopped earlier or later than a fixed horizon experiment would 
+be, the impact will be biased. We use the information at the stopping point to 
+reduce this bias and output a more truthful mean.
+
+##### Observed Mean
+
+This is the mean of the primary metric that is observed in the data.
+
+##### Impact
+
+The impact that your experiment has had on your primary metric. See the [Impact 
+on Main Metrics](#impact-on-main-metrics) section for more information.
+
+##### ZScore
+
+The Z-score is a standardized measure of how far away from the null-hypothesis 
+the observed data is, considering observed impact, variance and number of 
+participants.
+
+##### PValue
+
+The pvalue is a representation of how close to certainty you can be about the 
+results. The lower the pvalue, the more confident you can be about the data 
+shown.
 
 ### Impact on Main Metrics
 
