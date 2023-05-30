@@ -115,7 +115,23 @@ context.ready().then(() => {
     const code = context.variableValue("function", '');
 
     const F = new Function(code); // Turning the string into a function
-    F(); // Executing the function
+    window.onload = F(); // Executing the function on page load
+
+}).catch((err: Error) => {
+    console.error(err)
+});
+```
+
+You also could add a `<script>` tag to the DOM, to have the function run
+when the DOM is ready.
+
+```ts
+context.ready().then(() => {
+    const code = context.variableValue("function", '');
+
+    const script = document.createElement('script');
+    script.innerHTML = code;
+    document.body.appendChild(script);
 
 }).catch((err: Error) => {
     console.error(err)
@@ -124,3 +140,40 @@ context.ready().then(() => {
 
 Now users who are part of **Variant B** will receive a Hello World alert and those 
 in the **Control Variant** will not!
+
+## Injecting CSS
+
+The last example we will look at is injecting CSS into the page. This can be
+useful for changing the look and feel of your page based on the variant the
+user is in.
+
+Let's create a new experiment and add some CSS to **Variant B**.
+
+<Image
+    img={require("/img/variant_variables_as_code_adding_css.png")}
+    alt='A screen capture of the absmartly web console variants section where a CSS rule has been added as a variant variable to variant B'
+/>
+
+Now, we can add more code to our `main.ts` file to inject the CSS variable
+as code when the context is ready:
+
+```ts
+context.ready().then(() => {
+    const css = context.variableValue("css", '');
+
+    const style = document.createElement('style');
+    style.innerHTML = css;
+    document.head.appendChild(style);
+
+}).catch((err: Error) => {
+    console.error(err)
+});
+```
+
+Now users who are part of **Variant B** will see a red background and those
+in the **Control Variant** will not!
+
+<Image
+    img={require("/img/variant_variables_as_code_bg_red.png")}
+    alt='A screen capture of the website where variant B is being shown with a red background'
+/>
