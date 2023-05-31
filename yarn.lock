@@ -4083,10 +4083,10 @@ dns-packet@^5.2.2:
   dependencies:
     "@leichtgewicht/ip-codec" "^2.0.1"
 
-docusaurus-plugin-openapi-docs@^1.7.0, docusaurus-plugin-openapi-docs@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/docusaurus-plugin-openapi-docs/-/docusaurus-plugin-openapi-docs-1.7.2.tgz#4075fca1c37524031a678198c83b942b8919da73"
-  integrity sha512-8j5TViTptHIvDYGC6aWqZr3hcjlvZHCgmEUrf9wqao/pxc2N0aYSjMU8eVRf8f+Ln/6qseO75u+JxN5uS+53zA==
+docusaurus-plugin-openapi-docs@^1.7.0, docusaurus-plugin-openapi-docs@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/docusaurus-plugin-openapi-docs/-/docusaurus-plugin-openapi-docs-1.7.3.tgz#22533dd93c8aa4bf57fea00c959ecef56e744a73"
+  integrity sha512-h0SmUJJjjN1ewNDFcxXxGF41pg6aCm8GI0cMBBvlLcxmaFuKVkQ57w+cDyX2Ip+Vd0kPrgtcssfI0ujmYQjC2g==
   dependencies:
     "@apidevtools/json-schema-ref-parser" "^10.1.0"
     "@docusaurus/mdx-loader" ">=2.0.1 <2.3.0"
@@ -4118,10 +4118,10 @@ docusaurus-plugin-sass@^0.2.3:
   dependencies:
     sass-loader "^10.1.1"
 
-docusaurus-theme-openapi-docs@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/docusaurus-theme-openapi-docs/-/docusaurus-theme-openapi-docs-1.7.2.tgz#b7f64bc5758c1c1ffbeb69517265e3657abc869b"
-  integrity sha512-LMbIzI4myG5PsDTcmrqlQtO9p16np93/nmwpJltqAn5PGuB0axH5ZzSyG0TdZcTeI8qlvgccHztfibjDPRAdCQ==
+docusaurus-theme-openapi-docs@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/docusaurus-theme-openapi-docs/-/docusaurus-theme-openapi-docs-1.7.3.tgz#3073e7e79dff52f7b88b5a45fe0f914dc9a71268"
+  integrity sha512-riLEj2tNGLDAMs0eMrStLoOSgsvpa0tmwzhIDYhETxZSBZ50Gd9sBPW58LRhuzQ5d9UZMTu6tg2swZiYQAlnag==
   dependencies:
     "@docusaurus/theme-common" ">=2.0.1 <2.3.0"
     "@mdx-js/react" "^1.6.21"
@@ -4131,7 +4131,7 @@ docusaurus-theme-openapi-docs@^1.7.2:
     buffer "^6.0.3"
     clsx "^1.1.1"
     crypto-js "^4.1.1"
-    docusaurus-plugin-openapi-docs "^1.7.2"
+    docusaurus-plugin-openapi-docs "^1.7.3"
     file-saver "^2.0.5"
     immer "^9.0.7"
     lodash "^4.17.20"
