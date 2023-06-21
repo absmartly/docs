@@ -21,6 +21,8 @@ import PHPOverriding from "!!raw-loader!./php/override.php";
 
 import RubyOverriding from "!!raw-loader!./ruby/override.rb";
 
+import FlutterOverriding from "!!raw-loader!./flutter/override.dart";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -128,6 +130,17 @@ experiment. This can be achieved with the `set_override()` and/or
 ready.
 
 <CodeBlock language="ruby">{RubyOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter">
+
+During development, for example, it is useful to force a treatment for an 
+experiment. This can be achieved with the `override()` and/or `overrides()` 
+methods. The `setOverride()` and `setOverrides()` methods can be called before 
+the context is ready.
+
+<CodeBlock language="dart">{FlutterOverriding}</CodeBlock>
 
 </TabItem>
 
