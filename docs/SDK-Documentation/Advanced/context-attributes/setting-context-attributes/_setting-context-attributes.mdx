@@ -21,6 +21,8 @@ import PHPSetAttributes from "!!raw-loader!./php/setAttributes.php";
 
 import RubySetAttributes from "!!raw-loader!./ruby/setAttributes.rb";
 
+import FlutterSetAttributes from "!!raw-loader!./flutter/setAttributes.dart";
+
 Attributes are used to pass meta-data about the user and/or the request. They
 can be used later in the Web Console to create segments or audiences. They can
 be set using the `attribute()` or `attributes()` methods, before or after the
@@ -91,6 +93,12 @@ component.
 <TabItem value="ruby" label="Ruby">
 
 <CodeBlock language="ruby">{RubySetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter">
+
+<CodeBlock language="dart">{FlutterSetAttributes}</CodeBlock>
 
 </TabItem>
 

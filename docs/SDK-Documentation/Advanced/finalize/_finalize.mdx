@@ -20,6 +20,8 @@ import PHPFinalize from "!!raw-loader!./php/finalize.php";
 
 import RubyFinalize from "!!raw-loader!./ruby/finalize.rb";
 
+import FlutterFinalize from "!!raw-loader!./flutter/finalize.dart";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -128,6 +130,16 @@ Smartly collector, like `publish()`, and will also "seal" the context, throwing
 an error if any method that could generate an event is called.
 
 <CodeBlock language="ruby">{RubyFinalize}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter">
+
+The `close()` method will ensure all events have been published to the A/B
+Smartly collector, like `publish()`, and will also "seal" the context, throwing
+an error if any method that could generate an event is called.
+
+<CodeBlock language="dart">{FlutterFinalize}</CodeBlock>
 
 </TabItem>
 
