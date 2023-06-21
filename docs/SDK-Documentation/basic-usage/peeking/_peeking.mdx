@@ -17,6 +17,8 @@ import PHPPeekAtVariant from "!!raw-loader!./php/peekAtVariant.php";
 import PHPPeekAtVariable from "!!raw-loader!./php/peekAtVariable.php";
 import RubyPeekAtVariant from "!!raw-loader!./ruby/peekAtVariants.rb";
 import RubyPeekAtVariable from "!!raw-loader!./ruby/peekAtVariables.rb";
+import FlutterPeekAtVariant from "!!raw-loader!./flutter/peekAtVariants.dart";
+import FlutterPeekAtVariable from "!!raw-loader!./flutter/peekAtVariables.dart";
 
 <Tabs groupId="language">
 
@@ -131,6 +133,20 @@ provides a `peek_treatment()` method for that.
 #### Peeking at variables
 
 <CodeBlock language="ruby">{RubyPeekAtVariable}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment or variable without triggering an exposure. The A/B Smartly SDK
+provides a `peekTreatment()` method for that.
+
+<CodeBlock language="dart">{FlutterPeekAtVariant}</CodeBlock>
+
+#### Peeking at variables
+
+<CodeBlock language="dart">{FlutterPeekAtVariable}</CodeBlock>
 
 </TabItem>
 

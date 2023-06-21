@@ -197,6 +197,7 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
         additionalLanguages: [
+          "dart",
           "php",
           "go",
           "go-module",

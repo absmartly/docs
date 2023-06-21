@@ -29,6 +29,9 @@ import PHPCustomAssignments from "!!raw-loader!./php/customAssignments.php";
 import RubyCustomAssignment from "!!raw-loader!./ruby/customAssignment.rb";
 import RubyCustomAssignments from "!!raw-loader!./ruby/customAssignments.rb";
 
+import FlutterCustomAssignment from "!!raw-loader!./flutter/customAssignment.dart";
+import FlutterCustomAssignments from "!!raw-loader!./flutter/customAssignments.dart";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -174,6 +177,23 @@ assignments for each one, you can do so using the `set_custom_assignments()`
 method.
 
 <CodeBlock language="ruby">{RubyCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter">
+
+Sometimes it may be necessary to override the automatic selection of a
+variant. For example, if you wish to have your variant chosen based on data
+from an API call. This can be accomplished using the `setCustomAssignment()`
+method.
+
+<CodeBlock language="dart">{FlutterCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `setCustomAssignments()`
+method.
+
+<CodeBlock language="dart">{FlutterCustomAssignments}</CodeBlock>
 
 </TabItem>
 

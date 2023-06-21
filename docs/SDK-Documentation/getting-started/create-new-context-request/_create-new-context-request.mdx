@@ -55,6 +55,13 @@ import RubyPreFetchedData from "!!raw-loader!./ruby/prefetchedData.rb";
 import RubyExtraUnits from "!!raw-loader!./ruby/extraUnits.rb";
 import RubyExtraUnitsAlt from "!!raw-loader!./ruby/extraUnitsAlt.rb";
 
+import FlutterSync from "!!raw-loader!./flutter/sync.dart"
+import FlutterAsync from "!!raw-loader!./flutter/async.dart"
+import FlutterPrefetchedData from "!!raw-loader!./flutter/withPrefetchedData.dart"
+import FlutterExtraUnits from "!!raw-loader!./flutter/extraUnits.dart"
+import FlutterRefresh from "!!raw-loader!./flutter/refreshWithFreshData.dart"
+import FlutterRefreshManual from "!!raw-loader!./flutter/refreshWithRefresh.dart"
+
 In order to start linking your experiments from the Web Console to your
 application, you will need to create a context. When you instantiate a context,
 you should pass all known characteristics of the current user. These
@@ -491,6 +498,46 @@ called before the context is ready.
 or
 
 <CodeBlock language="rb">{RubyExtraUnitsAlt}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter">
+
+#### Synchronously
+
+<CodeBlock language="dart">{FlutterSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="dart">{FlutterAsync}</CodeBlock>
+
+#### With Prefetched Data
+
+<CodeBlock language="dart">{FlutterPrefetchedData}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+For long-running contexts, the context is usually created once when the application is first started. However, any experiments being tracked in your production code, but started after the context was created, will not be triggered. To mitigate this, we can use the    `setRefreshInterval()` method on the context config.
+
+<CodeBlock language="dart">{FlutterRefresh}</CodeBlock>
+
+Alternatively, the `refresh()` method can be called manually. The `refresh()` method pulls updated experiment data from the A/B Smartly collector and will trigger recently started experiments when `getTreatment()` is called again.
+
+<CodeBlock language="dart">{FlutterRefreshManual}</CodeBlock>
+
+#### Setting Extra Units
+
+You can add additional units to a context by calling the `setUnit()` or
+`setUnits()` methods. These methods may be used, for example, when a user
+logs in to your application and you want to use the new unit type in the
+context.
+
+Please note, you cannot override an already set unit type as that would be
+a change of identity and would throw an exception. In this case, you must
+create a new context instead. The `setUnit()` and
+`setUnits()` methods can be called before the context is ready.
+
+<CodeBlock language="dart">{FlutterExtraUnits}</CodeBlock>
 
 </TabItem>
 
