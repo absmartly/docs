@@ -27,6 +27,8 @@ import PHPInstall from "!!raw-loader!./php/install.bash";
 import RubyBundlerInstall from "!!raw-loader!./ruby/bundler.sh";
 import RubyGemInstall from "!!raw-loader!./ruby/gem.sh";
 
+import FlutterInstall from "!!raw-loader!./flutter/install.yaml";
+
 Once your Web Console is setup and you have created some experiments, you can
 install our SDKs through your package manager, a CDN or by directly importing
 it.
@@ -210,6 +212,19 @@ ensure it is compatible with the latest Ruby version.
 **Without Bundler**
 
 <CodeBlock language="bash">{RubyGemInstall}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter">
+
+:::info Compatibility
+The A/B Smartly Flutter SDK is compatible with Dart versions
+2.18.6 and later.
+:::
+
+To install the ABSmartly SDK, place the following in your `pubspec.yaml` and replace version with the latest SDK version available in pub.dev.
+
+<CodeBlock language="yaml" title="pubspec.yaml">{FlutterInstall}</CodeBlock>
 
 </TabItem>
 

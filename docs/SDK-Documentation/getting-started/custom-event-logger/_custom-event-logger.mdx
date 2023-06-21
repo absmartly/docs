@@ -15,6 +15,9 @@ import DotNetCustomEventLoggerWithInjection from "!!raw-loader!./dotnet/customEv
 import PHPCustomEventLogger from "!!raw-loader!./php/customEventLogger.php";
 import PHPHandleEvent from "!!raw-loader!./php/handleEvent.php";
 
+import FlutterCustomEventLogger from "!!raw-loader!./flutter/customEventLogger.dart";
+import FlutterUsage from "!!raw-loader!./flutter/usage.dart";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -201,6 +204,28 @@ The data parameter depends on the type of event. Currently, the SDK logs the fol
 | `"Exposure"` | `Context->getTreatment()` method succeeds on first exposure | `Exposure` data enqueued for publishing                     |
 | `"Goal"`     | `Context->Track()` method succeeds                          | `GoalAchivement` goal data enqueued for publishing          |
 | `"Close"`    | `Context->lose()` method succeeds the first time            | `null`                                                      |
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter">
+
+The A/B Smartly SDK can be instantiated with an event logger used for all contexts. In addition, an event logger can be specified when creating a particular context in the `contextConfig`.
+
+<CodeBlock language="dart">{FlutterCustomEventLogger}</CodeBlock>
+
+<CodeBlock language="dart">{FlutterUsage}</CodeBlock>
+
+The data parameter depends on the type of event. Currently, the SDK logs the following events:
+
+| eventName    | when                                                    | data                                         |
+| ------------ | ------------------------------------------------------- | -------------------------------------------- |
+| `"error"`    | `Context` receives an error                             | error object thrown                          |
+| `"ready"`    | `Context` turns ready                                   | data used to initialize the context          |
+| `"refresh"`  | `Context.refresh()` method succeeds                     | data used to refresh the context             |
+| `"publish"`  | `Context.publish()` method succeeds                     | data sent to the A/B Smartly event collector |
+| `"exposure"` | `Context.treatment()` method succeeds on first exposure | exposure data enqueued for publishing        |
+| `"goal"`     | `Context.track()` method succeeds                       | goal data enqueued for publishing            |
+| `"finalize"` | `Context.finalize()` method succeeds the first time     | undefined                                    |
 
 </TabItem>
 

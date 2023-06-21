@@ -1,0 +1,1 @@
+    contextConfig.setContextEventLogger(CustomEventLogger());
