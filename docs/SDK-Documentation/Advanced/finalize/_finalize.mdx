@@ -78,6 +78,16 @@ throwing an error if any method that could generate an event is called.
 
 </TabItem>
 
+<TabItem value="vue3" label="Vue3">
+
+The `finalize()` method will ensure all events have been published to the A/B
+Smartly collector, like `publish()`, and will also "seal" the context,
+throwing an error if any method that could generate an event is called.
+
+<CodeBlock language="js">{VueFinalize}</CodeBlock>
+
+</TabItem>
+
 <TabItem value="java" label="Java">
 
 The `close()` and `closeAsync()` methods will ensure all events have been
