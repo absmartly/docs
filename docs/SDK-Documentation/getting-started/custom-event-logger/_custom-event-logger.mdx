@@ -100,6 +100,30 @@ default event logger, used if none is specified.
 
 <CodeBlock language="js">{VueCustomEventLogger}</CodeBlock>
 
+The event data depends on the type of event. Currently, the SDK logs the following events:
+
+| eventName    | when                                                    | data                                         |
+| ------------ | ------------------------------------------------------- | -------------------------------------------- |
+| `"error"`    | `Context` receives an error                             | error object thrown                          |
+| `"ready"`    | `Context` turns ready                                   | data used to initialize the context          |
+| `"refresh"`  | `Context.refresh()` method succeeds                     | data used to refresh the context             |
+| `"publish"`  | `Context.publish()` method succeeds                     | data sent to the A/B Smartly event collector |
+| `"exposure"` | `Context.treatment()` method succeeds on first exposure | exposure data enqueued for publishing        |
+| `"goal"`     | `Context.track()` method succeeds                       | goal data enqueued for publishing            |
+| `"finalize"` | `Context.finalize()` method succeeds the first time     | undefined                                    |
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+The A/B Smartly SDK can be instantiated with an event logger used for all
+contexts. The example below illustrates this with the implementation of the
+default event logger, used if none is specified.
+
+<CodeBlock language="js">{VueCustomEventLogger}</CodeBlock>
+
+The event data depends on the type of event. Currently, the SDK logs the following events:
+
 | eventName    | when                                                    | data                                         |
 | ------------ | ------------------------------------------------------- | -------------------------------------------- |
 | `"error"`    | `Context` receives an error                             | error object thrown                          |

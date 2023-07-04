@@ -78,6 +78,26 @@ The `override()` and `overrides()` methods can be called before the context is r
 
 </TabItem>
 
+<TabItem value="vue3" label="Vue3">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved in the initialization of the SDK or with the
+`override()` and/or `overrides()` methods.
+
+##### In the SDK initialization
+
+<CodeBlock language="js">{VueOverridingInInitialization}</CodeBlock>
+
+##### With the override methods
+
+<CodeBlock language="js">{VueWithOverrideMethods}</CodeBlock>
+
+:::info
+The `override()` and `overrides()` methods can be called before the context is ready.
+:::
+
+</TabItem>
+
 <TabItem value="java" label="Java">
 
 During development, for example, it is useful to force a treatment for an
