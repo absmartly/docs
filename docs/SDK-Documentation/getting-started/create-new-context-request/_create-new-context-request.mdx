@@ -25,6 +25,11 @@ import VuePreFetchedData from "!!raw-loader!./vue/initializeWithPrefetchedData.j
 import VueRefreshWithFreshData from "!!raw-loader!./vue/RefreshWithFreshData.js";
 import VueRefreshWithRefreshMethod from "!!raw-loader!./vue/refreshWithRefreshMethod.js";
 
+import Vue3Sync from "!!raw-loader!./vue3/sync.js"
+import Vue3Prefetched from "!!raw-loader!./vue3/prefetched.js"
+import Vue3Refresh from "!!raw-loader!./vue3/refresh.js"
+import Vue3ManualRefresh from "!!raw-loader!./vue3/manualRefresh.js"
+
 import JavaSync from "!!raw-loader!./java/sync.java";
 import JavaAsync from "!!raw-loader!./java/async.java";
 import JavaPreFetched from "!!raw-loader!./java/preFetchedData.java";
@@ -281,6 +286,34 @@ method pulls updated experiment data from the A/B Smartly collector and will
 trigger recently started experiments when `treatment()` is called again.
 
 <CodeBlock language="js">{VueRefreshWithRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+**Synchronously**
+
+<CodeBlock language="js">{Vue3Sync}</CodeBlock>
+
+**With Prefetched Data**
+
+<CodeBlock language="js">{Vue3Prefetched}</CodeBlock>
+
+**Refreshing the Context with Fresh Experiment Data**
+
+For long-running contexts, the context is usually created once when the 
+application is first started. However, any experiments being tracked in your 
+production code, but started after the context was created, will not be 
+triggered. To mitigate this, we can use the `refreshInterval` option on the 
+context config.
+
+<CodeBlock language="js">{Vue3Refresh}</CodeBlock>
+
+Alternatively, the `refresh()` method can be called manually. The `refresh()`
+method pulls updated experiment data from the A/B Smartly collector and will 
+trigger recently started experiments when `treatment()` is called again.
+
+<CodeBlock language="js">{Vue3ManualRefresh}</CodeBlock>
 
 </TabItem>
 

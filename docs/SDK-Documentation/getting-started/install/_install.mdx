@@ -14,6 +14,9 @@ import SwiftUpdateXcode from "!!raw-loader!./swift/updateXcode.bash";
 import VueInstall from "!!raw-loader!./vue/install.bash";
 import VueDirectImport from "!!raw-loader!./vue/directImport.html";
 
+import Vue3Install from "!!raw-loader!./vue3/install.bash";
+import Vue3DirectImport from "!!raw-loader!./vue3/directImport.html";
+
 import JavaGradleInstall from "!!raw-loader!./java/build.gradle";
 import JavaMavenInstall from "!!raw-loader!./java/pom.xml";
 
@@ -102,6 +105,23 @@ published version.
 <CodeBlock language="html">{VueDirectImport}</CodeBlock>
 
 </TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+**Using NPM**
+
+<CodeBlock language="bash">{Vue3Install}</CodeBlock>
+
+**Directly Import With <a href="https://unpkg.com" target="_blank">unpkg.com</a>
+(Optimized and Pre-Built)**
+
+Simply add the following code to your `head` section to include the latest
+published version.
+
+<CodeBlock language="html">{Vue3DirectImport}</CodeBlock>
+
+</TabItem>
+
 
 <TabItem value="java" label="Java">
 
