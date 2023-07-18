@@ -70,7 +70,7 @@ goals. We recommend prefixing each tag with the tag's type. For example,
 
 ## Creating A Metric
 
-Lastly, you will need to creat some Metrics! Metrics are the parameters that
+Lastly, you will need to create some Metrics! Metrics are the parameters that
 will be used to track your goals. They can give you insights about your
 business, your users' behavior, the performance of your system and more!
 
@@ -127,6 +127,30 @@ Selecting `Goal Property` in the Metric Type field adds some extra fields to
 the form. You can learn more about these in the
 [goal property fields section](#goal-property-fields).
 
+#### Goal Retention
+
+`Goal Retention` metrics are used to track data when a user has achieved a 
+goal after a set number of days from when they were exposed to the experiment.
+
+For example, you could track whether users who left items in their checkout 
+cart came back to make a purchase after one week (maybe after receiving an 
+automatic reminder email). This could be done by creating a Retention Metric 
+that tracks a `checkout` goal and setting the `Retention Period` to 7 days.
+
+#### Goal Ratio
+
+A `Goal Ratio` metric tracks two goals and divides one by the other. When 
+selecting Goal Ratio from the Metric type dropdown, you will be presented with 
+two goal selection sections - a numerator and a denominator.
+
+This metric type is useful for tracking data like click-through-rate. For example,
+you could choose `clicked_signup_button` as the numerator goal, and 
+`visited_landing_page` as the denominator goal. This metric will now track the 
+CTR of the signup button on the landing page.
+
+Internally, the variance of these metrics is automatically adjusted using the 
+delta method.
+
 ### Metric Goal
 
 The `Metric Goal` is the goal which your metric relates to. This field will
@@ -162,7 +186,8 @@ would pass `payment/revenue` into the Source Property field.
 #### Format String
 
 The format string defines how you would like your values to be presented in
-the Web Console. The curly braces `{}` represent the value and you can put
+the Web Console. Both the values and the mean of your data can be customised 
+this way. The curly braces `{}` represent the value and you can put
 whatever you like around it. For example, if you wanted to track your
 incoming revenue in dollars, you might want your Format String to be `${}`.
 This would cause a value of `1000` to be presented on the dashboard as `$1000`.
