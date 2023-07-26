@@ -5,6 +5,9 @@ import CodeBlock from "@theme/CodeBlock";
 import JsCustomAssignment from "!!raw-loader!./js/customAssignment.js";
 import JsCustomAssignments from "!!raw-loader!./js/customAssignments.js";
 
+import PythonCustomAssignment from "!!raw-loader!./python/customAssignment.py";
+import PythonCustomAssignments from "!!raw-loader!./python/customAssignments.py";
+
 import ReactCustomAssignment from "!!raw-loader!./react/customAssignment.js";
 import ReactCustomAssignments from "!!raw-loader!./react/customAssignments.js";
 
@@ -47,6 +50,23 @@ If you are running multiple experiments and need to choose different custom
 assignments for each one, you can do so using the `customAssignments` method.
 
 <CodeBlock language="js">{JsCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+Sometimes it may be necessary to override the automatic selection of a
+variant. For example, if you wish to have your variant chosen based on
+data from an API call. This can be accomplished using the
+`set_custom_assignment()` method.
+
+<CodeBlock language="python">{PythonCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different
+custom assignments for each one, you can do so using the
+`set_custom_assignments()` method.
+
+<CodeBlock language="python">{PythonCustomAssignments}</CodeBlock>
 
 </TabItem>
 

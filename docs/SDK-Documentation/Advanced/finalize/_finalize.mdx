@@ -4,6 +4,8 @@ import CodeBlock from "@theme/CodeBlock";
 
 import JsFinalize from "!!raw-loader!./js/finalize.js";
 
+import PythonFinalize from "!!raw-loader!./python/finalize.py";
+
 import ReactFinalize from "!!raw-loader!./react/finalize.js";
 
 import SwiftFinalize from "!!raw-loader!./swift/finalize.swift";
@@ -38,6 +40,17 @@ After `finalize()` is called and finishes, any subsequent invocations to the
 `treatment()` method will still return the right variant, but will result in a
 warning to let you know that you might be losing impressions.
 :::
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+The `close()` and `close_async()` methods will ensure all events have been 
+published to the A/B Smartly collector, like `publish()`, and will also "seal" 
+the context, throwing an error if any method that could generate an event is 
+called.
+
+<CodeBlock language="python">{PythonFinalize}</CodeBlock>
 
 </TabItem>
 
