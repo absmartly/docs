@@ -160,15 +160,15 @@ Here is an example of a cancellation scenario.
 
 #### Synchronously
 
-<CodeBlock language="python">{PythonSync}</CodeBlock>
+<CodeBlock language="py">{PythonSync}</CodeBlock>
 
 #### Asynchronously
 
-<CodeBlock language="python">{PythonAsync}</CodeBlock>
+<CodeBlock language="py">{PythonAsync}</CodeBlock>
 
 #### With Prefetched Data
 
-<CodeBlock language="python">{PythonPreFetchedData}</CodeBlock>
+<CodeBlock language="py">{PythonPreFetchedData}</CodeBlock>
 
 #### Refreshing the context with fresh experiment data
 
@@ -176,14 +176,14 @@ For long-running contexts, the context is usually created once when the applicat
 However, any experiments being tracked in your production code, but started after the context was created, will not be triggered.
 To mitigate this, we can use the `set_refresh_interval()` method on the context config.
 
-<CodeBlock language="python">{PythonRefreshWithFreshData}</CodeBlock>
+<CodeBlock language="py">{PythonRefreshWithFreshData}</CodeBlock>
 
 Alternatively, the `refresh()` method can be called manually.
 The `refresh()` method pulls updated experiment data from the A/B Smartly 
 collector and will trigger recently started experiments when `get_treatment()` 
 is called.
 
-<CodeBlock language="python">{PythonRefreshWithRefreshMethod}</CodeBlock>
+<CodeBlock language="py">{PythonRefreshWithRefreshMethod}</CodeBlock>
 
 #### Setting extra units
 
@@ -195,7 +195,7 @@ would be a change of identity, and will throw an exception. In this case, you
 must create a new context instead. The `SetUnit()` and `SetUnits()` methods 
 can be called before the context is ready.
 
-<CodeBlock language="python">{PythonExtraUnits}</CodeBlock>
+<CodeBlock language="py">{PythonExtraUnits}</CodeBlock>
 
 </TabItem>
 
