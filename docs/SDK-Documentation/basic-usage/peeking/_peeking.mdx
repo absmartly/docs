@@ -3,6 +3,8 @@ import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
 import JsPeekAtVariables from "!!raw-loader!./js/peekAtVariables.js";
+import PythonPeekAtVariant from "!!raw-loader!./python/peekAtVariant.py";
+import PythonPeekAtVariables from "!!raw-loader!./python/peekAtVariables.py";
 import ReactPeekAtVariables from "!!raw-loader!./react/peekAtVariables.js";
 import SwiftPeekAtVariants from "!!raw-loader!./swift/peekAtVariants.swift";
 import SwiftPeekAtVariables from "!!raw-loader!./swift/peekAtVariables.swift";
@@ -29,6 +31,20 @@ treatment without triggering an exposure. The A/B Smartly SDK provides a
 `peek()` method for that.
 
 <CodeBlock language="js">{JsPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+Although generally not recommended, it is sometimes necessary to peek at a
+treatment without triggering an exposure. The A/B Smartly SDK provides a
+`peek_treatment()` method for that.
+
+<CodeBlock language="python">{PythonPeekAtVariant}</CodeBlock>
+
+#### Peeking at variables
+
+<CodeBlock language="python">{PythonPeekAtVariables}</CodeBlock>
 
 </TabItem>
 
