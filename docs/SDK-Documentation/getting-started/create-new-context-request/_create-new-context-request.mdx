@@ -11,6 +11,13 @@ import JsRefreshWithRefreshMethod from "!!raw-loader!./js/refreshWithRefreshMeth
 import JsHttpRequestTimeout from "!!raw-loader!./js/httpRequestTimeout.js";
 import JsHttpRequestCancellation from "!!raw-loader!./js/httpRequestCancellation.js";
 
+import PythonSync from "!!raw-loader!./python/sync.py";
+import PythonAsync from "!!raw-loader!./python/async.py";
+import PythonPreFetchedData from "!!raw-loader!./python/withPrefetchedData.py";
+import PythonRefreshWithFreshData from "!!raw-loader!./python/refreshWithFreshData.py";
+import PythonRefreshWithRefreshMethod from "!!raw-loader!./python/refreshWithRefreshMethod.py";
+import PythonExtraUnits from "!!raw-loader!./python/extraUnits.py"
+
 import ReactNewContext from "!!raw-loader!./react/newContext.js";
 import ReactWithABSmartly from "!!raw-loader!./react/withABSmartly.js";
 import ReactForTernaryOperator from "!!raw-loader!./react/forTernaryOperator.js";
@@ -146,6 +153,49 @@ platforms, but will use the native implementation where available.
 Here is an example of a cancellation scenario.
 
 <CodeBlock language="js">{JsHttpRequestCancellation}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+#### Synchronously
+
+<CodeBlock language="python">{PythonSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="python">{PythonAsync}</CodeBlock>
+
+#### With Prefetched Data
+
+<CodeBlock language="python">{PythonPreFetchedData}</CodeBlock>
+
+#### Refreshing the context with fresh experiment data
+
+For long-running contexts, the context is usually created once when the application is first started.
+However, any experiments being tracked in your production code, but started after the context was created, will not be triggered.
+To mitigate this, we can use the `set_refresh_interval()` method on the context config.
+
+<CodeBlock language="python">{PythonRefreshWithFreshData}</CodeBlock>
+
+Alternatively, the `refresh()` method can be called manually.
+The `refresh()` method pulls updated experiment data from the A/B Smartly 
+collector and will trigger recently started experiments when `get_treatment()` 
+is called.
+
+<CodeBlock language="python">{PythonRefreshWithRefreshMethod}</CodeBlock>
+
+#### Setting extra units
+
+You can add additional units to a context by calling the `set_unit()` or the `
+set_units()` method. This method may be used for example, when a user logs in 
+to your application, and you want to use the new unit type to the context. 
+Please note that **you cannot override an already set unit type** as that 
+would be a change of identity, and will throw an exception. In this case, you 
+must create a new context instead. The `SetUnit()` and `SetUnits()` methods 
+can be called before the context is ready.
+
+<CodeBlock language="python">{PythonExtraUnits}</CodeBlock>
 
 </TabItem>
 
