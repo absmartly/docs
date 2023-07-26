@@ -3,6 +3,7 @@ import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
 import JsCustomEventLogger from "!!raw-loader!./js/customEventLogger.js";
+import PythonCustomEventLogger from "!!raw-loader!./python/customEventLogger.py";
 import ReactCustomEventLogger from "!!raw-loader!./react/customEventLogger.jsx";
 import SwiftCustomEventLogger from "!!raw-loader!./swift/customEventLogger.swift";
 import VueCustomEventLogger from "!!raw-loader!./vue/customEventLogger.js";
@@ -42,6 +43,29 @@ following events:
 | `"exposure"` | `Context.treatment()` method succeeds on first exposure | exposure data enqueued for publishing        |
 | `"goal"`     | `Context.track()` method succeeds                       | goal data enqueued for publishing            |
 | `"finalize"` | `Context.finalize()` method succeeds the first time     | undefined                                    |
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+The A/B Smartly SDK can be instantiated with an event logger used for all
+contexts. In addition, an event logger can be specified when creating a
+particular context, in the `ContextConfig`.
+
+<CodeBlock language="py">{PythonCustomEventLogger}</CodeBlock>
+
+The data parameter depends on the type of event.
+Currently, the SDK logs the following events:
+
+|   event    | when                                                       | data                                                   |
+| :--------: | ---------------------------------------------------------- | ------------------------------------------------------ |
+|  `Error`   | `Context` receives an error                                | `Throwable` object                                     |
+|  `Ready`   | `Context` turns ready                                      | `ContextData` used to initialize the context           |
+| `Refresh`  | `Context.refresh()` method succeeds                        | `ContextData` used to refresh the context              |
+| `Publish`  | `Context.publish()` method succeeds                        | `PublishEvent` sent to the A/B Smartly event collector |
+| `Exposure` | `Context.getTreatment()` method succeeds on first exposure | `Exposure` enqueued for publishing                     |
+|   `Goal`   | `Context.track()` method succeeds                          | `GoalAchievement` enqueued for publishing              |
+|  `Close`   | `Context.close()` method succeeds the first time           | `null`                                                 |
 
 </TabItem>
 

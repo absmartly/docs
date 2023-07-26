@@ -4,6 +4,8 @@ import CodeBlock from "@theme/CodeBlock";
 
 import JsPublish from "!!raw-loader!./js/publish.js";
 
+import PythonPublish from "!!raw-loader!./python/publish.py";
+
 import ReactPublish from "!!raw-loader!./react/publish.js";
 
 import SwiftPublish from "!!raw-loader!./swift/publish.swift";
@@ -30,6 +32,15 @@ Sometimes it is necessary to ensure all events have been published to the A/B
 Smartly collector before proceeding. To do this, you can explicitly call the `context.publish()` method.
 
 <CodeBlock language="js">{JsPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+Sometimes it is necessary to ensure all events have been published to the A/B Smartly collector, before proceeding.
+You can explicitly call the `publish()` or `publish_async()` methods.
+
+<CodeBlock language="py">{PythonPublish}</CodeBlock>
 
 </TabItem>
 

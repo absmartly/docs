@@ -4,6 +4,8 @@ import CodeBlock from "@theme/CodeBlock";
 
 import JsOverriding from "!!raw-loader!./js/override.js";
 
+import PythonOverriding from "!!raw-loader!./python/override.py";
+
 import ReactOverriding from "!!raw-loader!./react/override.js";
 
 import SwiftOverriding from "!!raw-loader!./swift/override.swift";
@@ -33,6 +35,17 @@ methods. The `override()` and `overrides()` methods can be called before the con
 ready.
 
 <CodeBlock language="js">{JsOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+During development, for example, it is useful to force a treatment for an
+experiment. This can be achieved with the `set_override()` and/or `set_overrides()`
+methods. The `set_override()` and `set_overrides()` methods can be called before the context is
+ready.
+
+<CodeBlock language="py">{PythonOverriding}</CodeBlock>
 
 </TabItem>
 
