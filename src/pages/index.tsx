@@ -13,7 +13,7 @@ const HomepageHeader: FC<{}> = () => {
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
         <img
-          src="img/logo.png"
+          src="img/white_logo.png"
           alt="The A B Smartly Logo"
           className={styles.heroLogo}
         />
@@ -44,7 +44,7 @@ const Home: FC<{}> = () => {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="The complete documentation for A/B smartly's SDK suite'"
+      description="The complete documentation for ABsmartly's SDK suite'"
     >
       <HomepageHeader />
       <main>
