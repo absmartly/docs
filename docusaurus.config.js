@@ -125,12 +125,12 @@ const config = {
             label: "SDK Docs",
           },
           {
-            to: "docs/SDK-API/a-b-smartly-collector-api",
+            to: "docs/SDK-API/absmartly-collector-api",
             position: "left",
             label: "SDK API",
           },
           {
-            to: "docs/Web-Console-API/a-b-smartly-web-console-api",
+            to: "docs/Web-Console-API/absmartly-web-console-api",
             position: "left",
             label: "Web Console API",
           },
@@ -158,7 +158,7 @@ const config = {
               },
               {
                 label: "API Docs",
-                to: "/docs/SDK-API/a-b-smartly-collector-api",
+                to: "/docs/SDK-API/absmartly-collector-api",
               },
             ],
           },
