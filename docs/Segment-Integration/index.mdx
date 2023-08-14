@@ -12,10 +12,10 @@ import JsPublishingExposuresThroughSegment from "!!raw-loader!./js/publishing-ex
 # Segment Integration
 
 This is a Lambda function that runs on [Segment](https://www.segment.com)
-for A/B Smartly Integration.
+for ABsmartly Integration.
 
 It extracts the relevant data from Segment events and sends it, correctly
-formatted, to the A/B Smartly Collector endpoint.
+formatted, to the ABsmartly Collector endpoint.
 
 It can also be added directly as a destination function on a Segment workspace.
 
@@ -29,7 +29,7 @@ If you are configuring a destination function on your workspace, these are the n
 - **Required:** &#9989
 - **Javascript:** `settings.collectorEndpoint`
 
-Your dedicated A/B Smartly Collector Endpoint. Example: `https://demo.absmartly.io/v1`
+Your dedicated ABsmartly Collector Endpoint. Example: `https://demo.absmartly.io/v1`
 
 ### API Key
 
@@ -37,8 +37,8 @@ Your dedicated A/B Smartly Collector Endpoint. Example: `https://demo.absmartly.
 - **Required:** &#9989
 - **Javascript:** `settings.apiKey`
 
-API Key to use when sending events to the A/B Smartly Collector. API Keys are
-created in the A/B Smartly Web Console's Settings section.
+API Key to use when sending events to the ABsmartly Collector. API Keys are
+created in the ABsmartly Web Console's Settings section.
 
 ### Environment
 
@@ -47,7 +47,7 @@ created in the A/B Smartly Web Console's Settings section.
 - **Javascript:** `settings.environment`
 
 The environment name where the events are originating (case sensitive).
-Environments are created in the A/B Smartly Web Console's Settings section.
+Environments are created in the ABsmartly Web Console's Settings section.
 
 ### Unit Mapping
 
@@ -55,9 +55,9 @@ Environments are created in the A/B Smartly Web Console's Settings section.
 - **Required:** &#9989
 - **Javascript:** `settings.unitMapping`
 
-Mapping of Segment identity to A/B Smartly Unit. Mapping of Segment identity
-to A/B Smartly Unit. Example `anonymousId` -> `anonymous_uuid`, `userId` ->
-`user_id`. Units are created in the A/B Smartly Web Console's Settings section.
+Mapping of Segment identity to ABsmartly Unit. Mapping of Segment identity
+to ABsmartly Unit. Example `anonymousId` -> `anonymous_uuid`, `userId` ->
+`user_id`. Units are created in the ABsmartly Web Console's Settings section.
 
 :::note
 This mapping is required, even if the names are exactly the same.
@@ -69,11 +69,11 @@ This mapping is required, even if the names are exactly the same.
 - **Required:** &#10060
 - **Javascript:** `settings.enableExposureTracking`
 
-Enable sending A/B Smartly exposures to the A/B Smartly Collector.
+Enable sending ABsmartly exposures to the ABsmartly Collector.
 
 :::note
-Enable this **only** if you instantiate the A/B Smartly SDK with a **custom**
-publisher and are sending A/B Smartly exposures through Segment.
+Enable this **only** if you instantiate the ABsmartly SDK with a **custom**
+publisher and are sending ABsmartly exposures through Segment.
 :::
 
 ### EnablePageViewTracking
@@ -84,7 +84,7 @@ publisher and are sending A/B Smartly exposures through Segment.
 
 Enable sending Segment's
 [Page events](https://segment.com/docs/connections/spec/page/) as goals to
-the A/B Smartly Collector.
+the ABsmartly Collector.
 
 :::caution
 These events tend to happen very frequently and may increase storage cost.
@@ -93,7 +93,7 @@ These events tend to happen very frequently and may increase storage cost.
 :::note
 The goal generated will have the name `Page: <Page Name>` for example
 `Page: Home` and needs to have been previously created in
-the A/B Smartly Web Console's Settings section.
+the ABsmartly Web Console's Settings section.
 :::
 
 ### EnableAppScreenViewTracking
@@ -104,7 +104,7 @@ the A/B Smartly Web Console's Settings section.
 
 Enable sending Segment's
 [Screen events](https://segment.com/docs/connections/spec/screen/) as goals
-to the A/B Smartly Collector.
+to the ABsmartly Collector.
 
 :::caution
 These events tend to happen very frequently and may increase storage cost.
@@ -112,7 +112,7 @@ These events tend to happen very frequently and may increase storage cost.
 
 :::note
 The goal generated will have the name `Screen: <Screen Name>` for example
-`Screen: Login` and needs to have been previously created in the A/B Smartly
+`Screen: Login` and needs to have been previously created in the ABsmartly
 Web Console's Settings section.
 :::
 
@@ -122,7 +122,7 @@ Web Console's Settings section.
 - **Required:** &#10060
 - **Javascript:** `settings.goalMapping`
 
-Mapping of Segment event names to A/B Smartly goal names. If a mapping exists,
+Mapping of Segment event names to ABsmartly goal names. If a mapping exists,
 it will be used, otherwise the original event name will be used as the goal
 name.
 
@@ -135,22 +135,22 @@ other destinations. The Segment spec includes the [`Experiment Viewed`
 semantic event](https://segment.com/docs/connections/spec/ab-testing/)
 for this purpose.
 
-In the A/B Smartly context, we can
+In the ABsmartly context, we can
 [install a custom event logger](https://docs.absmartly.com/docs/sdk-documentation/getting-started/#using-a-custom-event-logger)
 and send exposures directly to Segment.
 
 <CodeBlock language="javascript">{JsSendingExposuresToSegment}</CodeBlock>
 
-### Mapping Segment Identities to A/B Smartly Units
+### Mapping Segment Identities to ABsmartly Units
 
 For simple mappings, you can map Segment's identities/properties
-to A/B Smartly's units in your A/B Smartly integration settings in Segment.
+to ABsmartly's units in your ABsmartly integration settings in Segment.
 
 If you want to programmatically make this mapping, you can install a
 middleware in your Segment SDK that will append the units to the
 `properties.absmartly.units` field before sending to Segment.
 The destination function will extract and use that instead. This may be
-useful if you are running A/B Smartly experiment on units that are not
+useful if you are running ABsmartly experiment on units that are not
 the typical Segment `anonymousId` or `userId`.
 
 <CodeBlock language="javascript">{JsMappingSegmentIdentitiesToUnits}</CodeBlock>
@@ -160,15 +160,14 @@ the typical Segment `anonymousId` or `userId`.
 To publish experiment exposures, you must turn on `EnableExposureTracking`
 in your destination settings in Segment.
 
-We want to replace the direct flow of exposure events from the A/B
-Smartly SDK to the A/B Smartly collector, by instead sending them to Segment
+We want to replace the direct flow of exposure events from the ABsmartly SDK to the ABsmartly collector, by instead sending them to Segment
 for processing by the destination function.
 
-This can be achieved by instantiating the A/B Smartly SDK with a custom
+This can be achieved by instantiating the ABsmartly SDK with a custom
 context publisher.
 
 The custom publisher will publish an `Experiment Viewed` Segment event
-with A/B Smartly's exposure data in the `properties.absmartly` field as well
+with ABsmartly's exposure data in the `properties.absmartly` field as well
 as the normal semantic data that Segment recommends for this event.
 
 Here is an example in Javascript.
@@ -179,7 +178,7 @@ Here is an example in Javascript.
 
 ## Finishing Up
 
-You should now have your A/B Smartly Segment integration fully set up!
+You should now have your ABsmartly Segment integration fully set up!
 
 If you are looking for more information, feel free to ask a question in your
-organization's dedicated A/B Smartly Slack channel.
+organization's dedicated ABsmartly Slack channel.

@@ -84,7 +84,7 @@ email address. You could also pass a `device_id` that you store in a first-
 party cookie or a mobile application `UUID`.
 
 :::info Keep In Mind
-The units that you pass must first be declared on your A/B Smartly Web Console
+The units that you pass must first be declared on your ABsmartly Web Console
 by going to `Settings -> Units`
 
 <Image img={require("/img/units-on-web-console.png")} />
@@ -109,12 +109,12 @@ in this request and the control treatment will be shown instead.
 
 #### Create A New Context With Pre-Fetched Data
 
-When doing full-stack experimentation with A/B Smartly, we recommend only creating a
+When doing full-stack experimentation with ABsmartly, we recommend only creating a
 context once on the server-side. Creating a context involves a round-trip
-to the A/B Smartly event collector. We can avoid repeating the round-trip on
+to the ABsmartly event collector. We can avoid repeating the round-trip on
 the client-side by sending the server-side data embedded in the first document,
 for example, by rendering it on the template. We can then initialize the
-A/B Smartly context on the client-side directly with it.
+ABsmartly context on the client-side directly with it.
 
 <CodeBlock language="html">{JsPreFetchedData}</CodeBlock>
 
@@ -129,7 +129,7 @@ refreshInterval option when creating the context.
 <CodeBlock language="js">{JsRefreshWithFreshData}</CodeBlock>
 
 Alternatively, the `refresh()` method can be called manually. The `refresh()`
-method pulls updated experiment data from the A/B Smartly collector and will
+method pulls updated experiment data from the ABsmartly collector and will
 trigger recently started experiments when `treatment()` is called again.
 
 <CodeBlock language="js">{JsRefreshWithRefreshMethod}</CodeBlock>
@@ -146,7 +146,7 @@ Here is an example of setting a timeout only for the `createContext` request.
 #### HTTP Request cancellation
 
 Sometimes it is useful to cancel an inflight HTTP request, for example, when
-the user is navigating away. The A/B Smartly SDK also supports a cancellation
+the user is navigating away. The ABsmartly SDK also supports a cancellation
 via an `AbortSignal`. An implementation of AbortController is provided for older
 platforms, but will use the native implementation where available.
 
@@ -179,7 +179,7 @@ To mitigate this, we can use the `set_refresh_interval()` method on the context 
 <CodeBlock language="py">{PythonRefreshWithFreshData}</CodeBlock>
 
 Alternatively, the `refresh()` method can be called manually.
-The `refresh()` method pulls updated experiment data from the A/B Smartly 
+The `refresh()` method pulls updated experiment data from the ABsmartly 
 collector and will trigger recently started experiments when `get_treatment()` 
 is called.
 
@@ -265,11 +265,11 @@ You can then remove their `user_id` and replace it with an `anonymous_id` instea
 
 **Creating a New Context With Pre-Fetched Data**
 
-When doing full-stack experimentation with A/B Smartly, we recommend creating a
+When doing full-stack experimentation with ABsmartly, we recommend creating a
 context only once on the server-side. Creating a context involves a round-trip
-to the A/B Smartly event collector. We can avoid repeating the round-trip on
+to the ABsmartly event collector. We can avoid repeating the round-trip on
 the client-side by sending the server-side data embedded with other application
-data. We can then initialize the A/B Smartly context directly with it.
+data. We can then initialize the ABsmartly context directly with it.
 
 <CodeBlock language="swift">{SwiftPreFetchedData}</CodeBlock>
 
@@ -308,12 +308,12 @@ Alternatively, the `refresh()` method can be called manually.
 
 **Initializing with pre-fetched Context data**
 
-When doing full-stack experimentation with A/B Smartly, we recommend creating
+When doing full-stack experimentation with ABsmartly, we recommend creating
 a context only once on the server-side. Creating a context involves a
-round-trip to the A/B Smartly event collector. We can avoid repeating the
+round-trip to the ABsmartly event collector. We can avoid repeating the
 round-trip on the client-side by sending the server-side data embedded in the
 first document, for example, by rendering it on the template. Then we can
-initialize the A/B Smartly context on the client-side directly with it. The
+initialize the ABsmartly context on the client-side directly with it. The
 Vue2 SDK also supports this optimized usage.
 
 In this example, we assume the variable `prefectedContextData` contains the
@@ -332,7 +332,7 @@ refreshInterval option when initializing the SDK.
 <CodeBlock language="js">{VueRefreshWithFreshData}</CodeBlock>
 
 Alternatively, the `refresh()` method can be called manually. The `refresh()`
-method pulls updated experiment data from the A/B Smartly collector and will
+method pulls updated experiment data from the ABsmartly collector and will
 trigger recently started experiments when `treatment()` is called again.
 
 <CodeBlock language="js">{VueRefreshWithRefreshMethod}</CodeBlock>
@@ -360,7 +360,7 @@ context config.
 <CodeBlock language="js">{Vue3Refresh}</CodeBlock>
 
 Alternatively, the `refresh()` method can be called manually. The `refresh()`
-method pulls updated experiment data from the A/B Smartly collector and will 
+method pulls updated experiment data from the ABsmartly collector and will 
 trigger recently started experiments when `treatment()` is called again.
 
 <CodeBlock language="js">{Vue3ManualRefresh}</CodeBlock>
@@ -379,7 +379,7 @@ trigger recently started experiments when `treatment()` is called again.
 
 **Create A New Context With Pre-Fetched Data**
 
-Creating a context involves a round-trip to the A/B Smartly event collector.
+Creating a context involves a round-trip to the ABsmartly event collector.
 We can avoid repeating the round-trip on the client-side by re-using data
 previously retrieved.
 
@@ -411,7 +411,7 @@ context config.
 <CodeBlock language="java">{JavaRefreshWithFreshData}</CodeBlock>
 
 Alternatively, the `refresh()` method can be called manually. The `refresh()`
-method pulls updated experiment data from the A/B Smartly collector and will
+method pulls updated experiment data from the ABsmartly collector and will
 trigger recently started experiments when `getTreatment()` is called again.
 
 <CodeBlock language="java">{JavaRefreshWithRefreshMethod}</CodeBlock>
@@ -454,7 +454,7 @@ the context config.
 <CodeBlock language="go">{GoRefreshWithFreshData}</CodeBlock>
 
 Alternatively, the `Refresh()` method can be called manually. The `Refresh()`
-method pulls updated experiment data from the A/B Smartly collector and will
+method pulls updated experiment data from the ABsmartly collector and will
 trigger recently started experiments when `GetTreatment()` is called again.
 
 <CodeBlock language="go">{GoRefreshWithRefreshMethod}</CodeBlock>
@@ -473,7 +473,7 @@ trigger recently started experiments when `GetTreatment()` is called again.
 
 **Creating A New Context With Pre-Fetched Data**
 
-Creating a context involves a round-trip to the A/B Smartly event
+Creating a context involves a round-trip to the ABsmartly event
 collector. We can avoid repeating the round-trip on the client-side by
 re-using previously retrieved data.
 
@@ -505,7 +505,7 @@ the context config.
 <CodeBlock language="csharp">{DotNetRefreshWithFreshData}</CodeBlock>
 
 Alternatively, the `Refresh()` method can be called manually. The `Refresh()`
-method pulls updated experiment data from the A/B Smartly collector and will
+method pulls updated experiment data from the ABsmartly collector and will
 trigger recently started experiments when `GetTreatment()` is called again.
 
 <CodeBlock language="csharp">{DotNetRefreshWithRefreshMethod}</CodeBlock>
@@ -531,7 +531,7 @@ To mitigate this, we can use the `Context->refresh()` method on the `Context`.
 
 <CodeBlock language="php">{PHPRefresh}</CodeBlock>
 
-The `Context->refresh()` method pulls updated experiment data from the A/B Smartly collector and will trigger recently started experiments when `Context->getTreatment` is called again.
+The `Context->refresh()` method pulls updated experiment data from the ABsmartly collector and will trigger recently started experiments when `Context->getTreatment` is called again.
 
 **Setting Extra Units**
 
@@ -562,7 +562,7 @@ production code, but started after the context was created, will not be
 triggered.
 
 Alternatively, the `refresh` method can be called manually. The `refresh` method
-pulls updated experiment data from the A/B Smartly collector and will trigger
+pulls updated experiment data from the ABsmartly collector and will trigger
 recently started experiments when `treatment` is called again.
 
 **Setting Extra Units**
@@ -604,7 +604,7 @@ For long-running contexts, the context is usually created once when the applicat
 
 <CodeBlock language="dart">{FlutterRefresh}</CodeBlock>
 
-Alternatively, the `refresh()` method can be called manually. The `refresh()` method pulls updated experiment data from the A/B Smartly collector and will trigger recently started experiments when `getTreatment()` is called again.
+Alternatively, the `refresh()` method can be called manually. The `refresh()` method pulls updated experiment data from the ABsmartly collector and will trigger recently started experiments when `getTreatment()` is called again.
 
 <CodeBlock language="dart">{FlutterRefreshManual}</CodeBlock>
 
