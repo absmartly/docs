@@ -12,7 +12,7 @@ externalDocs:
   description: Find out more about A/B Smartly
   url: "https://www.absmartly.com"
 servers:
-  - url: https://sandbox.absmartly.io/v1
+  - url: https://sandbox.absmartly.com/v1
 security:
   - UserApiKey: []
 
