@@ -127,9 +127,16 @@ storage bucket. The fields are described in the following table:
 | **Prefix**      | The prefix of the exported filename, which can include / to denote "sub-folders". |
 | **Access Key**  | The access key id of for the object storage bucket.                           |
 | **Secret Key**  | The secret access key for the object storage bucket.                          |
-| **Endpoint**    | The S3-compatible endpoint to connect to the object storage bucket. **Examples:**<br /> AWS: https://s3.amazonaws.com<br />GCP: https://storage.googleapis.com<br />See [this page](https://cloud.google.com/storage/docs/interoperability) about using GCP as S3 compatible storage.|
+| **Endpoint**    | The S3-compatible endpoint to connect to the object storage bucket. **Examples:**<br /> AWS: https://s3.amazonaws.com<br />GCP: https://storage.googleapis.com<br />|
 | **Format**      | The format of the exported data. CSV and TSV include a header row with column names. JSON is a newline-delimited JSON file.       |
 | **Compression** | The compression method to use. GZIP is widely supported and provides good compression. LZ4 is much faster but provides slightly less compression. None is no compression.|
+
+:::info Interoperability with GCP to S3
+1. Go to the [Cloud Storage Settings page](http://console.cloud.google.com/storage/settings/) in the [Google Cloud Platform Console](https://console.cloud.google.com/).
+2. In Settings, select **Interoperability**.
+3. If interoperability has not been set up yet, click **Enable Interoperability Access**.
+4. Click **Create new key**.
+:::
 
 Once all of these fields have been filled, you must use the `Test Configuration` 
 button to make sure that the fields have been filled correctly. If the test is 
