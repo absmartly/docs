@@ -123,13 +123,13 @@ storage bucket. The fields are described in the following table:
 
 | Field Name      | Description                                                                   |
 | --------------- | ----------------------------------------------------------------------------- |
-| **Bucket**      | The name of the bucket that you want to export to.                            |
-| **Prefix**      | The prefix of the exported filename.                                          |
-| **Access Key**  | The client access key of your storage bucket.                                 |
-| **Secret Key**  | The secret key of your storage bucket.                                        |
-| **Endpoint**    | The endpoint that points to your storage bucket.                              |
-| **Format**      | The format of the exported data. We currently support [CSV](https://www.wikiwand.com/en/Comma-separated_values) and [JSON](https://www.wikiwand.com/en/JSON).           |
-| **Compression** | The compression method to use on the data. We currently support [GZIP](https://www.wikiwand.com/en/Gzip) and [LZ4](https://www.wikiwand.com/en/LZ4_(compression_algorithm)). |
+| **Bucket**      | The name of the object storage bucket to export into.                         |
+| **Prefix**      | The prefix of the exported filename, which can include / to denote "sub-folders". |
+| **Access Key**  | The access key id of for the object storage bucket.                           |
+| **Secret Key**  | The secret access key for the object storage bucket.                          |
+| **Endpoint**    | The S3-compatible endpoint to connect to the object storage bucket. **Examples:**<br /> AWS: https://s3.amazonaws.com<br />GCP: https://storage.googleapis.com<br />See [this page](https://cloud.google.com/storage/docs/interoperability) about using GCP as S3 compatible storage.|
+| **Format**      | The format of the exported data. CSV and TSV include a header row with column names. JSON is a newline-delimited JSON file.       |
+| **Compression** | The compression method to use. GZIP is widely supported and provides good compression. LZ4 is much faster but provides slightly less compression. None is no compression.|
 
 Once all of these fields have been filled, you must use the `Test Configuration` 
 button to make sure that the fields have been filled correctly. If the test is 
