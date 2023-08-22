@@ -6,7 +6,7 @@ import absmartly from '@absmartly/vue3-sdk';
 
 app.use(absmartly.ABSmartlyVue, {
   sdkOptions: {
-    endpoint: 'https://sandbox-api.absmartly.com/v1',
+    endpoint: 'https://your-company.absmartly.io/v1',
     apiKey: ABSMARTLY_API_KEY,
     environment: "production",
     application: "website",

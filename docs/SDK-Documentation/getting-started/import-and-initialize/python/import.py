@@ -1,6 +1,6 @@
 def main():
     client_config = ClientConfig()
-    client_config.endpoint = "https://sandbox.test.io/v1"
+    client_config.endpoint = "https://your-company.absmartly.io/v1"
     client_config.api_key = "test"
     client_config.application = "www"
     client_config.environment = "prod"
