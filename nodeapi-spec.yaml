@@ -1,15 +1,15 @@
 openapi: 3.0.0
 info:
-  title: A/B Smartly Web Console API
+  title: ABsmartly Web Console API
   version: 1.0.0
-  description: An OpenAPI Specification that describes the A/B Smartly API for working with your experiments programmatically.
+  description: An OpenAPI Specification that describes the ABsmartly API for working with your experiments programmatically.
   contact:
     name: API Support
     email: api@absmartly.com
   license:
     name: Proprietary
 externalDocs:
-  description: Find out more about A/B Smartly
+  description: Find out more about ABsmartly
   url: "https://www.absmartly.com"
 servers:
   - url: https://sandbox.absmartly.com/v1

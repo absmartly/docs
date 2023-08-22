@@ -6,7 +6,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "The A/B Smartly Docs",
+  title: "The ABsmartly Docs",
   tagline:
     "Booking.com and Netflix's experimentation culture without the big investment.",
   url: "https://docs.absmartly.com",
@@ -105,10 +105,13 @@ const config = {
         },
       },
       navbar: {
-        title: "A/B Smartly Docs",
+        title: "ABsmartly Docs",
         logo: {
           alt: "The A B Smartly logo",
           src: "img/logo.svg",
+          style: {
+              width: '3rem'
+          }
         },
         items: [
           {
@@ -122,12 +125,12 @@ const config = {
             label: "SDK Docs",
           },
           {
-            to: "docs/SDK-API/a-b-smartly-collector-api",
+            to: "docs/SDK-API/absmartly-collector-api",
             position: "left",
             label: "SDK API",
           },
           {
-            to: "docs/Web-Console-API/a-b-smartly-web-console-api",
+            to: "docs/Web-Console-API/absmartly-web-console-api",
             position: "left",
             label: "Web Console API",
           },
@@ -155,7 +158,7 @@ const config = {
               },
               {
                 label: "API Docs",
-                to: "/docs/SDK-API/a-b-smartly-collector-api",
+                to: "/docs/SDK-API/absmartly-collector-api",
               },
             ],
           },
@@ -190,8 +193,8 @@ const config = {
             ],
           },
         ],
-        copyright: `&copy; Copyright ${new Date().getFullYear()} A/B Smartly B.V.`,
-        logo: { src: "img/logo.svg", alt: "The A B Smartly Logo" },
+        copyright: `&copy; Copyright ${new Date().getFullYear()} ABsmartly B.V.`,
+        logo: { src: "img/logo.svg", alt: "The A B Smartly Logo", style: { width: '3rem' } },
       },
       prism: {
         theme: lightCodeTheme,

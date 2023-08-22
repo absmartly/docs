@@ -1,15 +1,15 @@
 openapi: 3.0.0
 info:
-  title: A/B Smartly Collector API
+  title: ABsmartly Collector API
   version: 1.0.0
-  description: An OpenAPI Specification that describes the A/B Smartly Collector API. This API is mainly used when using A/B Smartly in a language that does not yet have a supported SDK.
+  description: An OpenAPI Specification that describes the ABsmartly Collector API. This API is mainly used when using ABsmartly in a language that does not yet have a supported SDK.
   contact:
     name: API Support
     email: api@absmartly.com
   license:
     name: Proprietary
 externalDocs:
-  description: Find out more about A/B Smartly
+  description: Find out more about ABsmartly
   url: "https://www.absmartly.com"
 servers:
   - url: https://sandbox.absmartly.io/v1
@@ -46,14 +46,14 @@ paths:
         - name: environment
           in: query
           required: false
-          description: An environment to filter the results by. These can be found and created in your A/B Smartly Web Console settings.
+          description: An environment to filter the results by. These can be found and created in your ABsmartly Web Console settings.
           example: development
           schema:
             type: string
         - name: application
           in: query
           required: false
-          description: An application to filter the results by. These can be found and created in your A/B Smartly Web Console settings.
+          description: An application to filter the results by. These can be found and created in your ABsmartly Web Console settings.
           example: www
           schema:
             type: string
@@ -96,14 +96,14 @@ paths:
         - name: X-Environment
           in: header
           required: true
-          description: The environment in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          description: The environment in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.
           example: development
           schema:
             type: string
         - name: X-Application
           in: header
           required: true
-          description: The application in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          description: The application in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.
           example: www
           schema:
             type: string
@@ -118,7 +118,7 @@ paths:
       requestBody:
         required: true
         description: |
-          Units data for which to create the context and variant assignments. Unit types can be found and created in your A/B Smartly Web Console settings.
+          Units data for which to create the context and variant assignments. Unit types can be found and created in your ABsmartly Web Console settings.
 
           ```json
           {
@@ -169,14 +169,14 @@ paths:
         - name: X-Environment
           in: header
           required: true
-          description: The environment in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          description: The environment in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.
           example: development
           schema:
             type: string
         - name: X-Application
           in: header
           required: true
-          description: The application in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          description: The application in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.
           example: www
           schema:
             type: string
@@ -209,7 +209,7 @@ paths:
 
           Units are the values which are used to choose the variant
           assignments for each user. Unit types can be found and created in
-          your A/B Smartly Web Console settings. The payload takes the form of:
+          your ABsmartly Web Console settings. The payload takes the form of:
 
           ```json
           {
@@ -241,7 +241,7 @@ paths:
           **Goals**
 
           Goals are used to track various metrics that are related to your
-          experiment. Goals can be created and found in your A/B Smartly Web
+          experiment. Goals can be created and found in your ABsmartly Web
           Console settings:
 
           ```json
@@ -309,14 +309,14 @@ paths:
         - name: X-Environment
           in: header
           required: true
-          description: The environment in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          description: The environment in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.
           example: development
           schema:
             type: string
         - name: X-Application
           in: header
           required: true
-          description: The application in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          description: The application in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.
           example: www
           schema:
             type: string
@@ -349,7 +349,7 @@ paths:
 
           Units are the values which are used to choose the variant
           assignments for each user. Unit types can be found and created in
-          your A/B Smartly Web Console settings. The payload takes the form of:
+          your ABsmartly Web Console settings. The payload takes the form of:
 
           ```json
           {
@@ -381,7 +381,7 @@ paths:
           **Goals**
 
           Goals are used to track various metrics that are related to your
-          experiment. Goals can be created and found in your A/B Smartly Web
+          experiment. Goals can be created and found in your ABsmartly Web
           Console settings:
 
           ```json
@@ -448,14 +448,14 @@ paths:
         - name: X-Environment
           in: header
           required: true
-          description: The environment in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          description: The environment in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.
           example: development
           schema:
             type: string
         - name: X-Application
           in: header
           required: true
-          description: The application in which you are running your experiments. These can be found and created in your A/B Smartly Web Console settings.
+          description: The application in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.
           example: www
           schema:
             type: string

@@ -16,7 +16,7 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         Run thousands of simultaneous A/B tests across your entire
-        infrastructure with reliable results. A/B Smartly helps you plan to
+        infrastructure with reliable results. ABsmartly helps you plan to
         avoid experiment interactions and detects interactions for you when they
         happen.
       </>

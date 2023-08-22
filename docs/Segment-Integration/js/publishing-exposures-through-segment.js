@@ -32,7 +32,7 @@ analytics.ready(function () {
               {
                 exposures: [exposure],
               },
-              // add anything else in the a/b smartly payload that are not exposures or goals
+              // add anything else in the ABsmartly payload that are not exposures or goals
               ...Object.entries(request)
                 .filter((e) => e[0] !== "exposures" && e[0] !== "goals")
                 .map((e) => ({ [e[0]]: e[1] }))

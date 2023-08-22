@@ -15,7 +15,7 @@ export const Image: FC<ImageProps> = ({
   alt,
   img,
 }) => (
-  <div style={{ maxWidth, margin: centered && "0 auto" }}>
+  <div style={{ maxWidth, margin: centered && "0.5rem auto" }}>
     <IdealImage img={require(`../../../static/img/${img}`)} alt={alt} />
   </div>
 );
