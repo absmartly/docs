@@ -24,6 +24,17 @@ import RubyFinalize from "!!raw-loader!./ruby/finalize.rb";
 
 import FlutterFinalize from "!!raw-loader!./flutter/finalize.dart";
 
+Finalizing (or closing) a context publishes any unpublished events before 
+"sealing" it. Any `track` calls after a context has been finalized will throw 
+an error.
+
+Some examples of when you may want to finalize a context:
+
+- When your application is being destroyed.
+- When a user logs out. In this case, you no longer know if the current user 
+is the same user as before. It is best to finalize the original context, 
+create a new one and pass it an `anonymous_id`.
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
