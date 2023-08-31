@@ -1,4 +1,4 @@
-    res = context.peek_treament("exp_test_experiment")
+    res = context.peek_treatment("exp_test_experiment")
     if res == 0:
         # user is in control group (variant 0)
     else:
