@@ -233,6 +233,12 @@ app.post("/", async (req, res) => {
     res.status(200).send("OK");
 });
 ```
+Don't forget to remove your test message from the `app.listen()` function!
+```typescript title="src/index.ts"
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
+```
 
 Now, whenever an experiment is changed or has an alert created, that event will be sent as a message to your Slack channel!
 
@@ -280,9 +286,6 @@ app.post("/", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
-  postToSlack({
-    text: "Hello from the ABsmartly Slack integration!",
-  });
 });
 ```
 
