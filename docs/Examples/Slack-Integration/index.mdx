@@ -1,0 +1,293 @@
+# Slack Integration
+
+This article will walk you through creating a Slack integration for your ABsmartly Web Console.
+The integration will be a NodeJS [Express](https://expressjs.com/) app that sends notifications about experiment events
+to a Slack channel of your choice.
+
+📌 **Example**: Check out a starter integration on [our **examples** GitHub repository](https://github.com/absmartly/examples/tree/main/Javascript/slack-integration).
+
+## Prerequisites
+
+- [NodeJS](https://nodejs.org/en/) (v14+)
+- [npm](https://www.npmjs.com/) (v6+)
+- [Git](https://git-scm.com/)
+- [ABsmartly Web Console](https://www.absmartly.com/) account with admin access
+
+## Create a Node Project
+
+First, we will create a new NodeJS project using npm. In your terminal, run:
+```bash title="Terminal"
+mkdir absmartly-slack-integration
+cd absmartly-slack-integration
+npm init -y
+```
+
+### Install dependencies
+Next, we will install the dependencies we need for our express app:
+```bash title="Terminal"
+npm i express body-parser dotenv axios
+npm i -D typescript ts-node nodemon @types/node @types/express @types/body-parser @types/axios
+```
+and create a `tsconfig.json` file:
+```bash title="Terminal"
+npx tsconfig.json # Choose node
+```
+Inside your `tsconfig.json`, add a `rootDir` compiler option, like so:
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    ...
+  }
+}
+```
+
+### Create Initial Express App
+Create a `src` folder and add an `index.ts` file:
+```bash title="Terminal"
+mkdir src
+touch src/index.ts
+```
+Inside the `index.ts` file we will start with a simple Express app.
+```typescript title='src/index.ts'
+import express from 'express';
+import bodyParser from 'body-parser';
+import "dotenv/config";
+
+const PORT = process.env.PORT || 3000;
+
+const app = express();
+
+app.use(bodyParser.json());
+
+app.post('/', (req, res) => {
+  console.log(req.body);
+  res.status(200).send("OK");
+})
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+})
+```
+This code simply listens on port 3000 and logs the body of any POST request to the console. To run it, let's add some
+scripts to our `package.json` file:
+```json title="package.json"
+{
+  ...
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts"
+  },
+  ...
+}
+```
+Now we can run our express app with `npm run dev` and in a separate terminal window, send a POST request to it:
+```bash title="Terminal"
+curl -X POST -H "Content-Type: application/json" -d '{"message":"Hello World!"}' http://localhost:3000
+```
+You should see the message logged in the terminal window where the express app is running.
+
+## Create a Slack App
+
+To hook up our express app to Slack, we will need to create a Slack App that can accept incoming webhooks.
+A tutorial for how to set this up can be found [here](https://api.slack.com/messaging/webhooks).
+
+Once you have a Slack Webhook URL, we can continue with the guide!
+
+### Sending a Message to Slack
+
+Create a `.env` file and add your Slack Webhook URL to it:
+
+```env title=".env"
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+We will now send a message to Slack to make sure everything is working. Add the following code to
+the top of your `index.ts` file:
+
+```typescript title="src/index.ts"
+const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || "";
+
+const postToSlack = async (message: Record<string, unknown>) => {
+  return await axios.post(SLACK_WEBHOOK_URL, message);
+};
+```
+
+and change your `app.listen()` function to:
+
+```typescript title="src/index.ts"
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+  postToSlack({
+    text: "Hello from the ABsmartly Slack integration!",
+  });
+});
+```
+
+Start your app with:
+```bash title="Terminal"
+npm run dev
+```
+
+And you should see a message appear in your Slack channel!
+
+## Commit Your Changes
+
+To deploy our Express app, we will be using [Render.com](https://render.com/). The simplest way to get started is to
+[create a repo on GitHub](https://github.com/new) and push our code to it.
+
+First, go to https://github.com/new and create a new repository, then follow the instructions to push your code:
+
+```bash title="Terminal"
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_GITHUB_REPO_NAME>.git
+git branch -M main
+git push -u origin main
+```
+
+## Deploying Your Express App
+
+Now our code is online, we can deploy our initial Express app. For this guide we will be using the free service,
+[Render.com](https://render.com/), but feel free to use any service that you like!
+
+### Setting up Render
+
+[Create a render account](https://render.com) and create a new web service. Choose NodeJS as the type, connect your
+Github account and select your repository from the list.
+
+For the build script, input
+```bash title="Render Build Command"
+npm install && npm run build
+```
+and for the start command:
+```bash title="Render Start Command"
+npm start
+```
+
+Click on Save and your express app should start building and deploying, but you won't receive a message in Slack yet.
+
+First, head to your render service's settings and click on the Environment tab. Add your Slack webhook URL as an environment variable.
+Make sure to have the same name as in your `.env` file, `SLACK_WEBHOOK_URL`.
+
+Render should automatically redeploy your app with the new environment variable and a message should appear in your Slack channel.
+
+## Creating a Webhook in ABsmartly
+
+Now that we have our express app deployed, we can create a webhook in ABsmartly.
+
+Go to https://your-company-name.absmartly.com/settings/webhooks and create a new webhook.
+
+For the name, enter `Slack Integration` and for the URL, enter the URL of your express app https://your-service.onrender.com.
+
+We are going to make sure our webhook is `Enabled` and `Ordered`; we will give it 3 max retries;
+and we will choose to send events whenever any experiment event occurs.
+
+This includes:
+- ExperimentCreated
+- ExperimentDevelopment
+- ExperimentStarted
+- ExperimentStopped
+- ExperimentRestarted
+- ExperimentFullOn
+- ExperimentEdited
+- ExperimentCommented
+- ExperimentArchived
+- ExperimentUnarchived
+- ExperimentAlertCreated
+
+Click `Create Webhook` and we should start receiving events in our express app!
+
+## Sending ABsmartly Events to Slack
+
+Our app is now receiving events from ABsmartly, but we are only running `console.log()` on the event data
+(have a look at your Render logs to see this in action).
+
+Let's send these events to Slack!
+
+In your index.ts file, add the following function:
+
+```typescript title="src/index.ts"
+const handleEvent = (event: Record<string, unknown>) => {
+    console.log(event);
+
+    const eventName = event.event_name as string;
+
+    postToSlack({
+        text: `Event: ${eventName}`,
+    })
+}
+```
+and change your `app.post()` function to:
+```typescript title="src/index.ts"
+app.post("/", async (req, res) => {
+    try {
+        req.body.events.forEach(handleEvent);
+    } catch (error) {
+        console.error(error);
+    }
+
+    res.status(200).send("OK");
+});
+```
+
+Now, whenever an experiment is changed or has an alert created, that event will be sent as a message to your Slack channel!
+
+For further formatting of the messages, checkout the [various Webhook Payloads](/docs/web-console-docs/settings#payloads) that ABsmartly can send, and
+have a look at Slack's [Message Formatting](https://api.slack.com/messaging/composing) documentation.
+
+Our final `index.ts` file should look like this:
+
+```typescript title="src/index.ts"
+import express from "express";
+import bodyParser from "body-parser";
+import axios from "axios";
+import "dotenv/config";
+
+const PORT = process.env.PORT || 3000;
+const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || "";
+
+const app = express();
+
+app.use(bodyParser.json());
+
+const postToSlack = async (message: Record<string, unknown>) => {
+  return await axios.post(SLACK_WEBHOOK_URL, message);
+};
+
+const handleEvent = (event: Record<string, unknown>) => {
+  console.log(event);
+
+  const eventName = event.event_name as string;
+
+  postToSlack({
+    text: `Event: ${eventName}`,
+  });
+};
+
+app.post("/", async (req, res) => {
+  try {
+    req.body.events.forEach(handleEvent);
+  } catch (error) {
+    console.error(error);
+  }
+
+  res.status(200).send("OK");
+});
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+  postToSlack({
+    text: "Hello from the ABsmartly Slack integration!",
+  });
+});
+```
+
+## Next Steps
+
+Our [example Slack integration repo](https://github.com/absmartly/examples/tree/main/Javascript/slack-integration) goes
+quite a bit further by pulling experiment and user data from both the ABsmartly Web Console and the Slack API to enrich
+the messages that are being sent. Feel free to fork it and use it as a starting point for your own integration!
