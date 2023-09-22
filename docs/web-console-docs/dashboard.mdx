@@ -216,8 +216,8 @@ collected by each. The columns can be described as follows:
 | **Variant**    | The name of your variants. This could be a custom name, or simply Variant A, Variant B etc.                                                                          |
 | **Value**      | The value of this particular metric per variant. This can be formatted in the goal's settings using the format string.                                               |
 | **Mean**       | The value of this metric divided by the number of participants. For example, the number of bookings made divided by the number of users who experienced the variant. |
-| **Confidence** | The confidence interval of the impact on this metric. This is calculated using [Fieller’s Theorem](https://www.wikiwand.com/en/Fieller%27s_theorem).                 |
-| **Impact**     | The impact each variant has had on this metric.                                                                                                                      |
+| **Confidence** | The inverse of this metric and variant's p-value. Confidence = (1 - pvalue), formatted as a percentage.                                                               |
+| **Impact**     | The confidence interval of the impact on this metric. This is calculated using [Fieller’s Theorem](https://www.wikiwand.com/en/Fieller%27s_theorem).                 |
 
 #### Graphs
 
