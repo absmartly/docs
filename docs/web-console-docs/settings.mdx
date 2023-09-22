@@ -147,19 +147,29 @@ Webhooks can be used for custom integrations. For example:
 - Synchronizing the status of a Jira ticket with the status of the respective
   experiment.
 
-Webhooks are available for all experiment events on the Web Console, namely:
+Have a look at our [Slack integration guide](/docs/examples/slack-integration) for an example of how to use Webhooks,
+or checkout our [example Github repository](https://github.com/absmartly/examples/tree/main/Javascript/slack-integration)
+for a more comprehensive code example!
 
-- Experiment Created
-- Experiment Started in Development
-- Experiment Started
-- Experiment Stopped
-- Experiment Restarted
-- Experiment Put Full On
-- Experiment Edited
-- Experiment Commented On
-- Experiment Archived
-- Experiment Unarchived
-- Experiment Alert Created
+Webhooks are available for all experiment, goal and metric events on the Web Console, namely:
+
+- [Experiment Created](#experiment-created)
+- [Experiment Started in Development](#experiment-started-in-development)
+- [Experiment Started](#experiment-started)
+- [Experiment Stopped](#experiment-stopped)
+- [Experiment Restarted](#experiment-restarted)
+- [Experiment Put Full On](#experiment-put-full-on)
+- [Experiment Edited](#experiment-edited)
+- [Experiment Commented On](#experiment-commented-on)
+- [Experiment Archived](#experiment-archived)
+- [Experiment Unarchived](#experiment-unarchived)
+- [Experiment Alert Created](#experiment-alert-created)
+- [Goal Archived](#goal-archived)
+- [Goal Created](#goal-created)
+- [Goal Edited](#goal-edited)
+- [Metric Archived](#metric-archived)
+- [Metric Created](#metric-created)
+- [Metric Edited](#metric-edited)
 
 ### Payloads
 
@@ -347,6 +357,128 @@ The JSON payloads of each Webhook event are as follows:
   "created_at": 1661958869000,
   "updated_at": 1663243653000,
   "metadata": "{ \"ramala\": \"jamala\" }"
+}
+```
+
+#### Goal Archived
+
+```json
+{
+	"archived": true,
+	"name": "Example Goal",
+	"event_name": "GoalArchived",
+	"event_at": 1674470115161,
+	"id": 95,
+	"user_id": 89
+}
+```
+
+#### Goal Created
+
+```json
+{
+	"name": "Example Goal",
+	"description": "Example goal description",
+	"archived": false,
+	"event_name": "GoalCreated",
+	"event_at": 1674465526780,
+	"id": 95,
+	"user_id": 89
+}
+```
+
+#### Goal Edited
+
+```json
+{
+	"name": "Example Goal",
+	"description": "Example goal description",
+	"goal_tags": [
+		17
+	],
+	"owners": [
+		64
+	],
+	"teams": [
+		1
+	],
+	"event_name": "GoalEdited",
+	"event_at": 1674468687624,
+	"id": 95,
+	"user_id": 89
+}
+```
+
+#### Metric Archived
+
+```json
+{
+	"archived": true,
+	"name": "Example Metric",
+	"event_name": "MetricArchived",
+	"event_at": 1674205693525,
+	"id": 158,
+	"user_id": 89
+}
+```
+
+#### Metric Created
+
+```json
+{
+	"property_filter": "{\"filter\":{\"and\":[]}}",
+	"outlier_limit_upper_arg": null,
+	"outlier_limit_method": "unlimited",
+	"precision": 1,
+	"description": "Example metric description",
+	"scale": 1,
+	"type": "goal_unique_count",
+	"archived": false,
+	"goal_id": 69,
+	"value_source_property": "",
+	"effect": "positive",
+	"name": "Example Metric",
+	"format_str": "{}",
+	"outlier_limit_lower_arg": null,
+	"event_name": "MetricCreated",
+	"event_at": 1674204454990,
+	"id": 158,
+	"user_id": 89
+}
+```
+
+#### Metric Edited
+
+```json
+{
+	"goal_id": 78,
+	"outlier_limit_upper_arg": {
+		"scale": 0,
+		"value": "Fg=="
+	},
+	"outlier_limit_method": "quantile",
+	"effect": "negative",
+	"name": "Example Metric",
+	"description": "Example metric description",
+	"type": "goal_count",
+	"outlier_limit_lower_arg": {
+		"scale": 0,
+		"value": "AQ=="
+	},
+	"metric_tags": [
+		1,
+		7
+	],
+	"owners": [
+		81
+	],
+	"teams": [
+		1
+	],
+	"event_name": "MetricEdited",
+	"event_at": 1674236301978,
+	"id": 158,
+	"user_id": 89
 }
 ```
 
