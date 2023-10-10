@@ -19,7 +19,7 @@ security:
 paths:
   /experiments:
     get:
-      summary: LIST Experiments
+      summary: Experiments LIST
       description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
       parameters:
         - name: search
@@ -188,7 +188,7 @@ paths:
 
   /experiments/{experimentId}:
     get:
-      summary: GET Experiment
+      summary: Experiment GET
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
         - name: experimentId
@@ -210,9 +210,150 @@ paths:
                   experiment:
                     $ref: "#/components/schemas/Experiment"
 
+  /experiments/{experimentId}/start:
+    put:
+      summary: Experiment START
+      description: "**Required Permissions**: `Experiment Start` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to start.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: The action to take on the experiment and a comment to go along with it.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  format: start
+                  example: start
+                note:
+                  type: string
+                  example: "Starting experiment to test new call to action"
+      responses:
+        "200":
+          description: A JSON Object with experiment data, the experiment note and an array of errors.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                  experiment:
+                    $ref: "#/components/schemas/Experiment"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNote"
+                  ok:
+                    type: boolean
+
+  /experiments/{experimentId}/stop:
+    put:
+      summary: Experiment STOP
+      description: "**Required Permissions**: `Experiment Stop` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to stop.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: The action to take on the experiment and a comment to go along with it.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  format: stop
+                  example: stop
+                note:
+                  type: string
+                  example: "Stopping experiment as no significant results were found"
+      responses:
+        "200":
+          description: A JSON Object with experiment data, the experiment note and an array of errors.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                  experiment:
+                    $ref: "#/components/schemas/Experiment"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNote"
+                  ok:
+                    type: boolean
+
+  /experiments/{experimentId}/full_on:
+    put:
+      summary: Experiment FULL ON
+      description: "**Required Permissions**: `Experiment Full On` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to put full on.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: The full on variant and a report of why this experiment is being put full on.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_on_variant:
+                  type: integer
+                  format: 1 | 2 | 3
+                  example: 1
+                note:
+                  type: string
+                  example: "Putting variant 1 full on as we saw significant increase in conversions"
+      responses:
+        "200":
+          description: A JSON Object with experiment data, the experiment note and an array of errors.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                  experiment:
+                    $ref: "#/components/schemas/Experiment"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNote"
+                  ok:
+                    type: boolean
+
   /experiments/{experimentId}/activity:
     get:
-      summary: GET Experiment Activity
+      summary: Experiment Activity GET
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
         - name: experimentId
@@ -242,7 +383,7 @@ paths:
 
   /api_keys:
     get:
-      summary: LIST API Keys
+      summary: API Keys LIST
       description: "**Required Permissions**: `ApiKey List` or `ApiKey Admin`"
       parameters:
         - name: sort
@@ -288,7 +429,7 @@ paths:
 
   /api_keys/{apiKeyId}:
     get:
-      summary: GET Api Key
+      summary: API Key GET
       description: "**Required Permissions**: `ApiKey Get` or `ApiKey Admin`"
       parameters:
         - name: apiKeyId
@@ -310,7 +451,7 @@ paths:
 
   /applications:
     get:
-      summary: LIST Applications
+      summary: Applications LIST
       description: "**Required Permissions**: `Application List` or `Application Admin`"
       parameters:
         - name: sort
@@ -356,7 +497,7 @@ paths:
 
   /applications/{applicationId}:
     get:
-      summary: GET Application
+      summary: Application GET
       description: "**Required Permissions**: `Application Get` or `Application Admin`"
       parameters:
         - name: applicationId
@@ -378,7 +519,7 @@ paths:
 
   /cors:
     get:
-      summary: LIST CORS Allowed Origins
+      summary: CORS Allowed Origins LIST
       description: "**Required Permissions**: `CorsAllowedOrigin List` or `CorsAllowedOrigin Admin`"
       parameters:
         - name: sort
@@ -424,7 +565,7 @@ paths:
 
   /cors/{corsId}:
     get:
-      summary: GET CORS Allowed Origin
+      summary: CORS Allowed Origin GET
       description: "**Required Permissions**: `CorsAllowedOrigin Get` or `CorsAllowedOrigin Admin`"
       parameters:
         - name: applicationId
@@ -447,7 +588,7 @@ paths:
   /environments:
     get:
       description: "**Required Permissions**: `Environment List` or `Environment Admin`"
-      summary: LIST Environments
+      summary: Environments LIST
       parameters:
         - name: sort
           in: query
@@ -492,7 +633,7 @@ paths:
 
   /environments/{environmentId}:
     get:
-      summary: GET Environment
+      summary: Environment GET
       description: "**Required Permissions**: `Environment Get` or `Environment Admin`"
       parameters:
         - name: environmentId
@@ -514,7 +655,7 @@ paths:
 
   /experiment_annotations:
     get:
-      summary: LIST Experiment Annotations
+      summary: Experiment Annotations LIST
       description: "**Required Permissions**: `Annotation List` or `Annotation Admin`"
       parameters:
         - name: sort
@@ -566,7 +707,7 @@ paths:
 
   /experiment_annotations/{experimentAnnotationId}:
     get:
-      summary: GET Experiment Annotation
+      summary: Experiment Annotation GET
       description: "**Required Permissions**: `Annotation Get` or `Annotation Admin`"
       parameters:
         - name: experimentAnnotationId
@@ -588,7 +729,7 @@ paths:
 
   /experiment_tags:
     get:
-      summary: LIST Experiment Tags
+      summary: Experiment Tags LIST
       description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
       parameters:
         - name: sort
@@ -634,7 +775,7 @@ paths:
 
   /experiment_tags/{experimentTagId}:
     get:
-      summary: GET Experiment Tag
+      summary: Experiment Tag GET
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
         - name: experimentTagId
@@ -656,7 +797,7 @@ paths:
 
   /goal_tags:
     get:
-      summary: LIST Goal Tags
+      summary: Goal Tags LIST
       description: "**Required Permissions**: `Goal List` or `Goal Admin`"
       parameters:
         - name: sort
@@ -702,7 +843,7 @@ paths:
 
   /goal_tags/{goalTagId}:
     get:
-      summary: GET Goal Tag
+      summary: Goal Tag GET
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
       parameters:
         - name: goalTagId
@@ -724,7 +865,7 @@ paths:
 
   /goals:
     get:
-      summary: LIST Goals
+      summary: Goals LIST
       description: "**Required Permissions**: `Goal List` or `Goal Admin`"
       parameters:
         - name: sort
@@ -770,7 +911,7 @@ paths:
 
   /goals/{goalId}:
     get:
-      summary: GET Goal
+      summary: Goal GET
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
       parameters:
         - name: goalId
@@ -792,7 +933,7 @@ paths:
 
   /metric_tags:
     get:
-      summary: LIST Metric Tags
+      summary: Metric Tags LIST
       description: "**Required Permissions**: `Metric List` or `Metric Admin`"
       parameters:
         - name: sort
@@ -838,7 +979,7 @@ paths:
 
   /metric_tags/{metricTagId}:
     get:
-      summary: GET Metric Tag
+      summary: Metric Tag GET
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
       parameters:
         - name: metricTagId
@@ -860,7 +1001,7 @@ paths:
 
   /metrics:
     get:
-      summary: LIST Metrics
+      summary: Metrics LIST
       description: "**Required Permissions**: `Metric List` or `Metric Admin`"
       parameters:
         - name: sort
@@ -924,7 +1065,7 @@ paths:
 
   /metrics/{metricId}:
     get:
-      summary: GET Metric
+      summary: Metric GET
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
       parameters:
         - name: metricId
@@ -946,7 +1087,7 @@ paths:
 
   /permission_categories:
     get:
-      summary: LIST Permission Categories
+      summary: Permission Categories LIST
       parameters:
         - name: sort
           in: query
@@ -984,7 +1125,7 @@ paths:
 
   /permissions:
     get:
-      summary: LIST Permissions
+      summary: Permissions LIST
       parameters:
         - name: sort
           in: query
@@ -1022,7 +1163,7 @@ paths:
 
   /roles:
     get:
-      summary: LIST Roles
+      summary: Roles LIST
       description: "**Required Permissions**: `Role List` or `Role Admin`"
       parameters:
         - name: sort
@@ -1068,7 +1209,7 @@ paths:
 
   /roles/{roleId}:
     get:
-      summary: GET Role
+      summary: Role GET
       description: "**Required Permissions**: `Role Get` or `Role Admin`"
       parameters:
         - name: roleId
@@ -1090,7 +1231,7 @@ paths:
 
   /segments:
     get:
-      summary: LIST Segments
+      summary: Segments LIST
       description: "**Required Permissions**: `Segment List` or `Segment Admin`"
       parameters:
         - name: sort
@@ -1136,7 +1277,7 @@ paths:
 
   /segments/{segmentId}:
     get:
-      summary: GET Segment
+      summary: Segment GET
       description: "**Required Permissions**: `Segment Get` or `Segment Admin`"
       parameters:
         - name: segmentId
@@ -1158,7 +1299,7 @@ paths:
 
   /teams:
     get:
-      summary: LIST Teams
+      summary: Teams LIST
       description: "**Required Permissions**: `Team List` or `Team Admin`"
       parameters:
         - name: sort
@@ -1204,7 +1345,7 @@ paths:
 
   /teams/{teamId}:
     get:
-      summary: GET Team
+      summary: Team GET
       description: "**Required Permissions**: `Team Get` or `Team Admin`"
       parameters:
         - name: teamId
@@ -1226,7 +1367,7 @@ paths:
 
   /unit_types:
     get:
-      summary: LIST Units
+      summary: Units LIST
       description: "**Required Permissions**: `UnitType List` or `UnitType Admin`"
       parameters:
         - name: sort
@@ -1272,7 +1413,7 @@ paths:
 
   /unit_types/{unitTypeId}:
     get:
-      summary: GET Unit
+      summary: Unit GET
       description: "**Required Permissions**: `UnitType Get` or `UnitType Admin`"
       parameters:
         - name: unitTypeId
@@ -1294,7 +1435,7 @@ paths:
 
   /users:
     get:
-      summary: LIST Users
+      summary: Users LIST
       description: "**Required Permissions**: `User List` or `User Admin`"
       parameters:
         - name: sort
@@ -1340,7 +1481,7 @@ paths:
 
   /users/{userId}:
     get:
-      summary: GET User
+      summary: User GET
       description: "**Required Permissions**: `User Get` or `User Admin`"
       parameters:
         - name: userId
@@ -1362,7 +1503,7 @@ paths:
 
   /users/{userId}/api_keys:
     get:
-      summary: GET User API keys
+      summary: User API keys GET
       description: "**Required Permissions**: `User Get` or `User Admin`"
       parameters:
         - name: userId
@@ -1393,7 +1534,7 @@ paths:
 
   /webhook_events:
     get:
-      summary: LIST Webhook Events
+      summary: Webhook Events LIST
       description: "**Required Permissions**: `Webhook List` or `Webhook Admin`"
       parameters:
         - name: sort
@@ -1439,7 +1580,7 @@ paths:
 
   /webhooks:
     get:
-      summary: LIST Webhooks
+      summary: Webhooks LIST
       description: "**Required Permissions**: `Webhook List` or `Webhook Admin`"
       parameters:
         - name: sort
@@ -1485,7 +1626,7 @@ paths:
 
   /webhooks/{webhookId}:
     get:
-      summary: GET Webhook
+      summary: Webhook GET
       description: "**Required Permissions**: `Webhook Get` or `Webhook Admin`"
       parameters:
         - name: webhookId
