@@ -2,6 +2,8 @@
 sidebar_position: 4
 ---
 
+import Image from "../../src/components/Image";
+
 # Dashboard Settings
 
 The dashboard settings page is your place to set up parts of your experiments.
@@ -73,13 +75,13 @@ example, you may be passing the following as attributes in an experiment:
 context.attributes({
 	customer_age: 'new_customer',
 	url: location.toString(),
-	user_agent: navigator.userAgent
+	user_agent: navigator.userAgent,
 	referrer: document.referrer,
 	screenName,
 	pageName,
 	country: headers['HTTP_CF_IPCOUNTRY'],
 	language: headers['Accept-Language'],
- 	channel: query_params.utm_medium,
+ 	channel: query_params.utm_medium
 })
 ```
 
@@ -484,5 +486,96 @@ The JSON payloads of each Webhook event are as follows:
 
 ## Platform Settings
 
-The Platform settings page allows you to choose whether your experiments'
-description fields are `optional`, `required` or `hidden`.
+The Platform settings page allows you to make changes to the platform itself, such as what fields are required when creating an experiment.
+
+### Metadata
+
+In the Metadata section, you can select the visibility of the metadata fields
+when creating an experiment. The options are `Optional`, `Required` and `Hidden`.
+
+- **Optional**: The field will be visible, but not required.
+- **Required**: The field will be visible and required.
+- **Hidden**: The field will not be visible.
+
+### Custom Fields
+
+In the Custom Fields section, you can customise the Metadata step of the experiment creation form with your own Sections and Fields.
+
+By default, there will be one section here called `Description` with 5 fields in it:
+- Hypothesis
+- Prediction
+- Purpose
+- Implementation Details
+- Action Points
+- Other
+
+#### Adding Sections
+
+You can add more sections by clicking the `Add Section` button.
+
+<Image
+    img="custom_section_form.png"
+    alt="The custom section form. On the left hand side is a section name (Section Fields) and description (Custom sections appear on the metadata step of the experiment form), on the right hand side is a form with inputs for the section name and description."
+    maxWidth={800}
+    centered={true}
+/>
+
+The Section name will be the title of the section, similar to the title `Section Fields` in the image above.
+The description will be the text that appears below the section title. In the above image it is
+`Custom sections appear on the metadata step of the experiment form`.
+
+Click `Create Section` to continue and start adding some fields to the section.
+
+#### Adding Fields
+
+To add a field to a section, click the `Add Field` button under the desired section.
+
+<Image
+    img="custom_field_form.png"
+    alt="The custom field form. On the left hand side is a title (Custom Field Details) and a description (Add a custom field to the metadata step of the experiment form). On the right hand side are the following fields: Name, Type, Help Text, Default Value, Field Required, Available in SDK, SDK Field Key and Section."
+    maxWidth={800}
+    centered={true}
+/>
+
+Here, you will be able to set up the field with the following options:
+
+- **Name**: The name of the field. This will be the label of the field in the form.
+- **Type**: The type of the field. This will determine what kind of input the field will be.
+Currently, we support:
+  - **Text** - Rich Text Editor
+  - **String** - Input
+  - **Number** - Input
+  - **JSON** - JSON Editor
+  - **Boolean** - Switch
+- **Help Text**: The help text of the field. This will be the text that appears above the field in the form.
+- **Default Value**: The default value of the field. This will be the value that appears in the field
+when the form is loaded. This can be useful for adding a template to a **Text** or **JSON** field.
+- **Field Required**: Whether the field is required. If required, the user will
+not be able to submit the form without filling in the field.
+- **Available?**: Whether the field will be available in the SDK.
+If available, the field will be included in your context data in the ABsmartly SDKs.
+- **Field Key**: The key of the field. This will be the key of the field in the context data. This is only required
+if the `Available` field is set to `true`.
+- **Section**: The section that the field will be in. This will be prefilled with the section that you clicked
+the `Add Field` button under, but can be changed if necessary.
+
+Click `Create Field` to add the field to your section!
+
+#### Field and Section Actions
+
+On the right hand side of each section or field, there are 4 buttons:
+
+<Image
+    img="custom_field_actions.png"
+    alt="The custom field actions. There are 4 buttons: Edit, Archive, Move Up and Move Down."
+    maxWidth={700}
+    centered={true}
+/>
+
+- **Edit**: Clicking this button will open the edit form for the section or field.
+- **Archive**: Clicking this button will archive the section or field. Archived sections and fields are no longer
+visible on the experiment form.
+- **Move Up**: Clicking this button will move the section or field up in the list of sections or fields.
+- **Move Down**: Clicking this button will move the section or field down in the list of sections or fields.
+
+You can use these action buttons to edit, archive, or reorder your sections and fields.
