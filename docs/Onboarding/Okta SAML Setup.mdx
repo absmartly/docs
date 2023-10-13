@@ -1,6 +1,6 @@
 import Image from '../../src/components/Image';
 
-# SAML SSO With Okta
+# SAML SSO - Okta
 
 The ABsmartly Web Console supports SAML SSO with Okta. This guide will walk you through the steps to get it set up!
 
@@ -33,6 +33,13 @@ Provide an **App name** and click `Next`.
 For an **App Image**, feel free to download our logo here:
 https://docs.absmartly.com/img/logo.png
 
+<Image
+    img="logo.png"
+    alt="The ABsmartly logo"
+    maxWidth={100}
+    centered={false}
+/>
+
 It can be added to the Okta integration by clicking on the **Upload Logo** button and selecting the downloaded image.
 
 <Image
@@ -57,7 +64,7 @@ should be set to `Create and update`.
 :::info
 Your SSO url will be provided by ABsmartly, but it usually takes the form of:
 ```
-https://<your-company-name>.absmartly.com/auth/saml/okta/callback
+https://<your-assigned-subdomain>.absmartly.com/auth/saml/okta/callback
 ```
 :::
 
@@ -99,20 +106,13 @@ the `Assignments` tab to start defining who can sign in with Okta. Click on `Ass
 Once you have completed the previous steps, you will need to send us the integration metadata. To do this, click on the
 `Sign on` tab of your newly created SAML application and scroll down to the SAML Signing Certificates section.
 
-Click the actions button next to your most recently created Signing Certificate and select `View IdP metadata`.
+Click the actions button next to your most recently created Signing Certificate and select `Download Certificate`.
 
 <Image
     img="okta/view_idp_metadata.png"
-    alt="Okta View IdP metadata"
+    alt="Okta Download IdP metadata"
     maxWidth={800}
 />
 
-You will be brought to a page with your metadata as an XML file. Simply copy the URL of this page and send it to us
-through Slack or email.
-
-<Image
-    img="okta/metadata_url.png"
-    alt="Okta View IdP metadata"
-/>
-
-Once we have received your metadata your employees will be able to sign in to ABsmartly using Okta!
+After downloading the metadata, send it to us via email or Slack and your employees will be able to sign in
+to ABsmartly using Okta!
