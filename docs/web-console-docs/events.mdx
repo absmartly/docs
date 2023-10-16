@@ -87,19 +87,18 @@ this box and only your own events will appear in the list.
 <Image img="export_configs_list.png" alt="A screenshot of the export configurations list" />
 
 ABsmartly also has functionality for exporting your events. To do this, click 
-on `Events` in the sidebar and select `Export Configurations`.
+on `Events` in the sidebar and select `Exports`.
 
-Here you will be presented with a list of any previously run export 
-configurations. For more information on any particular configuration, you can 
-click on it.
+Here, you will be presented with a list of any previously created exports. For more information on any particular
+configuration, you can click on it.
 
 ### Exporting Events
 
-To create a new export configuration, click `Export` in the top-right hand corner.
+To set up a new export, click `Export` in the top-right hand corner.
 
 <Image img="export_events_create.png" alt="A screenshot of the export configurations create page" />
 
-Here you will be able to setup an export configuration that runs either once, 
+Here you will be able to set up an export configuration that runs either once,
 or recurrently.
 
 #### Configure Export
@@ -125,11 +124,11 @@ storage bucket. The fields are described in the following table:
 | --------------- | ----------------------------------------------------------------------------- |
 | **Bucket**      | The name of the object storage bucket to export into.                         |
 | **Prefix**      | The prefix of the exported filename, which can include / to denote "sub-folders". |
-| **Access Key**  | The access key id of for the object storage bucket.                           |
+| **Access Key ID**  | The access key id of for the object storage bucket.                           |
 | **Secret Key**  | The secret access key for the object storage bucket.                          |
 | **Endpoint**    | The S3-compatible endpoint to connect to the object storage bucket. **Examples:**<br /> AWS: https://s3.amazonaws.com<br />GCP: https://storage.googleapis.com<br />|
-| **Format**      | The format of the exported data. CSV and TSV include a header row with column names. JSON is a newline-delimited JSON file.       |
-| **Compression** | The compression method to use. GZIP is widely supported and provides good compression. LZ4 is much faster but provides slightly less compression. None is no compression.|
+| **Format**      | The format of the exported data. CSV and TSV include a header row with column names. JSON is a newline-delimited JSON file. Parquet is a very efficient column oriented storage format.|
+| **Compression** | The compression method to use. GZIP is widely supported and provides good compression. ZSTD is similar to GZIP in compression level but faster, and less widely supported. LZ4 is much faster but provides slightly less compression. None is no compression. |
 
 :::info Interoperability with GCP to S3
 1. Go to the [Cloud Storage Settings page](http://console.cloud.google.com/storage/settings/) in the [Google Cloud Platform Console](https://console.cloud.google.com/).
