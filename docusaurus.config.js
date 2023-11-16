@@ -15,7 +15,7 @@ const config = {
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
 
-  //Speeding up the build with swc - was 2m34s on M1 Macbook, now 1m29s
+  // Speeding up the build with swc - was 2m34s on M1 Macbook, now 1m29s
   webpack: {
     jsLoader: (isServer) => ({
       loader: require.resolve('swc-loader'),
