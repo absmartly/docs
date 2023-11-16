@@ -18,13 +18,18 @@ docs.
 
 ---
 
-## Experiment Dashboard
+## Experiment Details
 
-To enter the experiment dashboard, click on the name of one of your experiments.
+To enter the experiment details page, click on the name of one of your experiments.
 
-### Information at a glance
+### Dashboard Tab
 
-At the top of the experiment dashboard, you can see some of the most important
+The dashboard tab is where you will find fundamental information about your experiment, including general information,
+recommended actions, experiment progress and details about your metrics.
+
+#### Information at a glance
+
+At the top of the dashboard tab, you can see some of the most important
 information about your experiment.
 
 <Image
@@ -33,28 +38,90 @@ information about your experiment.
   is 20 weeks and 5 days running, 1 million 400 thousand participants, a
   metrics summary with 3 positive metrics and 1 negative metric, 99% primary
   metric power."
+  maxWidth="45rem"
 />
 
-#### Recommended Actions
+##### Alerts
 
-When an experiment has reached a point where a desicion can be made, a 
+In order to help you optimize the data that your experiments are bringing in,
+and to clean up your code, we have provided various warning flags to give you
+insights into your experiments.
+
+###### Sample Size Reached
+
+<Image
+    img="sample_size_alert.png"
+    alt="An example of the sample size reached
+alert. It has a tick and says, sample size reached."
+/>
+
+The "Sample Size Reached" alert tells you that your experiment has been
+exposed to enough participants for you to make a decision about it.
+
+###### Code Cleanup Needed
+
+<Image
+    img="code_cleanup_alert.png"
+    alt="An example of the code cleanup needed
+alert. It has a clean-up symbol and says, code cleanup needed."
+/>
+
+The "Code Cleanup Needed" alert reminds you to clean up your
+code after a decision has been made on an experiment. If a decision was made
+too long ago and the SDK is still receiving exposure calls from this
+experiment, this flag will come up.
+
+###### Audience Mismatch Detected
+
+<Image
+    img="audience_mismatch_alert.png"
+    alt="An example of the audience mismatch
+alert. It has a warning symbol and says, Audience mismatch detected."
+/>
+
+The "Audience Mismatch" alert tells you that your experiment
+has been exposed to some participants who should not have experienced it. This
+can happen when a [targeting audience](docs/web-console-docs/creating-an-experiment.mdx#targeting-audience)
+has been set with Strict Mode off. This serves as a reminder to put the
+required checks in your code to separate that targeting audience.
+
+###### Sample Ratio Mismatch
+
+<Image
+    img="ratio_mismatch_alert.png"
+    alt="An example of the sample ratio mismatch
+alert. It says, Sample Ratio mismatch detected."
+/>
+
+The "Sample Ratio Mismatch" alert tells you that the split ratio
+between your variants is not accurate. For example, if you had an experiment
+with 2 variants and a 50/50 split, but Variant A had 1,000 impressions and
+Variant B had 2,000 impressions, a sample ratio mismatch would be flagged.
+
+This usually means that the experiment has been implemented incorrectly and
+typically has a severely negative effect on the statistical validity of your
+presented results.
+
+##### Recommended Actions
+
+When an experiment has reached a point where a decision can be made, a
 recommended action will pop up, telling you what the best action to take is.
 
 The recommended actions are as follows:
 
-| Positive | Negative | Insignificant |
-| :-: | :-: | :-: |
-|A winning variant was found and the experiment can be put full-on.| No variant is superior to the control variant and the experiment should be stopped. | The control variant is equal to the new variants and the experiment should be stopped. |
+|                              Positive                              |                                      Negative                                       |                                     Insignificant                                      |
+|:------------------------------------------------------------------:|:-----------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|
+| A winning variant was found and the experiment can be put full-on. | No variant is superior to the control variant and the experiment should be stopped. | The control variant is equal to the new variants and the experiment should be stopped. |
 
 
-#### Experiment Data Summary
+##### Experiment Data Summary
 
 This is where you will find key information about your experiment including 
 its duration, when it was created, when it was last edited, how many 
 participants have taken part in the experiment and when the first and last 
 participant were recorded.
 
-#### Power Progress Circle (Fixed Horizon Only)
+##### Power Progress Circle (Fixed Horizon Only)
 
 The power progress circle is used to inform you of how much longer the 
 experiment will take. The current power percentage is displayed in the middle 
@@ -64,7 +131,7 @@ have gathered enough information for you to make a decision on it. Hovering
 over the power progress circle will provide you with more specific details 
 about the current power.
 
-### Group Sequential Experiments
+#### Group Sequential Experiments
 
 Group sequential experiments are a powerful tool for analyzing data in clinical 
 trials and experiments, allowing researchers to make informed decisions based 
@@ -93,48 +160,49 @@ futility boundaries, researchers can make evidence-based decisions about
 whether to continue or halt a trial, ultimately leading to more accurate and 
 ethical results in various fields, from medicine to marketing.
 
-#### Group Sequential Progress (Group Sequential Only)
+##### Group Sequential Progress (Group Sequential Only)
 
 <Image
   img="group_sequential_progress.png"
   alt="A graph showing the progress of a group sequential experiment. This experiment has had 6 analyses and seems to be doing well."
+  maxWidth="45rem"
 />
 
 When viewing a group sequential experiment, this section will be your place to 
-check on how it is doing. You can select a variant at the top of the card and 
+check on how it is doing. You can select a variant at the top of the card, and
 you will be able to see various values related to this analysis point.
 
-##### Mean
+###### Mean
 
 The mean is the estimated bias-adjusted mean. When a group sequential 
 experiment is stopped earlier or later than a fixed horizon experiment would 
 be, the impact will be biased. We use the information at the stopping point to 
 reduce this bias and output a more truthful mean.
 
-##### Observed Mean
+###### Observed Mean
 
 This is the mean of the primary metric that is observed in the data.
 
-##### Impact
+###### Impact
 
 The impact that your experiment has had on your primary metric. See the [Impact 
 on Main Metrics](#impact-on-main-metrics) section for more information.
 
-##### ZScore
+###### ZScore
 
 The Z-score is a standardized measure of how far away from the null-hypothesis 
 the observed data is, considering observed impact, variance and number of 
 participants.
 
-##### PValue
+###### PValue
 
 The pvalue is a representation of how close to certainty you can be about the 
 results. The lower the pvalue, the more confident you can be about the data 
 shown.
 
-### Impact on Main Metrics
+#### Metrics Performance
 
-The impact on main metrics graph shows how your experiment has performed in
+The metrics performance graph shows how your experiment has performed in
 relation to your specified metrics. See the
 [goals section of the Dashboard Settings docs](/docs/web-console-docs/settings#goals)
 to learn more about metrics.
@@ -142,9 +210,10 @@ to learn more about metrics.
 <Image
   img="impact_on_main_metrics.png"
   alt="A graph displaying an example experiment's impact and confidence over time."
+  maxWidth="45rem"
 />
 
-#### Color Code
+##### Color Code
 
 The color-coding of the graph is as follows:
 
@@ -155,12 +224,47 @@ The color-coding of the graph is as follows:
 
 ---
 
-### Participants
+### Description Tab
+
+<Image
+    img="experiment_description_tab_setup.png"
+    alt="A screenshot of the description tab of an experiment."
+    maxWidth="45rem"
+/>
+
+The description tab is where the details of your experiment are kept, including your experiment setup, as well as any added metadata.
+This is useful so that anyone in your team can find out why an experiment is running, how it is set up and what the owner
+of that experiment is trying to achieve.
+
+#### Experiment Setup
+
+The experiment setup section gives information about each step of the experiment's creation. For more information on these steps,
+checkout the [experiment creation tutorial](/docs/web-console-docs/creating-an-experiment).
+
+#### Experiment Metadata
+
+The experiment metadata section provides information about the owners of an experiment, the team (if any) associated
+with it, any tags that have been attached to it and any description fields that have been added to it.
+
+The description fields are completely customisable in the [Platform Settings](/docs/web-console-docs/settings#platform-settings),
+but the defaults are:
+
+- Hypothesis
+- Prediction
+- Purpose
+- Implementation Details
+- Action Points
+- Other
+
+---
+
+### Participants Tab
 
 <Image
   img="participants.png"
   alt="A graph showing the number of participants who have been participating
   in the experiment over time"
+  maxWidth="45rem"
 />
 
 The participants view shows your participants' data in real-time. This
@@ -191,13 +295,17 @@ shown on all experiments, or just the one that you are currently viewing.
 
 ---
 
-### Goals
+### Explore Tab
 
-In the goals section, you can see information about how your experiment has
-effected your goals ([See goals in the dashboard settings docs](docs/web-console-docs/settings.mdx#goals)).
-After expanding a certain goal, you can gain insight into its specified
-[metrics](docs/web-console-docs/settings.mdx#metrics) on the left hand
-side of the screen.
+<Image
+    img="experiment_explore_tab.png"
+    alt="A graph displaying an example experiment's impact and confidence over time."
+    maxWidth="45rem"
+/>
+
+In the explore tab, you can see information about how your metrics have performed during an experiment
+(Read more about metrics in the [creating a metric docs](/docs/web-console-docs/tutorial#creating-a-metric)). After
+selecting a metric, you will be able to access the following information:
 
 #### Summary
 
@@ -206,17 +314,18 @@ side of the screen.
   alt="An expanded goal Summary which is displaying information about a
   Bookings metric. There is a table with data telling us that the new Variant
   is outperforming the control group variant."
+  maxWidth="45rem"
 />
 
 The summary view gives you a list of your variants and the data that has been
 collected by each. The columns can be described as follows:
 
 | Name           | Definition                                                                                                                                                           |
-| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:---------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Variant**    | The name of your variants. This could be a custom name, or simply Variant A, Variant B etc.                                                                          |
 | **Value**      | The value of this particular metric per variant. This can be formatted in the goal's settings using the format string.                                               |
 | **Mean**       | The value of this metric divided by the number of participants. For example, the number of bookings made divided by the number of users who experienced the variant. |
-| **Confidence** | The inverse of this metric and variant's p-value. Confidence = (1 - pvalue), formatted as a percentage.                                                               |
+| **Confidence** | The inverse of this metric and variant's p-value. Confidence = (1 - pvalue), formatted as a percentage.                                                              |
 | **Impact**     | The confidence interval of the impact on this metric. This is calculated using [Fieller’s Theorem](https://www.wikiwand.com/en/Fieller%27s_theorem).                 |
 
 #### Graphs
@@ -243,13 +352,17 @@ The segments tab shows the confidence and impact on this metric per variant,
 but it splits the data to give you a more specific insight into what kind of
 users are having a positive or negative experience.
 
-<Image img="segments.png" />
+<Image
+    img="segments.png"
+    alt="A screenshot of the segments tab of an experiment. It has a table with
+    data telling us that the new Variant is outperforming the control group"
+    maxWidth="45rem"
+/>
 
-In the example above, you can see that our "Bookings" metric has been
+In the example above, you can see that our "Users Checking Out" metric has been
 positively impacted by our variant, but when we look at the segments
-chart, we find that users who are visiting from the most commonly used
-platforms are not impacted very much. It's users in the "Other" category who
-have had the most significant change.
+chart, we find that users who are visiting from the USA are not impacted very much,
+but users from other countries were impacted significantly.
 
 See [Segments](docs/web-console-docs/settings.mdx#segments) in the
 Dashboard Settings docs for information on creating segments, or check out the
@@ -258,79 +371,30 @@ of the SDK docs for information on how to pass them to the SDK in your code.
 
 ---
 
-### Alerts
-
-In order to help you optimize the data that your experiments are bringing in,
-and to clean up your code, we have provided various warning flags to give you
-insights into your experiments.
-
-#### Sample Size Reached
+### Iterations Tab
 
 <Image
-  img="sample_size_alert.png"
-  alt="An example of the sample size reached
-alert. It has a tick and says, sample size reached."
+    img="experiment_iterations_tab.png"
+    alt="A screenshot of the iterations tab of an experiment. It has two iterations. "
+    maxWidth="45rem"
 />
 
-The "Sample Size Reached" alert tells you that your experiment has been
-exposed to enough participants for you to make a decision about it.
+The iterations tab is where you can see the history of your experiment and browse through previous iterations of it.
+A new iteration is created when an experiment is restarted.
 
-#### Code Cleanup Needed
-
-<Image
-  img="code_cleanup_alert.png"
-  alt="An example of the code cleanup needed
-alert. It has a clean-up symbol and says, code cleanup needed."
-/>
-
-The "Code Cleanup Needed" alert reminds you to cleanup your
-code after a decision has been made on an experiment. If a decision was made
-too long ago and the SDK is still receiving exposure calls from this
-experiment, this flag will come up.
-
-#### Audience Mismatch Detected
-
-<Image
-  img="audience_mismatch_alert.png"
-  alt="An example of the audience mismatch
-alert. It has a warning symbol and says, Audience mismatch detected."
-/>
-
-The "Audience Mistmatch" alert tells you that your experiment
-has been exposed to some participants who should not have experienced it. This
-can happen when a [targeting audience](docs/web-console-docs/creating-an-experiment.mdx#targeting-audience)
-has been set with Strict Mode off. This serves as a reminder to put the
-required checks in your code to separate that targeting audience.
-
-#### Sample Ratio Mismatch
-
-<Image
-  img="ratio_mismatch_alert.png"
-  alt="An example of the sample ratio mismatch
-alert. It says, Sample Ratio mismatch detected."
-/>
-
-The "Sample Ratio Mismatch" alert tells you that the split ratio
-between your variants is not accurate. For example, if you had an experiment
-with 2 variants and a 50/50 split, but Variant A had had 1,000 impressions and
-Variant B had had 2,000 impressions, a sample ratio mismatch would be flagged.
-
-This usually means that the experiment has been implemented incorrectly and
-typically has a severely negative effect on the statistical validity of your
-presented results.
+When restarting an experiment, you are given the option to either re-shuffle existing participants or to start the
+experiment from scratch. If you choose to re-shuffle existing participants, users who saw a particular variant in
+the previous iteration will be exposed to the same variant in the new iteration.
 
 ---
 
-## Description Tab
+### Activity Tab
 
-The description tabs is where your hypothesis, prediction and other important
-pieces of information (tracking unit, traffic allocation, applications etc.)
-are kept. This is useful as anyone in your team can find out why an experiment
-is running and what the owner of that experiment is trying to achieve.
-
----
-
-## Activity Tab
+<Image
+    img="experiment_activity_tab.png"
+    alt="A screenshot of the activity tab of an experiment. It has a note that the experiment was started and a report of the experiment's outcome."
+    maxWidth="45rem"
+/>
 
 The Activity Tab is where your team can come together. ABsmartly is more
 than just an experimentation platform - It's a knowledge base. Giving each
@@ -339,8 +403,7 @@ testing for and what the outcome is so far.
 
 The activity tab has support for:
 
-- Rich-text commenting with [Markdown](https://www.markdownguide.org/cheat-sheet/)
+- Rich-text commenting
 - Replies
 - Reports
-- Graph embeds
-- @User team-member tags
+- Images
