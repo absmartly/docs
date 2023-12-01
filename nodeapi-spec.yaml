@@ -351,6 +351,59 @@ paths:
                   ok:
                     type: boolean
 
+  /experiments/{experimentId}/archive:
+    put:
+      summary: Experiment ARCHIVE
+      description: "**Required Permissions**: `Experiment Archive` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment which you want to archive.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: The action to take on the experiment, the experiment id and a comment to go along with the action.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                archive:
+                  type: boolean
+                  example: true
+                id:
+                  description: The `id` of the experiment which you want to archive.
+                  type: integer
+                  format: int64
+                  minimum: 1
+                  example: 13
+                note:
+                  description: The reason why you are archiving this experiment.
+                  type: string
+                  example: "Archiving experiment as it is no longer needed"
+      responses:
+        "200":
+          description: A JSON Object with experiment data, the experiment note and an array of errors.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                  experiment:
+                    $ref: "#/components/schemas/Experiment"
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNote"
+                  ok:
+                    type: boolean
+
   /experiments/{experimentId}/activity:
     get:
       summary: Experiment Activity GET
