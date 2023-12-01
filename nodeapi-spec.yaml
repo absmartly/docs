@@ -404,6 +404,94 @@ paths:
                   ok:
                     type: boolean
 
+  /experiments/{experimentId}/participants/history:
+    post:
+      summary: Experiment Participants History DATA
+      description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          description: The `id` of the experiment that you want the history of.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: The parameters to filter the history by.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  filters:
+                    type: object
+                    properties:
+                      segments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            segment_id:
+                              type: integer
+                              format: int64
+                              minimum: 1
+                              example: 1
+                            operator:
+                              type: string
+                              enum: [in, not_in]
+                              example: "not_in"
+                            values:
+                              type: array
+                              items:
+                                type: string
+                                example: "absmartly-javascript-sdk"
+                  period:
+                    type: string
+                    enum: [1h, 1d, 1w, 1M]
+                    example: "1d"
+                  tz_offset:
+                    type: integer
+                    example: 0
+      responses:
+        "200":
+          description: |
+            A JSON Object with participants history. The object has three properties, `columnNames`, `columnTypes` and `rows`. 
+            `columnNames` is an array of strings which identifies which columns are which in the `rows[][]`. 
+            `columnTypes` is an array of strings which identifies the types of data in the `rows[][]`. 
+            `rows` is an array of arrays which contain the data of the experiment variants over your selected period. 
+            The column names are defined as the following:
+            - `date` - The date of the row's data in seconds since epoch.
+            - `variant` - The variant that this row describes. (0, 1, 2 or 3).
+            - `first_exposure_at` - The date of the first exposure of this variant in the current time period in milliseconds since epoch.
+            - `last_exposure_at` - The date of the last exposure of this variant in the current time period in milliseconds since epoch.
+            - `unit_count` - The number of units that were exposed to this variant in the current time period.
+            - `cum_unit_count` - The cumulative number of units that were exposed to this variant at the end of the current time period.
+            
+            :::caution
+            The columns may come in a different order than the one listed above. It's important to use the `columnNames` array to identify the index of the column you want to use.
+            :::
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  columnNames:
+                    type: array
+                    items:
+                      type: string
+                  columnTypes:
+                    type: array
+                    items:
+                      type: string
+                  rows:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: number
+
   /experiments/{experimentId}/activity:
     get:
       summary: Experiment Activity GET
