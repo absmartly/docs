@@ -7,6 +7,10 @@
 # Generated files
 .docusaurus
 .cache-loader
+/docs/SDK-API/*.mdx
+/docs/Web-Console-API/*.mdx
+/docs/SDK-API/*.js
+/docs/Web-Console-API/*.js
 
 # Misc
 .DS_Store
