@@ -275,6 +275,68 @@ tracked by this metric.
 In this use-case, you might want to rename the metric to `Revenue in Dollars`.
 :::
 
+### Goal Relations
+
+Goal Relations allow you to update the value of a goal when another foreign goal, related to the metric's goal, is achieved.
+The two goals are related through a common unique key, present in both goals' properties, for example, `transaction_id` or `order_id`.
+
+This is useful, for example, when a user requests a refund. You may want to update the `Revenue` metric
+to subtract the amount of the refund from the total revenue.
+
+To add a Goal Relation, click the `Add relation` button.
+
+#### Relation Type
+
+The `Relation Type` defines what happens to the value of the goal when the other goal is achieved. There are three options:
+
+| Relation Type | Description                                                                                                     | Metric Type           |
+|---------------|-----------------------------------------------------------------------------------------------------------------|-----------------------|
+| Cancellation  | The initial value of the goal achievement is nullified.                                                         | All metric types      |
+| Refund        | The new value from the foreign goal is added to or subtracted from the initial value from the goal achievement. | Goal Property metrics |
+| Replacement   | The initial value of the goal achievement is replaced with the foreign goal achievement's value.                | Goal Property metrics |
+
+#### Current goal relation key property
+
+The `Current goal relation key property` defines the property that will be used to identify the goal achievement that
+will be updated. In our refund example, this could be `order_id`.
+
+#### Refund operation (only for refund relations)
+
+The `Refund operation` defines whether the value of the foreign goal achievement will be added to or subtracted from
+the initial value of the goal achievement. For example, if you have a `Revenue` metric that tracks the `amount` property of
+a `Purchase` goal, and you have a `Refund` goal that represented its value as a negative number, you would want to
+add the value of the `Refund` goal achievement to the `Revenue` goal achievement.
+
+#### Foreign goal
+
+The `Foreign goal` defines the goal that will be used to update the value of the current goal. In our refund example,
+this would be the `Refund` goal.
+
+#### Foreign goal relation key property
+
+The `Foreign goal relation key property` defines the property that will be used to identify the goal achievement that
+will be used to update the value of the current goal. In our example, this would also be `order_id`.
+
+#### Foreign goal relation value property (only for replacement and refund relations)
+
+The `Foreign goal relation value property` defines the property that will be used to update the value of the current goal.
+For example, `refund_amount`.
+
+#### Duplicated foreign goal aggregation (only for replacement and refund relations)
+
+The `Duplicated foreign goal aggregation` defines how the value of the foreign goal achievement will be aggregated
+when there are multiple foreign goal achievements that match the `Foreign goal relation key property`.
+
+There are five options:
+
+| Aggregation Type | Description                                                                                              |
+|------------------|----------------------------------------------------------------------------------------------------------|
+| Pick first       | The first foreign goal achievement will be used to update the value of the current goal.                 |
+| Pick last        | The last foreign goal achievement will be used to update the value of the current goal.                  |
+| Sum              | The sum of all foreign goal achievements will be used to update the value of the current goal.           |
+| Minimum          | The minimum value of all foreign goal achievements will be used to update the value of the current goal. |
+| Maximum          | The maximum value of all foreign goal achievements will be used to update the value of the current goal. |
+
 ## The Next Step
 
 Now you have your units, applications, goals and metrics set up, you're ready to move
