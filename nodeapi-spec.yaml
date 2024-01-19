@@ -714,7 +714,106 @@ paths:
                       $ref: "#/components/schemas/ExperimentNote"
                   offset:
                     type: integer
+    post:
+      summary: Experiment Comment CREATE
+      description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: The comment to be inserted in the experiment activity tab.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  description: The `id` of the experiment where the comment will be created.
+                  type: integer
+                  format: int64
+                  minimum: 1
+                  example: 13
+                note:
+                  description: The comment text.
+                  type: string
+                  example: "Text to be inserted"
+      responses:
+        "200":
+          description: A JSON Object containing a particular experiment's activity.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNote"
+                  ok:
+                    type: boolean
+                  errors:
+                    type: array
+                    items:
+                      type: string
 
+  /experiments/{experimentId}/activity/{commentId}/reply:
+    post:
+      summary: Experiment Comment Reply CREATE
+      description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+      parameters:
+        - name: experimentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: commentId
+          in: path
+          required: true
+          description: The `id` of the comment where the reply will be created.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        description: The reply to be inserted in the comment.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  description: The `id` of the comment where the reply will be created.
+                  type: integer
+                  format: int64
+                  minimum: 1
+                  example: 13
+                note:
+                  description: The reply text.
+                  type: string
+                  example: "Text to be replied"
+      responses:
+        "200":
+          description: A JSON Object containing a particular experiment's activity.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  experiment_note:
+                    $ref: "#/components/schemas/ExperimentNote"
+                  ok:
+                    type: boolean
+                  errors:
+                    type: array
+                    items:
+                      type: string
   /api_keys:
     get:
       summary: API Keys LIST
