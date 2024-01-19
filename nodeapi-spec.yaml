@@ -715,7 +715,7 @@ paths:
                   offset:
                     type: integer
     post:
-      summary: Experiment activity note CREATE
+      summary: Experiment Comment CREATE
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
         - name: experimentId
@@ -726,7 +726,7 @@ paths:
             format: int64
             minimum: 1
       requestBody:
-        description: The note to be inserted in the experiment activity tab.
+        description: The comment to be inserted in the experiment activity tab.
         required: true
         content:
           application/json:
@@ -734,13 +734,13 @@ paths:
               type: object
               properties:
                 id:
-                  description: The `id` of the experiment where the note will be created.
+                  description: The `id` of the experiment where the comment will be created.
                   type: integer
                   format: int64
                   minimum: 1
                   example: 13
                 note:
-                  description: The note text.
+                  description: The comment text.
                   type: string
                   example: "Text to be inserted"
       responses:
@@ -760,9 +760,9 @@ paths:
                     items:
                       type: string
 
-  /experiments/{experimentId}/activity/{activityNoteId}/reply:
+  /experiments/{experimentId}/activity/{commentId}/reply:
     post:
-      summary: Experiment Activity Note Reply CREATE
+      summary: Experiment Comment Reply CREATE
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
         - name: experimentId
@@ -772,16 +772,16 @@ paths:
             type: integer
             format: int64
             minimum: 1
-        - name: activityNoteId
+        - name: commentId
           in: path
           required: true
-          description: The `id` of the activity note where the reply will be created.
+          description: The `id` of the comment where the reply will be created.
           schema:
             type: integer
             format: int64
             minimum: 1
       requestBody:
-        description: The reply to be inserted in the activity note.
+        description: The reply to be inserted in the comment.
         required: true
         content:
           application/json:
@@ -789,13 +789,13 @@ paths:
               type: object
               properties:
                 id:
-                  description: The `id` of the activity note where the reply will be created.
+                  description: The `id` of the comment where the reply will be created.
                   type: integer
                   format: int64
                   minimum: 1
                   example: 13
                 note:
-                  description: The text to be inserted in the reply.
+                  description: The reply text.
                   type: string
                   example: "Text to be replied"
       responses:
