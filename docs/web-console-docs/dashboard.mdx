@@ -303,9 +303,13 @@ shown on all experiments, or just the one that you are currently viewing.
     maxWidth="45rem"
 />
 
-In the explore tab, you can see information about how your metrics have performed during an experiment
-(Read more about metrics in the [creating a metric docs](/docs/web-console-docs/tutorial#creating-a-metric)). After
-selecting a metric, you will be able to access the following information:
+In the explore tab, you can filter and see information about how your 
+metrics have performed during an experiment (Read more about metrics in the 
+[creating a metric docs](/docs/web-console-docs/tutorial#creating-a-metric)).
+Metrics can be filtered by segment, by time period and can display the 
+data based on the first exposure or the last exposure of the participant.
+Once you have selected a metric, you can see the data in the summary, graphs
+and segments tabs.
 
 #### Summary
 
@@ -359,10 +363,10 @@ users are having a positive or negative experience.
     maxWidth="45rem"
 />
 
-In the example above, you can see that our "Users Checking Out" metric has been
+In the example above, our "Returned for purchase" metric has been
 positively impacted by our variant, but when we look at the segments
-chart, we find that users who are visiting from the USA are not impacted very much,
-but users from other countries were impacted significantly.
+table, we find that users who speak Spanish or Dutch are much more 
+impacted than users who speak other languages.
 
 See [Segments](docs/web-console-docs/settings.mdx#segments) in the
 Dashboard Settings docs for information on creating segments, or check out the
@@ -418,4 +422,3 @@ allowing for easy tracking and commenting.
     alt="A screenshot of the activity tab of an experiment. It has a note that the experiment was started and a report of the experiment's outcome."
     maxWidth="45rem"
 />
-
