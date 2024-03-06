@@ -166,12 +166,13 @@ Webhooks are available for all experiment, goal and metric events on the Web Con
 - [Experiment Archived](#experiment-archived)
 - [Experiment Unarchived](#experiment-unarchived)
 - [Experiment Alert Created](#experiment-alert-created)
-- [Goal Archived](#goal-archived)
-- [Goal Created](#goal-created)
-- [Goal Edited](#goal-edited)
-- [Metric Archived](#metric-archived)
+- [Experiment Ready To Start](#experiment-ready-to-start)
 - [Metric Created](#metric-created)
 - [Metric Edited](#metric-edited)
+- [Metric Archived](#metric-archived)
+- [Goal Created](#goal-created)
+- [Goal Edited](#goal-edited)
+- [Goal Archived](#goal-archived)
 
 ### Payloads
 
@@ -359,6 +360,19 @@ The JSON payloads of each Webhook event are as follows:
   "created_at": 1661958869000,
   "updated_at": 1663243653000,
   "metadata": "{ \"ramala\": \"jamala\" }"
+}
+```
+
+#### Experiment Ready To Start
+
+```json
+{
+	"event_name": "ExperimentReady",
+	"event_at": 1608560579651,
+	"id": 7,
+	"name": "example_experiment",
+	"user_id": 1,
+	"comment": "example note"
 }
 ```
 
