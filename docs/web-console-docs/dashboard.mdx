@@ -102,6 +102,53 @@ This usually means that the experiment has been implemented incorrectly and
 typically has a severely negative effect on the statistical validity of your
 presented results.
 
+###### Traffic Allocation Warnings
+
+<Image
+    img="traffic_allocation_info_alert.png"
+    alt="An example of the traffic allocation info
+alert."
+/>
+<Image
+    img="traffic_allocation_warning_alert.png"
+    alt="An example of the traffic allocation warning
+alert."
+/>
+
+The "Traffic Allocation" alert either informs you that your traffic 
+allocation is below 100% or warns you that it is set to 0%. Having a 
+traffic allocation of 0% means that no participants will be exposed
+to your experiment. 
+
+###### Variable Conflicts
+
+<Image
+    img="variables_conflicting_alert.png"
+    alt="An example of the conflicting variables warning
+alert."
+/>
+
+A variable conflict is when you have a variable key that is being used in more
+than one experiment. This can cause issues when pulling variable values from ABsmartly
+in your code.
+
+##### Health Checks
+
+<Image img="health_checks_alert.png" alt="An example of the health checks 
+alert. It says, 3 out of 3 health checks completed - 2 alerts found." />
+
+The health checks section allows you to see the status of the various checks
+that ABsmartly runs on your experiments to generate the alerts mentioned above.
+
+If you click on the health checks alert, you will be taken to the health checks
+panel, where you can see the details of the health checks that have been run.
+
+<Image img="health_checks_panel.png" alt="An example of the health checks 
+panel. In it, a sample ratio mismatch and variable conflicts have been 
+detected." 
+  maxWidth="25rem"
+/>
+
 ##### Recommended Actions
 
 When an experiment has reached a point where a decision can be made, a
