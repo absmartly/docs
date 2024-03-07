@@ -1,0 +1,107 @@
+import Image from '../../src/components/Image';
+
+# SAML SSO - Azure
+
+The ABsmartly Web Console supports SAML SSO with Azure. This guide will walk you through the steps
+to get it set up!
+
+## Configuring Azure
+
+1. Go to the [Microsoft Entra admin center](https://entra.microsoft.com/) and sign in with your Azure account.
+2. Head to **Identity** > **Applications** > **Enterprise Applications** > **All applications** > **New application**.
+<Image
+    img="azure/new_application.png"
+    alt="A screenshot of the New application button"
+/>
+3. In the **Browse Microsoft Entra Gallery** page, click **+ Create your own application**.
+<Image
+    img="azure/create_application.png"
+    alt="A screenshot of the Create application button"
+/>
+4. Name the application **ABsmartly** and leave the radio button on **Integrate any other application you don't find in the gallery (Non-gallery)**.
+<Image
+    img="azure/application_info.png"
+    alt="A screenshot of the completed 'New application' form"
+/>
+5. Click **Create** and you will be redirected to the Overview page of your new application.
+
+:::info
+Feel free to add [the ABsmartly logo](/img/logo.png) to the application in **Properties** > **Logo**.
+<Image
+    img="logo.png"
+    alt="The ABsmartly logo"
+    maxWidth={100}
+    centered={false}
+/>
+:::
+
+6. In the inner left pane, click on **Single sign-on** and **SAML**.
+<Image
+    img="azure/sign_on_saml.png"
+    alt="A screenshot of the Single sign-on and SAML buttons"
+/>
+7. Next to **Basic SAML Configuration**, click **Edit** and input the following info:
+    - **Identifier (Entity ID)**: `absmartly-<your-assigned-subdomain>`
+    - **Reply URL (Assertion Consumer Service URL)**: `https://<your-assigned-subdomain>.absmartly.com/auth/saml/azure/callback`
+    - **Sign on URL**: `https://<your-assigned-subdomain>.absmartly.com`
+    <Image
+        img="azure/basic_saml_edit.png"
+        alt="A screenshot of the Basic SAML Configuration panel and the Edit button"
+    />
+    <Image
+        img="azure/basic_saml_values.png"
+        alt="A screenshot of the Basic SAML Configuration panel with the Identifier, Reply URL, and Sign on URL filled in"
+    />
+8. Click **Save** and close the **Basic SAML Configuration** panel.
+9. In the **User Attributes & Claims** section, click **Edit** and edit the **Unique User Identifier (Name ID)** (click on its name) with the following:
+    - **Name identifier format**: `Email address`
+    - **Source**: `Attribute`
+    - **Source attribute**: `user.mail`
+    <Image
+        img="azure/user_attributes_edit.png"
+        alt="A screenshot of the User Attributes & Claims panel and the Edit button"
+    />
+    <Image
+        img="azure/unique_id_edit.png"
+        alt="A screenshot of the list of attributes with the Unique User Identifier (Name ID) highlighted"
+    />
+    <Image
+        img="azure/unique_id_values.png"
+        alt="A screenshot of the Unique User Identifier (Name ID) panel with the Name identifier format, Source, and Source attribute filled in"
+    />
+10. Click **Save** and you will be redirected to the Attributes & Claims page.
+11. Add the following new claims (Feel free to delete the default ones):
+
+| Name | Source  | Source attribute |
+| ---- | ------- | --------- |
+| `firstName` | `Attribute` | `user.givenname` |
+| `lastName` | `Attribute` | `user.surname` |
+| `department` | `Attribute` | `user.department` |
+
+<Image
+    img="azure/add_new_claim.png"
+    alt="A screenshot of the Add new claim button"
+/>
+
+12. The **SAML Based Sign-on** page should now look like this:
+<Image
+    img="azure/single_sign_on_result.png"
+    alt="A screenshot of the completed SAML Based Sign-on page"
+/>
+13. Lastly, in the **SAML Certificates** section, click to download your 
+**Federtion Metadata XML** file, send it to us through email or via Slack 
+and we will have your SSO setup ASAP!
+<Image
+    img="azure/saml_certificates.png"
+    alt="A screenshot of the SAML Certificates section with the Download button highlighted"
+/>
+
+:::info
+Don't forget to assign users to the application in the **Users and groups** section!
+<Image
+    img="azure/users_and_groups.png"
+    alt="A screenshot of the Users and groups section"
+    maxWidth={300}
+    centered={false}
+/>
+:::
