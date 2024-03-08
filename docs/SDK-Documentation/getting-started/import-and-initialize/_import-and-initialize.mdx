@@ -109,6 +109,55 @@ ReactDOM.render(
 );
 ```
 
+:::info NextJS
+If you are using NextJS and want to fetch the context on the server side, 
+you can leverage `getServerSideProps` and add the ABsmartly Provider on a 
+per-page basis. For example:
+
+```tsx title="pages/index.tsx"
+export const getServerSideProps: GetServerSideProps = async () => {
+  const sdkOptions = {
+    endpoint: "https://<your-assigned-subdomain>.absmartly.io/v1",
+    apiKey: "<your-api-key>",
+    application: "web",
+    environment: process.env.NODE_ENV
+  }
+
+  const serverSDK = new absmartly.SDK(sdkOptions)
+
+  const contextOptions = {
+    units: {
+      user_id: "123",
+      anonymous_id: "456",
+      device_id: "789",
+    }
+  }
+
+  const context = serverSDK.createContext(contextOptions);
+
+  await context.ready();
+
+  return {
+    props: {
+      contextData: context.data(), contextOptions, sdkOptions
+    },
+  };
+}
+
+export default function Home({ contextData, contextOptions, sdkOptions }) {
+  const clientSDK = new absmartly.SDK(sdkOptions)
+
+  const clientContext = clientSDK.createContextWith(contextOptions, contextData);
+
+  return (
+    <ABsmartly context={clientContext}>
+      {/* Your page content */}
+    </ABsmartly>
+  )
+}
+```
+:::
+
 </TabItem>
 
 <TabItem value="swift" label="Swift">
