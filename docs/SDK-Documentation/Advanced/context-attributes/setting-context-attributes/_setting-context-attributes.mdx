@@ -7,6 +7,7 @@ import JsSetAttributes from "!!raw-loader!./js/setAttributes.js";
 import PythonSetAttributes from "!!raw-loader!./python/setAttributes.py";
 
 import ReactSetAttributes from "!!raw-loader!./react/setAttributes.js";
+import ReactSetAttributesAsProps from "!!raw-loader!./react/setAttributesAsProps.tsx";
 
 import SwiftSetAttributes from "!!raw-loader!./swift/setAttributes.swift";
 
@@ -51,11 +52,17 @@ more about how this works in [the Segments section of the Dashboard Settings doc
 
 <TabItem value="react" label="React">
 
-<CodeBlock language="jsx">{ReactSetAttributes}</CodeBlock>
+The context can be used directly to set attributes, like so:
+
+<CodeBlock language="tsx">{ReactSetAttributes}</CodeBlock>
+
+Or you can pass them as a prop to the `Treatment` or `TreatmentFunction` components.
+
+<CodeBlock language="tsx">{ReactSetAttributesAsProps}</CodeBlock>
 
 :::note
-The `attribute()` and `attributes()` methods can be called both inside, and outside
-of your useEffect.
+The `attribute()` and `attributes()` methods can be called inside or outside
+of a useEffect.
 :::
 
 </TabItem>
