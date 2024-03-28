@@ -11,174 +11,296 @@ import JsPublishingExposuresThroughSegment from "!!raw-loader!./js/publishing-ex
 
 # Segment Integration
 
-This is a Lambda function that runs on [Segment](https://www.segment.com)
-for ABsmartly Integration.
+ABsmartly has a native integration with [Segment](https://www.segment.com), 
+allowing you to seamlessly send events between the two, now using Segment's Actions API.
 
-It extracts the relevant data from Segment events and sends it, correctly
-formatted, to the ABsmartly Collector endpoint.
+## Benefits of ABsmartly (Actions) vs ABsmartly Classic
 
-It can also be added directly as a destination function on a Segment workspace.
+- **Easier Setup**: Actions-based destinations are easier to configure with clear default settings, letting you quickly get started.
+- **Control and Clearer Mapping**: Actions-based destinations enable you to define the mapping between the data Segment receives from your source and the data Segment sends to ABsmartly.
 
-## Configuring a Workspace Destination Function
+## Getting Started
 
-If you are configuring a destination function on your workspace, these are the necessary settings:
+1. From the Segment web app, click **Catalog**.
+2. Search for “ABsmartly” in the Catalog, select **ABsmartly (Actions)**, and choose which of your sources to connect the destination to.
+3. Add the following Connection Settings:
+   - **Collector Endpoint**: Your ABsmartly Collector REST Endpoint. Usually `https://{YOUR-SUBDOMAIN}.absmartly.io/v1`.
+   - **API Key**: An existing API Key. Created under `Settings>API Keys` in the ABsmartly Web Console.
+   - **Environment**: The environment where the events are originated matching an existing environment in ABsmartly. Created under `Settings>Environments` in the ABsmartly Web Console.
+4. Enable the _Track Calls_ mapping to send events to ABsmartly.
 
-### Collector Endpoint
+### Destination Settings
 
-- **Type:** String
-- **Required:** &#9989
-- **Javascript:** `settings.collectorEndpoint`
+| Setting | Required | Description |
+| --- | :---: | --- |
+| API Key | ✅ | ABsmartly SDK API Key. Create SDK Api Keys in the `Settings>API Keys` section of the ABsmartly Web Console. |
+| Collector Endpoint | ✅ | ABsmartly Collector endpoint, for example: `https://your-subdomain.absmartly.io/v1`. Contact ABsmartly Support if you don’t know your Collector Endpoint. |
+| Environment | ✅ | Environment name. Environment name needs to match what’s in the Web Console. Create Environments in the `Settings>Environments` section of the ABsmartly Web Console. |
 
-Your dedicated ABsmartly Collector Endpoint. Example: `https://demo.absmartly.io/v1`
+## Available Presets
 
-### API Key
+ABsmartly (Actions) has the following presets:
 
-- **Type:** String
-- **Required:** &#9989
-- **Javascript:** `settings.apiKey`
+| Preset Name | Trigger | Default Action |
+| --- | --- | --- |
+| Page Calls | `Event type = "page"` | Track Goal |
+| Exposures (Verbatim) | `Event type = "track"` and `event = "Experiment Viewed"` | Track Exposure |
+| Screen Calls | `Event type = "screen"` | Track Goal |
+| Track Calls | `Event type = "track"` and `event != "Experiment Viewed"` | Track Goal |
 
-API Key to use when sending events to the ABsmartly Collector. API Keys are
-created in the ABsmartly Web Console's Settings section.
+## Available Actions
 
-### Environment
+Build your own Mappings. Combine supported [triggers](https://segment.com/docs/connections/destinations/actions/#components-of-a-destination-action)
+with the following ABsmartly-supported actions:
 
-- **Type:** String
-- **Required:** &#9989
-- **Javascript:** `settings.environment`
-
-The environment name where the events are originating (case sensitive).
-Environments are created in the ABsmartly Web Console's Settings section.
-
-### Unit Mapping
-
-- **Type:** Mapping
-- **Required:** &#9989
-- **Javascript:** `settings.unitMapping`
-
-Mapping of Segment identity to ABsmartly Unit. Mapping of Segment identity
-to ABsmartly Unit. Example `anonymousId` -> `anonymous_uuid`, `userId` ->
-`user_id`. Units are created in the ABsmartly Web Console's Settings section.
-
-:::note
-This mapping is required, even if the names are exactly the same.
+:::info Mapping limits per destination
+Individual destination instances have support a maximum of 50 mappings.
 :::
 
-### EnableExposureTracking
+- [Track Exposure](https://segment.com/docs/connections/destinations/catalog/actions-absmartly/#track-exposure)
+- [Track Goal](https://segment.com/docs/connections/destinations/catalog/actions-absmartly/#track-goal)
 
-- **Type:** Boolean
-- **Required:** &#10060
-- **Javascript:** `settings.enableExposureTracking`
+### Track Exposure
 
-Enable sending ABsmartly exposures to the ABsmartly Collector.
+Send an experiment exposure event to ABsmartly
 
-:::note
-Enable this **only** if you instantiate the ABsmartly SDK with a **custom**
-publisher and are sending ABsmartly exposures through Segment.
+Track Exposure is a **Cloud** action. The default Trigger is:
+```python
+type = "track" and event = "Experiment Viewed"
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| ABsmartly Exposure Payload | `Object` |  The ABsmartly exposure payload. |
+| Agent | `String` | Optional agent identifier that originated the event. Used to identify which SDK generated the event. |
+| Application | `String` | Optional application name that originated this event. Must exist if not empty. Create Applications in the `Settings>Applications` section of the ABsmartly Web Console. |
+
+### Track Goal
+
+Send a goal event to ABsmartly
+
+Track Goal is a **Cloud** action. The default Trigger is:
+```python
+type = "track" and event != "Experiment Viewed"
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| Units | `Object` | The units of the goal to track. Mapping of unit name to source property in the event payload. Create Units in the `Settings>Units` section of the ABsmartly Web Console. |
+| Goal Name | `String` | The name of the goal to track. |
+| Goal Properties | `Object` | Custom properties of the goal. |
+| Agent | `String` | Optional agent identifier that originated the event. Used to identify which SDK generated the event. |
+| Application | `String` | Optional application name that originated this event. Must exist if not empty. Create Applications in the `Settings>Applications` section of the ABsmartly Web Console. |
+
+:::info
+If you need support setting things up, you can contact the ABsmartly support team on Slack or via [email](mailto:support@absmartly.com).
 :::
 
-### EnablePageViewTracking
+## Sending Exposures to Segment
 
-- **Type:** Boolean
-- **Required:** &#10060
-- **Javascript:** `settings.enablePageViewTracking`
+It can be useful to send experiment exposures to Segment for visibility from other destinations. The Segment Spec includes the [Experiment Viewed](https://segment.com/docs/connections/spec/ab-testing/) semantic event for this purpose.
 
-Enable sending Segment's
-[Page events](https://segment.com/docs/connections/spec/page/) as goals to
-the ABsmartly Collector.
-
-:::caution
-These events tend to happen very frequently and may increase storage cost.
+:::info
+By default, the _Track Calls_ mapping will filter and not send any events with the name `Experiment Viewed` to ABsmartly.
 :::
 
-:::note
-The goal generated will have the name `Page: <Page Name>` for example
-`Page: Home` and needs to have been previously created in
-the ABsmartly Web Console's Settings section.
-:::
-
-### EnableAppScreenViewTracking
-
-- **Type:** Boolean
-- **Required:** &#10060
-- **Javascript:** `settings.enableAppScreenViewTracking`
-
-Enable sending Segment's
-[Screen events](https://segment.com/docs/connections/spec/screen/) as goals
-to the ABsmartly Collector.
-
-:::caution
-These events tend to happen very frequently and may increase storage cost.
-:::
-
-:::note
-The goal generated will have the name `Screen: <Screen Name>` for example
-`Screen: Login` and needs to have been previously created in the ABsmartly
-Web Console's Settings section.
-:::
-
-### Goal Mapping
-
-- **Type:** Mapping
-- **Required:** &#10060
-- **Javascript:** `settings.goalMapping`
-
-Mapping of Segment event names to ABsmartly goal names. If a mapping exists,
-it will be used, otherwise the original event name will be used as the goal
-name.
-
-## Advanced Usage
-
-### Sending experiment exposures to Segment
-
-It can be useful to send experiment exposures to Segment for visibility from
-other destinations. The Segment spec includes the [`Experiment Viewed`
-semantic event](https://segment.com/docs/connections/spec/ab-testing/)
-for this purpose.
-
-In the ABsmartly context, we can
-[install a custom event logger](https://docs.absmartly.com/docs/sdk-documentation/getting-started/#using-a-custom-event-logger)
-and send exposures directly to Segment.
+You can [install a custom event logger](/docs/SDK-Documentation/getting-started#using-a-custom-event-logger) in ABsmartly and send exposures directly to Segment.
 
 <CodeBlock language="javascript">{JsSendingExposuresToSegment}</CodeBlock>
 
-### Mapping Segment Identities to ABsmartly Units
+## Publishing Experiment Exposures Through Segment
 
-For simple mappings, you can map Segment's identities/properties
-to ABsmartly's units in your ABsmartly integration settings in Segment.
+To publish experiment exposures through Segment, you must first configure and enable the _Exposures (Verbatim)_ mapping in your ABsmartly (Actions) destination.
 
-If you want to programmatically make this mapping, you can install a
-middleware in your Segment SDK that will append the units to the
-`properties.absmartly.units` field before sending to Segment.
-The destination function will extract and use that instead. This may be
-useful if you are running ABsmartly experiment on units that are not
-the typical Segment `anonymousId` or `userId`.
+By enabling the _Exposures (Verbatim)_ mapping in Segment, you replace the direct flow of exposure events from the ABsmartly SDK to the ABsmartly collector and instead send them to Segment for processing by the destination function.
 
-<CodeBlock language="javascript">{JsMappingSegmentIdentitiesToUnits}</CodeBlock>
+This can be achieved by instantiating the ABsmartly SDK with a custom context publisher.
 
-### Publishing Experiment Exposures Through Segment
+The custom publisher will publish an `Experiment Viewed` Segment event with ABsmartly’s exposure data in the `properties.exposure` field as well as the normal semantic data that Segment recommends for this event.
 
-To publish experiment exposures, you must turn on `EnableExposureTracking`
-in your destination settings in Segment.
-
-We want to replace the direct flow of exposure events from the ABsmartly SDK to the ABsmartly collector, by instead sending them to Segment
-for processing by the destination function.
-
-This can be achieved by instantiating the ABsmartly SDK with a custom
-context publisher.
-
-The custom publisher will publish an `Experiment Viewed` Segment event
-with ABsmartly's exposure data in the `properties.absmartly` field as well
-as the normal semantic data that Segment recommends for this event.
-
-Here is an example in Javascript.
+Here is an example in Javascript:
 
 <CodeBlock language="javascript">
   {JsPublishingExposuresThroughSegment}
 </CodeBlock>
 
-## Finishing Up
+## Migration from the ABsmartly Classic Destination
 
-You should now have your ABsmartly Segment integration fully set up!
+To migrate from the classic ABsmartly destination to ABsmartly (Actions), disconnect the classic ABsmartly destination before enabling the ABsmartly (Actions) destination to avoid duplicate experimentation events.
 
-If you are looking for more information, feel free to ask a question in your
-organization's dedicated ABsmartly Slack channel.
+<details>
+  <summary>Looking for the deprecated ABsmartly Classic Segment integration?</summary>
+  <div>
+    This is a Lambda function that runs on [Segment](https://www.segment.com)
+    for ABsmartly Integration.
+
+    It extracts the relevant data from Segment events and sends it, correctly
+    formatted, to the ABsmartly Collector endpoint.
+
+    It can also be added directly as a destination function on a Segment workspace.
+
+    ## Configuring a Workspace Destination Function
+
+    If you are configuring a destination function on your workspace, these are the necessary settings:
+
+    ### Collector Endpoint
+
+    - **Type:** String
+    - **Required:** &#9989
+    - **Javascript:** `settings.collectorEndpoint`
+
+    Your dedicated ABsmartly Collector Endpoint. Example: `https://demo.absmartly.io/v1`
+
+    ### API Key
+
+    - **Type:** String
+    - **Required:** &#9989
+    - **Javascript:** `settings.apiKey`
+
+    API Key to use when sending events to the ABsmartly Collector. API Keys are
+    created in the ABsmartly Web Console's Settings section.
+
+    ### Environment
+
+    - **Type:** String
+    - **Required:** &#9989
+    - **Javascript:** `settings.environment`
+
+    The environment name where the events are originating (case sensitive).
+    Environments are created in the ABsmartly Web Console's Settings section.
+
+    ### Unit Mapping
+
+    - **Type:** Mapping
+    - **Required:** &#9989
+    - **Javascript:** `settings.unitMapping`
+
+    Mapping of Segment identity to ABsmartly Unit. Mapping of Segment identity
+    to ABsmartly Unit. Example `anonymousId` -> `anonymous_uuid`, `userId` ->
+    `user_id`. Units are created in the ABsmartly Web Console's Settings section.
+
+    :::note
+    This mapping is required, even if the names are exactly the same.
+    :::
+
+    ### EnableExposureTracking
+
+    - **Type:** Boolean
+    - **Required:** &#10060
+    - **Javascript:** `settings.enableExposureTracking`
+
+    Enable sending ABsmartly exposures to the ABsmartly Collector.
+
+    :::note
+    Enable this **only** if you instantiate the ABsmartly SDK with a **custom**
+    publisher and are sending ABsmartly exposures through Segment.
+    :::
+
+    ### EnablePageViewTracking
+
+    - **Type:** Boolean
+    - **Required:** &#10060
+    - **Javascript:** `settings.enablePageViewTracking`
+
+    Enable sending Segment's
+    [Page events](https://segment.com/docs/connections/spec/page/) as goals to
+    the ABsmartly Collector.
+
+    :::caution
+    These events tend to happen very frequently and may increase storage cost.
+    :::
+
+    :::note
+    The goal generated will have the name `Page: <Page Name>` for example
+    `Page: Home` and needs to have been previously created in
+    the ABsmartly Web Console's Settings section.
+    :::
+
+    ### EnableAppScreenViewTracking
+
+    - **Type:** Boolean
+    - **Required:** &#10060
+    - **Javascript:** `settings.enableAppScreenViewTracking`
+
+    Enable sending Segment's
+    [Screen events](https://segment.com/docs/connections/spec/screen/) as goals
+    to the ABsmartly Collector.
+
+    :::caution
+    These events tend to happen very frequently and may increase storage cost.
+    :::
+
+    :::note
+    The goal generated will have the name `Screen: <Screen Name>` for example
+    `Screen: Login` and needs to have been previously created in the ABsmartly
+    Web Console's Settings section.
+    :::
+
+    ### Goal Mapping
+
+    - **Type:** Mapping
+    - **Required:** &#10060
+    - **Javascript:** `settings.goalMapping`
+
+    Mapping of Segment event names to ABsmartly goal names. If a mapping exists,
+    it will be used, otherwise the original event name will be used as the goal
+    name.
+
+    ## Advanced Usage
+
+    ### Sending experiment exposures to Segment
+
+    It can be useful to send experiment exposures to Segment for visibility from
+    other destinations. The Segment spec includes the [`Experiment Viewed`
+    semantic event](https://segment.com/docs/connections/spec/ab-testing/)
+    for this purpose.
+
+    In the ABsmartly context, we can
+    [install a custom event logger](https://docs.absmartly.com/docs/sdk-documentation/getting-started/#using-a-custom-event-logger)
+    and send exposures directly to Segment.
+
+    <CodeBlock language="javascript">{JsSendingExposuresToSegment}</CodeBlock>
+
+    ### Mapping Segment Identities to ABsmartly Units
+
+    For simple mappings, you can map Segment's identities/properties
+    to ABsmartly's units in your ABsmartly integration settings in Segment.
+
+    If you want to programmatically make this mapping, you can install a
+    middleware in your Segment SDK that will append the units to the
+    `properties.absmartly.units` field before sending to Segment.
+    The destination function will extract and use that instead. This may be
+    useful if you are running ABsmartly experiment on units that are not
+    the typical Segment `anonymousId` or `userId`.
+
+    <CodeBlock language="javascript">{JsMappingSegmentIdentitiesToUnits}</CodeBlock>
+
+    ### Publishing Experiment Exposures Through Segment
+
+    To publish experiment exposures, you must turn on `EnableExposureTracking`
+    in your destination settings in Segment.
+
+    We want to replace the direct flow of exposure events from the ABsmartly SDK to the ABsmartly collector, by instead sending them to Segment
+    for processing by the destination function.
+
+    This can be achieved by instantiating the ABsmartly SDK with a custom
+    context publisher.
+
+    The custom publisher will publish an `Experiment Viewed` Segment event
+    with ABsmartly's exposure data in the `properties.absmartly` field as well
+    as the normal semantic data that Segment recommends for this event.
+
+    Here is an example in Javascript.
+
+    <CodeBlock language="javascript">
+      {JsPublishingExposuresThroughSegment}
+    </CodeBlock>
+
+    ## Finishing Up
+
+    You should now have your ABsmartly Segment integration fully set up!
+
+    If you are looking for more information, feel free to ask a question in your
+    organization's dedicated ABsmartly Slack channel.
+  </div>
+</details>
