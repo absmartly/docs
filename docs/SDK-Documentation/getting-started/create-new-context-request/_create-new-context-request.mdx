@@ -5,7 +5,7 @@ import Image from "@theme/IdealImage";
 
 import JsRawPromises from "!!raw-loader!./js/usingRawPromises.js";
 import JsAsyncAwait from "!!raw-loader!./js/usingAsyncAwait.js";
-import JsPreFetchedData from "!!raw-loader!./js/withPreFetchedData.html";
+import JsPreFetchedData from "!!raw-loader!./js/withPreFetchedData.js";
 import JsRefreshWithFreshData from "!!raw-loader!./js/refreshWithFreshData.js";
 import JsRefreshWithRefreshMethod from "!!raw-loader!./js/refreshWithRefreshMethod.js";
 import JsHttpRequestTimeout from "!!raw-loader!./js/httpRequestTimeout.js";
@@ -116,7 +116,7 @@ the client-side by sending the server-side data embedded in the first document,
 for example, by rendering it on the template. We can then initialize the
 ABsmartly context on the client-side directly with it.
 
-<CodeBlock language="html">{JsPreFetchedData}</CodeBlock>
+<CodeBlock language="js">{JsPreFetchedData}</CodeBlock>
 
 #### Refreshing the Context with Fresh Experiment Data
 
