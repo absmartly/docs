@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.2.1",
-    "@swc/core": "^1.4.13",
+    "@swc/core": "^1.4.17",
     "@tsconfig/docusaurus": "^2.0.3",
     "swc-loader": "^0.2.6",
     "typescript": "^5.4.3"
