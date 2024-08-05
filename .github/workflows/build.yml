@@ -10,29 +10,21 @@ jobs:
     name: Yarn Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Set Node.js 16.x
-        uses: actions/setup-node@v3
+      - name: Set Node.js 20.x
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 20.x
 
       - name: Install Deps
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install  
+        run: yarn install --frozen-lockfile
           
       - name: Clean API
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: clean:api  
+        run: yarn clean:api  
           
       - name: Generate API
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: gen:api
+        run: yarn gen:api
           
       - name: Build production bundle
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
+        run: yarn build
