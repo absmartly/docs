@@ -9,48 +9,23 @@ to get it set up!
 
 1. Go to the [Google Admin Console](https://admin.google.com) and log in as an administrator.
 2. In the sidebar, navigate to `Apps > Web and Mobile Apps`.
-<Image
-    img="google/sidebar.png"
-    alt="Google Admin Console sidebar"
-    maxWidth={300}
-    centered={false}
-/>
+<Image img="google/sidebar.png" alt="Google Admin Console sidebar" maxWidth={300} centered={false} />
 3. At the top, click `Add app > Add custom SAML app`.
-<Image
-    img="google/add_app.png"
-    alt="Google Admin Console Add custom SAML app button"
-    maxWidth={300}
-    centered={false}
-/>
+<Image img="google/add_app.png" alt="Google Admin Console Add custom SAML app button" maxWidth={300} centered={false} />
 
 4. Give the app a name, description, a logo and click `Continue`.
 
 :::info App Logo
 You can use the ABsmartly logo by uploading [this image](/img/logo.png).
 
-<Image
-    img="logo.png"
-    alt="The ABsmartly logo"
-    maxWidth={100}
-    centered={false}
-/>
+<Image img="logo.png" alt="The ABsmartly logo" maxWidth={100} centered={false} />
 
 :::
 
-<Image
-    img="google/create_app_1.png"
-    alt="Google Admin Console Create App Step 1"
-    maxWidth={800}
-    centered={false}
-/>
+<Image img="google/create_app_1.png" alt="Google Admin Console Create App Step 1" maxWidth={800} centered={false} />
 
 5. Click `Download Metadata` and save the file somewhere safe. At the end of this guide you will send your metadata to us so that we can get you set up quickly. Click `Continue`.
-<Image
-    img="google/create_app_2.png"
-    alt="Google Admin Console Create App Step 2"
-    maxWidth={800}
-    centered={false}
-/>
+<Image img="google/create_app_2.png" alt="Google Admin Console Create App Step 2" maxWidth={800} centered={false} />
 6. For these fields input:
     - **ACS URL**: `https://<your-assigned-subdomain>.absmartly.com/auth/saml/google/callback`
     - **Entity ID**: `absmartly-<your-assigned-subdomain>`
@@ -58,12 +33,7 @@ You can use the ABsmartly logo by uploading [this image](/img/logo.png).
     - **Name ID Format**: `EMAIL`
     - **Name ID**: `Basic Information > Primary Email`
 
-<Image
-    img="google/create_app_3.png"
-    alt="Google Admin Console Create App Step 3"
-    maxWidth={800}
-    centered={false}
-/>
+<Image img="google/create_app_3.png" alt="Google Admin Console Create App Step 3" maxWidth={800} centered={false} />
 
 7. Click `Continue`.
 8. Add three Attribute Mappings for: (case-sensitive)
@@ -71,12 +41,7 @@ You can use the ABsmartly logo by uploading [this image](/img/logo.png).
     - First Name -> firstName
     - Last Name -> lastName
 
-<Image
-    img="google/create_app_4.png"
-    alt="Google Admin Console Create App Step 4"
-    maxWidth={800}
-    centered={false}
-/>
+<Image img="google/create_app_4.png" alt="Google Admin Console Create App Step 4" maxWidth={800} centered={false} />
 
 9. Click `Finish`.
 10. Lastly, send your metadata file to us via email or on Slack and your employees should be able to log
