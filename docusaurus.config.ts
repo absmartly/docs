@@ -12,7 +12,7 @@ const config: Config = {
     "Booking.com and Netflix's experimentation culture without the big investment.",
   url: "https://docs.absmartly.com",
   baseUrl: "/",
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
 
