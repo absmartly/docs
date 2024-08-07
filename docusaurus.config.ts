@@ -1,6 +1,5 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
-import type * as Plugin from "@docusaurus/types/src/plugin";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import { themes } from "prism-react-renderer";
 const lightCodeTheme = themes.github;
@@ -12,32 +11,9 @@ const config: Config = {
     "Booking.com and Netflix's experimentation culture without the big investment.",
   url: "https://docs.absmartly.com",
   baseUrl: "/",
-  onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
+  organizationName: "ABsmartly",
 
-  // Speeding up the build with swc - was 2m34s on M1 Macbook, now 1m29s
-  webpack: {
-    jsLoader: (isServer) => ({
-      loader: require.resolve("swc-loader"),
-      options: {
-        jsc: {
-          parser: {
-            syntax: "typescript",
-            tsx: true,
-          },
-          target: "es2017",
-        },
-        module: {
-          type: isServer ? "commonjs" : "es6",
-        },
-      },
-    }),
-  },
-
-  // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you may want
-  // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
@@ -48,7 +24,7 @@ const config: Config = {
       "classic",
       {
         docs: {
-          sidebarPath: "./sidebars.js",
+          sidebarPath: "./sidebars.ts",
           editUrl: "https://github.com/absmartly/docs",
           docItemComponent: "@theme/ApiItem",
         },
@@ -138,7 +114,7 @@ const config: Config = {
           label: "Web Console Tutorial",
         },
         {
-          to: "docs/SDK-documentation",
+          to: "docs/sdk-documentation",
           position: "left",
           label: "SDK Docs",
         },
@@ -172,7 +148,7 @@ const config: Config = {
           items: [
             {
               label: "SDK Docs",
-              to: "/docs/SDK-Documentation",
+              to: "/docs/sdk-Documentation",
             },
             {
               label: "API Docs",
