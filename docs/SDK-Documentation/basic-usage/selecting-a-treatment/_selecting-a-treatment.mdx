@@ -7,6 +7,7 @@ import JsSelectingATreatment from "!!raw-loader!./js/selectingATreatment.js";
 import PythonSelectingATreatment from "!!raw-loader!./python/selectingATreatment.py";
 
 import ReactSelectingATreatment from "!!raw-loader!./react/selectingATreatment.js";
+import ReactUsingUseTreatment from "!!raw-loader!./react/usingUseTreatment.js";
 import ReactUsingTernaryOperator from "!!raw-loader!./react/usingTernaryOperator.js";
 
 import VueUsingTreatmentAlias from "!!raw-loader!./vue/UsingTreatmentAlias.vue";
@@ -60,8 +61,12 @@ different treatments that you plan to create.
 
 #### Using the Treatment component
 
-In React, the easiest way to select your treatment is to use the `Treatment`
-and `TreatmentVariant` components.
+In React, the easiest way to select your treatment is to use the `useTreatment`
+hook.
+
+<CodeBlock language="jsx">{ReactUsingUseTreatment}</CodeBlock>
+
+Or, you can use the `Treatment` and `TreatmentVariant` components.
 
 <CodeBlock language="jsx">{ReactSelectingATreatment}</CodeBlock>
 
