@@ -1,9 +1,5 @@
 return (
-  <Treatment
-    name="experiment_name"
-    context={context}
-    loadingComponent={<MySpinner />}
-  >
+  <Treatment name="experiment_name" loadingComponent={<MySpinner />}>
     {/* The variant prop can have numbers or letters passed to it */}
     <TreatmentVariant variant="A">
       {/* Variant 0 */}

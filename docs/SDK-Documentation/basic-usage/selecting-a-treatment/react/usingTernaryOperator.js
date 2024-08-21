@@ -1,9 +1,5 @@
 return (
-  <TreatmentFunction
-    context={context}
-    name="experiment_name"
-    loadingComponent={<MySpinner />}
-  >
+  <TreatmentFunction name="experiment_name" loadingComponent={<MySpinner />}>
     {({ variant }) =>
       variant === 1 ? (
         <ButtonVariant1 />
