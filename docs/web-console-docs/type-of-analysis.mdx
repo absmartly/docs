@@ -1,0 +1,34 @@
+---
+sidebar_position: 8
+---
+
+import Image from "../../src/components/Image";
+
+# Analysis Type (Fixed Horizon & Group Sequential)
+
+ABsmartly supports two types of statistical analysis: Fixed Horizon and Group Sequential. Understanding the differences between these methods and knowing when to use each can significantly impact the efficiency and accuracy of your experimentation program.
+
+## Fixed Horizon Testing
+
+Fixed Horizon Testing involves analyzing the results of an experiment after reaching a predefined sample size (number of unique visitors) or reaching a specific duration. This method, supported by most AB Testing tools, assumes that the sample size is defined before the experiment starts and remains unchanged throughout the runtime of the experiment.
+
+While this method is widely used and beneficial, it lacks flexibility, as decisions can only be made at a single predefined moment. This limitation can lead to unreliable decisions (when experimenters make decisions too early) as well as wasted time and resources. This makes the use of Fixed Horizon testing for product experimentation, where trust, speed, and agility are crucial, less beneficial and more challenging. This is especially true for teams with less experience.
+
+## Group Sequential Testing
+
+[Group Sequential Testing](https://absmartly.com/engine) is an adaptive analysis method that allows for interim analyses (checkpoints) at various points during the experiment. At ABsmartly you can decide how often or how many checkpoints you want. Unlike Fixed Horizon Testing, this approach provides the flexibility to stop the experiments early for efficacy or for futility.
+
+<Image img="gst-setup.png" alt="Setting up a Group Sequential Test" />
+
+
+While adding more checkpoints will slightly reduce statistical power compared to fixed-horizon testing, overall it greatly speeds up decision-making, as significance is commonly reached before the full sample is collected. This efficiency gained from using Group Sequential Testing is making a real difference to ABsmartly customers, to the pace at which decisions can be made.
+
+<Image img="gst-widget.png" alt="A Group Sequential Test result" />
+
+:::info
+Different experimentation platforms might use different sequential testing implementation. The most commonly used sequential method is Fully Sequential and while it offers the most flexibility (decisions can be made at any moment in time), it comes at the cost of much lower power which in turn leads to higher time to decision. At ABsmartly we believe Group Sequential Testing provides the right compromise between flexibility and speed which is required to make high-quality product decisions in a fast-moving business context.
+:::
+
+## Which Analysis Type Should I Choose for My Experiment?
+
+Most of the time, Group Sequential Testing should be the preferred method (who does not want faster trustworthy results?) but there are a few use cases where you might decide to use a Fixed Horizon setup. This is mainly when you are dealing with a strong novelty effect (Group Sequential Testing might come to a premature conclusion which might not reflect the true impact) or where you have a long action cycle and wish to observe the visitors for a pre-defined period of time.
