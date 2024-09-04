@@ -35,6 +35,15 @@ import RubyCustomAssignments from "!!raw-loader!./ruby/customAssignments.rb";
 import FlutterCustomAssignment from "!!raw-loader!./flutter/customAssignment.dart";
 import FlutterCustomAssignments from "!!raw-loader!./flutter/customAssignments.dart";
 
+:::warning Warning
+Events with custom assignments are **counted as eligible events** by the ABsmartly 
+statistics engines. If you are using these methods for development purposes
+(to force a particular variant for yourself or somebody else on the team) it is
+likely that you need the 
+[`context.override` methods](/docs/SDK-Documentation/basic-usage#overriding-treatment-variants) 
+instead.
+:::
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
