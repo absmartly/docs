@@ -41,8 +41,7 @@ ready.
 <TabItem value="python" label="Python3">
 
 During development, for example, it is useful to force a treatment for an
-experiment. This can be achieved with the `set_override()` and/or `set_overrides()`
-methods. The `set_override()` and `set_overrides()` methods can be called before the context is
+experiment. This can be achieved with the `set_override()` and/or `set_overrides()` methods. The `set_override()` and `set_overrides()` methods can be called before the context is
 ready.
 
 <CodeBlock language="py">{PythonOverriding}</CodeBlock>
@@ -178,3 +177,40 @@ the context is ready.
 </TabItem>
 
 </Tabs>
+
+### Overriding Based On URL Params
+
+The most common use case for overriding is to override a treatment based on
+params in the URL. This allows for greater flexibility in the development and 
+QA stages. The following Javascript function can be ported to any language and
+used to parse the URL query parameters and return an object of overrides. This
+object can then be passed to the `overrides()` context method to force a particular
+variant for one or multiple experiment(s).
+
+:::info Prefixes
+Here we using `absmartly_` as a prefix for the query parameters, but you can 
+use whatever prefix you like. It could be `exp_`, `test_`, or even a simple `_`!
+:::
+
+```js
+function getABsmartlyOverridesFromQuery(req) {
+  const overrides = {};
+
+  // Iterate through all query parameters
+  for (const [key, value] of Object.entries(req.query)) {
+    // Check if the query parameter starts with "absmartly_"
+    if (key.startsWith('absmartly_')) {
+      // Extract the experiment name (remove "absmartly_" prefix)
+      const experimentName = key.slice(9);
+
+      // Convert the value to a number if possible, otherwise keep it as a string
+      const variantValue = isNaN(value) ? value : Number(value);
+
+      // Add to overrides object
+      overrides[experimentName] = variantValue;
+    }
+  }
+
+  return overrides;
+}
+```
