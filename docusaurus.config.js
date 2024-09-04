@@ -18,7 +18,7 @@ const config = {
   // Speeding up the build with swc - was 2m34s on M1 Macbook, now 1m29s
   webpack: {
     jsLoader: (isServer) => ({
-      loader: require.resolve('swc-loader'),
+      loader: require.resolve("swc-loader"),
       options: {
         jsc: {
           parser: {
@@ -29,8 +29,8 @@ const config = {
         },
         module: {
           type: isServer ? "commonjs" : "es6",
-        }
-      }
+        },
+      },
     }),
   },
 
@@ -49,7 +49,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/absmartly/docs",
+          editUrl: "https://github.com/absmartly/docs/edit/master",
           docLayoutComponent: "@theme/DocPage",
           docItemComponent: "@theme/ApiItem",
         },
@@ -129,8 +129,8 @@ const config = {
           alt: "The A B Smartly logo",
           src: "img/logo.svg",
           style: {
-              width: '3rem'
-          }
+            width: "3rem",
+          },
         },
         items: [
           {
@@ -213,7 +213,11 @@ const config = {
           },
         ],
         copyright: `&copy; Copyright ${new Date().getFullYear()} ABsmartly B.V.`,
-        logo: { src: "img/logo.svg", alt: "The A B Smartly Logo", style: { width: '3rem' } },
+        logo: {
+          src: "img/logo.svg",
+          alt: "The A B Smartly Logo",
+          style: { width: "3rem" },
+        },
       },
       prism: {
         theme: lightCodeTheme,
