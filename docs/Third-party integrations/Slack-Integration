@@ -1,0 +1,29 @@
+---
+sidebar_position: 1
+---
+
+# Installation
+
+## Pre-requisites:
+
+* A slack channel for the integration to post to.
+* Whoever installs the Slack integration will need the “FullAdmin” role on the ABsmartly Web Console - this is needed for creating a Webhook, as well as having the permissions to enrich messages with data from the Web Console.
+* Whoever installs the integration will need to be a Slack Workspace Admin. 
+    * Two people can work together to fulfil these requirements
+
+## Guide:
+* Head to https://slack.com/oauth/v2/authorize?client_id=757080139458.7458254683235&scope=channels:manage,chat:write,incoming-webhook,users:read,users:read.email,files:read,files:write&user_scope=channels:write.invites,users:read,users:read.email
+* In the combobox “Search for a channel…”, select the desired channel for the integration to post notifications to.
+* Click “Allow”.
+* You will be redirected to a page with some more instructions. Click the “Head to Slack” button, to continue with the configuration.
+    * If, for some reason, the “Head to Slack” button does not work, you can get to the configuration page by:
+    * Opening Slack
+    * Scrolling to the bottom of the sidebar on the left.
+    * Click “Add apps +”
+    * Search for “ABsmartly” and click on it to enter.
+    * Click on the “Home” tab.
+* Add your ABsmartly details to the integration:
+    *   Click the “Set ABsmartly URL” button and enter your ABsmartly endpoint (eg: https://example.absmartly.com).
+    * Click the “Set user API key” button and enter your User API Key. If you do not yet have one, in the modal there will be a link to the page on your dashboard where one can be created.
+* Once these details have been successfully saved a new section will appear, prompting you to create an ABsmartly Webhook. Click on the link that appears and you will be taken to a pre-filled Webhook form on your ABsmartly Web Console. Here, you can add a description, opt out of any Webhook events, and save the Webhook. Note, these fields can be changed at any time from the webhook settings on your ABsmartly Web Console.
+* Success! Once the Webhook is saved, event notifications should start appearing in your designated Slack channel.
