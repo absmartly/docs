@@ -1,0 +1,98 @@
+---
+sidebar_position: 4
+---
+
+import Image from "../../src/components/Image";
+import FutureDate from "../../src/components/FutureDate";
+
+# Setting up a Fixed Horizon Experiment
+
+A step by step guide to setup and configure a Fixed Horizon experiment.
+
+<Image img="basics.png" alt="A screenshot of the basics experiment creation page" />
+
+## Type of Analysis
+
+A Fixed Horizon test can be configured on the Analysis step (Step 5) of the experimentation setup.
+To understand the differences between Group Sequential and Fixed Horizon experiment check our [analysis type article](/docs/web-console-docs/type-of-analysis).
+
+[TODO add Screenshot of 'Type of analysis']
+
+:::note
+The default type of analysis for you experiments can be defined in your platform settings.
+:::
+
+## Error control
+
+In this section, you can choose the **confidence** and **power** levels for your experiment. 
+
+**Confidence** measures the probability that you would not incorrectly reject the null hypothesis when it is true. 
+In other words, it reflects how sure you want to be that a result is not due to random chance.
+For example, if your confidence level is 90%, you have a 10% chance of a false positive error (rejecting the null hypothesis when it is actually true).
+Confidence ensures your findings are robust and minimizes misleading conclusions from noise.
+
+:::warning
+The confidence reflects the confidence level for a 2-sided analysis. A 2-sided analysis means that we are testing in both direction, looking for superiority and inferiority.
+A 90% confidence in a 2-sided analysis (like we use in Fixed Horizon), means a 5% false positive on each side of the interval (5% of the false positive with be significantly positive and 5% will be significantly negative)
+:::
+
+**Power** refers to the ability of a test to detect a true effect when it exists. 
+For example, a power of 80% means the test has an 80% chance of correctly identifying a real effect as small as the MDE.
+Power ensures your experiment is sensitive enough to detect meaningful changes, especially in cases where the effect sizes are small.
+
+:::note
+The minimum and default values for confidence and power levels for your experimentation program can be defined in your platform settings.
+:::
+
+## Primary metric
+
+To continue setting up your Fixed Horizon experiment, you first need to select your primary metric. 
+
+:::info Tip
+Choosing the right primary metric can be hard. Below are the main characteristics to consider when choosing your primary metric.
+
+**Aligned:**
+Does it reflect the hypothesis? 
+The metric should directly reflect the business objective or user outcome that the experiment is intended to improve. 
+This alignment ensures that the experiment results drive meaningful business decisions.
+
+**Stable and Reliable:** 
+Can it be trusted? The metric should have low variability and provide consistent results over time. 
+This minimizes noise and ensures that observed differences are due to the treatment rather than random fluctuations.
+
+**Sensitive:**
+Does it respond to the change being tested? A good metric should respond detectably to the changes being tested, even for small effects. 
+Sensitivity helps detect meaningful differences without requiring excessively large sample sizes.
+
+**Actionable:** 
+Does it provide clear & actionable insights? The metric should guide decisions. 
+If the metric increases or decreases, it should provide a clear indication of whether the treatment should be implemented or iterated on.
+
+**Measurable:**
+Can it be tracked reliably? The metric should be easy to measure accurately and consistently across all experimental conditions.
+:::
+
+If this is not a new metric and we have already collected data for it, you will see the metrics performance graph below.
+
+[TODO Add a screenshot]
+
+This graph shows the metric's variance and standard deviation over the last 6 weeks for your selected platform(s) and tracking unit. 
+This is an indication of what you can expect if you start your experiment now with this metric as your primary metric.
+
+
+## Adaptive Sample Size
+
+In this section you need to specify a MDE which will be used in the experiment setup.
+
+### Basic
+
+In the basic mode you can simply enter the MDE in the text field.
+
+### Advanced
+
+In the advanced mode you can choose a MDE using the built-in power table.
+To estimate the MDE you need to input the conversion rate for binomial metrics or the mean and standard deviation for continuous metrics.
+Using the power table you can then choose a relevant MDE based on runtime or sample size for the power level you selected above.
+
+[TODO Add screenshot]
+

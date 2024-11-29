@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 import Image from "../../src/components/Image";
@@ -61,6 +61,17 @@ Note that only roles with the relevant permissions can manage templates.
 - Choose a template from the list of available templates.
 - **Customize as Needed**: Although the template provides pre-configured settings, you can customize any specific details to fit the current feature flag.
 
+## Locking fields in templates
+Template owners have the possibility to lock some fields so they are not editable when using the template to create an experiment or a feature.
+For example if you want all experiments using a template to use a 90% confidence level
+- When editing the template, navigate to Step 5
+- Set the confidence level to 90%
+- Click on the small lock icon next to the label
+
+<Image img="experiment-create/locking-confidence-level.png" alt="Locking the confidence level at 90%" />
+
+The field is no longer editable and all children experimemts will have a pre-set 90% confidence level
+
 ## FAQs
 
 ### What happens if I need to change the settings of an experiment created from a template?
@@ -68,6 +79,3 @@ You can customize any specific settings of the experiment created from a templat
 
 ### What happens if a template changes after it is used in an experiment?
 Nothing will happen. Templates are currently only used when creating a new experiment.
-
-### As a template owner, can I lock some fields so they are non-editable in the experiment or feature?
-Not yet, but we are working on it.
