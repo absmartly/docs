@@ -42,7 +42,7 @@ A 90% confidence in a 2-sided analysis (like we use in Fixed Horizon), means a 5
 Our Group Sequential uses a one-sided analysis (it only look for superiority and makes no distinction between negative and inconclusive). 
 For consistency and alignment between analysis types, we still ask for the confidence as if it was a 2-sided analysis but adjust it accordingly to reflect the 1-sided analysis.
 
-To summarise: If you specify a 90% confidence for your GST, the experiment it will actually be setup with a 95% confidence level which equals to a 5% false positive.
+To summarise: If you specify a 90% confidence for your GST, the experiment will actually be set up with a 95% confidence level which equals to a 5% false positive.
 :::
 
 **Power** refers to the ability of a test to detect a true effect when it exists. 
@@ -90,9 +90,7 @@ To do that ensure that the first analysis happens only once the variance has sta
 
 :::caution
 If the metric's variance is still high at the time of the first analysis, the participant and date estimates of each interim analysis will be less precise which can lead to confusion and make it harder to plan around.
-:::
 
-:::caution
 If the metric's graph shows an ever increasing variance then it is an indication that this metric might not be a suitable primary metric for your GST experiment.
 If this is the case you can either choose a more suitable metric (with less variance) or you can look at reducing the metric's variance (for example by introducing a time filter and/or outliers filters).
 If you have questions please reach out to our support.
@@ -109,11 +107,11 @@ This is where the actual configuration of the Group Sequential Test takes place
 
 The time to first analysis defines the moment at which the first interim analysis will take place.
 The first analysis is a special analysis as it is when the full design of the experiment is calculated (how many interim analyses, date for each analysis, etc).
-The GST engines uses some data it has collected since the start of the experiment to fine tune the setup. For example daily visitors or the metric's variance and standard deviation.
+The GST engine uses some data it has collected since the start of the experiment to fine tune the setup. For example daily visitors, the metric's variance and the standard deviation.
 As mentioned above, it is important those numbers have stabilized enough by the time this analysis takes place otherwise the interim analysis setup will not be as precise.
 
 The time to first analysis is also meant to capture business cycles and to reduce some biases which might be introduced by running an analysis too early.
-Running an analysis too early in the experiment could lead to significant results which are biased and not representative of the entire population (for example by having a non-representative sample of visitors, too many frequent users, too many week-end users, etc).
+Running an analysis too early in the experiment could lead to significant results which are biased and not representative of the entire population (for example by having a non-representative sample of visitors, too many frequent users, too many weekend users, etc).
 
 Make sure to choose a time to first analysis which takes those constraints into account.
 
@@ -135,32 +133,23 @@ As with the time to first analysis, this can be useful to ensure a good represen
 Having the right number of analyses can help maximize the benefit of Group Sequential Testing.
 Too many interim analyses lead to a decrease in power which will mean a longer runtime on average.
 Too few interim analyses lead to less agility and velocity and does not maximize the value of GST.
-Defining how often interim analyses should run is key but it's also very depend on the context and might require a few tries. 
+Defining how often you want interim analyses run is key but it's also very depend on the context and might require a few tries before you find the sweet spot. 
 :::
 
 ### Futility Type
 
-Futility type is an important concept in group sequential tests. Imagine you are 
-watching a race between two tortoises, A and B. If A is way ahead of B, you 
-can confidently say that A is the faster tortoise. Futility comes into play 
-when A is only slightly ahead or even behind B. In such a case, it's not worth 
-continuing the race, because it's unlikely that A will eventually win by a 
-significant margin.
+Futility type defines what happens when the experiment crosses the futility boundary.
+There are two possible futility type, **binding** or **non-binding**.
+A **binding** futility type means that the experiment is completed as soon as it crosses the futility boundary. 
+There will be no further interim analysis and a decision can be made.
+A **non-binding** futility type, on the other hand, means that the experiment will continue even after it has crossed a futility boundary.
+While a binding set up is the preferred, there might be cases when you want to continue running the interim analysis even once a futility boundary was crossed. 
+This could be the case for example if you have a longer action cycle and it might take more time for the true impact to be measurable.
 
-Futility types can be classified as either **binding** or **non-binding**.
+:::caution
+While non-binding futility offers more flexibility, it also decreases power and can increase the risk of making incorrect decisions if you choose to ignore the futility signal.
+:::
 
-**Binding** futility is like a strict rulebook that you must follow when deciding 
-to stop a test early. If the test reaches a pre-determined futility boundary, 
-you must stop it, no exceptions. This helps maintain control over the 
-experiment and ensures that resources are not wasted on a test that's unlikely to 
-yield meaningful results.
-
-**Non-binding** futility, on the other hand, is more like a friendly suggestion. 
-We alert you when the test might be futile, but you are not obligated to stop it. 
-You can choose to continue if you believe there's still a chance for a 
-meaningful difference to emerge. Non-binding futility offers more flexibility, 
-but it can also increase the risk of making incorrect decisions if you choose 
-to ignore the futility signal.
 
 ### What is the experiment duration based on?
 In this section you decide how the maximum duration of the Group Sequential test will be calculated. 
