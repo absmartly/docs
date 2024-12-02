@@ -16,8 +16,7 @@ To understand the differences between Group Sequential and Fixed Horizon experim
 
 <Image img="experiment-create/type-of-analysis.png" alt="Choosing an analysis type" />
 
-
-:::tip
+:::info
 The default type of analysis for your experiments can be defined in your platform settings.
 :::
 
@@ -50,7 +49,7 @@ To summarise: If you specify a 90% confidence for your GST, the experiment it wi
 For example, a power of 80% means the test has an 80% chance of correctly identifying a real effect as small as the MDE.
 Power ensures your experiment is sensitive enough to detect meaningful changes, especially in cases where the effect sizes are small.
 
-:::tip
+:::info
 The minimum and default values for confidence and power levels for your experimentation program can be defined in your platform settings.
 :::
 
@@ -58,7 +57,7 @@ The minimum and default values for confidence and power levels for your experime
 
 To continue setting up your Group Sequential experiment, you first need to select your primary metric. 
 
-:::info Tip
+:::tip
 Choosing the right primary metric can be hard. Below are the main characteristics to consider when choosing your primary metric.
 
 **Aligned:**
@@ -82,14 +81,12 @@ If the metric increases or decreases, it should provide a clear indication of wh
 Can it be tracked reliably? The metric should be easy to measure accurately and consistently across all experimental conditions.
 :::
 
-If this is not a new metric and we have already collected data for it, you will see the metrics performance graph below.
-
-// TODO Image img="experiment-create/primary-metric-graph.png" alt="Primary metric graph"
+If the metric you are selecting is not new and we have already collected data for it, you will see the metric's performance graph below.
 
 This graph shows the metric's variance and standard deviation over the last 6 weeks for your selected platform(s) and tracking unit. 
 This is an indication of what you can expect if you start your experiment now with this metric as your primary metric.
-To ensure an optimal Group Sequential analysis, it is critical that the metric's variance and standard deviation have stabilized at the moment of the first analysis (you can see that when the graph flattens out).
-Make sure to properly set the time to first analysis below so the first analysis happens after the metric's variance and standard deviation has stabilized.
+To ensure an optimal Group Sequential analysis, it is critical that the metric's variance and standard deviation have stabilized enough at the moment of the first analysis (you can see that when the graph flattens out).
+To do that ensure that the first analysis happens only once the variance has stabilized enough, you can adjust the time to first analysis below.
 
 :::caution
 If the metric's variance is still high at the time of the first analysis, the participant and date estimates of each interim analysis will be less precise which can lead to confusion and make it harder to plan around.
@@ -113,14 +110,14 @@ This is where the actual configuration of the Group Sequential Test takes place
 The time to first analysis defines the moment at which the first interim analysis will take place.
 The first analysis is a special analysis as it is when the full design of the experiment is calculated (how many interim analyses, date for each analysis, etc).
 The GST engines uses some data it has collected since the start of the experiment to fine tune the setup. For example daily visitors or the metric's variance and standard deviation.
-As mentioned above, it is important those numbers are stabilized by the time this analysis takes place otherwise the interim analysis setup will not be as precise.
+As mentioned above, it is important those numbers have stabilized enough by the time this analysis takes place otherwise the interim analysis setup will not be as precise.
 
 The time to first analysis is also meant to capture business cycles and to reduce some biases which might be introduced by running an analysis too early.
 Running an analysis too early in the experiment could lead to significant results which are biased and not representative of the entire population (for example by having a non-representative sample of visitors, too many frequent users, too many week-end users, etc).
 
 Make sure to choose a time to first analysis which takes those constraints into account.
 
-:::info Tip
+:::tip
 It is often a good practice to run experiments for at least one week so it captures visitors throughout the week. 
 This is often important as Monday visitors could react diffently to changes than week-end visitors. 
 :::
@@ -136,8 +133,8 @@ As with the time to first analysis, this can be useful to ensure a good represen
 
 :::info
 Having the right number of analyses can help maximize the benefit of Group Sequential Testing.
-Too many interim analyses lead to a decrease in power so longer runtime on average.
-Too few interim analyses lead to less agility and velocity to the program.
+Too many interim analyses lead to a decrease in power which will mean a longer runtime on average.
+Too few interim analyses lead to less agility and velocity and does not maximize the value of GST.
 Defining how often interim analyses should run is key but it's also very depend on the context and might require a few tries. 
 :::
 
@@ -193,19 +190,20 @@ Using the power table you can then choose a relevant MDE based on runtime or sam
 
 You can use this feature if you wish your experiment to run for no longer than X weeks. 
 :::info
-Because they are one-sided, GST experiment will always cross either the futility or the efficiency boundary at the end of the runtime.
+Because GST are one-sided experiments, they will always cross either one of the boundaries at the end of the runtime.
 :::
 
 
 #### Basic
 
-In the basic mode you can simply enter the maximum number of weeks you want your experiment to run.
+In the basic mode you can simply enter the maximum number of weeks you want your experiment to run. 
+The maximum runtime cannot be shorter than the time to first analysis. If the time to first analysis is 10 days, then the smallest maximum runtime for the experiment will be 2 weeks.
 
 #### Advanced
 
 In this advanced section you have a power table which estimates the MDE at weekly intervals so you can choose a maximum runtime accordingly.
 To estimate the Maximum runtime you first need to input the conversion rate for binomial metrics or the mean and standard deviation for continuous metrics.
-You will also need to provide an estimate of expected visitor count.
+You will also need to provide the estimated visitor count.
 
 <Image img="experiment-create/gst-max-runtime-advanced.png" alt="Choosing a maximum runtime for GST" />
 
