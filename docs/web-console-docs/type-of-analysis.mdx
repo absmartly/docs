@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 import Image from "../../src/components/Image";
@@ -16,14 +16,18 @@ While this method is widely used and beneficial, it lacks flexibility, as decisi
 
 ## Group Sequential Testing
 
-[Group Sequential Testing](https://absmartly.com/engine) is an adaptive analysis method that allows for interim analyses (checkpoints) at various points during the experiment. At ABsmartly you can decide how often or how many checkpoints you want. Unlike Fixed Horizon Testing, this approach provides the flexibility to stop the experiments early for efficacy or for futility.
+[Group Sequential Testing](https://absmartly.com/engine) is an adaptive analysis method that allows for interim analyses at various points during the experiment. At ABsmartly you can decide how often or how many interim analysis you want. Unlike Fixed Horizon Testing, this approach provides the flexibility to stop the experiments early for efficacy or for futility.
 
 <Image img="gst-setup.png" alt="Setting up a Group Sequential Test" />
 
 
-While adding more checkpoints will slightly reduce statistical power compared to fixed-horizon testing, overall it greatly speeds up decision-making, as significance is commonly reached before the full sample is collected. This efficiency gained from using Group Sequential Testing is making a real difference to ABsmartly customers, to the pace at which decisions can be made.
+While adding more interim analysis will slightly reduce statistical power compared to fixed-horizon testing, overall it greatly speeds up decision-making, as significance is commonly reached before the full sample is collected. This efficiency gained from using Group Sequential Testing is making a real difference to ABsmartly customers, to the pace at which decisions can be made.
 
 <Image img="gst-widget.png" alt="A Group Sequential Test result" />
+
+
+// TODO Add information about 1-sided and 2-sided analysis
+
 
 :::info
 Different experimentation platforms might use different sequential testing implementation. The most commonly used sequential method is Fully Sequential and while it offers the most flexibility (decisions can be made at any moment in time), it comes at the cost of much lower power which in turn leads to higher time to decision. At ABsmartly we believe Group Sequential Testing provides the right compromise between flexibility and speed which is required to make high-quality product decisions in a fast-moving business context.
