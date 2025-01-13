@@ -1,9 +1,10 @@
 ---
 sidebar_position: 11
+
 ---
-
+<!--
 import Image from "../../src/components/Image";
-
+-->
 # Guide to interpreting metrics in experiment results
 
 This guide outlines how to understand and interpret the metrics displayed in ASsmartly. 
@@ -14,7 +15,11 @@ This guide is split into two sections: **Fixed Horizon Metrics** and **Group Seq
 
 ## Fixed Horizon Metrics
 
-<Image img="experiment-results/fh-positive-result.png" alt="Experiment result for a Fixed Horizon test in ABsmartly" maxWidth="45rem" />
+<!--  
+< Image img="experiment-results/fh-positive-result.png" alt="Experiment result for a Fixed Horizon test in ABsmartly" maxWidth="45rem" />
+-->
+<img src="../../static/img/experiment-results/fh-positive-result.png" alt="Experiment result for a Fixed Horizon test in ABsmartly" maxWidth="45rem" />
+
 
 ### Understanding the metrics table
 
@@ -22,10 +27,9 @@ The metrics table provides the following key data points for each variant:
 
 - **Participants**: The number of individuals assigned to each variant, expressed as a count and percentage of the total participants. 
 - **Value**: The total count or sum associated with the metric (e.g., number of "buyers") for each variant.
-- **Mean**: The average performance of the metric for each variant, calculated as: 
-\[ 
-\text{Mean} = \frac{\text{Value}}{\text{Participants}} 
-\]  
+- **Mean**: The average performance of the metric for each variant, calculated as: `Mean = Value / Participants`
+
+
 - **Confidence**: The statistical confidence that the observed difference between variants is real, not due to random chance. 
 - **Impact**: The difference in metric performance between variants, shown visually and as a percentage with a confidence interval (CI). In this example the observed impact is +1.35% with a confidence interval going from +0.38% to +2.32%.
 
@@ -34,9 +38,13 @@ The confidence interval (CI) and the color-coded indicator help assess the signi
 - **Positive Impact (Green)**: The confidence interval is entirely above 0, indicating a statistically significant improvement for the variant. 
 - **Negative Impact (Red)**: The confidence interval is entirely below 0, indicating a statistically significant negative effect. 
 - **Inconclusive (Grey)**: The confidence interval crosses 0, meaning the results are not statistically significant. 
+
 ### Evaluating Power
 
-<Image img="experiment-results/fh-power-96-1.png" alt="Experiment power at 96.1%" maxWidth="20rem" />
+<!--  
+< Image img="experiment-results/fh-power-96-1.png" alt="Experiment power at 96.1%" maxWidth="20rem" />
+-->
+<img src="../../static/img/experiment-results/fh-power-96-1.png" alt="Experiment power at 96.1%" maxWidth="15rem" />
 
 Power indicates the likelihood that the experiment would detect a true effect if one exists. The power shown in ABsmartly indicates how well powered the primary metric is compared to the target power.
 
@@ -66,15 +74,16 @@ Example using the screenshot above
 
 ## Group Sequential Testing Metrics
 
-<Image img="experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" />
+<!-- Image img="experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" / -->
+<img src="../../static/img/experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" maxWidth="45rem" />
 
 ### Understanding the Metrics Table
 
 The metrics table provides the following key data points for each variant at the last interim analysis:
 
-- **Mean**: The expected average performance of the metric for the variant.
+- **Mean**: The GST adjusted average performance of the metric for the variant.
 - **Observed Mean**: The actual observed average performance of the metric during the experiment.
-- **Impact**: The percentage change in the metric compared to the baseline. In this example +1.74% with a confidence interval going from -1.88% to +5.49%.
+- **Impact**: The percentage change in the metric compared to the baseline. This is a GST adjusted value. In this example +1.74% with a confidence interval going from -1.88% to +5.49%.
 - **Z-Score**: A statistical measure that represents how many standard deviations the result is from the null hypothesis (no effect). Positive Z-scores indicate an improvement, while negative Z-scores suggest a decline.
 - **P-Value**: The probability that the observed result occurred by chance if the null hypothesis is true. Lower P-values (e.g., below 0.05) indicate statistical significance.
 
@@ -83,6 +92,9 @@ These data points provide a summary of the ongoing analysis for the selected var
 ---
 
 ### Understanding the Group Sequential Graph
+
+<img src="../../static/img/experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" maxWidth="45rem" />
+
 Group Sequential Testing, makes it easy to visually interpret results. The graph displays the evolution of statistical evidence over time, allowing decisions to be made at predefined checkpoints during the experiment. It includes the following elements:
 
 - **X-Axis (Time)**: Represents the progress of the experiment in time, with dates marking each past and future interim analyses.
