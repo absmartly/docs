@@ -12,9 +12,11 @@ A step by step guide to creating a new experiment in ABsmartly.
 To get started with creating a new experiment, you can click **Experiments** on the left side menu and then choose **Create from Scratch**.
 
 :::info
-Instead of creating an experiment from scratch you can also decide to use a pre-existing template. 
+Instead of creating an experiment from scratch you can also decide to use a pre-existing template.
 To find out more about creating and using templates check our [template documentation](/docs/web-console-docs/templates).
 :::
+
+<Image img="experiment-create/step-1.png" alt="A screenshot of the basics experiment creation page" maxWidth="45rem" />
 
 ## Basics
 
@@ -73,8 +75,9 @@ We do not recommend changing variables on your control variant (**Variant A**).
 :::
 ### Variant Screenshots
 
-Screenshots can be added to visualise the changes introduced in each variant of an experiment. 
-Screenshots are useful to quickly understand what an experiment is changing.
+Screenshots can be added to each variant in an experiment, to help in identifying any changes to your UI during the experiment.
+
+<Image img="audiences.png" alt="A screenshot of the Audiences experiment creation page" maxWidth="45rem" />
 ## Audiences
 
 The audiences’ step is where you will control where the experiment will run and who will be exposed to it.
@@ -113,8 +116,13 @@ These audience parameters can then be passed to the SDK in your code using [cont
 When audience enforced is **on**, only users in the filter groups will be exposed to the experiment. Others will be shown the control variant, but
 their data will not be tracked.
 
-When audience enforced is **off**, it is the responsibility of the experimenter to ensure that only eligible visitors are shown the experiments.
-ABsmartly will only warn you when visitors not matching the audience are exposed to your experiment. In this case you would see an **audience mismatch warning** in your experiment. This option makes it easier to full-on when the experiment is completed as the audience filtering is not part of the experiment set up.
+When audience enforced is **off**, any user can participate in the experiment, but
+the web console may warn you that your experiment is being shown to the wrong
+people. This helps you and your developers to remember to add the appropriate
+checks in your code when a decision has been made on the experiment. For
+example, to only show the tested variant to British users.
+
+<Image img="metrics.png" alt="A screenshot of the Metrics experiment creation page" maxWidth="45rem" />
 
 ## Metrics
 
@@ -309,3 +317,41 @@ For example:
 >
 > If the primary metric is inconclusive we will drop the experiment.
 
+<Image img="review.png" alt="A screenshot of the Review experiment creation page" maxWidth="45rem" />
+
+## Review
+
+The review step is where you can go over the experiment you have created and check its details before starting or saving it.
+
+### Experiment Actions
+
+When you are happy with your experiment, you have 4 possible actions that you can take on it:
+
+- Save it as a draft
+- Save it as ready
+- Start it in development mode
+- Start it
+
+#### Saving a draft
+
+Saving your experiment as a draft means that you can come back to this experiment, to give it some final tweaks. When saving as a draft, all fields will still be editable when coming back to this experiment.
+
+#### Saving as ready
+
+Saving you experiment **as ready** is similar to saving it as a draft, but it signifies that the experiment is ready to be started. You cannot save an experiment as ready with invalid settings.
+
+#### Starting in development
+
+Starting your experiment in development allows you to test your experiment in
+your development [environments](/docs/web-console-docs/settings#environments).
+
+An experiment in development mode will not run on a production environment, and the control variant will always be shown.
+This allows for you to test the implementation of an experiment before deploying it to production.
+
+#### Starting
+
+Starting your experiment will activate it in all environments and start collecting data from your users.
+
+## Up Next
+
+The dashboard and how to read your experimentation data!
