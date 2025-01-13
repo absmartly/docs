@@ -1,0 +1,115 @@
+---
+sidebar_position: 10
+---
+
+# Understanding Experimentation Metrics 
+
+Experimentation metrics can be described using many attributes, often combining those attributes together.
+In this article we try to explain the most important attributes and what they mean in the context of experimentation.
+## Role
+In ABsmartly and many other experimentation platforms, metrics are often described as **primary**, **secondary**, **guardrail**, **exploratory**, those
+attributes describe the role that the metric plays in the experiment.
+### Primary metric
+In an experiment the **Primary** metric is the single most important measure used to determine whether the tested change achieves its desired outcome and whether or not the hypothesis is validated or rejected. 
+It reflects the experiment's primary objective and directly aligns with the business’s strategic goals.
+The primary metric is the metric used to inform the experiment design regarding defining the minimum detectable effect (MDE) and the sample size (to ensure sufficient power to detect a meaningful change).
+
+Examples: 
+revenue_per_visitor
+conversion_rate
+retention_rate
+### Secondary metrics
+**Secondary** metrics, while not the main decision-making criteria, play a big role in ensuring a comprehensive understanding of the experiment’s impact.
+They provide additional context and insights beyond the primary metric and can help detect unintended side effects.
+
+Examples: 
+items_added_to_cart
+product_page_view
+banner_interaction
+### Guardrail metrics
+**Guardrail** metrics are safeguards used to monitor and ensure the health, stability, and overall integrity of the system during an experiment. 
+They do not measure the success of the primary business objectives but are critical for detecting unintended negative impacts on the business, user experience and/or operational performance.
+Guardrail metrics act as early warning systems, identifying potential risks such as degraded performance, increased errors, or adverse user behavior before they escalate into larger problems.
+
+Examples: 
+errors
+app_crashes
+page_load_time
+support_tickets
+### Exploratory metrics
+In ABsmartly, **exploratory** metrics refers to metrics of interest not used in decision-making. 
+Exploratory metrics are often used in post-analysis and are a great source of insights on top of which new hypotheses can be built. Exploratory metrics should not be used to evaluate the experiment.
+## Purpose
+A metrics can be described as a **business** metric, a **behavioural** metric or an **operational** metrics.
+Those attributes describe the purpose of the metric, what it is measuring.=
+### Business 
+In experimentation, **business** metrics refers to metrics measuring the impact of a change on a business KPI. Business metrics are often used as primary and/or guardrail metrics. 
+
+Examples: 
+revenue_per_visitor
+conversion_rate
+retention_rate
+calls_to_customer_support
+### Behavioural 
+**Behavioural** metrics are metrics measuring the impact of a change on the visitor's behaviour. Behavioural metrics are usually measuring the direct impact of a change and as such have high sensitivity. Behavioural metrics are often used as secondary metrics.
+
+Examples: 
+items_added_to_wishlist
+clicks_on_banner
+product_page_views
+### Operational 
+**Operational** metrics, also known as technical metrics, measure the impact of a change on system performance. Operational metrics can be used as guardrail metrics but also possibly as primary or secondary metrics depending on the goal of the experiment.
+
+Examples: 
+page_load_time
+app_crashes
+error_rate
+## Data structure
+All metrics are either **binomial** or **continuous**, this is a reference to how the underlying data is structured and measured.
+### Binomial
+**Binomial** metrics represent a binary outcome for each visitor in the experiment, where each instance falls into one of two categories (e.g., success/failure, yes/no, 0/1).
+They are typically represented as a percentage (ie: 10% conversion rate), binomial metrics follow a normal distribution. Binomial metrics are easier to interpret and communicate.
+
+Examples: 
+conversion_rate, click_through_rate (ie: the percentage of users clicking on a link)
+churn_rate
+email_open_rate
+### Continuous
+**Continuous** metrics on the other hand can take on a wide range of values (either measured or counted). Continuous metrics often represent quantities or durations. Their underlying distribution varies depending on the data. Continuous metrics are more sensitive (they capture a wider range of data) and offer more insights but they can be heavily influenced by outliers and are harder to interpret. 
+
+Examples: 
+time_on_page, time_to_first_booking
+number_of_items_in_cart
+revenue_per_visitor
+## Time horizon
+Another aspect of experimentation metrics is their time horizon, typically metrics can be referred to as **short-term** or **long-term**.
+### Short-term
+**Short-term** metrics refer to metrics that measure immediate or near-term outcomes, typically during or shortly after the experiment.
+They can typically be measured accurately in the experiment’s runtime and provide quick feedback on the effects of changes.
+
+Examples: 
+conversion_rate (during the test)
+time_spent_on_page 
+click_through_rate
+### Long-term
+On the other hand, **long-term** metrics measure delayed outcomes which make it hard to measure during the runtime of an experiment.
+Typically long-term metrics represent the strategic goals and align with the desired business outcomes. Using such a metric for decision making requires adapting the experiment design so it captures this long term impact.
+
+Examples: 
+true_conversion_rate (after cancellation and returns have been processed)
+customer_lifetime_value
+long_term_revenue, retention_rate (over 6 months or more)
+## Functionality
+Finally metrics can also be described by how they operate in the context of the experiment. 
+### Proxy
+**Proxy** metrics are indirect measures used to evaluate an outcome that cannot be measured directly (see for the example of long-term metrics above). In experimentation proxy metrics can be used as a replacement for the actual desired goal. There should be a strong correlation between the proxy and the actual goal and this should be validated frequently. 
+Examples: 
+time_on_site as a proxy for engagement
+click_on_buy_button as a proxy for conversion
+### Composite
+**Composite** metrics combine multiple individual metrics into one measure to capture a nuanced view of success. They are often used strategically but can dilute sensitivity.
+Examples:
+Overall Evaluation Criterion (OEC): Weighted combinations of metrics like engagement, revenue, and satisfaction
+
+
+

@@ -1,3 +1,5 @@
+Type-of-analysis.mdx
+
 ---
 sidebar_position: 9
 ---
@@ -14,9 +16,12 @@ Fixed Horizon Testing involves analyzing the results of an experiment after reac
 
 While this method is widely used and beneficial, it lacks flexibility, as decisions can only be made at a single predefined moment. This limitation can lead to unreliable decisions (when experimenters make decisions too early) as well as wasted time and resources. This makes the use of Fixed Horizon testing for product experimentation, where trust, speed, and agility are crucial, less beneficial and more challenging. This is especially true for teams with less experience.
 
+Fixed horizon uses a 2-sided test, meaning it evaluates whether the observed effect is significantly in either direction (positive or negative). Results in a 2 sided-test can be significantly positive, significantly negative or insignificant. 
+
+
 ## Group Sequential Testing
 
-[Group Sequential Testing](https://absmartly.com/engine) is an adaptive analysis method that allows for interim analyses at various points during the experiment. At ABsmartly you can decide how often or how many interim analysis you want. Unlike Fixed Horizon Testing, this approach provides the flexibility to stop the experiments early for efficacy or for futility.
+[Group Sequential Testing](https://absmartly.com/engine) is an adaptive analysis method that allows for interim analyses at various points during the experiment. At ABsmartly you can decide how often or how many interim analyses you want. Unlike Fixed Horizon Testing, this approach provides the flexibility to stop the experiments early for efficacy or for futility.
 
 <Image img="gst-setup.png" alt="Setting up a Group Sequential Test" />
 
@@ -25,9 +30,7 @@ While adding more interim analysis will slightly reduce statistical power compar
 
 <Image img="gst-widget.png" alt="A Group Sequential Test result" />
 
-
-// TODO Add information about 1-sided and 2-sided analysis
-
+Unlike Fixed Horizon, Group Sequential Testing uses a 1-sided test, meaning it evaluates whether the observed effect is significant only in the expected direction. Results in a 1-sided test can either be significant in the expected direction or insignificant.
 
 :::info
 Different experimentation platforms might use different sequential testing implementation. The most commonly used sequential method is Fully Sequential and while it offers the most flexibility (decisions can be made at any moment in time), it comes at the cost of much lower power which in turn leads to higher time to decision. At ABsmartly we believe Group Sequential Testing provides the right compromise between flexibility and speed which is required to make high-quality product decisions in a fast-moving business context.
@@ -36,3 +39,5 @@ Different experimentation platforms might use different sequential testing imple
 ## Which Analysis Type Should I Choose for My Experiment?
 
 Most of the time, Group Sequential Testing should be the preferred method (who does not want faster trustworthy results?) but there are a few use cases where you might decide to use a Fixed Horizon setup. This is mainly when you are dealing with a strong novelty effect (Group Sequential Testing might come to a premature conclusion which might not reflect the true impact) or where you have a long action cycle and wish to observe the visitors for a pre-defined period of time.
+
+Because it is a 2-sided test, Fixed Horizon is a better choice if differentiating between inconclusive and significantly negative results is important. 
