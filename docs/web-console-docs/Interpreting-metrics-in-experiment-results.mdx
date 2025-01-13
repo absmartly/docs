@@ -2,6 +2,8 @@
 sidebar_position: 11
 ---
 
+import Image from "../../src/components/Image";
+
 # Guide to interpreting metrics in experiment results
 
 This guide outlines how to understand and interpret the metrics displayed in ASsmartly. 
@@ -9,10 +11,13 @@ It will cover key elements such as confidence intervals, significance, and stati
 This guide is split into two sections: **Fixed Horizon Metrics** and **Group Sequential** Metrics.
 
 ---
+
 ## Fixed Horizon Metrics
 
 <Image img="experiment-results/fh-positive-result.png" alt="Experiment result for a Fixed Horizon test in ABsmartly" />
+
 ### Understanding the metrics table
+
 The metrics table provides the following key data points for each variant:
 
 - **Participants**: The number of individuals assigned to each variant, expressed as a count and percentage of the total participants. 
@@ -58,10 +63,13 @@ Example using the screenshot above
 - High confidence (97.77%) and a positive impact suggest adopting Variant B may be beneficial.
 
 ---
+
 ## Group Sequential Testing Metrics
 
 <Image img="experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" />
+
 ### Understanding the Metrics Table
+
 The metrics table provides the following key data points for each variant at the last interim analysis:
 
 - **Mean**: The expected average performance of the metric for the variant.
@@ -73,6 +81,7 @@ The metrics table provides the following key data points for each variant at the
 These data points provide a summary of the ongoing analysis for the selected variant at the last analysis, helping to evaluate its performance relative to the baseline.
 
 ---
+
 ### Understanding the Group Sequential Graph
 Group Sequential Testing, makes it easy to visually interpret results. The graph displays the evolution of statistical evidence over time, allowing decisions to be made at predefined checkpoints during the experiment. It includes the following elements:
 
