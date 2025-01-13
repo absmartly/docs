@@ -66,7 +66,7 @@ Example using the screenshot above
 
 ## Group Sequential Testing Metrics
 
-<Image img="experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" />
+<Image img="experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" maxWidth="45rem" />
 
 ### Understanding the Metrics Table
 
@@ -84,13 +84,13 @@ These data points provide a summary of the ongoing analysis for the selected var
 
 ### Understanding the Group Sequential Graph
 
-<Image img="experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" />
+<Image img="experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" maxWidth="45rem" />
 
 Group Sequential Testing, makes it easy to visually interpret results. The graph displays the evolution of statistical evidence over time, allowing decisions to be made at predefined checkpoints during the experiment. It includes the following elements:
 
 - **X-Axis (Time)**: Represents the progress of the experiment in time, with dates marking each past and future interim analyses.
 - **Y-Axis (Standard Deviations, Z-Scale)**: Represents the Z-Score, showing how far the observed result is from the null hypothesis.
-- **Z-Score Trajectory (Orange line)**: The path of the observed Z-Score over time (e.g., yellow line for Variant B). It starts at 0 and moves based on accumulating data.
+- **Z-Score Trajectory (Orange line)**: The path of the observed Z-Score over time. It starts at 0 and moves based on accumulating data.
 - **Efficiency Boundary (Green Region)**: The upper boundary. If the Z-Score trajectory crosses this boundary, the variant shows a statistically significant improvement, and the experiment can be stopped early for success.
 - **Futility Boundary (Pink Region)**: The lower boundary. If the Z-Score trajectory crosses this boundary, the variant is deemed unlikely to show meaningful improvement, and the experiment can be stopped early for futility. 
 - **Fixed Horizon (Vertical Dotted Line)**: Represents the moment in time where the equivalent Fixed Horizon test would have been completed. All interim analysis before that dotted line is an opportunity to make an early decision.
