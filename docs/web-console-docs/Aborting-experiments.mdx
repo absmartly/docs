@@ -1,0 +1,67 @@
+---
+sidebar_position: 10
+---
+
+# When should I stop my experiment early?
+
+Stopping an experiment early —or **aborting**— are sometimes necessary, but it must be approached cautiously, especially when using fixed-horizon or group sequential testing (GST) engines. Each engine type has its own rules and considerations for early stopping. This article explains when it might be appropriate to stop or abort an experiment, the risks involved, and best practices for decision-making.
+
+## Aborting fixed-horizon experiments
+
+In a **fixed-horizon experiment**, results should ideally be evaluated only at the pre-determined horizon (e.g., after collecting the required sample size). Early stopping is not recommended for significant positive results because fixed-horizon tests require full sample size completion to ensure validity. However, there are rare exceptions where early stopping or **aborting** might be justified:
+
+### Negative results with a potential high cost
+If the treatment causes significant harm to **primary** or **guardrail metrics**, such as decreased conversion rates or increased error rates, it may justify stopping the experiment. However, this decision should be seen as a **precautionary measure** rather than conclusive evidence, as:
+- The experiment may be **underpowered**, increasing the risk of false positives.
+- The observed effect may be due to a **novelty effect**, which could diminish over time as users adapt.
+
+**Example**:  
+A treatment causes a 30% increase in conversion within the first day. Even if the evidence is not definitive, the potential harm to the business justifies stopping early.
+
+### Critical bugs or errors
+If the treatment introduces a **bug** or **technical failure** that disrupts core functionality, aborting the experiment is necessary to prevent further damage. Bugs in the experiment tracking or in the variant implementation are the most common reasons for aborting experiments.
+
+**Example**:  
+A bug in the checkout flow prevents users from completing transactions, making it imperative to abort the experiment immediately.
+
+---
+## Aborting Group Sequential experiments
+
+**Group sequential testing (GST)** engines are designed for interim analyses, providing valid statistical checks that allow for stopping experiments when appropriate. However, it is important to distinguish between **stopping** and **aborting** in the context of GST:
+
+- **Stopping**: If the experiment reaches an interim analysis and crosses a pre-defined statistical boundary (positive or negative), it is stopped. This is not considered "early stopping" because the interim analysis was planned in advance. In this case the experiment is completed.
+- **Aborting**: Stopping an experiment **before** reaching the next interim analysis due to unforeseen circumstances (e.g., bugs or severe negative impacts) is considered early stopping in GST.
+
+### Aborting in between analysis
+Aborting may be necessary if unexpected issues arise, such as significant harm to the metrics, bugs, or operational failures. Like in fixed-horizon experiments, this should be treated as a signal, not conclusive evidence.
+
+**Example**:  
+Between planned interim analyses, a feature causes a spike in error rates, requiring the experiment to be aborted to mitigate harm.
+
+---
+
+## Risks of aborting experiments
+- **False positives**: Stopping early when the experiment is underpowered increases the likelihood of incorrect conclusions. A negative impact on the primary metric can be a false positive
+- **Novelty effects**: Early negative signals may resolve over time as users adapt to changes. Stopping early will prevent users from capturing this effect and might lead to wrong decisions about the true impact of a change.
+- **Limited evidence**: Decisions are based on signals rather than hard evidence due to incomplete data.
+- **Winner’s curse**: Early stopping can exaggerate effect sizes, making subsequent validation less reliable.
+- **Missing long-term impacts**: Early termination may prevent capturing delayed outcomes or unintended side effects.
+
+---
+## Best practices for stopping or aborting experiments=
+### Use primary and guardrail metrics
+Both **primary** and **guardrail metrics** should guide early stopping decisions. When chosen correctly, these metrics measure the impact of changes on key KPIs and ensure that critical business objectives are protected.
+### Pre-define stopping and abort criteria
+Set clear rules before launching the experiment. Criteria might include:
+- Specific thresholds for **primary metrics** to validate success or detect failure.
+- Defined guardrail thresholds for key metrics like error rates, performance, or user behavior.
+
+Those early stopping criteria can be recorded in ABsmartly on the last step of the experiment creation form.
+### Investigate and validate with follow-up analysis
+Treat early stops as signals, not definitive conclusions. Early stopping should always be followed by an investigation to try and understand the cause. When needed follow-up experiment can be run once the issue has been mitigated.
+
+---
+## Summary
+
+Early stopping or aborting an experiment is a decision that requires careful consideration. In fixed-horizon experiments, early stopping is rare and should only occur for significant negative impacts or critical bugs. In GST experiments, planned stops at interim analyses are valid and expected, while unplanned experiment abortions should be reserved for emergencies. Both primary and guardrail metrics are essential for guiding early stopping decisions. To minimize risks, establish pre-defined criteria, validate results, and monitor metrics comprehensively.
+
