@@ -4,24 +4,23 @@ sidebar_position: 10
 
 import Image from "../../src/components/Image";
 
-
 # When to abort an experiment?
 
-**Aborting** -or early stopping-- an experiment is sometimes necessary, but it must be approached cautiously. Aborting means stopping an experiment before it is completed. 
-This article explains when it might be appropriate to stop or abort a Fixed-horizon or a Group Sequential test (both have their own rules and considerations for early stopping), 
-the risks involved, and best practices for decision-making. 
+**Aborting** -or early stopping-- an experiment is sometimes necessary, but it must be approached cautiously. Aborting means stopping an experiment before it is completed.
+This article explains when it might be appropriate to stop or abort a Fixed-horizon or a Group Sequential test (both have their own rules and considerations for early stopping),
+the risks involved, and best practices for decision-making.
 
 ## Aborting fixed-horizon experiments
 
-In a **fixed-horizon experiment**, results should ideally be evaluated only at the pre-determined horizon (e.g., after collecting the required sample size). 
+In a **fixed-horizon experiment**, results should ideally be evaluated only at the pre-determined horizon (e.g., after collecting the required sample size).
 Aborting a fixed-horizon experiment means making a decisions (usually to stop) before the experiment has collected the required sample size.
-Aborting is not recommended because fixed-horizon tests require full sample size completion to ensure validity. 
+Aborting is not recommended because fixed-horizon tests require full sample size completion to ensure validity.
 
 ---
 
 ## Aborting Group Sequential experiments
 
-**Group Sequential Test (GST)** are designed for interim analyses, providing valid statistical checks that allow for early-stopping experiments when appropriate. 
+**Group Sequential Test (GST)** are designed for interim analyses, providing valid statistical checks that allow for early-stopping experiments when appropriate.
 The benefit of GST is to allow for early stopping but only this can only happen if the experiment crossed a boundary at one of the planned interim analysis.
 Aborting a Group Sequential Test, means making a decision (usually to stop) in-between analysis and before the experiment crossed either the efficiency or the futility boundary.
 
@@ -32,7 +31,7 @@ Aborting a Group Sequential Test, means making a decision (usually to stop) in-b
 There are a few scenarios where **aborting** might be justified:
 
 ### Negative results with a potential high cost
-If the treatment causes significant harm to **primary** or **guardrail metrics**, such as decreased conversion rates or increased error rates, it may justify aborting the experiment. 
+If the treatment causes significant harm to **primary** or **guardrail metrics**, such as decreased conversion rates or increased error rates, it may justify aborting the experiment.
 However, this decision should be seen as a **precautionary measure** rather than conclusive evidence, as:
 - The experiment may be **underpowered**, increasing the risk of false positives.
 - The observed effect may be due to a **novelty effect**, which could diminish over time as users adapt.
@@ -43,7 +42,7 @@ A treatment causes a 30% increase in conversion within the first day. Even if th
 ### Critical bugs or errors
 If the treatment introduces a **bug** or **technical failure** that disrupts core functionality, aborting the experiment is necessary to prevent further damage. Bugs in the experiment tracking or in the variant implementation are the most common reasons for aborting experiments.
 
-**Example**:  
+**Example**:
 A bug in the checkout flow prevents users from completing transactions, making it imperative to abort the experiment immediately.
 
 ### Experiment Health Checks alert
