@@ -6,7 +6,7 @@ import Image from "../../src/components/Image";
 
 # Guide to interpreting metrics in experiment results
 
-This guide outlines how to understand and interpret the metrics displayed in ASsmartly. 
+This guide outlines how to understand and interpret the metrics displayed in ABsmartly. 
 It will cover key elements such as confidence intervals, significance, and statistical power. 
 This guide is split into two sections: **Fixed Horizon Metrics** and **Group Sequential** Metrics.
 
@@ -32,7 +32,7 @@ The metrics table provides the following key data points for each variant:
 The confidence interval (CI) and the color-coded indicator help assess the significance of the results: 
 - **Positive Impact (Green)**: The confidence interval is entirely above 0, indicating a statistically significant improvement for the variant. 
 - **Negative Impact (Red)**: The confidence interval is entirely below 0, indicating a statistically significant negative effect. 
-- **Inconclusive (Grey)**: The confidence interval crosses 0, meaning the results are not statistically significant. 
+- **Insignificant (Grey)**: The confidence interval crosses 0, meaning the results are not statistically significant. 
 
 ### Evaluating Power
 
@@ -40,8 +40,8 @@ The confidence interval (CI) and the color-coded indicator help assess the signi
 
 Power indicates the likelihood that the experiment would detect a true effect if one exists. The power shown in ABsmartly indicates how well powered the primary metric is compared to the target power.
 
-- **Power Achieved**: The actual power achieved on the primary metric based on the data collected. 
-- **Target Power**: The pre-specified experiment power threshold.
+- **Power Achieved**: The actual power achieved on the primary metric based on the data collected. In the example above it is 96.1%.
+- **Objective/Target Power**: The pre-specified experiment power threshold. In the example above target was 80%.
 
 ### Step-by-step interpretation of a metric
 Example using the screenshot above
@@ -66,7 +66,7 @@ Example using the screenshot above
 
 ## Group Sequential Testing Metrics
 
-<Image img="experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" maxWidth="45rem" />
+<Image img="experiment-results/gst-inconclusive-result.png" alt="Inconclusive GST result in ABsmartly" maxWidth="45rem" />
 
 ### Understanding the Metrics Table
 
@@ -84,7 +84,7 @@ These data points provide a summary of the ongoing analysis for the selected var
 
 ### Understanding the Group Sequential Graph
 
-<Image img="experiment-results/gst-inconclusive-result.png" alt="Experiment result for a Group Sequential test in ABsmartly" maxWidth="45rem" />
+<Image img="experiment-results/gst-inconclusive-result.png" alt="Inconclusive GST result in ABsmartly" maxWidth="45rem" />
 
 Group Sequential Testing, makes it easy to visually interpret results. The graph displays the evolution of statistical evidence over time, allowing decisions to be made at predefined checkpoints during the experiment. It includes the following elements:
 
