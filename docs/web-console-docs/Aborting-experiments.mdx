@@ -5,9 +5,9 @@ sidebar_position: 10
 import Image from "../../src/components/Image";
 
 
-# When should I stop my experiment early?
+# When to abort an experiment?
 
-Stopping an experiment early —or **aborting**— are sometimes necessary, but it must be approached cautiously. 
+**Aborting** -or early stopping-- an experiment is sometimes necessary, but it must be approached cautiously. 
 This article explains when it might be appropriate to stop or abort an experiment a Fixed-horizon or a Group Sequential test (both have their own rules and considerations for early stopping), 
 the risks involved, and best practices for decision-making. 
 
@@ -51,6 +51,15 @@ Aborting may be necessary if unexpected issues arise, such as significant harm t
 
 **Example**:  
 Between planned interim analyses, a feature causes a spike in error rates, requiring the experiment to be aborted to mitigate harm.
+
+### Experiment Health Checks alert
+[Health Checks](experiment-health-checks) are quality checks run in the background to ensure the experiment and data are reliable. Most health checks alerts would require to abort the experiment and investigate the reason for the alert.
+
+**Example**:
+The health checks show an assignment conflicts was detected meaning that some visitors have been exposed to more than one variant. This might require the experiment to be stopped and the issue investigated.
+
+<Image img="experiment-dashboard/health-checks-audience-mismatch.png" alt="Audience mismatch warning" maxWidh="40rem" />
+
 
 ---
 
