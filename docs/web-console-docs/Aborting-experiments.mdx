@@ -2,6 +2,9 @@
 sidebar_position: 10
 ---
 
+import Image from "../../src/components/Image";
+
+
 # When should I stop my experiment early?
 
 Stopping an experiment early —or **aborting**— are sometimes necessary, but it must be approached cautiously. 
@@ -25,6 +28,15 @@ If the treatment introduces a **bug** or **technical failure** that disrupts cor
 
 **Example**:  
 A bug in the checkout flow prevents users from completing transactions, making it imperative to abort the experiment immediately.
+
+### Experiment Health Checks alert
+Health checks are quality checks run in the background to ensure the experiment and data are reliable. Most health checks alerts would require to abort the experiment and investigate the reason for the alert.
+
+**Example**:
+The health checks show an Assignment Conflict meaning that some visitors have been exposed to more than one variant. 
+
+<Image img="experiment-dashboard/health-checks-audience-mismatch.png" alt="Audience mismatch warning" maxWidh="40rem" />
+
 
 ---
 ## Aborting Group Sequential experiments
@@ -67,3 +79,7 @@ Treat early stops as signals, not definitive conclusions. Early stopping should 
 
 Early stopping or aborting an experiment is a decision that requires careful consideration. In fixed-horizon experiments, early stopping is rare and should only occur for significant negative impacts or critical bugs. In GST experiments, planned stops at interim analyses are valid and expected, while unplanned experiment abortions should be reserved for emergencies. Both primary and guardrail metrics are essential for guiding early stopping decisions. To minimize risks, establish pre-defined criteria, validate results, and monitor metrics comprehensively.
 
+
+
+
+<!-- Stopping early for Health check fails
