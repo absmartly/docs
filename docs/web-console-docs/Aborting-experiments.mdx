@@ -7,16 +7,33 @@ import Image from "../../src/components/Image";
 
 # When to abort an experiment?
 
-**Aborting** -or early stopping-- an experiment is sometimes necessary, but it must be approached cautiously. 
+**Aborting** -or early stopping-- an experiment is sometimes necessary, but it must be approached cautiously. Aborting means stopping an experiment before it is completed. 
 This article explains when it might be appropriate to stop or abort an experiment a Fixed-horizon or a Group Sequential test (both have their own rules and considerations for early stopping), 
 the risks involved, and best practices for decision-making. 
 
 ## Aborting fixed-horizon experiments
 
-In a **fixed-horizon experiment**, results should ideally be evaluated only at the pre-determined horizon (e.g., after collecting the required sample size). Early stopping is not recommended for significant positive results because fixed-horizon tests require full sample size completion to ensure validity. However, there are a few other scenarios where early stopping or **aborting** might be justified:
+In a **fixed-horizon experiment**, results should ideally be evaluated only at the pre-determined horizon (e.g., after collecting the required sample size). 
+Aborting a fixed-horizon experiment means making a decisions (usually to stop) before the experiment has collected the required sample size.
+Aborting is not recommended because fixed-horizon tests require full sample size completion to ensure validity. 
+
+---
+
+## Aborting Group Sequential experiments
+
+**Group Sequential Test (GST)** are designed for interim analyses, providing valid statistical checks that allow for early-stopping experiments when appropriate. 
+The benefit of GST is to allow for early stopping but only this can only happen if the experiment crossed a boundary at one of the planned interim analysis.
+Aborting a Group Sequential Test, means making a decision (usually to stop) in-between analysis and before the experiment crossed either the efficiency or the futility boundary.
+
+---
+
+## When can an experiment be aborted?
+
+There are a few scenarios where **aborting** might be justified:
 
 ### Negative results with a potential high cost
-If the treatment causes significant harm to **primary** or **guardrail metrics**, such as decreased conversion rates or increased error rates, it may justify aborting the experiment. However, this decision should be seen as a **precautionary measure** rather than conclusive evidence, as:
+If the treatment causes significant harm to **primary** or **guardrail metrics**, such as decreased conversion rates or increased error rates, it may justify aborting the experiment. 
+However, this decision should be seen as a **precautionary measure** rather than conclusive evidence, as:
 - The experiment may be **underpowered**, increasing the risk of false positives.
 - The observed effect may be due to a **novelty effect**, which could diminish over time as users adapt.
 
@@ -36,30 +53,6 @@ A bug in the checkout flow prevents users from completing transactions, making i
 The health checks show an assignment conflicts was detected meaning that some visitors have been exposed to more than one variant. This might require the experiment to be stopped and the issue investigated.
 
 <Image img="experiment-dashboard/health-checks-audience-mismatch.png" alt="Audience mismatch warning" maxWidh="40rem" />
-
-
----
-## Aborting Group Sequential experiments
-
-**Group sequential testing (GST)** engines are designed for interim analyses, providing valid statistical checks that allow for stopping experiments when appropriate. However, it is important to distinguish between **stopping** and **aborting** in the context of GST:
-
-- **Stopping**: If the experiment reaches an interim analysis and crosses a pre-defined statistical boundary (efficiency or futility), the experiment is in this case completed and it can be stopped. This is not considered "aborting" because the interim analysis was planned in advance. 
-- **Aborting**: Stopping an experiment **before** reaching the next interim analysis due to unforeseen circumstances (e.g., bugs or severe negative impacts) is considered aborting in GST.
-
-### Aborting in between analysis
-Aborting may be necessary if unexpected issues arise, such as significant harm to the metrics, bugs, or operational failures. Like in fixed-horizon experiments, this should be treated as a signal, not conclusive evidence.
-
-**Example**:  
-Between planned interim analyses, a feature causes a spike in error rates, requiring the experiment to be aborted to mitigate harm.
-
-### Experiment Health Checks alert
-[Health Checks](experiment-health-checks) are quality checks run in the background to ensure the experiment and data are reliable. Most health checks alerts would require to abort the experiment and investigate the reason for the alert.
-
-**Example**:
-The health checks show an assignment conflicts was detected meaning that some visitors have been exposed to more than one variant. This might require the experiment to be stopped and the issue investigated.
-
-<Image img="experiment-dashboard/health-checks-audience-mismatch.png" alt="Audience mismatch warning" maxWidh="40rem" />
-
 
 ---
 
