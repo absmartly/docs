@@ -14,12 +14,17 @@ This report can be used to understand how the experimentation program is growing
 More importantly it shows how many experiments were successfully completed (vs aborted).
 Only completed experiments can provide the evidence for making reliable and data-informed decisions.
 
+### Permissions
+
+Access to the velocity report requires the permission `View experiment velocity reports`. 
+If you wish to access the report but do not have permissions please reach out to your platform admin so they can grant you access.
+
 ### General settings & filters 
 
 <Image img="experiment-report/general-settings-and-filters.png" alt="General Report Settings and Filters" maxWidth="60rem" />
 
 #### Reporting period
-On top of the report users must select the period over which they want to report. By default the reporting period is set to the last 30 days.
+At the top of the report users can select the period over which they want to report. By default the reporting period is set to the last 30 days.
 
 #### Filters
 Users can select to report on a subset of experiments based on the following available Filters `Owners`, `Applications`, `Unit types`, `Primary metric`
@@ -32,11 +37,13 @@ By default all those filters are empty so the report includes all experiments.
 #### Experiments vs Iterations
 A toggle on top of the report allows to switch the view from `experiments` level or `iterations` level reporting.
 Reporting on `iterations` means reporting on every single instance while reporting on the `experiments` level means reporting on unique experiment names.
+
 For example, if an experiment named 'Test new check-out flow' was started, then aborted after a few minutes because of an issue then restarted once the issue was fixed.
-In the `iterations` this experiment would be counted twice `started` while in the `experiments` view it would only appear once. The last instance wiould be the one visualised on the graphs.
+In the `iterations` view this experiment would be counted twice for `started` while in the `experiments` view it would only appear once. 
+The last instance would be used for the aggregation on the graph.
 
 #### Sharing
-It is possible to share an exact view of the report by clicking on the share button on the right side of the report.
+It is possible to generate a shared link of an exact view of the report by clicking on the share button on the right side of the report.
 
 #### Aggregation type
 By default the data shown on the graph will be aggregated `per week` but it is also possible to aggregate `per month` or `per year`. 
@@ -66,16 +73,16 @@ In the case of a Fixed Horizon experiment, it is deemed completed once it reache
 For a Group Sequential Test, an experiment is completed once it crosses one of the test boundary (efficiency or futility).
 
 The report also visualise the result of the statistical test at the moment the experiment was completed. 
-The experiment will be shown in `green` if its `primary metric is conclusive in the expected direction` at the time the experiment is completed.
-The experiment would be shown in `grey` if its `primary metric is insignificant` when the experiment is completed.
-In the case of a Fixed Horizon experiment, it can also be shown in `red` if its `primary metric is significant in the opposite direction` (causing harm).
+The experiment will be shown in `green` if its **primary metric is conclusive in the expected direction** at the time the experiment is completed.
+The experiment would be shown in `grey` if its **primary metric is insignificant** when the experiment is completed.
+In the case of a Fixed Horizon experiment, it can also be shown in `red` if its **primary metric is significant in the opposite direction** (causing harm).
 
 ### Experiment aborted
 
 <Image img="experiment-report/experiments-aborted.png" alt="Experiments aborted report" maxWidth="30rem" />
 
 Experiment aborted shows experiments which were stopped or put full-on before they were completed. Experiments can be aborted (stopped early or put full-on) because of bugs in the implementation, 
-or because of early worrying negative signals or any other reason. Read our [When to abort an experiment? guide](Aborting-experiments) to understand more about aborting experiments.
+because of early worrying negative signals or any other reason. Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
 
 :::caution
 Aborted experiments do not provide reliable evidence on which to base decisions.
@@ -87,4 +94,4 @@ Depending on the reason for aborting, aborted experiment are often restarted onc
 <Image img="experiment-report/experiments-completion-rate.png" alt="Experiments completion rate report" maxWidth="30rem" />
 
 This report shows the ratio of non-running experiments (aborted + completed) which were completed in the reporting period. 
-This provides a good overview of the quality of the experimentation program and decisons which are based on experimentation.
+This provides a good overview of the quality of the experimentation program and decisons which are based on those experiments.
