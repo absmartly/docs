@@ -1,0 +1,90 @@
+---
+sidebar_position: 12
+---
+
+import Image from "../../src/components/Image";
+
+# Experiment Reports
+
+## Experiment Velocity Report
+
+The Experiment Velocity Report provides an overview of the experimentation program.
+It highlights how many experiments were started, running, completed and aborted in the reporting period.
+This report can be used to understand how the experimentation program is growing in term of experiments started.
+More importantly it shows how many experiments were successfully completed (vs aborted).
+Only completed experiments can provide the evidence for making reliable and data-informed decisions.
+
+### General settings & filters 
+
+<Image img="experiment-report/general-settings-and-filters.png" alt="General Report Settings and Filters" maxWidth="60rem" />
+
+#### Reporting period
+On top of the report users must select the period over which they want to report. By default the reporting period is set to the last 30 days.
+
+#### Filters
+Users can select to report on a subset of experiments based on the following available Filters `Owners`, `Applications`, `Unit types`, `Primary metric`
+By default all those filters are empty so the report includes all experiments.
+
+### Specific settings 
+
+<Image img="experiment-report/velocity-settings.png" alt="Velocity Report Settings" maxWidth="30rem" />
+
+#### Experiments vs Iterations
+A toggle on top of the report allows to switch the view from `experiments` level or `iterations` level reporting.
+Reporting on `iterations` means reporting on every single instance while reporting on the `experiments` level means reporting on unique experiment names.
+For example, if an experiment named 'Test new check-out flow' was started, then aborted after a few minutes because of an issue then restarted once the issue was fixed.
+In the `iterations` this experiment would be counted twice `started` while in the `experiments` view it would only appear once. The last instance wiould be the one visualised on the graphs.
+
+#### Sharing
+It is possible to share an exact view of the report by clicking on the share button on the right side of the report.
+
+#### Aggregation type
+By default the data shown on the graph will be aggregated `per week` but it is also possible to aggregate `per month` or `per year`. 
+Choosing the right aggregation depends mainly on the lenght or the reporting period and how you wish to visualise the data.
+Changing the aggregation period does not impact the data shown.
+
+### Experiment started
+
+<Image img="experiment-report/experiments-started.png" alt="Experiments started report" maxWidth="30rem" />
+
+This widget provides a view on how many new experiments were started in the reporting period. 
+If the same experiment is restarted several times in the reporting period it would appear several times if reporting on `Iterations` or once if reporting on unique experiment name.
+
+### Experiment running
+
+<Image img="experiment-report/experiments-running.png" alt="Experiments running report" maxWidth="30rem" />
+
+This widget reports on experiments which were running (in progress and collecting data) for any duration in the reporting period.
+Even if an experiment was running only for a few seconds it would appear on the report.
+
+### Experiment completed
+
+<Image img="experiment-report/experiments-completed.png" alt="Experiments completed report" maxWidth="30rem" />
+
+This report highlights the number of experiment which were successfully completed in the reporting period. 
+In the case of a Fixed Horizon experiment, it is deemed completed once it reaches its expected sample size or planned duration.
+For a Group Sequential Test, an experiment is completed once it crosses one of the test boundary (efficiency or futility).
+
+The report also visualise the result of the statistical test at the moment the experiment was completed. 
+The experiment will be shown in `green` if its `primary metric is conclusive in the expected direction` at the time the experiment is completed.
+The experiment would be shown in `grey` if its `primary metric is insignificant` when the experiment is completed.
+In the case of a Fixed Horizon experiment, it can also be shown in `red` if its `primary metric is significant in the opposite direction` (causing harm).
+
+### Experiment aborted
+
+<Image img="experiment-report/experiments-aborted.png" alt="Experiments aborted report" maxWidth="30rem" />
+
+Experiment aborted shows experiments which were stopped or put full-on before they were completed. Experiments can be aborted (stopped early or put full-on) because of bugs in the implementation, 
+or because of early worrying negative signals or any other reason. Read our [When to abort an experiment? guide](/aborting-experiments) to understand more about aborting experiments.
+
+:::caution
+Aborted experiments do not provide reliable evidence on which to base decisions.
+Depending on the reason for aborting, aborted experiment are often restarted once the underlying issue is fixed.
+:::
+
+### Experiment completion rate
+
+<Image img="experiment-report/experiments-completion-rate.png" alt="Experiments completion rate report" maxWidth="30rem" />
+
+This report shows the ratio of non-running experiments (aborted + completed) which were completed in the reporting period. 
+This provides a good overview of the quality of the experimentation program and decisons which are based on experimentation.
