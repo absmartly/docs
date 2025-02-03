@@ -10,7 +10,7 @@ import Image from "../../src/components/Image";
 
 The Experiment Velocity Report provides an overview of the experimentation program.
 It highlights how many experiments were started, running, completed and aborted in the reporting period.
-This report can be used to understand how the experimentation program is growing in term of experiments started.
+This report can be used to understand how the experimentation program is growing in terms of experiments started.
 More importantly it shows how many experiments were successfully completed (vs aborted).
 Only completed experiments can provide the evidence for making reliable and data-informed decisions.
 
@@ -47,7 +47,7 @@ It is possible to generate a shared link of an exact view of the report by click
 
 #### Aggregation type
 By default the data shown on the graph will be aggregated `per week` but it is also possible to aggregate `per month` or `per year`. 
-Choosing the right aggregation depends mainly on the lenght or the reporting period and how you wish to visualise the data.
+Choosing the right aggregation depends mainly on the length or the reporting period and how you wish to visualise the data.
 Changing the aggregation period does not impact the data shown.
 
 ### Experiment started
@@ -70,24 +70,24 @@ Even if an experiment was running only for a few seconds it would appear on the 
 
 This report highlights the number of experiment which were successfully completed in the reporting period. 
 In the case of a [Fixed Horizon Experiment](types-of-analysis), it is deemed completed once it reaches its expected sample size or planned duration.
-For a [Group Sequential Test](types-of-analysis), an experiment is completed once it crosses one of the test boundary (efficiency or futility).
+For a [Group Sequential Test](types-of-analysis), an experiment is completed once it crosses one of the test boundaries (efficiency or futility).
 
-The report also visualise the outcome of the statistical test on the primary metric at the moment the experiment was completed. 
-The experiment will be shown in `green` if its **primary metric is significant in the expected direction** at the time the experiment is completed.
-The experiment would be shown in `grey` if its **primary metric is insignificant** when the experiment is completed.
-In the case of a Fixed Horizon experiment, it can also be shown in `red` if its **primary metric is significant in the opposite direction** (causing harm).
+The report also visualises the outcome of the statistical test on the primary metric at the moment the experiment was completed. 
+The experiment will be shown in `green` if its **primary metric was significant in the expected direction** at the time the experiment was completed.
+The experiment would be shown in `grey` if its **primary metric was insignificant** when the experiment was completed.
+In the case of a Fixed Horizon experiment, it can also be shown in `red` if its **primary metric was significant in the opposite direction** (causing harm).
 
 :::info
 Experimentation is about generating evidence to make better decisions. All `completed experiments`, independently of their statistical outcome, 
-provides valuable evidence and insights on which to base decisions, and in that sense they should all be seen as success. 
-Knowning that something does not have the expected impact on customer behaviour can be as important and insightful as validating that something else does.
+provide valuable evidence and insights on which to base decisions, and in that sense they should all be seen as success. 
+Knowing that something does not have the expected impact on customer behaviour can be as important and insightful as validating that something else does.
 :::
 
 ### Experiment aborted
 
 <Image img="experiment-report/experiments-aborted.png" alt="Experiments aborted report" maxWidth="30rem" />
 
-Experiment aborted shows experiments which were stopped or put full-on before they were completed. Experiments can be aborted (stopped early or put full-on) because of bugs in the implementation, 
+`Experiment aborted` shows experiments which were stopped or put full-on before they were completed. Experiments can be aborted (stopped early or put full-on) because of bugs in the implementation, 
 because of early worrying negative signals or for any other reason. Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
 
 :::caution
