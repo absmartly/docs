@@ -1,217 +1,255 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 import Image from "../../src/components/Image";
-import FutureDate from "../../src/components/FutureDate";
 
-# Creating An Experiment
+# Creating an experiment
 
-How about we start creating some experiments? At the top of the dashboard, you
-will find the **New Experiment** button. Here you will be able to fine tune,
-edit and start your experiment.
+A step by step guide to creating a new experiment in ABsmartly.
+## Getting started
 
-<Image img="experiment-create/step-1.png" alt="A screenshot of the basics experiment creation page" />
+To get started with creating a new experiment, you can click **Experiments** on the left side menu and then choose **Create from Scratch**.
+
+:::info
+Instead of creating an experiment from scratch you can also decide to use a pre-existing template. 
+To find out more about creating and using templates check our [template documentation](templates).
+:::
 
 ## Basics
 
-The Basics step is where you will set some of the most important values for your experiment. The experiment name, the traffic allocation and the analysis type.
+<Image maxWidth="40rem" centered img="experiment-create/step-1.png" alt="Step 1 of the experiment creation process" />
+
+The Basics step is where you will define the experiment name, display name and set the traffic allocation. 
 
 ### Experiment Name
 
-The experiment name can be anything that you want! As it will be used in your
-code, we recommend using a keyword-like name with underscores. For example,
-`large_homepage_carousel`.
+The experiment name needs to be unique but it can be anything that you want! 
+As it will be used in your code, we recommend using camel case or snake case. 
+
+:::tip
+Because experiment names are unique across the entire platform, it is usually good practice to use a naming convention.
+A good experiment name could for example include a team name, a project name, etc.
+
+`<team-name>-<project-name>-<experiment-name>`
+:::
+### Display Name
+
+The display name is how the experiment will appear in the ABsmartly interface. The display name does not need to be unique. 
+As this name will be used to identify your experiment in ABsmartly, we recommend using a good human readable name.
 
 ### Traffic Allocation
 
-The traffic allocation is the total amount of audience who will experience the
-experiment, including the control group. Usually, this is kept at 100% unless
-the change is considered dangerous. In which case, you could start it at 10%,
-move it up to 50% and eventually to 100% as you grow more confident in the
+The traffic allocation is the total number of eligible visitors who will be included in the experiment, including the control group. Usually, this is kept at 100% unless the change is considered dangerous. In which case, you could start it at 10%, move it up to 50% and eventually to 100% as you grow more confident in the
 change.
-
 ## Variants
 
-The variants section is where you will choose your amount of variants, the
-percentage of traffic that each variant will have, your variant names and set
-any variant variables which can be used in your code.
+The variants section is where you will choose the number of variants for your experiment, the percentage of traffic that each variant will have, your variant names and set any variant variables which can be used in your code.
 
-<Image 
-  maxWidth="40rem"
-  centered
-img="variantsSelector.png" alt="A screenshot of the Variant Split Manager" />
+<Image maxWidth="40rem" centered img="experiment-create/step-2.png" alt="Configuring the variants" />
 
 ### Variant Split Manager
 
-The Variant Split Manager is where you can select your number of variants and the split percentage across them.
+The Variant Split Manager is where you can select your number of variants and the percentage of traffic to assign to each one of them.
 
-You can have up to 4 variants at any one time and your split percentage can be
-whatever you want. But note, the split percentage cannot be changed after an
-experiment has started running without biasing the data. If you wish to ramp up
-an experiment, it's better to use the [traffic allocation](#traffic-allocation)
-option instead.
+Your experiment can be configured with up to 4 variants (control + 3). 
+The percentage of traffic for each variant can be set separately for each variant as long as the total adds up to 100%.
+
+:::caution
+The percentage of traffic in each variant cannot be changed once the experiment is started. Doing so would introduce bias into the results. If you wish to ramp up an experiment, it's better to use the [traffic allocation](#traffic-allocation) option instead.
+For a multi-variant experiment to be eligible for Group Sequential Testing, it requires an equal split between variants (excluding control).
+::: 
 
 :::note
-The more variants you have, the less traffic each variant will be
-exposed to and the longer it will take for the experiment to finish.
+The more variants you have, the less traffic each variant will be exposed to and the longer it will take for the experiment to finish. The optimal set up is an A/B experiment with a 50/50 split in traffic.
 :::
-
-:::caution
-For a multi-variant experiment to be eligible for Group Sequential Testing, it requires an equal split between variants (exclusing base).
-:::
-
 ### Variant Variables
 
-Variant variables can be used to automate your experiments. If you, for
-example, use a configuration file, you can pass a variant variable here and
-have it overwrite your code. See
-[treatment variables](/docs/sdk-documentation/basic-usage#treatment-variables)
-in the SDK Documentation for more information.
+Variant variables can be used to automate your experiments. If you, for example, use a configuration file, you can pass a variant variable here and have it overwrite your code. See
+[treatment variables](/docs/sdk-documentation/basic-usage#treatment-variables) in the SDK Documentation for more information.
 
 :::caution
-Generally, we do not recommend changing variables on your control variant
-(**Variant A**).
+We do not recommend changing variables on your control variant (**Variant A**).
 :::
-
 ### Variant Screenshots
 
-Screenshots can be added to each variant in an experiment, to help in identifying any changes to your UI during the experiment.
-
-<Image img="audiences.png" alt="A screenshot of the Audiences experiment creation page" />
-
+Screenshots can be added to visualise the changes introduced in each variant of an experiment. 
+Screenshots are useful to quickly understand what an experiment is changing.
 ## Audiences
 
-The audiences step is where you will control who can and cannot be a part of your experiment as well as the parameters which are used to define who sees what variant.
+The audiences’ step is where you will control where the experiment will run and who will be exposed to it.
 
+<Image maxWidth="40rem" centered img="experiment-create/step-3.png" alt="Defining the audience" />
 ### Tracking Unit
 
-The experiment's tracking unit is the unique identifier that will be used to
-assign the user to a variant.
+The **tracking unit** refers to the unique identifier used to identify the visitors of your experiment.
 
-If the experiment is to be run across multiple platforms (Such as iOS, Android,
-Web, Email etc.), then this unit should be available on all of them. Most
-likely, the `user_id` of the authenticated user.
+If the experiment is to be run across multiple platforms (Such as iOS, Android, Web, Email etc.), then this unit should be available on all of them, for example, the `user_id` of the authenticated user.
 
-Conversely, if you wish for a user to experience different variants depending
-on their device, you could use their `device_id` as a unit.
+If the experiment is to run on a part of the product where visitors are not logged in, then an anonymous identifier stored in a cookie can be used to identify visitors.
 
-Even further, to avoid experiment biases from users talking to eachother about
-their experience, companies such as LinkedIn, group their users into clusters
-and would use a `cluster_id` as their tracking unit.
+:::info
+ABsmarty does not create nor use any third-party cookie. It is the responsibility of the experimenters to provide a unique identifier for the visitors of the experiment and if needed to store it in a first-party cookie.
+::: 
 
-You can create new tracking units in your [dashboard settings](settings.mdx#units).
-
+You can create new tracking units (there is no limit to the number of identifier you create) in your [dashboard settings](settings.mdx#units).
 ### Applications
 
-Applications are the places where this experiment will be run. These could be
-"android", "ios" and "web", for example, and are also created in your [dashboard
-settings](settings.mdx#applications).
+**Applications** defined where this experiment will run. An experiment can be running on several platforms at the same time.
 
+These could be `android`, `ios` and `web`, for example, and are also created in your [dashboard settings](settings.mdx#applications).
 ### Targeting Audience
 
-Here you can define a specific audience who will experience the experiment. For
-example, you could decide to only test the experiment on British users. In this
-case you might set the filter group to:
+In this section you can define which particular audience will be exposed to the experiment. For example, you could decide to only run the experiment for visitors on an `android` device or visitors whose language is set to `english`. 
 
-<Image
-  img="targeting_audience.png"
-  maxWidth="40rem"
-  centered
-  alt="An example of a specified targeting audience. This one is specific to
-  British users and it says, language is equal en-gb and country is equal gb."
-/>
+In this case you might set the filter group to:
 
-These parameters can then be passed to the SDK in your code using
-[context attributes](docs/SDK-Documentation/Advanced/context-attributes.mdx).
+<Image maxWidth="40rem" centered img="experiment-create/step-3-audience.png" alt="Experiment targeting english speakers on Android" />
 
+These audience parameters can then be passed to the SDK in your code using [context attributes](docs/SDK-Documentation/Advanced/context-attributes.mdx).
 #### Audience Enforced
 
-When audience enforced is **on**, only users in the filter groups will **be able** to
-participate in the experiment. Others will be shown the control variant, but
+When audience enforced is **on**, only users in the filter groups will be exposed to the experiment. Others will be shown the control variant, but
 their data will not be tracked.
 
-When audience enforced is **off**, any user can participate in the experiment, but
-the web console may warn you that your experiment is being shown to the wrong
-people. This helps you and your developers to remember to add the appropriate
-checks in your code when a decision has been made on the experiment. For
-example, to only show the tested variant to British users.
-
-<Image img="metrics.png" alt="A screenshot of the Metrics experiment creation page" />
+When audience enforced is **off**, it is the responsibility of the experimenter to ensure that only eligible visitors are shown the experiments.
+ABsmartly will only warn you when visitors not matching the audience are exposed to your experiment. In this case you would see an **audience mismatch warning** in your experiment. This option makes it easier to full-on when the experiment is completed as the audience filtering is not part of the experiment set up.
 
 ## Metrics
 
-Metrics represent the data that is affected by your experiment.
+In this section you can define the metrics to use to test your hypothesis and to measure the impact of your experiment.
+You can learn more about experimentation metrics in our [Understanding Experimentation Metrics](understanding-experimentation-metrics) article.
+### The Primary Metric
+The **Primary Metric** is the main metric you are trying to impact as a result of the change. 
+This is the metric which ABsmartly uses to compute the test statistics and it is the main metric which will be used to decide if the hypothesis is tested or not.
+Choosing the right **Primary Metric** is one of the most important parts of the experiment set up.
 
-Your **Primary Metric** is the statistic that you will use to make a decision
-on your experiment.
+:::info
+Choosing the right metrics can be hard. Below are the main characteristics to consider when choosing your **Primary Metric**.
 
-**Secondary Metrics** are _not_ used to make a decision, but they
-may be affected by it. For example, if your Primary Metric is `revenue_per_user` it could go up because
-there are more customers making purchases or it could go up because customers
-are buying more expensive items. In this case, it might be useful to have
-`users_that_convert` and `number_of_purchases` as secondary metrics.
+**Aligned:**
+Does it reflect the hypothesis? 
+The metric should directly reflect the business objective or user outcome that the experiment is intended to improve. 
+This alignment ensures that the experiment results drive meaningful business decisions.
 
-**Guardrail Metrics** are for giving you warnings about other parts of your
-business from the the Primary metric. If your new feature increases a user's
-`time_on_page`, but also increases your `page_load_time` significantly - the
-data may be showing you a false positive for that experiment.
+**Stable and Reliable:** 
+Can it be trusted? The metric should have low variability and provide consistent results over time. 
+This minimizes noise and ensures that observed differences are due to the treatment rather than random fluctuations.
 
-**Exploratory Metrics** are the last of the metric types and are simply used
-for curiosity. They have no impact on your decision making process, but they
-might be interesting to look at the data of anyway.
+**Sensitive:**
+Does it respond to the change being tested? A good metric should respond detectably to the changes being tested, even for small effects. 
+Sensitivity helps detect meaningful differences without requiring excessively large sample sizes.
 
-:::note
-Selecting any of the above metric types allows for them to be easily visualised
-on the [experiment dashboard](docs/web-console-docs/dashboard.mdx#impact-on-main-metrics),
-but more metrics can always be selected at the bottom of the experiment
-details page.
+**Actionable:** 
+Does it provide clear & actionable insights? The metric should guide decisions. 
+If the metric increases or decreases, it should provide a clear indication of whether the treatment should be implemented or iterated on.
+
+**Measurable:**
+Can it be tracked reliably? The metric should be easy to measure accurately and consistently across all experimental conditions.
 :::
+
+:::tip
+To ensure that experiments are aligned with overall strategic objectives it is good practice, when possible, for the primary metric to measure the impact of the change on a key business metric.
+To ensure consistency and alignment across all decisions, it is advised for all experimenting teams (within a reasonable scope) to agree on and to share the same primary metric. 
+:::
+
+To understand how the primary metric is used to make good informed decisions, check our article on interpreting results and making decisions.
+### The Secondary Metric(s)
+
+Beside the primary metric, it is possible in ABsmartly to add **secondary metrics** to your experiments.
+**Secondary Metrics**  are not the main criteria for decision-making but help ensure a comprehensive understanding of the experiment’s impact.
+They provide additional context and insights beyond the primary metric and can help to detect unintended side effects and support what was observed on the primary metric. 
+
+While the primary metric usually measures the impact on the business, secondary metrics are more often (but not always) behavioural metrics, directly measuring the impact of the change on the visitors' behaviour.
+
+:::tip
+If you observe a significant impact on the primary metric but no significant differences on the secondary metrics then the impact observed on the 
+The primary metric is likely a false positive. For more information, check our article on interpreting results and making decisions.
+:::
+
+### The Guardrail Metric(s)
+
+**Guardrail Metrics** are safeguards and they used to monitor and ensure the health, stability, and overall integrity of the system during an experiment. 
+They do not measure the success of the primary business objectives but are critical for detecting unintended negative impacts on the business, user experience and/or operational performance. They act as early warning systems, identifying potential risks such as degraded performance, increased errors, or adverse user behavior before they escalate into larger problems. ABsmartly allows you to monitor your **Guardrail Metrics** (and others) in real-time to ensure experiments are safe and do not unintentionally harm other parts of the business and/or some key system performance. (Learn more)
+
+:::info
+Characteristics of good **Guardrail Metrics**:
+
+**Protective:**
+Ensure that key aspects of the system, such as performance, reliability, and user experience, remain unaffected by changes.
+
+**Comprehensive:**
+Cover diverse dimensions of potential harm, including technical, operational, and customer-centric aspects.
+
+**Non-Negotiable:**
+A breach in guardrail metrics often halts or reverses an experiment, even if the primary metric shows improvement.
+
+:::
+
+:::tip
+It is good practice to have a set of guardrail metrics agreed upon and shared by all experiment teams (within a reasonable scope) so all decisions are made with the same understanding of their overall impact.
+:::
+
+To improve their usefulness, it is possible to define on the metric’s page, a threshold at which an alert would be triggered so you don’t miss it.
+Depending on the severity of the issues they signal, **Guardrail Metrics** can be used both for early stopping of experiments and to assess their impact at decision time. 
+
+For more information on early stopping of experiments using ABsmartly you can read our [**early stopping guide**](aborting-experiments).
+
+### The Exploratory Metrics
+
+**Exploratory Metrics** are simply used for curiosity. They should have no impact on the decision making process. Exploratory metrics are mainly used for deep dives into an experiment's impact. **Exploratory Metrics** are mainly used for debugging but may be used to infer new hypotheses. 
+
+:::info
+Adding **Exploratory Metrics** to your experiment will make them visible on the experiment's dashboard but you can always look at more metrics from the metrics' explorer.
+:::
+
+:::tip
+To avoid biases, and unless you are debugging an issue, it is recommended to not look at the **Exploratory Metrics** during the runtime of the experiment.
+:::
+
+### Example of experimentation metrics
+Below are a few examples of what Primary, Secondary and Guardrail metrics could be depending on your industry and your product.
+
+| **Industry**         | **Primary Metric**          | **Secondary Metrics**                                                                                   | **Guardrail Metrics**                                                                |
+|-----------------------|-----------------------------|---------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| **E-commerce**        | `Conversion Rate`            | `Average Order Value (AOV)`,`Cart Abandonment Rate`,`Add To Cart`                        | `Page Load Time`,`Payment Failure Rate`,`Customer Support Tickets`  |
+| **Airline**           | `Ticket Purchase Rate`       | `Seat Upgrade Rate`,`Ancillary Revenue`,`Booking Abandonment Rate` | `Flight Cancellation Rate`,`Customer Complaint Rate`,`Search Load Time`  |
+| **Online Media/Streaming** | `Engagement Time`           | `Content Completion Rate`,`Churn Rate`,`Recommendation Click-Through Rate`                   | `Video Playback Failure Rate`,`App Crash Rate`,`Buffering Time`            |
+| **Health & Fitness App** | `Active Days Per Week`      | `Workout Completion Rate`,`App Session Length`                      |`App Uninstall Rate`,`App Crash Rate`,`Support Ticket Rate`  |
 
 
 ## Analysis
 
-In this step, can choose and setup the analysis type you want to use.
-To choose between Group Sequential and Fixed Horizon analysis check our [analysis type article](/docs/web-console-docs/type-of-analysis).
+In this step, you can choose and set up the analysis type you want to use.
+To choose between a Group Sequential or Fixed Horizon analysis check our [analysis type article](types-of-analysis).
 
-To properly setup your experiment refer to the relevant setup guide
+To continue to properly set up your experiment refer to the relevant setup guide
 
-- [**Group Sequential setup guide**](/docs/web-console-docs/setting-up-a-gst-experiment)
-- [**Fixed Horizon setup guide**](/docs/web-console-docs/setting-up-a-fixed-horizon-experiment)
+- [**Group Sequential setup guide**](setting-up-a-gst-experiment)
+- [**Fixed Horizon setup guide**](setting-up-a-fixed-horizon-experiment)
 
 ## Metadata
 
-The metadata step is where you can fill in details about your experiment
-that may help others to understand what you hope to achieve with it.
+The metadata step is where you can fill in details about your experiment that may help others to understand what you hope to achieve with it.
 
 ### Metadata
 
-The metadata section allows you to select the owners of this experiment,
-assign it to a particular team and add tags to help with searching and filtering
-later on. These fields may be required, optional or hidden depending on your company's
-[platform settings](/docs/web-console-docs/settings#platform-settings).
+The metadata section allows you to select the owners of this experiment, assign it to a particular team and add tags to help with searching and filtering later on. These fields may be required, optional or hidden depending on your company's [platform settings](/docs/web-console-docs/settings#platform-settings).
 
 #### Tags
 
-Tags can be named anything you like. Often it can be useful to prefix your
-tags with the meaning of that tag. Some examples of tags could be:
+Tags can be named anything you like. Often it can be useful to prefix your tags with the meaning of that tag. Some examples of tags could be:
 
 - `stack:backend`
 - `theme:urgency`
 - `location:navbar`
 - `psychological:trust`
 
-These allow for you to filter your experiments in the experiments list page,
-but they also give you an insight into why that experiment was tagged as such.
+These allow for you to filter your experiments in the experiments list page, but they also give you an insight into why that experiment was tagged as such.
 
 ### Description
 
-When creating a new experiment, the description section acts as your contract
-for the test. Allowing you to define for yourself and your team why you are
-running this experiment, what you hope for the result to be and what will be
-done after any of the experiment's possible outcomes. The following are
-our default fields, but they may be different depending on your
-company's [platform settings](/docs/web-console-docs/settings#platform-settings).
+When creating a new experiment, the description section acts as your contract for the test. Allowing you to define for yourself and your team why you are running this experiment, what you hope for the result to be and what will be done after any of the experiment's possible outcomes. The following are our default fields, but they may be different depending on your company's [platform settings](/docs/web-console-docs/settings#platform-settings).
 
 #### Hypothesis
 
@@ -252,7 +290,7 @@ experiment's implementation, like:
 
 For example:
 
-> This implementation will be completed by <FutureDate daysAhead={2}/>.
+> This implementation will be completed by Friday 20th.
 >
 > We can expect an increase of up to 25% in our homepage click-through-rate.
 >
@@ -270,41 +308,3 @@ For example:
 >
 > If the primary metric is inconclusive we will drop the experiment.
 
-<Image img="review.png" alt="A screenshot of the Review experiment creation page" />
-
-## Review
-
-The review step is where you can go over the experiment you have created and check its details before starting or saving it.
-
-### Experiment Actions
-
-When you are happy with your experiment, you have 4 possible actions that you can take on it:
-
-- Save it as a draft
-- Save it as ready
-- Start it in development mode
-- Start it
-
-#### Saving a draft
-
-Saving your experiment as a draft means that you can come back to this experiment, to give it some final tweaks. When saving as a draft, all fields will still be editable when coming back to this experiment. 
-
-#### Saving as ready
-
-Saving you experiment **as ready** is similar to saving it as a draft, but it signifies that the experiment is ready to be started. You cannot save an experiment as ready with invalid settings. 
-
-#### Starting in development
-
-Starting your experiment in development allows you to test your experiment in 
-your development [environments](/docs/web-console-docs/settings#environments).
-
-An experiment in development mode will not run on a production environment, and the control variant will always be shown.
-This allows for you to test the implementation of an experiment before deploying it to production.
-
-#### Starting
-
-Starting your experiment will activate it in all environments and start collecting data from your users.
-
-## Up Next
-
-The dashboard and how to read your experimentation data!

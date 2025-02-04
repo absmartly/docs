@@ -1,0 +1,103 @@
+---
+sidebar_position: 12
+---
+
+import Image from "../../src/components/Image";
+
+# Experiment Reports
+
+## Experiment Velocity Report
+
+The Experiment Velocity Report provides an overview of the experimentation program.
+It highlights how many experiments were started, running, completed and aborted in the reporting period.
+This report can be used to understand how the experimentation program is growing in terms of experiments started.
+More importantly it shows how many experiments were successfully completed (vs aborted).
+Only completed experiments can provide the evidence for making reliable and data-informed decisions.
+
+### Permissions
+
+Access to the velocity report requires the permission `View experiment velocity reports`. 
+If you wish to access the report but do not have permissions please reach out to your platform admin so they can grant you access.
+
+### General settings & filters 
+
+<Image img="experiment-report/general-settings-and-filters.png" alt="General Report Settings and Filters" maxWidth="60rem" />
+
+#### Reporting period
+At the top of the report users can select the period over which they want to report. By default the reporting period is set to the last 30 days.
+
+#### Filters
+Users can select to report on a subset of experiments based on the following available Filters `Owners`, `Applications`, `Unit types`, `Primary metric`
+By default all those filters are empty so the report includes all experiments.
+
+### Report settings 
+
+<Image img="experiment-report/velocity-settings.png" alt="Velocity Report Settings" maxWidth="30rem" />
+
+#### Experiments vs Iterations
+A toggle on top of the report allows to switch the view from `experiments` level or `iterations` level reporting.
+Reporting on `iterations` means reporting on every single instance while reporting on the `experiments` level means reporting on unique experiment names.
+
+For example, if an experiment named 'Test new check-out flow' was started, then aborted after a few minutes because of an issue then restarted once the issue was fixed.
+In the `iterations` view this experiment would be counted twice for `started` while in the `experiments` view it would only appear once. 
+The last instance would be used for the aggregation on the graph.
+
+#### Sharing
+It is possible to generate a shared link of an exact view of the report by clicking on the share button on the right side of the report.
+
+#### Aggregation type
+By default the data shown on the graph will be aggregated `per week` but it is also possible to aggregate `per month` or `per year`. 
+Choosing the right aggregation depends mainly on the length or the reporting period and how you wish to visualise the data.
+Changing the aggregation period does not impact the data shown.
+
+### Experiment started
+
+<Image img="experiment-report/experiments-started.png" alt="Experiments started report" maxWidth="30rem" />
+
+This widget provides a view on how many new experiments were started in the reporting period. 
+If the same experiment is restarted several times in the reporting period it would appear several times if reporting on `Iterations` or once if reporting on unique experiment name.
+
+### Experiment running
+
+<Image img="experiment-report/experiments-running.png" alt="Experiments running report" maxWidth="30rem" />
+
+This widget reports on experiments which were running (in progress and collecting data) for any duration in the reporting period.
+Even if an experiment was running only for a few seconds it would appear on the report.
+
+### Experiment completed
+
+<Image img="experiment-report/experiments-completed.png" alt="Experiments completed report" maxWidth="30rem" />
+
+This report highlights the number of experiment which were successfully completed in the reporting period. 
+In the case of a [Fixed Horizon Experiment](types-of-analysis), it is deemed completed once it reaches its expected sample size or planned duration.
+For a [Group Sequential Test](types-of-analysis), an experiment is completed once it crosses one of the test boundaries (efficiency or futility).
+
+The report also visualises the outcome of the statistical test on the primary metric at the moment the experiment was completed. 
+The experiment will be shown in `green` if its **primary metric was significant in the expected direction** at the time the experiment was completed.
+The experiment would be shown in `grey` if its **primary metric was insignificant** when the experiment was completed.
+In the case of a Fixed Horizon experiment, it can also be shown in `red` if its **primary metric was significant in the opposite direction** (causing harm).
+
+:::info
+Experimentation is about generating evidence to make better decisions. All `completed experiments`, independently of their statistical outcome, 
+provide valuable evidence and insights on which to base decisions, and in that sense they should all be seen as success. 
+Knowing that something does not have the expected impact on customer behaviour can be as important and insightful as validating that something else does.
+:::
+
+### Experiment aborted
+
+<Image img="experiment-report/experiments-aborted.png" alt="Experiments aborted report" maxWidth="30rem" />
+
+`Experiment aborted` shows experiments which were stopped or put full-on before they were completed. Experiments can be aborted (stopped early or put full-on) because of bugs in the implementation, 
+because of early worrying negative signals or for any other reason. Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
+
+:::caution
+Aborted experiments do not provide reliable evidence on which to base informed decisions.
+Depending on the reason for aborting, aborted experiments are typically restarted once the underlying issue is fixed.
+:::
+
+### Experiment completion rate
+
+<Image img="experiment-report/experiments-completion-rate.png" alt="Experiments completion rate report" maxWidth="30rem" />
+
+This report shows the ratio of non-running experiments (aborted + completed) which were completed in the reporting period. 
+This provides a good overview of the quality of the experimentation program and decisons which are based on those experiments.
