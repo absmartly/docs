@@ -1,1 +1,1 @@
-pip install absmartly==0.1.4
+pip install absmartly
