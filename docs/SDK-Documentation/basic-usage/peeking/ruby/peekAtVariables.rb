@@ -1,1 +1,1 @@
-treatment = context.peek_variable_value('exp_test_experiment')
+treatment = context.peek_variable_value('button.color', default_button_color_value)
