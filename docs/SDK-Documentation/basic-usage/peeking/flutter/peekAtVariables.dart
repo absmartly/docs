@@ -1,1 +1,1 @@
-    final dynamic variable = context.getVariable("my_variable");
+    final dynamic variable = context.peekVariableValue("button.color", defaultButtonColorValue);
