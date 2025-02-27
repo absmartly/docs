@@ -1,3 +1,3 @@
 var defaultButtonColorValue = "red"
 
-context.getVariableValue("experiment_name", defaultButtonColorValue)
+context.getVariableValue("button.color", defaultButtonColorValue)
