@@ -8,6 +8,8 @@ import Image from "../../src/components/Image";
 
 ## General settings & filters 
 
+### Dates & filters 
+
 <Image img="experiment-report/general-settings-and-filters.png" alt="General Report Settings and Filters" maxWidth="60rem" />
 
 The settings and filter described below apply to all reports.
@@ -133,7 +135,7 @@ It is nonetheless possible for `Full on` decisions to not be fully supported by 
 Currently a `Full on` decision is shown as supported by evidence **if and only if the experiment was completed and the primary metric is significant in the expected direction**.
 
 :::caution
-The supported by evidence validation does not currently includes checks on the secondary and guardrail metrics nor on the experiment [health checks](experiment-health-checks) 
+The supported by evidence validation does not currently includes checks on the secondary and guardrail metrics nor on the experiment [health checks](experiment-health-checks).
 :::
 
 
@@ -154,4 +156,4 @@ This widget provides a view on how many `Abort` decisions were made in the repor
 Aborting means stopping an experiment before it is completed. Aborting can happen when a bug is found or 
 when early negative signals indicate a possible degradation in certain key metrics but it could also be a strategic choice to not stop early.
 Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
-Like with `Keep current` decisions, `Abort` decisons means that the current experience remains. 
+Like with `Keep current` decisions, `Abort` decisons means that the current experience remains but unlike `Keep current` decisions it does not say anything about the hypothesis being tested or not.
