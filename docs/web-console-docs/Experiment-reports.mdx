@@ -8,18 +8,19 @@ import Image from "../../src/components/Image";
 
 ## General settings & filters 
 
+The settings and filter described below apply to all reports.
+
 ### Dates & filters 
 
 <Image img="experiment-report/general-settings-and-filters.png" alt="General Report Settings and Filters" maxWidth="60rem" />
-
-The settings and filter described below apply to all reports.
 
 ### Reporting period
 At the top of the report users can select the period over which they want to report. By default the reporting period is set to the last 30 days.
 
 ### Filters
-Users can select to report on a subset of experiments based on the following available Filters `Owners`, `Applications`, `Unit types`, `Primary metric`, `Teams` and `Tags`
-By default all those filters are empty so the report includes all experiments.
+Users can select to report on a subset of experiments based on the following available Filters `Owners`, `Applications`, `Unit types`, `Primary metric`, `Teams` and `Tags`.
+
+By default no filters is selected so the report includes all experiments.
 
 ## Report settings 
 
@@ -27,18 +28,21 @@ By default all those filters are empty so the report includes all experiments.
 
 ### Unique experiments vs All iterations
 The `Unique experiments` switch allows to toggle between reporting on **unique experiments** and reporting on **all iterations**.
-When the toggle is `off` (default), the reporting is done at the **iterations** level which means reporting on every single instances.
+
+When the toggle is `off` (default), the reporting is done at the **iterations** level which means reporting on every single experiment iterations.
+
 When the toggle is `on`, the reporting is done at the **unique experiments** level which means reporting on unique experiment names.
 
 For example, if an experiment named `Test new check-out flow` was started, then aborted after a few minutes because of an issue then restarted once the issue was fixed.
 When reporting on **iterations**, this experiment would be counted twice for `started` while reporting on **unique experiments** it would only appear once. 
+
 The last instance would be used for the aggregation on the graph.
 
 ### Sharing
 It is possible to generate a shared link of an exact view of the report by clicking on the share button on the right side of the report.
 
 ### Aggregation type
-By default and when relevat the data shown on the reports will be aggregated `per week` but it is also possible to aggregate `per month` or `per year`. 
+By default, and when relevant, the data shown on the reports will be aggregated `per week` but it is also possible to aggregate `per month` or `per year`. 
 Choosing the right aggregation depends mainly on the length or the reporting period and how you wish to visualise the data.
 Changing the aggregation period does not impact the data shown.
 
@@ -132,6 +136,7 @@ This widget provides a view on how many `Full on` decisions were made in the rep
 fully rolled out. `Full on` decisions are typically made when an experiments is completed and the evidence supports the decision (ie: the primary metrics shows an increase in the expected direction, no red flag, no health checks violation, etc).
 It is nonetheless possible for `Full on` decisions to not be fully supported by evidences (ie: experiment not completed, primary metric not significant, etc).
 
+`Full on` decisions are shown in blue if they are supported by evidence and in grey is they are not fully supported by evidence.
 Currently a `Full on` decision is shown as supported by evidence **if and only if the experiment was completed and the primary metric is significant in the expected direction**.
 
 :::caution
@@ -154,6 +159,28 @@ This typically happens when the evidence does not support the hypothesis.
 
 This widget provides a view on how many `Abort` decisions were made in the reporting period. 
 Aborting means stopping an experiment before it is completed. Aborting can happen when a bug is found or 
-when early negative signals indicate a possible degradation in certain key metrics but it could also be a strategic choice to not stop early.
+when early negative signals indicate a possible degradation in certain key metrics but it could also be a strategic choice to stop early.
 Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
 Like with `Keep current` decisions, `Abort` decisons means that the current experience remains but unlike `Keep current` decisions it does not say anything about the hypothesis being tested or not.
+
+## Decisions history
+
+The `Decisions history` provides a timeline of decisions overtime.  
+Possible decisions types included in the report are `Full on` where a tested change is fully rolled out with or without full supporting evidence; 
+`Keep current` where the tested change is not rolled out, and the existing experience remains; 
+and `Abort` where it was decided to stop the experiment before it could provide reliable evidence.
+
+This report can be used to browse through past decisions to understand the reasoning behind each of them.
+
+### Permissions
+
+Access to the decisions report requires the permission `Experiment reports` > `View decisions`. 
+If you wish to access the report but do not have permissions please reach out to your platform admin so they can grant you access.
+
+### Filter
+
+The `Decision type` filter allows to select the type of decisions to show on the timeline.
+
+### Decision card
+
+Each decision card provides an overview of the past decisions, highlighting the hypothesis, the rational behind the decision and the key metrics supporting the decision. 
