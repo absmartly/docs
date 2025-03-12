@@ -1,0 +1,70 @@
+import Image from "../../src/components/Image";
+
+# Zuko Integration
+
+<Image
+    img="zuko-logo.png"
+    alt="The Zuko Logo"
+    maxWidth={600}
+/>
+
+[Zuko](https://zuko.io) is a leading form analytics platform that helps you understand how users 
+interact with your forms. This guide will show you how to integrate ABsmartly experiments with 
+Zuko to gain deeper insights into how your experiments affect your forms.
+
+## Prerequisites
+
+1. **ABsmartly Implementation:** Ensure ABsmartly is correctly implemented on your page. Refer 
+    to the [SDK documentation](/docs/SDK-Documentation/getting-started) for more information.
+2. **Zuko Account and Tracking:** [Create a Zuko account](https://app.zuko.io/signup) (if 
+    you don't have one) and ensure that the tracking is successfully added to your form. Refer to 
+    the [Zuko Installation Guides](https://www.zuko.io/guides) for more information.
+
+## Implement the JS snippet
+
+Add the following JavaScript function to your page, preferably in a `<script>` tag within the 
+`<head>` section or in a separate JavaScript file that's loaded before your Zuko tracking code. 
+This function extracts experiment and variant information from the ABsmartly context and sets them
+as Zuko attributes.
+
+```js
+ABsmartlyContext.ready()
+    .then(() => {
+        const context = ABsmartlyContext;
+
+        window.zuko = window.zuko || {};
+        window.zuko.attributes = window.zuko.attributes || {};
+
+        for (const experiment of context.data()?.experiments) {
+            const name = experiment.name;
+            const variant = context.peek(name);
+
+            window.zuko.attributes[`exp_${name}`] = variant;
+
+            if (experiment.variants?.[variant]?.name) {
+                window.zuko.attributes[`variant_${experiment.variants[variant].name}`] = variant;
+            }
+        }
+        console.log("Zuko attributes set:", window.zuko.attributes);
+    })
+    .catch((error) => {
+        console.error("Error initializing ABsmartly context:", error);
+    });
+```
+
+The `exp_YourExperimentName` and `variant_YourVariantName` can be changed - this is simply how 
+this will appear in Zuko under the filter drop down menu. We are just adding the experiments as 
+attributes into `window.zuko.attributes`. See [Zuko's documentation on setting custom attributes](https://www.zuko.io/guides/using-custom-attributes).
+
+## Verify the integration
+
+1. **Run your experiment:** Make sure your experiment is running on ABsmartly and users are being assigned to 
+    different variants.
+2. **Submit test forms:** Fill out the forms on your page while participating in the test. You can do this for
+    different variants using the ABsmartly SDKs' [override functionalities](/docs/SDK-Documentation/basic-usage#overriding-treatment-variants).
+3. **Check Zuko:** Go to your Zuko dashboard and look for the custom attributes you configured in the 
+    filters dropdown. You should see attributes like `exp_YourExperimentName` with values corresponding 
+    to the assigned variant for each form submission. It might take a few minutes for the data to appear in Zuko.
+
+If you have any issues setting up the Zuko integration then please contact us on [support@absmartly.com](mailto:support@absmartly.com),
+or Zuko on [support@zuko.io](mailto:support@zuko.io).
