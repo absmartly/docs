@@ -79,8 +79,8 @@ Even if an experiment was running only for a few seconds it would appear on the 
 <Image img="experiment-report/experiments-completed.png" alt="Experiments completed report" maxWidth="30rem" />
 
 This report highlights the number of experiment which were successfully completed in the reporting period. 
-In the case of a [Fixed Horizon Experiment](types-of-analysis), it is deemed completed once it reaches its expected sample size or planned duration.
-For a [Group Sequential Test](types-of-analysis), an experiment is completed once it crosses one of the test boundaries (efficiency or futility).
+In the case of a [Fixed Horizon Experiment](/docs/web-console-docs/types-of-analysis), it is deemed completed once it reaches its expected sample size or planned duration.
+For a [Group Sequential Test](/docs/web-console-docs/types-of-analysis), an experiment is completed once it crosses one of the test boundaries (efficiency or futility).
 
 The report also visualises the outcome of the statistical test on the primary metric at the moment the experiment was completed. 
 The experiment will be shown in `green` if its **primary metric was significant in the expected direction** at the time the experiment was completed.
@@ -102,7 +102,7 @@ Knowing that something does not have the expected impact on customer behaviour c
 In the case of **early stopped experiments** (also known as aborted experiments), the decisions to abort can happen because of bugs in the implementation, 
 early worrying negative signals, strategic reasons or for any other reason. 
 Depending on the reason for early stopping, aborted experiments are typically restarted once the underlying issue is fixed. 
-Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
+Read our [When to abort an experiment?](/docs/web-console-docs/Aborting-experiments) guide to understand more about aborting experiments.
 
 While aborting experiments is common and part of the process, **early full on**, should be rare as they indicate that changes were pushed without supporting evidence.
 This can sometimes happen for strategic or legal reasons but because the experiment did not complete, it does not provide the reliable evidence needed to support or discard the underlying hypothesis.
@@ -140,7 +140,7 @@ It is nonetheless possible for `Full on` decisions to not be fully supported by 
 Currently a `Full on` decision is shown as supported by evidence **if and only if the experiment was completed and the primary metric is significant in the expected direction**.
 
 :::caution
-The supported by evidence validation does not currently includes checks on the secondary and guardrail metrics nor on the experiment [health checks](experiment-health-checks).
+The supported by evidence validation does not currently includes checks on the secondary and guardrail metrics nor on the experiment [health checks](/docs/web-console-docs/experiment-health-checks).
 :::
 
 
@@ -160,7 +160,7 @@ This typically happens when the evidence does not support the hypothesis.
 This widget provides a view on how many `Abort` decisions were made in the reporting period. 
 Aborting means stopping an experiment before it is completed. Aborting can happen when a bug is found or 
 when early negative signals indicate a possible degradation in certain key metrics but it could also be a strategic choice to stop early.
-Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
+Read our [When to abort an experiment?](/docs/web-console-docs/Aborting-experiments) guide to understand more about aborting experiments.
 Like with `Keep current` decisions, `Abort` decisons means that the current experience remains but unlike `Keep current` decisions it does not say anything about the hypothesis being tested or not.
 
 ## Decisions history
