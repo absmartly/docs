@@ -1,1 +1,1 @@
-    var variable = context.PeekVariableValue("my_variable");
+    var buttonColor = context.PeekVariableValue("button.color");

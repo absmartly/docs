@@ -2,12 +2,15 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
+import JsPeekAtVariant from "!!raw-loader!./js/peekAtVariant.js";
 import JsPeekAtVariables from "!!raw-loader!./js/peekAtVariables.js";
 import PythonPeekAtVariant from "!!raw-loader!./python/peekAtVariant.py";
 import PythonPeekAtVariables from "!!raw-loader!./python/peekAtVariables.py";
+import ReactPeekAtVariant from "!!raw-loader!./react/peekAtVariant.js";
 import ReactPeekAtVariables from "!!raw-loader!./react/peekAtVariables.js";
 import SwiftPeekAtVariants from "!!raw-loader!./swift/peekAtVariants.swift";
 import SwiftPeekAtVariables from "!!raw-loader!./swift/peekAtVariables.swift";
+import VuePeekAtVariant from "!!raw-loader!./vue/peekAtVariant.js";
 import VuePeekAtVariables from "!!raw-loader!./vue/peekAtVariables.js";
 import JavaPeekAtVariants from "!!raw-loader!./java/peekAtVariants.java";
 import JavaPeekAtVariables from "!!raw-loader!./java/peekAtVariables.java";
@@ -30,7 +33,7 @@ Although generally not recommended, it is sometimes necessary to peek at a
 treatment without triggering an exposure. The ABsmartly SDK provides a
 `peek()` method for that.
 
-<CodeBlock language="js">{JsPeekAtVariables}</CodeBlock>
+<CodeBlock language="js">{JsPeekAtVariant}</CodeBlock>
 
 </TabItem>
 
@@ -42,10 +45,6 @@ treatment without triggering an exposure. The ABsmartly SDK provides a
 
 <CodeBlock language="py">{PythonPeekAtVariant}</CodeBlock>
 
-#### Peeking at variables
-
-<CodeBlock language="py">{PythonPeekAtVariables}</CodeBlock>
-
 </TabItem>
 
 <TabItem value="react" label="React">
@@ -54,7 +53,7 @@ Although generally not recommended, it is sometimes necessary to peek at a
 treatment without triggering an exposure. The ABsmartly SDK provides a
 `peek()` method for that.
 
-<CodeBlock language="jsx">{ReactPeekAtVariables}</CodeBlock>
+<CodeBlock language="jsx">{ReactPeekAtVariant}</CodeBlock>
 
 </TabItem>
 
@@ -66,10 +65,6 @@ treatment without triggering an exposure. The ABsmartly SDK provides a
 
 <CodeBlock language="swift">{SwiftPeekAtVariants}</CodeBlock>
 
-##### Peeking at Variables
-
-<CodeBlock language="swift">{SwiftPeekAtVariables}</CodeBlock>
-
 </TabItem>
 
 <TabItem value="vue" label="Vue2">
@@ -78,7 +73,7 @@ Although generally not recommended, it is sometimes necessary to peek at a
 treatment without triggering an exposure. The ABsmartly SDK provides a
 `peek()` method for that.
 
-<CodeBlock language="js">{VuePeekAtVariables}</CodeBlock>
+<CodeBlock language="js">{VuePeekAtVariant}</CodeBlock>
 
 </TabItem>
 
@@ -88,7 +83,7 @@ Although generally not recommended, it is sometimes necessary to peek at a
 treatment without triggering an exposure. The ABsmartly SDK provides a
 `peek()` method for that.
 
-<CodeBlock language="js">{VuePeekAtVariables}</CodeBlock>
+<CodeBlock language="js">{VuePeekAtVariant}</CodeBlock>
 
 </TabItem>
 
@@ -100,10 +95,6 @@ provides a `peekTreatment()` method for that.
 
 <CodeBlock language="java">{JavaPeekAtVariants}</CodeBlock>
 
-##### Peeking at variables
-
-<CodeBlock language="java">{JavaPeekAtVariables}</CodeBlock>
-
 </TabItem>
 
 <TabItem value="go" label="Go">
@@ -113,10 +104,6 @@ treatment or variable without triggering an exposure. The ABsmartly SDK
 provides a `PeekTreatment()` method for that.
 
 <CodeBlock language="go">{GoPeekAtVariants}</CodeBlock>
-
-##### Peeking at variables
-
-<CodeBlock language="go">{GoPeekAtVariables}</CodeBlock>
 
 </TabItem>
 
@@ -128,10 +115,6 @@ SDK provides a `PeekTreatment()` method for that.
 
 <CodeBlock language="csharp">{DotNetPeekAtVariants}</CodeBlock>
 
-##### Peeking at variables
-
-<CodeBlock language="csharp">{DotNetPeekAtVariables}</CodeBlock>
-
 </TabItem>
 
 <TabItem value="php" label="PHP">
@@ -141,10 +124,6 @@ treatment or variable without triggering an exposure. The ABsmartly SDK
 provides a `Context->peekTreatment()` method for that.
 
 <CodeBlock language="php">{PHPPeekAtVariant}</CodeBlock>
-
-#### Peeking at variables
-
-<CodeBlock language="php">{PHPPeekAtVariable}</CodeBlock>
 
 </TabItem>
 
@@ -156,10 +135,6 @@ provides a `peek_treatment()` method for that.
 
 <CodeBlock language="ruby">{RubyPeekAtVariant}</CodeBlock>
 
-#### Peeking at variables
-
-<CodeBlock language="ruby">{RubyPeekAtVariable}</CodeBlock>
-
 </TabItem>
 
 <TabItem value="flutter" label="Flutter/Dart">
@@ -170,7 +145,81 @@ provides a `peekTreatment()` method for that.
 
 <CodeBlock language="dart">{FlutterPeekAtVariant}</CodeBlock>
 
-#### Peeking at variables
+</TabItem>
+
+</Tabs>
+
+## Peeking at variables
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+<CodeBlock language="py">{PythonPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx">{ReactPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+<CodeBlock language="js">{VuePeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+<CodeBlock language="js">{VuePeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+<CodeBlock language="java">{JavaPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+<CodeBlock language="go">{GoPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+<CodeBlock language="csharp">{DotNetPeekAtVariables}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+<CodeBlock language="php">{PHPPeekAtVariable}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+<CodeBlock language="ruby">{RubyPeekAtVariable}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
 
 <CodeBlock language="dart">{FlutterPeekAtVariable}</CodeBlock>
 
