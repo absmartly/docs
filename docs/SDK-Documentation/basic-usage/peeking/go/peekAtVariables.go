@@ -1,1 +1,1 @@
-var variable = context.PeekVariable("my_variable")
+var variable = context.PeekVariable("button.color")
