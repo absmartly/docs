@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: ABsmartly Web Console API
+  version: 1.0.0
+  description: An OpenAPI Specification that describes the ABsmartly API for working with your experiments programmatically.
+  contact:
+    name: API Support
+    email: api@absmartly.com
+  license:
+    name: Proprietary
+externalDocs:
+  description: Find out more about ABsmartly
+  url: "https://www.absmartly.com"
+servers:
+  - url: https://sandbox.absmartly.com/v1
+security:
+  - UserApiKey: []
+
+# Path references
+paths:
+  # Experiments
+  /experiments:
+    $ref: "./paths/experiments.yaml#/experiments"
+  /experiments/{experimentId}:
+    $ref: "./paths/experiments.yaml#/experiments_by_id"
+  /experiments/{experimentId}/participants/history:
+    $ref: "./paths/experiments.yaml#/experiments_participants_history"
+  /experiments/{experimentId}/metrics/main/history:
+    $ref: "./paths/experiments.yaml#/experiments_metrics_main_history"
+  /experiments/{experimentId}/metrics/main:
+    $ref: "./paths/experiments.yaml#/experiments_metrics_main"
+  /experiments/{experimentId}/activity:
+    $ref: "./paths/experiments.yaml#/experiments_activity"
+  /experiments/{experimentId}/activity/{commentId}/reply:
+    $ref: "./paths/experiments.yaml#/experiments_activity_reply"
+  /experiment_annotations:
+    $ref: "./paths/experiments.yaml#/experiment_annotations"
+  /experiment_annotations/{experimentAnnotationId}:
+    $ref: "./paths/experiments.yaml#/experiment_annotations_by_id"
+  /experiment_tags:
+    $ref: "./paths/experiments.yaml#/experiment_tags"
+  /experiment_tags/{experimentTagId}:
+    $ref: "./paths/experiments.yaml#/experiment_tags_by_id"
+  /experiments/{experimentId}/tags/{experimentTagId}:
+    $ref: "./paths/experiments.yaml#/experiment_tags_by_id"
+  /experiments/{experimentId}/annotations:
+    $ref: "./paths/experiments.yaml#/experiment_annotations"
+  /experiments/{experimentId}/annotations/{annotationId}:
+    $ref: "./paths/experiments.yaml#/experiment_annotations_by_id"
+  /experiment_recommended_actions/{id}/dismiss:
+    $ref: "./paths/experiments.yaml#/experiment_recommended_actions_dismiss"
+
+  # API Keys
+  /api_keys:
+    $ref: "./paths/api_keys.yaml#/api_keys"
+  /api_keys/{apiKeyId}:
+    $ref: "./paths/api_keys.yaml#/api_keys_by_id"
+
+  # Applications
+  /applications:
+    $ref: "./paths/applications.yaml#/applications"
+  /applications/{applicationId}:
+    $ref: "./paths/applications.yaml#/applications_by_id"
+
+  # CORS Origins
+  /cors_origins:
+    $ref: "./paths/cors_origins.yaml#/cors_origins"
+  /cors_origins/{corsOriginId}:
+    $ref: "./paths/cors_origins.yaml#/cors_origins_by_id"
+
+  # Environments
+  /environments:
+    $ref: "./paths/environments.yaml#/environments"
+  /environments/{environmentId}:
+    $ref: "./paths/environments.yaml#/environments_by_id"
+
+  # Goals
+  /goals:
+    $ref: "./paths/goals.yaml#/goals"
+  /goals/{goalId}:
+    $ref: "./paths/goals.yaml#/goals_by_id"
+  /goal_tags:
+    $ref: "./paths/goals.yaml#/goal_tags"
+  /goal_tags/{goalTagId}:
+    $ref: "./paths/goals.yaml#/goal_tags_by_id"
+
+  # Metrics
+  /metrics:
+    $ref: "./paths/metrics.yaml#/metrics"
+  /metrics/{metricId}:
+    $ref: "./paths/metrics.yaml#/metrics_by_id"
+  /metric_tags:
+    $ref: "./paths/metrics.yaml#/metric_tags"
+  /metric_tags/{metricTagId}:
+    $ref: "./paths/metrics.yaml#/metric_tags_by_id"
+
+  # Permissions and Roles
+  /permission_categories:
+    $ref: "./paths/permissions_and_roles.yaml#/permission_categories"
+  /permissions:
+    $ref: "./paths/permissions_and_roles.yaml#/permissions"
+  /roles:
+    $ref: "./paths/permissions_and_roles.yaml#/roles"
+  /roles/{roleId}:
+    $ref: "./paths/permissions_and_roles.yaml#/roles_by_id"
+
+  # Segments
+  /segments:
+    $ref: "./paths/segments.yaml#/segments"
+  /segments/{segmentId}:
+    $ref: "./paths/segments.yaml#/segments_by_id"
+
+  # Users and Teams
+  /teams:
+    $ref: "./paths/users_and_teams.yaml#/teams"
+  /teams/{teamId}:
+    $ref: "./paths/users_and_teams.yaml#/teams_by_id"
+  /users:
+    $ref: "./paths/users_and_teams.yaml#/users"
+  /users/{userId}:
+    $ref: "./paths/users_and_teams.yaml#/users_by_id"
+  /users/{userId}/api_keys:
+    $ref: "./paths/users_and_teams.yaml#/users_api_keys"
+
+  # Unit Types
+  /unit_types:
+    $ref: "./paths/unit_types.yaml#/unit_types"
+  /unit_types/{unitTypeId}:
+    $ref: "./paths/unit_types.yaml#/unit_types_by_id"
+
+  # Webhooks
+  /webhook_events:
+    $ref: "./paths/webhooks.yaml#/webhook_events"
+  /webhooks:
+    $ref: "./paths/webhooks.yaml#/webhooks"
+  /webhooks/{webhookId}:
+    $ref: "./paths/webhooks.yaml#/webhooks_by_id"
+
+  # Files
+  /files/{usage}/{id}/{action}/{filename}:
+    $ref: "./paths/files.yaml#/files_usage_id_action_filename"
+
+  # Insights
+  /insights:
+    $ref: "./paths/insights.yaml#/insights"
+  /insights/velocity/widgets:
+    $ref: "./paths/insights.yaml#/insightsvelocitywidgets"
+  /insights/velocity/history:
+    $ref: "./paths/insights.yaml#/insightsvelocityhistory"
+  /insights/decisions/widgets:
+    $ref: "./paths/insights.yaml#/insightsdecisionswidgets"
+  /insights/decisions/history:
+    $ref: "./paths/insights.yaml#/insightsdecisionshistory"
+
+  # Export Configs
+  /export_configs:
+    $ref: "./paths/export_configs.yaml#/export_configs"
+  /export_configs/{id}:
+    $ref: "./paths/export_configs.yaml#/export_configs_by_id"
+  /export_configs/{id}/export_histories:
+    $ref: "./paths/export_configs.yaml#/export_configs_id_export_histories"
+  /export_configs/{id}/export_histories/{history_id}:
+    $ref: "./paths/export_configs.yaml#/export_configs_id_export_histories_by_history_id"
+
+  # Storage Configs
+  /storage_configs:
+    $ref: "./paths/storage_configs.yaml#/storage_configs"
+  /storage_configs/{id}:
+    $ref: "./paths/storage_configs.yaml#/storage_configs_by_id"
+  /storage_configs/test:
+    $ref: "./paths/storage_configs.yaml#/storage_configs_test"
+
+  # Configs
+  /configs:
+    $ref: "./paths/configs.yaml#/configs"
+  /configs/{id}:
+    $ref: "./paths/configs.yaml#/configs_by_id"
+
+  # Experiment Custom Sections
+  /experiment_custom_sections:
+    $ref: "./paths/experiment_custom_sections.yaml#/experiment_custom_sections"
+  /experiment_custom_sections/{id}:
+    $ref: "./paths/experiment_custom_sections.yaml#/experiment_custom_sections_by_id"
+  /experiment_custom_sections/order:
+    $ref: "./paths/experiment_custom_sections.yaml#/experiment_custom_sections_order"
+
+# Components reference
+components:
+  schemas: {}
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

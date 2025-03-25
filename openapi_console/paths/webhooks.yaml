@@ -1,0 +1,443 @@
+webhook_events:
+  get:
+    summary: Webhook Event [LIST]
+    description: "**Required Permissions**: `Webhook Event List` or `Webhook Event Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/WebhookEvent"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+webhooks:
+  get:
+    summary: Webhook [LIST]
+    description: "**Required Permissions**: `Webhook List` or `Webhook Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Webhook"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+  post:
+    summary: Webhook [CREATE]
+    description: "**Required Permissions**: `Webhook Create` or `Webhook Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              webhook:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Experiment Status Update"
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://example.com/webhook"
+                  application_id:
+                    type: integer
+                    example: 1
+                  environment_id:
+                    type: integer
+                    example: 1
+                  webhook_event_ids:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2]
+                  headers:
+                    type: object
+                    example: { "Authorization": "Bearer token123" }
+                required:
+                  - name
+                  - url
+                  - application_id
+                  - environment_id
+                  - webhook_event_ids
+            required:
+              - webhook
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                webhook:
+                  $ref: "#/components/schemas/Webhook"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+webhooks_by_id:
+  get:
+    summary: Webhook [GET]
+    description: "**Required Permissions**: `Webhook Get` or `Webhook Admin`"
+    parameters:
+      - name: webhookId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                webhook:
+                  $ref: "#/components/schemas/Webhook"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Webhook not found
+  put:
+    summary: Webhook [UPDATE]
+    description: "**Required Permissions**: `Webhook Edit` or `Webhook Admin`"
+    parameters:
+      - name: webhookId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the Webhook that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              webhook:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Updated Webhook Name"
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://updated-example.com/webhook"
+                  application_id:
+                    type: integer
+                    example: 1
+                  environment_id:
+                    type: integer
+                    example: 1
+                  webhook_event_ids:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2, 3]
+                  headers:
+                    type: object
+                    example: { "Authorization": "Bearer updated-token", "X-Custom": "Value" }
+            required:
+              - webhook
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                webhook:
+                  $ref: "#/components/schemas/Webhook"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Webhook not found
+  delete:
+    summary: Webhook [DELETE]
+    description: "**Required Permissions**: `Webhook Delete` or `Webhook Admin`"
+    parameters:
+      - name: webhookId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Webhook not found
+
+components:
+  schemas:
+    Webhook:
+      type: object
+      description: "Represents a webhook configuration for receiving event notifications"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the webhook"
+          example: 1
+        name:
+          type: string
+          description: "Name of the webhook"
+          example: "Production Deployment Hook"
+        url:
+          type: string
+          format: uri
+          description: "URL endpoint to send webhook events to"
+          example: "https://example.com/webhooks/absmartly"
+        application_id:
+          type: integer
+          description: "ID of the application this webhook is associated with"
+          example: 1
+        environment_id:
+          type: integer
+          description: "ID of the environment this webhook is associated with"
+          example: 2
+        secret:
+          type: string
+          description: "Secret key used to sign webhook payloads"
+          example: "whsec_abc123def456"
+        status:
+          type: string
+          description: "Status of the webhook (active, disabled)"
+          enum: ["active", "disabled"]
+          example: "active"
+        events:
+          type: array
+          items:
+            type: string
+          description: "List of event types this webhook subscribes to"
+          example: ["experiment.created", "experiment.started", "experiment.ended"]
+        created_at:
+          type: string
+          format: date-time
+          description: "When the webhook was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the webhook was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - name
+        - url
+        - application_id
+        - environment_id
+        - status
+        - events
+      example:
+        id: 1
+        name: "Production Deployment Hook"
+        url: "https://example.com/webhooks/absmartly"
+        application_id: 1
+        environment_id: 2
+        secret: "whsec_abc123def456"
+        status: "active"
+        events: ["experiment.created", "experiment.started", "experiment.ended"]
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"
+        
+    WebhookEvent:
+      type: object
+      description: "Represents a type of event that can trigger a webhook"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the webhook event type"
+          example: 1
+        name:
+          type: string
+          description: "Name of the event type"
+          example: "experiment.started"
+        description:
+          type: string
+          description: "Description of when this event is triggered"
+          example: "Triggered when an experiment is started"
+        category:
+          type: string
+          description: "Category of the event (e.g., experiment, application)"
+          example: "experiment"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the webhook event type was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the webhook event type was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - name
+        - category
+
+    WebhookDelivery:
+      type: object
+      description: "Represents a single webhook delivery attempt"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the webhook delivery"
+          example: 1
+        webhook_id:
+          type: integer
+          description: "ID of the webhook that was delivered"
+          example: 1
+        event_type:
+          type: string
+          description: "Type of event that triggered the webhook"
+          example: "experiment.started"
+        payload:
+          type: object
+          description: "JSON payload that was sent"
+        request_headers:
+          type: object
+          description: "HTTP headers sent with the request"
+        response_headers:
+          type: object
+          description: "HTTP headers received in the response"
+        response_body:
+          type: string
+          description: "Response body received"
+        response_status_code:
+          type: integer
+          description: "HTTP status code received in the response"
+          example: 200
+        successful:
+          type: boolean
+          description: "Whether the delivery was successful"
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          description: "When the webhook delivery was created/attempted"
+          example: "2023-01-01T00:00:00Z"
+      required:
+        - id
+        - webhook_id
+        - event_type
+        - payload
+        - successful
+        - created_at

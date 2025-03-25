@@ -1,0 +1,228 @@
+experiment_tags:
+  get:
+    summary: Experiment Tags [LIST]
+    description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "tag"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - Experiment Tags
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ExperimentTag"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+  post:
+    summary: Experiment Tag [CREATE]
+    description: "**Required Permissions**: `Experiment Create` or `Experiment Admin`"
+    tags:
+      - Experiment Tags
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tag:
+                type: string
+                description: "Tag name"
+                example: "production"
+            required:
+              - tag
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                experiment_tag:
+                  $ref: "#/components/schemas/ExperimentTag"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+experiment_tags_by_id:
+  get:
+    summary: Experiment Tag [GET]
+    description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+    parameters:
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Experiment Tags
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                experiment_tag:
+                  $ref: "#/components/schemas/ExperimentTag"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment Tag not found
+  put:
+    summary: Experiment Tag [UPDATE]
+    description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
+    parameters:
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Experiment Tags
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tag:
+                type: string
+                description: "Tag name"
+                example: "production-v2"
+            required:
+              - tag
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                experiment_tag:
+                  $ref: "#/components/schemas/ExperimentTag"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment Tag not found
+  delete:
+    summary: Experiment Tag [DELETE]
+    description: "**Required Permissions**: `Experiment Archive` or `Experiment Admin`"
+    parameters:
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Experiment Tags
+    responses:
+      "204":
+        description: No Content
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment Tag not found
+
+# Components
+components:
+  schemas:
+    ExperimentTag:
+      type: object
+      description: "Represents a tag for experiments"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the experiment tag"
+          example: 1
+        tag:
+          type: string
+          description: "Tag name"
+          example: "production"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the tag was created"
+          example: "2023-01-01T00:00:00Z"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created the tag"
+          example: 1
+        created_by:
+          $ref: "#/components/schemas/User"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the tag was last updated"
+          example: "2023-01-02T00:00:00Z"
+        updated_by_user_id:
+          type: integer
+          description: "ID of the user who last updated the tag"
+          example: 1
+        updated_by:
+          $ref: "#/components/schemas/User"
+      required:
+        - id
+        - tag
+        - created_at
+        - created_by_user_id

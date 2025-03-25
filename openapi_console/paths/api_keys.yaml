@@ -1,0 +1,263 @@
+api_keys:
+  get:
+    summary: API Key [LIST]
+    description: "**Required Permissions**: `ApiKey List` or `ApiKey Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ApiKey"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+  post:
+    summary: API Key [CREATE]
+    description: "**Required Permissions**: `ApiKey Create` or `ApiKey Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              api_key:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "My API Key"
+                  application_id:
+                    type: integer
+                    example: 1
+                  environment_id:
+                    type: integer
+                    example: 1
+                  role_id:
+                    type: integer
+                    example: 1
+                required:
+                  - name
+                  - application_id
+                  - environment_id
+                  - role_id
+            required:
+              - api_key
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                api_key:
+                  $ref: "#/components/schemas/ApiKey"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+api_keys_by_id:
+  get:
+    summary: API Key [GET]
+    description: "**Required Permissions**: `ApiKey Get` or `ApiKey Admin`"
+    parameters:
+      - name: apiKeyId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                api_key:
+                  $ref: "#/components/schemas/ApiKey"
+  put:
+    summary: API Key [UPDATE]
+    description: "**Required Permissions**: `ApiKey Edit` or `ApiKey Admin`"
+    parameters:
+      - name: apiKeyId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the API Key that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              api_key:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "My Updated API Key"
+                  application_id:
+                    type: integer
+                    example: 1
+                  environment_id:
+                    type: integer
+                    example: 1
+                  role_id:
+                    type: integer
+                    example: 1
+            required:
+              - api_key
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                api_key:
+                  $ref: "#/components/schemas/ApiKey"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: API Key not found
+  delete:
+    summary: API Key [DELETE]
+    description: "**Required Permissions**: `ApiKey Delete` or `ApiKey Admin`"
+    parameters:
+      - name: apiKeyId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: API Key not found
+
+# Components
+components:
+  schemas:
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the API key"
+          example: 1
+        name:
+          type: string
+          description: "Name of the API key"
+          example: "Production API Key"
+        key:
+          type: string
+          description: "The actual API key value (only shown once upon creation)"
+          example: "sk_test_abc123def456"
+        application_id:
+          type: integer
+          description: "ID of the application this API key is associated with"
+          example: 1
+        environment_id:
+          type: integer
+          description: "ID of the environment this API key is associated with"
+          example: 2
+        role_id:
+          type: integer
+          description: "ID of the role that defines permissions for this API key"
+          example: 3
+        user_id:
+          type: integer
+          description: "ID of the user who created this API key"
+          example: 101
+        last_used_at:
+          type: string
+          format: date-time
+          description: "When the API key was last used"
+          example: "2023-02-15T10:30:00Z"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the API key was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the API key was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - name
+        - application_id
+        - environment_id
+        - role_id

@@ -1,0 +1,382 @@
+insights:
+  get:
+    summary: Insights [LIST]
+    description: "Redirects to insightsvelocitywidgets for backward compatibility"
+    tags:
+      - Insights
+    responses:
+      "308":
+        description: Permanent Redirect
+
+insightsvelocitywidgets:
+  get:
+    summary: Velocity Insights Widgets [GET]
+    description: "**Required Permissions**: `ExperimentReports List` or `ExperimentReports Admin`"
+    tags:
+      - Insights
+    parameters:
+      - name: from
+        in: query
+        schema:
+          type: integer
+          description: "Start time in epoch seconds"
+          example: 1609459200
+      - name: to
+        in: query
+        schema:
+          type: integer
+          description: "End time in epoch seconds"
+          example: 1640995200
+      - name: aggregation
+        in: query
+        schema:
+          type: string
+          enum: [day, week, month, quarter, year]
+          default: month
+          description: "Time period aggregation"
+      - name: unit_type_ids
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+          description: "Filter by unit type IDs"
+      - name: primary_metric_ids
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+          description: "Filter by primary metric IDs"
+      - name: analysis_types
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+          description: "Filter by analysis types"
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VelocityWidgetsResponse"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+insightsvelocityhistory:
+  get:
+    summary: Velocity Insights History [GET]
+    description: "**Required Permissions**: `ExperimentReports List` or `ExperimentReports Admin`"
+    tags:
+      - Insights
+    parameters:
+      - name: from
+        in: query
+        schema:
+          type: integer
+          description: "Start time in epoch seconds"
+          example: 1609459200
+      - name: to
+        in: query
+        schema:
+          type: integer
+          description: "End time in epoch seconds"
+          example: 1640995200
+      - name: aggregation
+        in: query
+        schema:
+          type: string
+          enum: [day, week, month, quarter, year]
+          default: month
+          description: "Time period aggregation"
+      - name: unit_type_ids
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+          description: "Filter by unit type IDs"
+      - name: primary_metric_ids
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+          description: "Filter by primary metric IDs"
+      - name: analysis_types
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+          description: "Filter by analysis types"
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VelocityHistoryResponse"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+insightsdecisionswidgets:
+  get:
+    summary: Decisions Insights Widgets [GET]
+    description: "**Required Permissions**: `ExperimentReports List` or `ExperimentReports Admin`"
+    tags:
+      - Insights
+    parameters:
+      - name: from
+        in: query
+        schema:
+          type: integer
+          description: "Start time in epoch seconds"
+          example: 1609459200
+      - name: to
+        in: query
+        schema:
+          type: integer
+          description: "End time in epoch seconds"
+          example: 1640995200
+      - name: aggregation
+        in: query
+        schema:
+          type: string
+          enum: [day, week, month, quarter, year]
+          default: month
+          description: "Time period aggregation"
+      - name: unit_type_ids
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+          description: "Filter by unit type IDs"
+      - name: primary_metric_ids
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+          description: "Filter by primary metric IDs"
+      - name: analysis_types
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+          description: "Filter by analysis types"
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DecisionsWidgetsResponse"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+insightsdecisionshistory:
+  get:
+    summary: Decisions Insights History [GET]
+    description: "**Required Permissions**: `ExperimentReports List` or `ExperimentReports Admin`"
+    tags:
+      - Insights
+    parameters:
+      - name: from
+        in: query
+        schema:
+          type: integer
+          description: "Start time in epoch seconds"
+          example: 1609459200
+      - name: to
+        in: query
+        schema:
+          type: integer
+          description: "End time in epoch seconds"
+          example: 1640995200
+      - name: aggregation
+        in: query
+        schema:
+          type: string
+          enum: [day, week, month, quarter, year]
+          default: month
+          description: "Time period aggregation"
+      - name: unit_type_ids
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+          description: "Filter by unit type IDs"
+      - name: primary_metric_ids
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+          description: "Filter by primary metric IDs"
+      - name: analysis_types
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+          description: "Filter by analysis types"
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DecisionsHistoryResponse"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+# Components
+components:
+  schemas:
+    VelocityWidgetsResponse:
+      type: object
+      description: "Velocity widgets summary data"
+      properties:
+        total_started:
+          type: integer
+          description: "Total number of experiments started in the period"
+          example: 15
+        total_running:
+          type: integer
+          description: "Total number of experiments running in the period"
+          example: 10
+        completed_insignificant:
+          type: integer
+          description: "Number of experiments completed with insignificant results"
+          example: 3
+        completed_positive:
+          type: integer
+          description: "Number of experiments completed with positive results"
+          example: 5
+        completed_negative:
+          type: integer
+          description: "Number of experiments completed with negative results"
+          example: 2
+        aborted:
+          type: integer
+          description: "Number of experiments aborted in the period"
+          example: 1
+      required:
+        - total_started
+        - total_running
+        - completed_insignificant
+        - completed_positive
+        - completed_negative
+        - aborted
+
+    VelocityHistoryResponse:
+      type: object
+      description: "Velocity history data"
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              date_from:
+                type: string
+                format: date-time
+                description: "Start of the time period"
+              date_to:
+                type: string
+                format: date-time
+                description: "End of the time period"
+              started:
+                type: integer
+                description: "Number of experiments started in the period"
+              running:
+                type: integer
+                description: "Number of experiments running in the period"
+              completed_insignificant:
+                type: integer
+                description: "Number of experiments completed with insignificant results"
+              completed_positive:
+                type: integer
+                description: "Number of experiments completed with positive results"
+              completed_negative:
+                type: integer
+                description: "Number of experiments completed with negative results"
+              aborted:
+                type: integer
+                description: "Number of experiments aborted in the period"
+          description: "Array of time period data points"
+      required:
+        - items
+
+    DecisionsWidgetsResponse:
+      type: object
+      description: "Decisions widgets summary data"
+      properties:
+        full_on_supported:
+          type: integer
+          description: "Number of experiments set to full-on with analysis support"
+          example: 8
+        full_on_not_supported:
+          type: integer
+          description: "Number of experiments set to full-on without analysis support"
+          example: 2
+        keep_current:
+          type: integer
+          description: "Number of experiments that were completed but not set to full-on"
+          example: 3
+        aborted:
+          type: integer
+          description: "Number of experiments aborted in the period"
+          example: 1
+      required:
+        - full_on_supported
+        - full_on_not_supported
+        - keep_current
+        - aborted
+
+    DecisionsHistoryResponse:
+      type: object
+      description: "Decisions history data"
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              date_from:
+                type: string
+                format: date-time
+                description: "Start of the time period"
+              date_to:
+                type: string
+                format: date-time
+                description: "End of the time period"
+              full_on_supported:
+                type: integer
+                description: "Number of experiments set to full-on with analysis support"
+              full_on_not_supported:
+                type: integer
+                description: "Number of experiments set to full-on without analysis support"
+              keep_current:
+                type: integer
+                description: "Number of experiments that were completed but not set to full-on"
+              aborted:
+                type: integer
+                description: "Number of experiments aborted in the period"
+          description: "Array of time period data points"
+      required:
+        - items

@@ -1,0 +1,180 @@
+storage_configs:
+  get:
+    summary: Storage Configs [LIST]
+    description: "**Required Permissions**: `ExportConfig List` or `ExportConfig Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "name"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - Storage Configs
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/StorageConfig"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+storage_configs_by_id:
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        description: "Unique identifier for the storage configuration"
+  get:
+    summary: Storage Configs [GET]
+    description: "**Required Permissions**: `ExportConfig List` or `ExportConfig Admin`"
+    tags:
+      - Storage Configs
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StorageConfig"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Not Found
+
+storage_configs_test:
+  post:
+    summary: Storage Configs [TEST]
+    description: "**Required Permissions**: `ExportConfig Create` or `ExportConfig Update` or `ExportConfig Admin`"
+    tags:
+      - Storage Configs
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "Storage configuration name"
+                example: "S3 Storage Config"
+              type:
+                type: string
+                enum: [S3]
+                description: "Storage type"
+                example: "S3"
+              properties:
+                type: object
+                description: "Provider-specific configuration properties"
+            required:
+              - name
+              - type
+              - properties
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  description: "Indicates if the test was successful"
+                message:
+                  type: string
+                  description: "Success or error message"
+              required:
+                - success
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+# Components
+components:
+  schemas:
+    StorageConfig:
+      type: object
+      description: "Configuration for storage providers"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the storage configuration"
+          example: 1
+        name:
+          type: string
+          description: "Descriptive name for the storage configuration"
+          example: "S3 Storage Config"
+        properties:
+          type: object
+          description: "Provider-specific configuration properties"
+        type:
+          type: string
+          enum: [S3]
+          description: "Storage type"
+          example: "S3"
+        created_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the storage config was created"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created the storage config"
+        updated_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the storage config was last updated"
+        updated_by_user_id:
+          type: integer
+          description: "ID of the user who last updated the storage config"
+      required:
+        - id
+        - name
+        - properties
+        - type
+        - created_at
+        - created_by_user_id

@@ -1,0 +1,63 @@
+files_usage_id_action_filename:
+  parameters:
+    - name: usage
+      in: path
+      required: true
+      schema:
+        type: string
+        description: "The usage type of the file"
+        example: "logo"
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        description: "The ID of the file"
+        example: "123"
+    - name: action
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [crop, none]
+        description: "The action to perform on the file"
+        example: "none"
+    - name: filename
+      in: path
+      required: true
+      schema:
+        type: string
+        description: "The filename"
+        example: "image.jpg"
+  get:
+    summary: Files [GET]
+    description: "**Required Permissions**: Access to the file based on its usage type"
+    tags:
+      - Files
+    responses:
+      "200":
+        description: OK
+        content:
+          image/*:
+            schema:
+              type: string
+              format: binary
+      "302":
+        description: Found (Redirected to on-demand version)
+      "401":
+        description: Unauthorized
+      "404":
+        description: Not Found
+
+  head:
+    summary: Files [HEAD]
+    description: "**Required Permissions**: Access to the file based on its usage type"
+    tags:
+      - Files
+    responses:
+      "200":
+        description: OK
+      "401":
+        description: Unauthorized
+      "404":
+        description: Not Found

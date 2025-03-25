@@ -1,0 +1,252 @@
+applications:
+  get:
+    summary: Application [LIST]
+    description: "**Required Permissions**: `Application List` or `Application Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Application"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+  post:
+    summary: Application [CREATE]
+    description: "**Required Permissions**: `Application Create` or `Application Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              application:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "My Application"
+                  full_name:
+                    type: string
+                    example: "My Application Full Name"
+                  description:
+                    type: string
+                    example: "Description of my application"
+                required:
+                  - name
+                  - full_name
+            required:
+              - application
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                application:
+                  $ref: "#/components/schemas/Application"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+applications_by_id:
+  get:
+    summary: Application [GET]
+    description: "**Required Permissions**: `Application Get` or `Application Admin`"
+    parameters:
+      - name: applicationId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                application:
+                  $ref: "#/components/schemas/Application"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Application not found
+  put:
+    summary: Application [UPDATE]
+    description: "**Required Permissions**: `Application Edit` or `Application Admin`"
+    parameters:
+      - name: applicationId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the Application that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              application:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Updated Application Name"
+                  full_name:
+                    type: string
+                    example: "Updated Application Full Name"
+                  description:
+                    type: string
+                    example: "Updated description of my application"
+            required:
+              - application
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                application:
+                  $ref: "#/components/schemas/Application"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Application not found
+  delete:
+    summary: Application [DELETE]
+    description: "**Required Permissions**: `Application Delete` or `Application Admin`"
+    parameters:
+      - name: applicationId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Application not found
+
+components:
+  schemas:
+    Application:
+      type: object
+      description: "Represents an application for which experiments can be run"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the application"
+          example: 1
+        name:
+          type: string
+          description: "Short name of the application, used in code. Max length 64 characters."
+          example: "website"
+          maxLength: 64
+        full_name:
+          type: string
+          description: "Full name of the application. Max length 256 characters."
+          example: "Company Website"
+          maxLength: 256
+        description:
+          type: string
+          description: "Detailed description of the application. Max length 8192 characters."
+          example: "The main marketing website for the company"
+          maxLength: 8192
+        created_at:
+          type: string
+          format: date-time
+          description: "When the application was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the application was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - name
+        - full_name
+      example:
+        id: 1
+        name: "website"
+        full_name: "Company Website"
+        description: "The main marketing website for the company"
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"

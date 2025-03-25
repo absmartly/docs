@@ -1,0 +1,307 @@
+roles:
+  get:
+    summary: Roles [LIST]
+    description: "**Required Permissions**: `Role List` or `Role Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "name"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - Roles
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Role"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+  post:
+    summary: Role [CREATE]
+    description: "**Required Permissions**: `Role Create` or `Role Admin`"
+    tags:
+      - Roles
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "Role name"
+                example: "Marketing Manager"
+              description:
+                type: string
+                description: "Role description"
+                example: "Role for marketing managers with access to metrics and experiments"
+              permissions:
+                type: array
+                description: "List of permission IDs associated with this role"
+                items:
+                  type: object
+                  properties:
+                    permission_id:
+                      type: integer
+              access_control_policies:
+                type: array
+                description: "List of access control policy IDs associated with this role"
+                items:
+                  type: object
+                  properties:
+                    access_control_policy_id:
+                      type: integer
+            required:
+              - name
+              - permissions
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                role:
+                  $ref: "#/components/schemas/Role"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+roles_by_id:
+  get:
+    summary: Role [GET]
+    description: "**Required Permissions**: `Role Get` or `Role Admin`"
+    parameters:
+      - name: roleId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Roles
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  $ref: "#/components/schemas/Role"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Role not found
+  put:
+    summary: Role [UPDATE]
+    description: "**Required Permissions**: `Role Edit` or `Role Admin`"
+    parameters:
+      - name: roleId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Roles
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "Role name"
+                example: "Senior Marketing Manager"
+              description:
+                type: string
+                description: "Role description"
+                example: "Updated role for senior marketing managers"
+              permissions:
+                type: array
+                description: "List of permission IDs associated with this role"
+                items:
+                  type: object
+                  properties:
+                    permission_id:
+                      type: integer
+              access_control_policies:
+                type: array
+                description: "List of access control policy IDs associated with this role"
+                items:
+                  type: object
+                  properties:
+                    access_control_policy_id:
+                      type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                role:
+                  $ref: "#/components/schemas/Role"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Role not found
+  delete:
+    summary: Role [DELETE]
+    description: "**Required Permissions**: `Role Delete` or `Role Admin`"
+    parameters:
+      - name: roleId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Roles
+    responses:
+      "204":
+        description: No Content
+      "400":
+        description: Bad Request - Role is not deletable
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Role not found
+
+# Components
+components:
+  schemas:
+    Role:
+      type: object
+      description: "Represents a user role with associated permissions"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the role"
+          example: 1
+        name:
+          type: string
+          description: "Role name"
+          example: "Marketing Manager"
+        description:
+          type: string
+          description: "Role description"
+          example: "Role for marketing managers with access to metrics and experiments"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the role was created"
+          example: "2023-01-01T00:00:00Z"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created the role"
+          example: 1
+        created_by:
+          $ref: "#/components/schemas/User"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the role was last updated"
+          example: "2023-01-02T00:00:00Z"
+        updated_by_user_id:
+          type: integer
+          description: "ID of the user who last updated the role"
+          example: 1
+        updated_by:
+          $ref: "#/components/schemas/User"
+        deletable:
+          type: boolean
+          description: "Whether the role can be deleted"
+          example: true
+        default_user_role:
+          type: boolean
+          description: "Whether this is the default role for new users"
+          example: false
+        full_admin_role:
+          type: boolean
+          description: "Whether this role has full admin privileges"
+          example: false
+        permissions:
+          type: array
+          description: "Permissions associated with this role"
+          items:
+            type: object
+            properties:
+              permission_id:
+                type: integer
+              permission:
+                $ref: "#/components/schemas/Permission"
+        access_control_policies:
+          type: array
+          description: "Access control policies associated with this role"
+          items:
+            type: object
+            properties:
+              access_control_policy_id:
+                type: integer
+              access_control_policy:
+                $ref: "#/components/schemas/AccessControlPolicy"
+      required:
+        - id
+        - name
+        - created_at
+        - deletable
+        - default_user_role
+        - full_admin_role
