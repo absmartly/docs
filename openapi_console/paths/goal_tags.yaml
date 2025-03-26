@@ -54,6 +54,7 @@ goal_tags:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listgoalTags
   post:
     summary: Goal Tag [CREATE]
     description: "**Required Permissions**: `Goal Create` or `Goal Admin`"
@@ -90,7 +91,7 @@ goal_tags:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: creategoalTag
 goal_tags_by_id:
   get:
     summary: Goal Tag [GET]
@@ -119,6 +120,7 @@ goal_tags_by_id:
         description: Forbidden
       "404":
         description: Goal Tag not found
+    operationId: getgoalTag
   put:
     summary: Goal Tag [UPDATE]
     description: "**Required Permissions**: `Goal Edit` or `Goal Admin`"
@@ -163,6 +165,7 @@ goal_tags_by_id:
         description: Forbidden
       "404":
         description: Goal Tag not found
+    operationId: updategoalTag
   delete:
     summary: Goal Tag [DELETE]
     description: "**Required Permissions**: `Goal Archive` or `Goal Admin`"
@@ -183,8 +186,7 @@ goal_tags_by_id:
         description: Forbidden
       "404":
         description: Goal Tag not found
-
-# Components
+    operationId: deletegoalTag
 components:
   schemas:
     GoalTag:

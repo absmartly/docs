@@ -72,7 +72,7 @@ export_configs:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: listexportConfigs
   post:
     summary: Export Configs [CREATE]
     description: "**Required Permissions**: `ExportConfig Create` or `ExportConfig Admin`"
@@ -127,7 +127,7 @@ export_configs:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createexportConfigs
 export_configs_by_id:
   parameters:
     - name: id
@@ -153,10 +153,15 @@ export_configs_by_id:
         description: Forbidden
       "404":
         description: Not Found
-
+    operationId: getexportConfigs
   put:
     summary: Export Configs [UPDATE]
-    description: "**Required Permissions**: `ExportConfig Update` or `ExportConfig Admin`"
+    description: |
+      **Required Permissions**: `ExportConfig Update` or `ExportConfig Admin`
+
+      :::caution
+      Only fields provided in the request will be updated. Fields not included in the request body will retain their existing values.
+      :::
     tags:
       - Export Configs
     requestBody:
@@ -204,7 +209,7 @@ export_configs_by_id:
         description: Forbidden
       "404":
         description: Not Found
-
+    operationId: updateexportConfigs
   delete:
     summary: Export Configs [ARCHIVE]
     description: "**Required Permissions**: `ExportConfig Archive` or `ExportConfig Admin`"
@@ -219,7 +224,7 @@ export_configs_by_id:
         description: Forbidden
       "404":
         description: Not Found
-
+    operationId: deleteexportConfigs
 export_configs_id_export_histories:
   parameters:
     - name: id
@@ -284,7 +289,7 @@ export_configs_id_export_histories:
         description: Forbidden
       "404":
         description: Not Found
-
+    operationId: listexportHistories
 export_configs_id_export_histories_by_history_id:
   parameters:
     - name: id
@@ -328,8 +333,7 @@ export_configs_id_export_histories_by_history_id:
         description: Forbidden
       "404":
         description: Not Found
-
-# Components
+    operationId: updateexportHistories
 components:
   schemas:
     ExportConfig:

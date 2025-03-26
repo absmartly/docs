@@ -52,6 +52,7 @@ metrics:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listmetric
   post:
     summary: Metric [CREATE]
     description: "**Required Permissions**: `Metric Create` or `Metric Admin`"
@@ -103,7 +104,7 @@ metrics:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createmetric
 metrics_by_id:
   get:
     summary: Metric [GET]
@@ -130,6 +131,7 @@ metrics_by_id:
         description: Forbidden
       "404":
         description: Metric not found
+    operationId: getmetric
   put:
     summary: Metric [UPDATE]
     description: "**Required Permissions**: `Metric Edit` or `Metric Admin`"
@@ -185,6 +187,7 @@ metrics_by_id:
         description: Forbidden
       "404":
         description: Metric not found
+    operationId: updatemetric
   delete:
     summary: Metric [DELETE]
     description: "**Required Permissions**: `Metric Delete` or `Metric Admin`"
@@ -211,7 +214,7 @@ metrics_by_id:
         description: Forbidden
       "404":
         description: Metric not found
-
+    operationId: deletemetric
 metric_tags:
   get:
     summary: Metric Tag [LIST]
@@ -266,6 +269,7 @@ metric_tags:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listmetricTag
   post:
     summary: Metric Tag [CREATE]
     description: "**Required Permissions**: `Metric Tag Create` or `Metric Admin`"
@@ -309,7 +313,7 @@ metric_tags:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createmetricTag
 metric_tags_by_id:
   get:
     summary: Metric Tag [GET]
@@ -336,6 +340,7 @@ metric_tags_by_id:
         description: Forbidden
       "404":
         description: Metric Tag not found
+    operationId: getmetricTag
   put:
     summary: Metric Tag [UPDATE]
     description: "**Required Permissions**: `Metric Tag Edit` or `Metric Admin`"
@@ -385,6 +390,7 @@ metric_tags_by_id:
         description: Forbidden
       "404":
         description: Metric Tag not found
+    operationId: updatemetricTag
   delete:
     summary: Metric Tag [DELETE]
     description: "**Required Permissions**: `Metric Tag Delete` or `Metric Admin`"
@@ -412,7 +418,7 @@ metric_tags_by_id:
       "404":
         description: Metric Tag not found
 
-# Components
+    operationId: deletemetricTag
 components:
   schemas:
     Metric:

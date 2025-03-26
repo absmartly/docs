@@ -52,6 +52,7 @@ unit_types:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listunitType
   post:
     summary: Unit Type [CREATE]
     description: "**Required Permissions**: `UnitType Create` or `UnitType Admin`"
@@ -100,6 +101,7 @@ unit_types:
       "403":
         description: Forbidden
 
+    operationId: createunitType
 unit_types_by_id:
   get:
     summary: Unit Type [GET]
@@ -126,6 +128,7 @@ unit_types_by_id:
         description: Forbidden
       "404":
         description: Unit Type not found
+    operationId: getunitType
   put:
     summary: Unit Type [UPDATE]
     description: "**Required Permissions**: `UnitType Edit` or `UnitType Admin`"
@@ -178,6 +181,7 @@ unit_types_by_id:
         description: Forbidden
       "404":
         description: Unit Type not found
+    operationId: updateunitType
   delete:
     summary: Unit Type [DELETE]
     description: "**Required Permissions**: `UnitType Delete` or `UnitType Admin`"
@@ -205,7 +209,7 @@ unit_types_by_id:
       "404":
         description: Unit Type not found
 
-# Components
+    operationId: deleteunitType
 components:
   schemas:
     UnitType:

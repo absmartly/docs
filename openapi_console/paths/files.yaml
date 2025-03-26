@@ -48,8 +48,9 @@ files_usage_id_action_filename:
         description: Unauthorized
       "404":
         description: Not Found
-
+    operationId: getfiles
   head:
+    operationId: checkFileExists
     summary: Files [HEAD]
     description: "**Required Permissions**: Access to the file based on its usage type"
     tags:

@@ -52,6 +52,7 @@ goals:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listgoal
   post:
     summary: Goal [CREATE]
     description: "**Required Permissions**: `Goal Create` or `Goal Admin`"
@@ -103,7 +104,7 @@ goals:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: creategoal
 goals_by_id:
   get:
     summary: Goal [GET]
@@ -130,9 +131,17 @@ goals_by_id:
         description: Forbidden
       "404":
         description: Goal not found
+    operationId: getgoal
   put:
     summary: Goal [UPDATE]
-    description: "**Required Permissions**: `Goal Edit` or `Goal Admin`"
+    description: |
+      **Required Permissions**: `Goal Edit` or `Goal Admin`
+
+      :::caution
+      Regular fields provided in the request will be updated. Regular fields not included in the request body will retain their existing values.
+
+      However, if relationship fields (`tags`, `owners`, or `teams`) are included in the request, ALL existing related records will be DELETED and replaced with only those provided in the request.
+      :::
     parameters:
       - name: goalId
         in: path
@@ -185,6 +194,7 @@ goals_by_id:
         description: Forbidden
       "404":
         description: Goal not found
+    operationId: updategoal
   delete:
     summary: Goal [DELETE]
     description: "**Required Permissions**: `Goal Delete` or `Goal Admin`"
@@ -211,7 +221,7 @@ goals_by_id:
         description: Forbidden
       "404":
         description: Goal not found
-
+    operationId: deletegoal
 goal_tags:
   get:
     summary: Goal Tag [LIST]
@@ -266,6 +276,7 @@ goal_tags:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listgoalTag
   post:
     summary: Goal Tag [CREATE]
     description: "**Required Permissions**: `Goal Tag Create` or `Goal Admin`"
@@ -309,7 +320,7 @@ goal_tags:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: creategoalTag
 goal_tags_by_id:
   get:
     summary: Goal Tag [GET]
@@ -336,6 +347,7 @@ goal_tags_by_id:
         description: Forbidden
       "404":
         description: Goal Tag not found
+    operationId: getgoalTag
   put:
     summary: Goal Tag [UPDATE]
     description: "**Required Permissions**: `Goal Tag Edit` or `Goal Admin`"
@@ -385,6 +397,7 @@ goal_tags_by_id:
         description: Forbidden
       "404":
         description: Goal Tag not found
+    operationId: updategoalTag
   delete:
     summary: Goal Tag [DELETE]
     description: "**Required Permissions**: `Goal Tag Delete` or `Goal Admin`"
@@ -411,8 +424,7 @@ goal_tags_by_id:
         description: Forbidden
       "404":
         description: Goal Tag not found
-
-# Components
+    operationId: deletegoalTag
 components:
   schemas:
     Goal:

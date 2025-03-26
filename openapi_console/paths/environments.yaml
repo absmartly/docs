@@ -52,6 +52,7 @@ environments:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listenvironment
   post:
     summary: Environment [CREATE]
     description: "**Required Permissions**: `Environment Create` or `Environment Admin`"
@@ -95,7 +96,7 @@ environments:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createenvironment
 environments_by_id:
   get:
     summary: Environment [GET]
@@ -122,6 +123,7 @@ environments_by_id:
         description: Forbidden
       "404":
         description: Environment not found
+    operationId: getenvironment
   put:
     summary: Environment [UPDATE]
     description: "**Required Permissions**: `Environment Edit` or `Environment Admin`"
@@ -171,6 +173,7 @@ environments_by_id:
         description: Forbidden
       "404":
         description: Environment not found
+    operationId: updateenvironment
   delete:
     summary: Environment [DELETE]
     description: "**Required Permissions**: `Environment Delete` or `Environment Admin`"
@@ -197,8 +200,7 @@ environments_by_id:
         description: Forbidden
       "404":
         description: Environment not found
-
-# Components
+    operationId: deleteenvironment
 components:
   schemas:
     Environment:

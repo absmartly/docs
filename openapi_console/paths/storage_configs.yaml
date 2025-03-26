@@ -55,6 +55,7 @@ storage_configs:
       "403":
         description: Forbidden
 
+    operationId: liststorageConfigs
 storage_configs_by_id:
   parameters:
     - name: id
@@ -82,6 +83,7 @@ storage_configs_by_id:
       "404":
         description: Not Found
 
+    operationId: getstorageConfigs
 storage_configs_test:
   post:
     summary: Storage Configs [TEST]
@@ -134,7 +136,7 @@ storage_configs_test:
       "403":
         description: Forbidden
 
-# Components
+    operationId: createstorageConfigs
 components:
   schemas:
     StorageConfig:

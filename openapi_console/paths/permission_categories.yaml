@@ -21,7 +21,7 @@ permission_categories:
       "401":
         description: Unauthorized
 
-# Components
+    operationId: listpermissionCategories
 components:
   schemas:
     PermissionCategory:

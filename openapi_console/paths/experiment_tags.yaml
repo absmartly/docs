@@ -54,6 +54,7 @@ experiment_tags:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listexperimentTags
   post:
     summary: Experiment Tag [CREATE]
     description: "**Required Permissions**: `Experiment Create` or `Experiment Admin`"
@@ -90,7 +91,7 @@ experiment_tags:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createexperimentTag
 experiment_tags_by_id:
   get:
     summary: Experiment Tag [GET]
@@ -119,6 +120,7 @@ experiment_tags_by_id:
         description: Forbidden
       "404":
         description: Experiment Tag not found
+    operationId: getexperimentTag
   put:
     summary: Experiment Tag [UPDATE]
     description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
@@ -163,6 +165,7 @@ experiment_tags_by_id:
         description: Forbidden
       "404":
         description: Experiment Tag not found
+    operationId: updateexperimentTag
   delete:
     summary: Experiment Tag [DELETE]
     description: "**Required Permissions**: `Experiment Archive` or `Experiment Admin`"
@@ -183,8 +186,7 @@ experiment_tags_by_id:
         description: Forbidden
       "404":
         description: Experiment Tag not found
-
-# Components
+    operationId: deleteexperimentTag
 components:
   schemas:
     ExperimentTag:

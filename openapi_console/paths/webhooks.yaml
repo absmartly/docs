@@ -53,6 +53,7 @@ webhook_events:
       "403":
         description: Forbidden
 
+    operationId: listwebhookEvent
 webhooks:
   get:
     summary: Webhook [LIST]
@@ -107,6 +108,7 @@ webhooks:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listwebhook
   post:
     summary: Webhook [CREATE]
     description: "**Required Permissions**: `Webhook Create` or `Webhook Admin`"
@@ -168,7 +170,7 @@ webhooks:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createwebhook
 webhooks_by_id:
   get:
     summary: Webhook [GET]
@@ -195,9 +197,17 @@ webhooks_by_id:
         description: Forbidden
       "404":
         description: Webhook not found
+    operationId: getwebhook
   put:
     summary: Webhook [UPDATE]
-    description: "**Required Permissions**: `Webhook Edit` or `Webhook Admin`"
+    description: |
+      **Required Permissions**: `Webhook Edit` or `Webhook Admin`
+
+      :::caution
+      Regular fields provided in the request will be updated. Regular fields not included in the request body will retain their existing values.
+
+      However, if webhook events (`events`) are included in the request, ALL existing webhook events will be DELETED and replaced with only those provided in the request.
+      :::
     parameters:
       - name: webhookId
         in: path
@@ -259,6 +269,7 @@ webhooks_by_id:
         description: Forbidden
       "404":
         description: Webhook not found
+    operationId: updatewebhook
   delete:
     summary: Webhook [DELETE]
     description: "**Required Permissions**: `Webhook Delete` or `Webhook Admin`"
@@ -285,7 +296,7 @@ webhooks_by_id:
         description: Forbidden
       "404":
         description: Webhook not found
-
+    operationId: deletewebhook
 components:
   schemas:
     Webhook:

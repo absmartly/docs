@@ -8,6 +8,7 @@ info:
     email: api@absmartly.com
   license:
     name: Proprietary
+    url: "https://www.absmartly.com/terms"
 externalDocs:
   description: Find out more about ABsmartly
   url: "https://www.absmartly.com"
@@ -183,6 +184,10 @@ paths:
     $ref: "./paths/experiment_custom_sections.yaml#/experiment_custom_sections_by_id"
   /experiment_custom_sections/order:
     $ref: "./paths/experiment_custom_sections.yaml#/experiment_custom_sections_order"
+  /experiment_custom_section_fields:
+    $ref: "./paths/experiment_custom_sections.yaml#/experiment_custom_section_fields"
+  /experiment_custom_section_fields/{id}:
+    $ref: "./paths/experiment_custom_sections.yaml#/experiment_custom_section_fields_by_id"
 
 # Components reference
 components:
@@ -192,3 +197,8 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    UserApiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication

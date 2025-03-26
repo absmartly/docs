@@ -52,6 +52,7 @@ segments:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listsegment
   post:
     summary: Segment [CREATE]
     description: "**Required Permissions**: `Segment Create` or `Segment Admin`"
@@ -103,7 +104,7 @@ segments:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createsegment
 segments_by_id:
   get:
     summary: Segment [GET]
@@ -130,6 +131,7 @@ segments_by_id:
         description: Forbidden
       "404":
         description: Segment not found
+    operationId: getsegment
   put:
     summary: Segment [UPDATE]
     description: "**Required Permissions**: `Segment Edit` or `Segment Admin`"
@@ -185,6 +187,7 @@ segments_by_id:
         description: Forbidden
       "404":
         description: Segment not found
+    operationId: updatesegment
   delete:
     summary: Segment [DELETE]
     description: "**Required Permissions**: `Segment Delete` or `Segment Admin`"
@@ -212,7 +215,7 @@ segments_by_id:
       "404":
         description: Segment not found
 
-# Components
+    operationId: deletesegment
 components:
   schemas:
     Segment:

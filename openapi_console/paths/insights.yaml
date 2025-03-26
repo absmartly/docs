@@ -5,9 +5,17 @@ insights:
     tags:
       - Insights
     responses:
-      "308":
+      '200':
+        description: Success response before redirect
+      '308':
         description: Permanent Redirect
-
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+    operationId: listinsights
 insightsvelocitywidgets:
   get:
     summary: Velocity Insights Widgets [GET]
@@ -66,7 +74,7 @@ insightsvelocitywidgets:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: getvelocityInsightsWidgets
 insightsvelocityhistory:
   get:
     summary: Velocity Insights History [GET]
@@ -125,7 +133,7 @@ insightsvelocityhistory:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: getvelocityInsightsHistory
 insightsdecisionswidgets:
   get:
     summary: Decisions Insights Widgets [GET]
@@ -185,6 +193,7 @@ insightsdecisionswidgets:
       "403":
         description: Forbidden
 
+    operationId: getdecisionsInsightsWidgets
 insightsdecisionshistory:
   get:
     summary: Decisions Insights History [GET]
@@ -245,6 +254,7 @@ insightsdecisionshistory:
         description: Forbidden
 
 # Components
+    operationId: getdecisionsInsightsHistory
 components:
   schemas:
     VelocityWidgetsResponse:

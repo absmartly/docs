@@ -54,6 +54,7 @@ roles:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listroles
   post:
     summary: Role [CREATE]
     description: "**Required Permissions**: `Role Create` or `Role Admin`"
@@ -112,6 +113,7 @@ roles:
       "403":
         description: Forbidden
 
+    operationId: createrole
 roles_by_id:
   get:
     summary: Role [GET]
@@ -140,6 +142,7 @@ roles_by_id:
         description: Forbidden
       "404":
         description: Role not found
+    operationId: getrole
   put:
     summary: Role [UPDATE]
     description: "**Required Permissions**: `Role Edit` or `Role Admin`"
@@ -202,6 +205,7 @@ roles_by_id:
         description: Forbidden
       "404":
         description: Role not found
+    operationId: updaterole
   delete:
     summary: Role [DELETE]
     description: "**Required Permissions**: `Role Delete` or `Role Admin`"
@@ -225,7 +229,7 @@ roles_by_id:
       "404":
         description: Role not found
 
-# Components
+    operationId: deleterole
 components:
   schemas:
     Role:

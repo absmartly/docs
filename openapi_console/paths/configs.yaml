@@ -54,7 +54,7 @@ configs:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: listconfigs
 configs_by_id:
   parameters:
     - name: id
@@ -62,29 +62,34 @@ configs_by_id:
       required: true
       schema:
         type: integer
-        description: "Unique identifier for the configuration"
+        description: Unique identifier for the configuration
   get:
     summary: Configs [GET]
-    description: "**Required Permissions**: `Config List` or `Config Admin`"
+    description: '**Required Permissions**: `Config List` or `Config Admin`'
     tags:
       - Configs
     responses:
-      "200":
+      '200':
         description: OK
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Config"
-      "401":
+              $ref: '#/components/schemas/Config'
+      '401':
         description: Unauthorized
-      "403":
+      '403':
         description: Forbidden
-      "404":
+      '404':
         description: Not Found
-
+    operationId: getconfigs
   put:
     summary: Configs [UPDATE]
-    description: "**Required Permissions**: `Config Update` or `Config Admin`"
+    description: |
+      **Required Permissions**: `Config Update` or `Config Admin`
+
+      :::caution
+      Only fields provided in the request will be updated. Fields not included in the request body will retain their existing values.
+      :::
     tags:
       - Configs
     requestBody:
@@ -115,8 +120,7 @@ configs_by_id:
         description: Forbidden
       "404":
         description: Not Found
-
-# Components
+    operationId: updateconfigs
 components:
   schemas:
     Config:

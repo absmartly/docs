@@ -52,6 +52,7 @@ applications:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listapplication
   post:
     summary: Application [CREATE]
     description: "**Required Permissions**: `Application Create` or `Application Admin`"
@@ -98,7 +99,7 @@ applications:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createapplication
 applications_by_id:
   get:
     summary: Application [GET]
@@ -125,9 +126,15 @@ applications_by_id:
         description: Forbidden
       "404":
         description: Application not found
+    operationId: getapplication
   put:
     summary: Application [UPDATE]
-    description: "**Required Permissions**: `Application Edit` or `Application Admin`"
+    description: |
+      **Required Permissions**: `Application Edit` or `Application Admin`
+
+      :::caution
+      Only fields provided in the request will be updated. Fields not included in the request body will retain their existing values.
+      :::
     parameters:
       - name: applicationId
         in: path
@@ -177,6 +184,7 @@ applications_by_id:
         description: Forbidden
       "404":
         description: Application not found
+    operationId: updateapplication
   delete:
     summary: Application [DELETE]
     description: "**Required Permissions**: `Application Delete` or `Application Admin`"
@@ -203,7 +211,7 @@ applications_by_id:
         description: Forbidden
       "404":
         description: Application not found
-
+    operationId: deleteapplication
 components:
   schemas:
     Application:

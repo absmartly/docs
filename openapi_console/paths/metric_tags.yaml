@@ -54,6 +54,7 @@ metric_tags:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listmetricTags
   post:
     summary: Metric Tag [CREATE]
     description: "**Required Permissions**: `Metric Create` or `Metric Admin`"
@@ -90,7 +91,7 @@ metric_tags:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createmetricTag
 metric_tags_by_id:
   get:
     summary: Metric Tag [GET]
@@ -119,6 +120,7 @@ metric_tags_by_id:
         description: Forbidden
       "404":
         description: Metric Tag not found
+    operationId: getmetricTag
   put:
     summary: Metric Tag [UPDATE]
     description: "**Required Permissions**: `Metric Edit` or `Metric Admin`"
@@ -163,6 +165,7 @@ metric_tags_by_id:
         description: Forbidden
       "404":
         description: Metric Tag not found
+    operationId: updatemetricTag
   delete:
     summary: Metric Tag [DELETE]
     description: "**Required Permissions**: `Metric Archive` or `Metric Admin`"
@@ -185,6 +188,7 @@ metric_tags_by_id:
         description: Metric Tag not found
 
 # Components
+    operationId: deletemetricTag
 components:
   schemas:
     MetricTag:

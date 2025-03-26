@@ -54,6 +54,7 @@ access_control_policies:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listaccessControlPolicies
   post:
     summary: Access Control Policy [CREATE]
     description: "**Required Permissions**: `Admin`"
@@ -109,7 +110,7 @@ access_control_policies:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createaccessControlPolicy
 access_control_policies_by_id:
   get:
     summary: Access Control Policy [GET]
@@ -138,6 +139,7 @@ access_control_policies_by_id:
         description: Forbidden
       "404":
         description: Access Control Policy not found
+    operationId: getaccessControlPolicy
   put:
     summary: Access Control Policy [UPDATE]
     description: "**Required Permissions**: `Admin`"
@@ -197,6 +199,7 @@ access_control_policies_by_id:
         description: Forbidden
       "404":
         description: Access Control Policy not found
+    operationId: updateaccessControlPolicy
   delete:
     summary: Access Control Policy [DELETE]
     description: "**Required Permissions**: `Admin`"
@@ -217,8 +220,7 @@ access_control_policies_by_id:
         description: Forbidden
       "404":
         description: Access Control Policy not found
-
-# Components
+    operationId: deleteaccessControlPolicy
 components:
   schemas:
     AccessControlPolicy:

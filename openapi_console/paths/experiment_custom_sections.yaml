@@ -67,7 +67,7 @@ experiment_custom_sections:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: listexperimentCustomSections
   post:
     summary: Experiment Custom Sections [CREATE]
     description: "**Required Permissions**: `ExperimentCustomSection Create` or `ExperimentCustomSection Admin`"
@@ -110,7 +110,7 @@ experiment_custom_sections:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createexperimentCustomSections
 experiment_custom_sections_by_id:
   parameters:
     - name: id
@@ -137,10 +137,17 @@ experiment_custom_sections_by_id:
         description: Forbidden
       "404":
         description: Not Found
-
+    operationId: getexperimentCustomSections
   put:
     summary: Experiment Custom Sections [UPDATE]
-    description: "**Required Permissions**: `ExperimentCustomSection Update` or `ExperimentCustomSection Admin`"
+    description: |
+      **Required Permissions**: `ExperimentCustomSection Update` or `ExperimentCustomSection Admin`
+
+      :::caution
+      Only fields provided in the request will be updated. Fields not included in the request body will retain their existing values.
+
+      Note that when updating experiment fields within custom sections (e.g., through the Experiments endpoint), all existing custom section field values will be DELETED and replaced with only those provided in the request.
+      :::
     tags:
       - Experiment Custom Sections
     requestBody:
@@ -178,7 +185,7 @@ experiment_custom_sections_by_id:
         description: Forbidden
       "404":
         description: Not Found
-
+    operationId: updateexperimentCustomSections
   delete:
     summary: Experiment Custom Sections [ARCHIVE]
     description: "**Required Permissions**: `ExperimentCustomSection Archive` or `ExperimentCustomSection Admin`"
@@ -193,7 +200,7 @@ experiment_custom_sections_by_id:
         description: Forbidden
       "404":
         description: Not Found
-
+    operationId: deleteexperimentCustomSections
 experiment_custom_sections_order:
   put:
     summary: Experiment Custom Sections [REORDER]
@@ -260,14 +267,240 @@ experiment_custom_sections_order:
                     type: string
               required:
                 - ok
-      "400":
+      '400':
         description: Bad Request
-      "401":
+      '401':
         description: Unauthorized
-      "403":
+      '403':
         description: Forbidden
+    operationId: reorderExperimentCustomSections
+experiment_custom_section_fields:
+  get:
+    summary: Experiment Custom Section Fields [LIST]
+    description: '**Required Permissions**: `ExperimentCustomSection List` or `ExperimentCustomSection Admin`'
+    tags:
+      - Experiment Custom Section Fields
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: title
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ExperimentCustomSectionField'
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+    operationId: listexperimentCustomSectionFields
+  post:
+    summary: Experiment Custom Section Fields [CREATE]
+    description: '**Required Permissions**: `ExperimentCustomSection Create` or `ExperimentCustomSection Admin`'
+    tags:
+      - Experiment Custom Section Fields
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the field
+                example: rollback_plan
+              title:
+                type: string
+                description: Display title of the field
+                example: Rollback Plan
+              description:
+                type: string
+                description: Description of the field
+                example: Describe how to rollback in case of issues
+              type:
+                type: string
+                enum:
+                  - text
+                  - string
+                  - json
+                  - boolean
+                  - number
+                description: Data type of the field
+                example: text
+              required:
+                type: boolean
+                description: Whether the field is required
+                example: true
+              section_id:
+                type: integer
+                description: ID of the parent section
+                example: 1
+            required:
+              - name
+              - title
+              - description
+              - type
+              - required
+              - section_id
+    responses:
+      '201':
+        description: Created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentCustomSectionField'
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+    operationId: createexperimentCustomSectionFields
+experiment_custom_section_fields_by_id:
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        description: Unique identifier for the experiment custom section field
+  get:
+    summary: Experiment Custom Section Fields [GET]
+    description: '**Required Permissions**: `ExperimentCustomSection List` or `ExperimentCustomSection Admin`'
+    tags:
+      - Experiment Custom Section Fields
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentCustomSectionField'
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Not Found
+    operationId: getexperimentCustomSectionFields
+  put:
+    summary: Experiment Custom Section Fields [UPDATE]
+    description: |
+      **Required Permissions**: `ExperimentCustomSection Update` or `ExperimentCustomSection Admin`
 
-# Components
+      :::caution
+      Regular fields provided in the request will be updated. Regular fields not included in the request body will retain their existing values.
+
+      However, when updating experiment custom section field values through the Experiments endpoint, ALL existing field values will be DELETED and replaced with only those provided in the request.
+      :::
+    tags:
+      - Experiment Custom Section Fields
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the field
+                example: rollback_plan
+              title:
+                type: string
+                description: Display title of the field
+                example: Rollback Plan
+              description:
+                type: string
+                description: Description of the field
+                example: Describe how to rollback in case of issues
+              type:
+                type: string
+                enum:
+                  - text
+                  - string
+                  - json
+                  - boolean
+                  - number
+                description: Data type of the field
+                example: text
+              required:
+                type: boolean
+                description: Whether the field is required
+                example: true
+              section_id:
+                type: integer
+                description: ID of the parent section
+                example: 1
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentCustomSectionField'
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Not Found
+    operationId: updateexperimentCustomSectionFields
+  delete:
+    summary: Experiment Custom Section Fields [ARCHIVE]
+    description: '**Required Permissions**: `ExperimentCustomSection Archive` or `ExperimentCustomSection Admin`'
+    tags:
+      - Experiment Custom Section Fields
+    responses:
+      '204':
+        description: No Content
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Not Found
+    operationId: deleteexperimentCustomSectionFields
 components:
   schemas:
     ExperimentCustomSection:

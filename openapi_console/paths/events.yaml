@@ -100,6 +100,7 @@ events:
       "403":
         description: Forbidden
 
+    operationId: createevents
 events_history:
   post:
     summary: Events History [LIST]
@@ -208,7 +209,7 @@ events_history:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createeventsHistory
 events_unit_data:
   post:
     summary: Get Unit Data
@@ -258,6 +259,7 @@ events_unit_data:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: geteventsUnitData
   delete:
     summary: Delete Unit Data
     description: "**Required Permissions**: `Delete`"
@@ -305,7 +307,7 @@ events_unit_data:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: deleteeventsUnitData
 events_json_values:
   post:
     summary: Get JSON Values from Events
@@ -380,7 +382,7 @@ events_json_values:
         description: Forbidden
       "404":
         description: Not Found
-
+    operationId: geteventsJsonValues
 events_json_layouts:
   post:
     summary: Get JSON Layouts
@@ -457,8 +459,7 @@ events_json_layouts:
         description: Unauthorized
       "403":
         description: Forbidden
-
-# Components
+    operationId: geteventsJsonLayouts
 components:
   schemas:
     Event:

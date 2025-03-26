@@ -53,6 +53,7 @@ users:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listuser
   post:
     summary: User [CREATE]
     description: "**Required Permissions**: `User Create` or `User Admin`"
@@ -107,6 +108,7 @@ users:
       "403":
         description: Forbidden
 
+    operationId: createuser
 users_by_id:
   get:
     summary: User [GET]
@@ -133,6 +135,7 @@ users_by_id:
         description: Forbidden
       "404":
         description: User not found
+    operationId: getuser
   put:
     summary: User [UPDATE]
     description: "**Required Permissions**: `User Edit` or `User Admin`"
@@ -191,6 +194,7 @@ users_by_id:
         description: Forbidden
       "404":
         description: User not found
+    operationId: updateuser
   delete:
     summary: User [DELETE]
     description: "**Required Permissions**: `User Delete` or `User Admin`"
@@ -217,7 +221,7 @@ users_by_id:
         description: Forbidden
       "404":
         description: User not found
-
+    operationId: deleteuser
 users_api_keys:
   get:
     summary: User's API Keys [LIST]
@@ -280,7 +284,7 @@ users_api_keys:
       "404":
         description: User not found
 
-# Team endpoints
+    operationId: listusersApiKeys
 teams:
   get:
     summary: Team [LIST]
@@ -335,6 +339,7 @@ teams:
         description: Unauthorized
       "403":
         description: Forbidden
+    operationId: listteam
   post:
     summary: Team [CREATE]
     description: "**Required Permissions**: `Team Create` or `Team Admin`"
@@ -384,7 +389,7 @@ teams:
         description: Unauthorized
       "403":
         description: Forbidden
-
+    operationId: createteam
 teams_by_id:
   get:
     summary: Team [GET]
@@ -411,6 +416,7 @@ teams_by_id:
         description: Forbidden
       "404":
         description: Team not found
+    operationId: getteam
   put:
     summary: Team [UPDATE]
     description: "**Required Permissions**: `Team Edit` or `Team Admin`"
@@ -467,6 +473,7 @@ teams_by_id:
         description: Forbidden
       "404":
         description: Team not found
+    operationId: updateteam
   delete:
     summary: Team [DELETE]
     description: "**Required Permissions**: `Team Delete` or `Team Admin`"
@@ -494,7 +501,7 @@ teams_by_id:
       "404":
         description: Team not found
 
-# Components
+    operationId: deleteteam
 components:
   schemas:
     User:
