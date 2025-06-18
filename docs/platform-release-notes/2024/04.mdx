@@ -1,0 +1,79 @@
+# April 2024
+
+An upgrade to our platform is on the horizon, packed with an array of new
+features and enhancements to elevate your experience. Here's a sneak peek
+into what's in store:
+
+## Crawlers Filtering by Default
+
+Heads up! With this release, we're implementing crawlers filtering by
+default. This means that known crawlers like Googlebot, AppleBot, Yahoo,
+and others identified by user agent will be filtered out automatically.
+While this may result in a slight decrease in experiment traffic, rest
+assured, it won't impact statistics and may even reduce experiment
+durations due to lower data variance.
+
+## Feature Flags
+
+Introducing the first iteration of basic feature flags, offering enhanced
+flexibility without the constraints of statistical validity.
+
+## Metric Threshold Check
+
+Set upper and/or lower thresholds per metric and receive alerts if a
+metric's impact crosses these thresholds.
+
+## Experiment Interaction Detection Check
+
+This check detects and alerts about individual pairs of experiments
+interacting. An interaction is detected when an effect larger than
+expected is observed for users exposed to a treatment in both experiments.
+
+## Variant Conflict Check
+
+This check identifies and alerts about users exposed to multiple variants
+in the same iteration, enabling early detection of potential implementation
+issues.
+
+## Dismissable Alerts and Recommended Actions
+
+Easily manage alerts and recommended actions by dismissing them with a
+comment.
+
+## JSON Expression Match (Regex) Operator
+
+Filter goal properties and segment filters based on regex expressions for
+more precise targeting.
+
+## Role-Based Access Control
+
+Add a policy to a role to limit web console users' visibility of
+experiments to those in which they are part of the owners list.
+
+## Goal Property Unique Count
+
+Introducing the goal property unique count metric type, used for tracking
+distinct values of a goal property per user.
+
+## Standard Deviation Graph
+
+Visualize standard deviation alongside the mean graph, providing deeper
+insights into your data.
+
+## Other Improvements
+
+We've improved the variant split interface for customizing splits in
+experiments with multiple variants, enhancing usability and efficiency.
+
+## Maintenance Window
+
+The upgrade is scheduled for **Thursday, April 11th, from 10:00 AM to 12:00 PM**.
+As with previous upgrades, there will be no impact on data collection, and
+any intermittent errors in the web console during the update will be
+brief, lasting approximately 10 minutes.
+
+## Feedback & Next Steps
+
+We appreciate your continued support and patience as we strive to enhance
+your experience with our platform. If you have any questions or concerns,
+please don't hesitate to reach out.
