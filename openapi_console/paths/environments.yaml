@@ -1,0 +1,242 @@
+environments:
+  get:
+    summary: Environment [LIST]
+    description: "**Required Permissions**: `Environment List` or `Environment Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Environment"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listenvironment
+  post:
+    summary: Environment [CREATE]
+    description: "**Required Permissions**: `Environment Create` or `Environment Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              environment:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Production"
+                  application_id:
+                    type: integer
+                    example: 1
+                required:
+                  - name
+                  - application_id
+            required:
+              - environment
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                environment:
+                  $ref: "#/components/schemas/Environment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: createenvironment
+environments_by_id:
+  get:
+    summary: Environment [GET]
+    description: "**Required Permissions**: `Environment Get` or `Environment Admin`"
+    parameters:
+      - name: environmentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                environment:
+                  $ref: "#/components/schemas/Environment"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Environment not found
+    operationId: getenvironment
+  put:
+    summary: Environment [UPDATE]
+    description: "**Required Permissions**: `Environment Edit` or `Environment Admin`"
+    parameters:
+      - name: environmentId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the Environment that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              environment:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Updated Environment Name"
+                  application_id:
+                    type: integer
+                    example: 1
+            required:
+              - environment
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                environment:
+                  $ref: "#/components/schemas/Environment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Environment not found
+    operationId: updateenvironment
+  delete:
+    summary: Environment [DELETE]
+    description: "**Required Permissions**: `Environment Delete` or `Environment Admin`"
+    parameters:
+      - name: environmentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Environment not found
+    operationId: deleteenvironment
+components:
+  schemas:
+    Environment:
+      type: object
+      description: "Represents an environment (e.g., production, staging, development) for experiments"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the environment"
+          example: 1
+        name:
+          type: string
+          description: "Name of the environment. Max length 64 characters."
+          example: "production"
+          maxLength: 64
+        application_id:
+          type: integer
+          description: "ID of the application this environment belongs to"
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          description: "When the environment was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the environment was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - name
+        - application_id
+      example:
+        id: 1
+        name: "production"
+        application_id: 1
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"

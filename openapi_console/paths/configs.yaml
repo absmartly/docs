@@ -1,0 +1,171 @@
+configs:
+  get:
+    summary: Configs [LIST]
+    description: "**Required Permissions**: `Config List` or `Config Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "name"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - Configs
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Config"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listconfigs
+configs_by_id:
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        description: Unique identifier for the configuration
+  get:
+    summary: Configs [GET]
+    description: '**Required Permissions**: `Config List` or `Config Admin`'
+    tags:
+      - Configs
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Config'
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Not Found
+    operationId: getconfigs
+  put:
+    summary: Configs [UPDATE]
+    description: |
+      **Required Permissions**: `Config Update` or `Config Admin`
+
+      :::caution
+      Only fields provided in the request will be updated. Fields not included in the request body will retain their existing values.
+      :::
+    tags:
+      - Configs
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              value:
+                type: string
+                description: "Configuration value"
+                example: "true"
+            required:
+              - value
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Config"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Not Found
+    operationId: updateconfigs
+components:
+  schemas:
+    Config:
+      type: object
+      description: "System configuration setting"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the config"
+          example: 1
+        name:
+          type: string
+          description: "Configuration name/key"
+          example: "experiment_form_default_required_alpha"
+        value:
+          type: string
+          description: "Configuration value"
+          example: "0.05"
+        default_value:
+          type: string
+          description: "Default value if no override is set"
+          example: "0.05"
+        display_name:
+          type: string
+          description: "Human-readable display name for the config"
+          example: "Default Required Alpha"
+        description:
+          type: string
+          description: "Description of the config"
+          example: "The default required alpha (significance level) for experiments"
+        created_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the config was created"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created the config"
+        updated_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the config was last updated"
+        updated_by_user_id:
+          type: integer
+          description: "ID of the user who last updated the config"
+      required:
+        - id
+        - name
+        - default_value
