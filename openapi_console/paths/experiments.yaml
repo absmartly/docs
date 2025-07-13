@@ -1,0 +1,1774 @@
+experiments:
+  get:
+    operationId: listExperiments
+    summary: Experiment [LIST]
+    description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
+    parameters:
+      - name: search
+        in: query
+        schema:
+          type: string
+          example: "call_to_action"
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+            - all
+            - archived
+            - active
+            - draft
+            - stopped
+            - development
+          default: all
+          example: all
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                experiments:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Experiment'
+                page:
+                  type: integer
+                items:
+                  type: integer
+                total:
+                  type: integer
+              required:
+                - experiments
+                - page
+                - items
+                - total
+      '401':
+        description: Unauthorized
+      "403":
+        description: Forbidden
+  post:
+    operationId: createExperiment
+    summary: Experiment [CREATE]
+    description: "**Required Permissions**: `Experiment Create` or `Experiment Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              experiment:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Button color test"
+                  team_id:
+                    type: integer
+                    example: 1
+                  variants:
+                    type: array
+                    items:
+                      type: string
+                    example: ["Control", "Purple", "Blue", "Pink"]
+                  percentages:
+                    type: array
+                    items:
+                      type: number
+                    example: [25, 25, 25, 25]
+                  type:
+                    type: string
+                    enum:
+                      - sequential
+                      - random
+                    example: random
+                    description: "Sequential means new users are assigned to the variant with the lowest assignment count. Random means each user has a random chance of being assigned to each variant."
+                  application_id:
+                    type: integer
+                    description: The ID of the application that this experiment is for. Must be an application ID that exists in your account.
+                    example: 1
+                  unit_type_id:
+                    type: integer
+                    description: The ID of the unit type that this experiment uses. Must be a unit type ID that exists in your account.
+                    example: 1
+                  min_sample_size:
+                    type: integer
+                    example: 10000
+                  goal_tags:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2, 3]
+                  metric_tags:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2, 3]
+                  experiment_tags:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2, 3]
+                  note:
+                    type: string
+                    example: "Let's test which button color performs better."
+                  custom_code:
+                    type: string
+                    example: "// custom code goes here"
+                  custom_section_field_values:
+                    type: array
+                    description: "Custom section field values to associate with this experiment."
+                    items:
+                      type: object
+                      properties:
+                        field_id:
+                          type: integer
+                          description: "ID of the custom section field"
+                          example: 1
+                        value:
+                          type: string
+                          description: "Value for the custom section field (will be parsed according to the field type)"
+                          example: "Our rollback plan is to disable the experiment"
+                      required:
+                        - field_id
+                        - value
+                    example: [
+                      {
+                        "field_id": 1,
+                        "value": "This experiment tests the effect of different button colors on conversion rate"
+                      },
+                      {
+                        "field_id": 2,
+                        "value": "We hypothesize that purple buttons will increase conversion by 5-10%"
+                      },
+                      {
+                        "field_id": 3,
+                        "value": "We predict the purple variant will outperform control by at least 8%"
+                      },
+                      {
+                        "field_id": 4,
+                        "value": "To increase conversion rates on the checkout page"
+                      },
+                      {
+                        "field_id": 5,
+                        "value": "The implementation uses CSS changes only, with no backend modifications"
+                      },
+                      {
+                        "field_id": 6,
+                        "value": "{\"targetAudience\": \"all users\", \"deviceTypes\": [\"desktop\", \"mobile\"]}"
+                      },
+                      {
+                        "field_id": 7,
+                        "value": "1. Monitor conversion rates daily\n2. Check for any technical issues\n3. Prepare rollback plan"
+                      },
+                      {
+                        "field_id": 8,
+                        "value": "Experiment approved by marketing team on March 25, 2025"
+                      }
+                    ]
+                  environment_id:
+                    type: integer
+                    description: The ID of the environment that this experiment is for. Must be an environment ID that exists in your account.
+                    example: 1
+                  display_name:
+                    type: string
+                    description: User-friendly display name for the experiment
+                    example: Test Experiment for Button Colors
+                    maxLength: 256
+                  type:
+                    type: string
+                    enum:
+                      - test
+                      - feature
+                      - template
+                    example: test
+                  seed:
+                    type: string
+                    description: Seed value for deterministic randomization
+                    example: abc123
+                  traffic_seed:
+                    type: string
+                    description: Seed value for traffic randomization
+                    example: xyz789
+                  percentage_of_traffic:
+                    type: integer
+                    description: Percentage of traffic to include in the experiment (0-100)
+                    example: 100
+                    minimum: 0
+                    maximum: 100
+                  nr_variants:
+                    type: integer
+                    description: Number of variants in the experiment
+                    example: 2
+                    minimum: 2
+                  audience:
+                    type: string
+                    description: Audience targeting specification
+                    example: "browser == 'chrome'"
+                  audience_strict:
+                    type: boolean
+                    description: Whether audience targeting should be strict
+                    example: false
+                  minimum_detectable_effect:
+                    type: number
+                    format: float
+                    description: Minimum detectable effect size for statistical significance
+                    example: 0.05
+                  analysis_type:
+                    type: string
+                    enum:
+                      - fixed_horizon
+                      - group_sequential
+                    example: fixed_horizon
+                  group_sequential_futility_type:
+                    type: string
+                    nullable: true
+                    description: Futility type for group sequential analysis
+                    example: predicted
+                  group_sequential_analysis_count:
+                    type: integer
+                    nullable: true
+                    description: Number of analyses for group sequential analysis
+                    example: 5
+                  group_sequential_min_analysis_interval:
+                    type: integer
+                    nullable: true
+                    description: Minimum interval between analyses for group sequential analysis (in days)
+                    example: 7
+                  group_sequential_first_analysis_interval:
+                    type: integer
+                    nullable: true
+                    description: First analysis interval for group sequential analysis (in days)
+                    example: 14
+                  group_sequential_max_duration_interval:
+                    type: integer
+                    nullable: true
+                    description: Maximum duration interval for group sequential analysis (in days)
+                    example: 90
+                  baseline_primary_metric_mean:
+                    type: number
+                    format: float
+                    nullable: true
+                    description: Mean value of the primary metric at baseline
+                    example: 0.5
+                  baseline_primary_metric_stdev:
+                    type: number
+                    format: float
+                    nullable: true
+                    description: Standard deviation of the primary metric at baseline
+                    example: 0.1
+                  baseline_participants_per_day:
+                    type: integer
+                    nullable: true
+                    description: Expected participants per day based on baseline
+                    example: 1000
+                  required_alpha:
+                    type: number
+                    format: float
+                    description: Required significance level (alpha)
+                    example: 0.05
+                  required_power:
+                    type: number
+                    format: float
+                    description: Required statistical power
+                    example: 0.8
+                  parent_experiment_id:
+                    type: integer
+                    description: ID of the parent experiment (for iterations/versions of experiments)
+                    example: 42
+                    nullable: true
+                  parent_experiment_iteration:
+                    type: integer
+                    description: Iteration number of the parent experiment
+                    example: 1
+                    nullable: true
+                  template_description:
+                    type: string
+                    description: Description for experiment templates
+                    example: "A/B test template for button color tests"
+                    nullable: true
+                  template_iteration:
+                    type: integer
+                    description: Iteration number for experiment templates
+                    example: 1
+                    nullable: true
+                  unit_type_id:
+                    type: integer
+                    description: ID of the unit type for this experiment
+                    example: 1
+                  primary_metric_id:
+                    type: integer
+                    description: ID of the primary metric for this experiment
+                    example: 1
+                    nullable: true
+                required:
+                  - name
+                  - team_id
+                  - variants
+                  - percentages
+                  - application_id
+                  - unit_type_id
+                  - environment_id
+            required:
+              - experiment
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                experiment:
+                  $ref: "#/components/schemas/Experiment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+experiments_by_id:
+  get:
+    operationId: getExperiment
+    summary: Experiment [GET]
+    description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                experiment:
+                  $ref: "#/components/schemas/Experiment"
+                experiment_note:
+                  $ref: "#/components/schemas/ExperimentAnnotation"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment not found
+  put:
+    operationId: updateExperiment
+    summary: Experiment [UPDATE]
+    description: |
+      **Required Permissions**: `Experiment Edit` or `Experiment Admin`
+
+      :::caution
+      Only regular fields provided in the request will be updated. Regular fields not included in the request body will retain their existing values.
+
+      However, if custom section field values (`custom_section_field_values`) are included in the request, ALL existing custom field values will be DELETED and replaced with only those provided in the request.
+      :::
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              experiment:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  team_id:
+                    type: integer
+                  goal_tags:
+                    type: array
+                    items:
+                      type: integer
+                  metric_tags:
+                    type: array
+                    items:
+                      type: integer
+                  experiment_tags:
+                    type: array
+                    items:
+                      type: integer
+                  note:
+                    type: string
+                  custom_code:
+                    type: string
+                  custom_section_field_values:
+                    type: array
+                    description: "Custom section field values. If included, all existing values will be DELETED and replaced with these."
+                    items:
+                      type: object
+                      properties:
+                        field_id:
+                          type: integer
+                          description: "ID of the custom section field"
+                          example: 1
+                        value:
+                          type: string
+                          description: "Value for the custom section field (will be parsed according to the field type)"
+                          example: "Our rollback plan is to disable the experiment"
+                      required:
+                        - field_id
+                        - value
+                    example: [
+                      {
+                        "field_id": 1,
+                        "value": "This experiment tests the effect of different button colors on checkout conversion rate"
+                      },
+                      {
+                        "field_id": 2,
+                        "value": "We hypothesize that purple buttons will increase conversion by 5-10% due to better visibility"
+                      },
+                      {
+                        "field_id": 3,
+                        "value": "Initial results suggest 7% improvement, expecting to reach 10% by end of experiment"
+                      },
+                      {
+                        "field_id": 4,
+                        "value": "To increase conversion rates and improve user experience on the checkout page"
+                      },
+                      {
+                        "field_id": 5,
+                        "value": "CSS changes implemented via JavaScript injection to avoid caching issues"
+                      },
+                      {
+                        "field_id": 6,
+                        "value": "{\"targetAudience\": \"all users\", \"deviceTypes\": [\"desktop\", \"mobile\", \"tablet\"], \"regions\": [\"US\", \"EU\"]}"
+                      },
+                      {
+                        "field_id": 7,
+                        "value": "1. Daily monitoring shows stable performance\n2. No technical issues observed\n3. If CR drops below -2%, trigger auto-disable"
+                      },
+                      {
+                        "field_id": 8,
+                        "value": "Mid-experiment review: Results promising, proceed to full traffic allocation"
+                      }
+                    ]
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                experiment:
+                  $ref: "#/components/schemas/Experiment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment not found
+experiments_start:
+  post:
+    summary: Experiment [START]
+    description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                experiment:
+                  $ref: "#/components/schemas/Experiment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment not found
+    operationId: createexperiment
+experiments_stop:
+  post:
+    summary: Experiment [STOP]
+    description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                experiment:
+                  $ref: "#/components/schemas/Experiment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment not found
+    operationId: createexperiment
+experiments_development:
+  post:
+    summary: Experiment [DEVELOPMENT]
+    description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                experiment:
+                  $ref: "#/components/schemas/Experiment"
+                experiment_note:
+                  $ref: "#/components/schemas/ExperimentAnnotation"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment not found
+    operationId: createexperiment
+experiments_full_on:
+  post:
+    summary: Experiment [FULL ON]
+    description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                experiment:
+                  $ref: "#/components/schemas/Experiment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment not found
+    operationId: createexperiment
+experiments_archive:
+  post:
+    summary: Experiment [ARCHIVE]
+    description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                experiment:
+                  $ref: "#/components/schemas/Experiment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Experiment not found
+    operationId: createexperiment
+experiments_participants_history:
+  post:
+    operationId: getExperimentParticipantsHistory
+    summary: Experiment-Participants-History [GET]
+    description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The `id` of the experiment that you want the participant history of.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              time_period:
+                type: string
+                enum:
+                  - day
+                  - week
+                  - month
+                  - quarter
+                  - year
+                  - all_time
+                description: "The time period to group the data by."
+                default: day
+              date_range:
+                type: array
+                items:
+                  type: string
+                  format: date
+                minItems: 2
+                maxItems: 2
+                description: "The date range to filter the data by. This should be an array with two dates, the start and end date (inclusive). Dates should be specified in the format 'YYYY-MM-DD'. If not specified, API returns all data."
+                example: ["2022-01-01", "2022-12-31"]
+    responses:
+      "200":
+        description: |
+          The response will contain a `columnNames` array that describes what each column represents. The `rows` array contains the values for each column. The data is represented as a matrix, where each row has values for each column.
+
+          ### **Column Names:**
+
+          - `date` - The date of the row's data in seconds since epoch.
+          - `variant` - The variant that this row describes. (0, 1, 2 or 3).
+          - `first_exposure_at` - The date of the first exposure of this variant in the current time period in milliseconds since epoch.
+          - `last_exposure_at` - The date of the last exposure of this variant in the current time period in milliseconds since epoch.
+          - `unit_count` - The number of units that were exposed to this variant in the current time period.
+          - `cum_unit_count` - The cumulative number of units that were exposed to this variant at the end of the current time period.
+          
+          :::caution
+          The columns may come in a different order than the one listed above. It's important to use the `columnNames` array to identify the index of the column you want to use.
+          :::
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                columnNames:
+                  type: array
+                  items:
+                    type: string
+                  example: ["date", "variant", "first_exposure_at", "last_exposure_at", "unit_count", "cum_unit_count"]
+                columnTypes:
+                  type: array
+                  items:
+                    type: string
+                  example: ["date", "string", "date", "date", "number", "number"]
+                rows:
+                  type: array
+                  items:
+                    type: array
+                  example: [
+                    ["2025-03-15", "Control", "2025-03-15T08:00:00Z", "2025-03-15T23:59:59Z", 5280, 5280],
+                    ["2025-03-15", "Variant A", "2025-03-15T08:00:00Z", "2025-03-15T23:59:59Z", 5310, 5310],
+                    ["2025-03-16", "Control", "2025-03-16T00:00:00Z", "2025-03-16T23:59:59Z", 4890, 10170],
+                    ["2025-03-16", "Variant A", "2025-03-16T00:00:00Z", "2025-03-16T23:59:59Z", 4920, 10230]
+                  ]
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Experiment not found
+experiments_metrics_main_history:
+  post:
+    operationId: getExperimentMainMetricsHistory
+    summary: Experiment-Main-Metrics-History [DATA]
+    description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        description: The `id` of the experiment that you want the history of.
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              time_period:
+                type: string
+                enum:
+                  - day
+                  - week
+                  - month
+                  - quarter
+                  - year
+                  - all_time
+                description: "The time period to group the data by."
+                default: day
+              date_range:
+                type: array
+                items:
+                  type: string
+                  format: date
+                minItems: 2
+                maxItems: 2
+                description: "The date range to filter the data by. This should be an array with two dates, the start and end date (inclusive). Dates should be specified in the format 'YYYY-MM-DD'. If not specified, API returns all data."
+                example: ["2022-01-01", "2022-12-31"]
+    responses:
+      "200":
+        description: |
+          The response will contain a `columnNames` array that describes what each column represents. The `rows` array contains the values for each column. The data is represented as a matrix, where each row has values for each column.
+
+          ### **Column Names:**
+
+          - `date` - The date of the row's data in seconds since epoch.
+          - `variant` - The variant that this row describes. (0, 1, 2 or 3).
+          - `first_exposure_at` - The date of the first exposure of this variant in the current time period in milliseconds since epoch.
+          - `last_exposure_at` - The date of the last exposure of this variant in the current time period in milliseconds since epoch.
+          - `unit_count` - The number of units that were exposed to this variant in the current time period.
+          - `cum_unit_count` - The number of units that were exposed to this variant across all time periods.
+
+          ### **Dynamic Columns:**
+
+          - `metric_${metric_id}` - The value of the metric with the id of `${metric_id}` in the current time period.
+          - `metric_${metric_id}_mean` - The mean value of the metric with the id of `${metric_id}` in the current time period.
+          - `metric_${metric_id}_var` - The variance of the metric with the id of `${metric_id}` in the current time period.
+          - `metric_${metric_id}_pvalue` - The p-value of the metric with the id of `${metric_id}` in the current time period.
+          - `metric_${metric_id}_impact` - The impact of the metric with the id of `${metric_id}` in the current time period.
+          - `metric_${metric_id}_impact_ci_lower` - The lower bound of the confidence interval of the impact of the metric with the id of `${metric_id}` in the current time period.
+          - `metric_${metric_id}_impact_ci_upper` - The upper bound of the confidence interval of the impact of the metric with the id of `${metric_id}` in the current time period.
+          
+          :::caution
+          The columns may come in a different order than the one listed above. It's important to use the `columnNames` array to identify the index of the column you want to use.
+          :::
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                columnNames:
+                  type: array
+                  items:
+                    type: string
+                  example: ["date", "variant", "first_exposure_at", "last_exposure_at", "unit_count", "cum_unit_count", "metric_1", "metric_1_mean", "metric_1_var", "metric_1_pvalue", "metric_1_impact", "metric_1_impact_ci_lower", "metric_1_impact_ci_upper"]
+                columnTypes:
+                  type: array
+                  items:
+                    type: string
+                  example: ["date", "string", "date", "date", "number", "number", "number", "number", "number", "number", "number", "number", "number"]
+                rows:
+                  type: array
+                  items:
+                    type: array
+                  example: [
+                    ["2025-03-15", "Control", "2025-03-15T08:00:00Z", "2025-03-15T23:59:59Z", 5280, 5280, 423, 0.0801, 0.00034, 1.0, 0, 0, 0],
+                    ["2025-03-15", "Variant A", "2025-03-15T08:00:00Z", "2025-03-15T23:59:59Z", 5310, 5310, 456, 0.0859, 0.00033, 0.027, 7.24, 0.82, 13.65],
+                    ["2025-03-16", "Control", "2025-03-16T00:00:00Z", "2025-03-16T23:59:59Z", 4890, 10170, 401, 0.0820, 0.00037, 1.0, 0, 0, 0],
+                    ["2025-03-16", "Variant A", "2025-03-16T00:00:00Z", "2025-03-16T23:59:59Z", 4920, 10230, 442, 0.0898, 0.00036, 0.019, 9.51, 1.57, 17.45]
+                  ]
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Experiment not found
+experiments_metrics_main:
+  post:
+    operationId: getExperimentMainMetrics
+    summary: Experiment-Main-Metrics [DATA]
+    description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        description: The `id` of the experiment to get the metrics for.
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              date_range:
+                type: array
+                items:
+                  type: string
+                  format: date
+                minItems: 2
+                maxItems: 2
+                description: "The date range to filter the data by. This should be an array with two dates, the start and end date (inclusive). Dates should be specified in the format 'YYYY-MM-DD'. If not specified, API returns all data."
+                example: ["2022-01-01", "2022-12-31"]
+    responses:
+      "200":
+        description: |
+          The response will contain a `columnNames` array that describes what each column represents. The `rows` array contains the values for each column. The data is represented as a matrix, where each row has values for each column.
+
+          ### **Column Names:**
+          
+          - `variant` - The variant that this row describes. (0, 1, 2 or 3).
+          - `first_exposure_at` - The date of the first exposure of this variant in milliseconds since epoch.
+          - `last_exposure_at` - The date of the last exposure of this variant in milliseconds since epoch.
+          - `unit_count` - The number of units that have been exposed to this variant.
+          
+          ### **Dynamic Columns:**
+          
+          - `metric_${metric_id}` - The current value of the metric with the id of `${metric_id}`.
+          - `metric_${metric_id}_mean` - The mean value of the metric with the id of `${metric_id}`.
+          - `metric_${metric_id}_var` - The variance of the metric with the id of `${metric_id}`.
+          - `metric_${metric_id}_pvalue` - The p-value of the metric with the id of `${metric_id}`.
+          - `metric_${metric_id}_impact` - The current impact of the metric with the id of `${metric_id}`.
+          - `metric_${metric_id}_impact_ci_lower` - The lower bound of the confidence interval of the impact of the metric with the id of `${metric_id}`.
+          - `metric_${metric_id}_impact_ci_upper` - The upper bound of the confidence interval of the impact of the metric with the id of `${metric_id}`.
+          
+          :::caution
+          The columns may come in a different order than the one listed above. It's important to use the `columnNames` array to identify the index of the column you want to use.
+          :::
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                columnNames:
+                  type: array
+                  items:
+                    type: string
+                  example: ["variant", "first_exposure_at", "last_exposure_at", "unit_count", "metric_1", "metric_1_mean", "metric_1_var", "metric_1_pvalue", "metric_1_impact", "metric_1_impact_ci_lower", "metric_1_impact_ci_upper"]
+                columnTypes:
+                  type: array
+                  items:
+                    type: string
+                  example: ["string", "date", "date", "number", "number", "number", "number", "number", "number", "number", "number"]
+                rows:
+                  type: array
+                  items:
+                    type: array
+                  example: [
+                    ["Control", "2025-03-15T08:00:00Z", "2025-03-16T23:59:59Z", 10170, 824, 0.0810, 0.00035, 1.0, 0, 0, 0],
+                    ["Variant A", "2025-03-15T08:00:00Z", "2025-03-16T23:59:59Z", 10230, 898, 0.0878, 0.00035, 0.021, 8.40, 1.25, 15.55]
+                  ]
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Experiment not found
+
+experiments_activity:
+  get:
+    operationId: getExperimentActivity
+    summary: Experiment-Activity [GET]
+    description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Activity"
+                metadata:
+                  type: object
+                  properties:
+                    offset:
+                      type: integer
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Not Found
+  post:
+    summary: Experiment-Comment [CREATE]
+    description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              comment:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    example: "I think we should run this experiment for at least 2 weeks."
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                comment:
+                  $ref: '#/components/schemas/Comment'
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+    operationId: createexperiment-Comment
+experiments_activity_reply:
+  post:
+    summary: Experiment-Comment-Reply [CREATE]
+    description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+    parameters:
+      - name: experimentId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: commentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              comment:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    example: "I agree, I'll make sure we run it for at least 2 weeks."
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                comment:
+                  $ref: '#/components/schemas/Comment'
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+    operationId: createexperiment-Comment-Reply
+experiment_annotations:
+  get:
+    summary: Experiment-Annotation [LIST]
+    description: "**Required Permissions**: `Annotation List` or `Annotation Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ExperimentAnnotation"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listexperiment-Annotation
+experiment_annotations_by_id:
+  get:
+    summary: Experiment-Annotation [GET]
+    description: "**Required Permissions**: `Annotation Get` or `Annotation Admin`"
+    parameters:
+      - name: experimentAnnotationId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                experiment_annotation:
+                  $ref: '#/components/schemas/ExperimentAnnotation'
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Not Found
+    operationId: getexperiment-Annotation
+experiment_recommended_actions_dismiss:
+  put:
+    summary: Experiment Recommended Action [DISMISS]
+    description: "**Required Permissions**: `Experiment Edit` or `Experiment Admin`"
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: "ID of the experiment"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              note:
+                type: string
+                description: "Reason for dismissing the recommended action"
+                example: "This action is not relevant for our use case"
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                action:
+                  $ref: "#/components/schemas/ExperimentRecommendedAction"
+                note:
+                  $ref: "#/components/schemas/ExperimentNote"
+                errors:
+                  type: array
+                  items:
+                    type: string
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Not Found
+    operationId: updateexperimentRecommendedAction
+experiment_tags:
+  get:
+    summary: Experiment-Tag [LIST]
+    description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ExperimentTag"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listexperiment-Tag
+experiment_tags_by_id:
+  get:
+    summary: Experiment-Tag [GET]
+    description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
+    parameters:
+      - name: experimentTagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                experiment_tag:
+                  $ref: '#/components/schemas/ExperimentTag'
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+      '404':
+        description: Not Found
+    operationId: getexperiment-Tag
+components:
+  schemas:
+    Experiment:
+      type: object
+      description: "Represents an experiment with variants, metrics, and configuration for running tests or implementing features"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the experiment (auto-generated)"
+          example: 1
+        name:
+          type: string
+          description: "Name of the experiment, used in code. REQUIRED. Max length 256 characters."
+          example: test_experiment
+          maxLength: 256
+        display_name:
+          type: string
+          description: User-friendly display name for the experiment
+          example: Test Experiment for Button Colors
+          maxLength: 256
+        iteration:
+          type: integer
+          description: "Iteration number for this experiment. Auto-generated, starts at 1 and increments for each iteration."
+          minimum: 1
+        state:
+          type: string
+          description: "Current state of the experiment. REQUIRED. States like 'created', 'development', 'running', etc. Note that 'archived' is a separate boolean field, not a state."
+          example: running
+          enum: ["created", "development", "running", "stopped", "feature_on", "feature_off", "scheduled"]
+        type:
+          type: string
+          description: Type of experiment
+          example: test
+          enum: ["test", "feature", "template"]
+        description:
+          type: string
+          description: "Detailed description of the experiment and what it's testing. Max length 8192 characters."
+          example: "Testing different button colors to improve conversion rate"
+          maxLength: 8192
+        archived:
+          type: boolean
+          description: "Whether the experiment is archived. Archived experiments are hidden from regular views."
+          example: false
+        percentages:
+          type: string
+          description: String representation of the traffic split percentages for each variant, separated by slashes. E.g., '50/50' for 50% control and 50% treatment.
+          example: 50/50
+        seed:
+          type: string
+          description: Seed value for deterministic randomization
+          example: abc123
+        traffic_seed:
+          type: string
+          description: Seed value for traffic randomization
+          example: xyz789
+        percentage_of_traffic:
+          type: integer
+          description: Percentage of traffic to include in the experiment (0-100)
+          example: 100
+          minimum: 0
+          maximum: 100
+        nr_variants:
+          type: integer
+          description: Number of variants in the experiment
+          example: 2
+          minimum: 2
+        audience:
+          type: string
+          description: Audience targeting specification
+          example: "browser == 'chrome'"
+        audience_strict:
+          type: boolean
+          description: Whether audience targeting should be strict
+          example: false
+        minimum_detectable_effect:
+          type: number
+          format: float
+          description: Minimum detectable effect size for statistical significance
+          example: 0.05
+        analysis_type:
+          type: string
+          description: Type of statistical analysis to use
+          example: fixed_horizon
+          enum: ["fixed_horizon", "group_sequential"]
+        group_sequential_futility_type:
+          type: string
+          nullable: true
+          description: Futility type for group sequential analysis
+          example: predicted
+        group_sequential_analysis_count:
+          type: integer
+          nullable: true
+          description: Number of analyses for group sequential analysis
+          example: 5
+        group_sequential_min_analysis_interval:
+          type: integer
+          nullable: true
+          description: Minimum interval between analyses for group sequential analysis (in days)
+          example: 7
+        group_sequential_first_analysis_interval:
+          type: integer
+          nullable: true
+          description: First analysis interval for group sequential analysis (in days)
+          example: 14
+        group_sequential_max_duration_interval:
+          type: integer
+          nullable: true
+          description: Maximum duration interval for group sequential analysis (in days)
+          example: 90
+        baseline_primary_metric_mean:
+          type: number
+          format: float
+          nullable: true
+          description: Mean value of the primary metric at baseline
+          example: 0.5
+        baseline_primary_metric_stdev:
+          type: number
+          format: float
+          nullable: true
+          description: Standard deviation of the primary metric at baseline
+          example: 0.1
+        baseline_participants_per_day:
+          type: integer
+          nullable: true
+          description: Expected participants per day based on baseline
+          example: 1000
+        required_alpha:
+          type: number
+          format: float
+          description: Required significance level (alpha)
+          example: 0.05
+        required_power:
+          type: number
+          format: float
+          description: Required statistical power
+          example: 0.8
+        parent_experiment_id:
+          type: integer
+          description: ID of the parent experiment (for iterations/versions of experiments)
+          example: 42
+          nullable: true
+        parent_experiment_iteration:
+          type: integer
+          description: Iteration number of the parent experiment
+          example: 1
+          nullable: true
+        template_description:
+          type: string
+          description: Description for experiment templates
+          example: "A/B test template for button color tests"
+          nullable: true
+        template_iteration:
+          type: integer
+          description: Iteration number for experiment templates
+          example: 1
+          nullable: true
+        unit_type_id:
+          type: integer
+          description: ID of the unit type for this experiment
+          example: 1
+        primary_metric_id:
+          type: integer
+          description: ID of the primary metric for this experiment
+          example: 1
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          description: "When the experiment was created. Auto-generated."
+          example: "2022-12-15T14:30:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the experiment was last updated. Auto-generated."
+          example: "2023-01-02T10:15:00Z"
+        applications:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentApplication"
+        variants:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentVariant"
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExperimentMetric"
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExperimentTag'
+        custom_section_field_values:
+          type: array
+          description: Custom section field values associated with this experiment
+          items:
+            type: object
+            properties:
+              field_id:
+                type: integer
+                description: ID of the custom section field
+                example: 1
+              value:
+                type: string
+                description: Value for the custom section field (parsed according to the field type)
+                example: Our rollback plan is to disable the experiment
+            required:
+              - field_id
+              - value
+      required:
+        - id
+        - name
+        - state
+        - variants
+      example:
+        id: 123
+        name: new_homepage_design
+        display_name: New Homepage Design Test
+        state: running
+        type: test
+        percentages: 34/33/33
+        seed: abcdef123
+        traffic_seed: xyz789
+        percentage_of_traffic: 100
+        nr_variants: 3
+        audience: "browser == 'chrome'"
+        audience_strict: false
+        minimum_detectable_effect: 0.05
+        analysis_type: fixed_horizon
+        required_alpha: 0.05
+        required_power: 0.8
+        unit_type_id: 1
+        primary_metric_id: 42
+        created_at: '2023-01-01T00:00:00Z'
+        updated_at: '2023-01-02T00:00:00Z'
+    ExperimentVariant:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the variant (auto-generated)"
+          example: 1
+        name:
+          type: string
+          description: "Name of the variant, used in code. REQUIRED. Max length 64 characters."
+          example: "control"
+          maxLength: 64
+        experiment_id:
+          type: integer
+          description: "ID of the experiment this variant belongs to"
+          example: 123
+        is_control:
+          type: boolean
+          description: "Whether this is the control variant"
+          example: true
+        allocation:
+          type: integer
+          description: "Allocation percentage for this variant (0-100)"
+          example: 50
+          minimum: 0
+          maximum: 100
+      required:
+        - id
+        - name
+        - experiment_id
+        
+    ExperimentApplication:
+      type: object
+      properties:
+        experiment_id:
+          type: integer
+          description: "ID of the experiment"
+          example: 123
+        application_id:
+          type: integer
+          description: "ID of the application"
+          example: 1
+        environment_id:
+          type: integer
+          description: "ID of the environment"
+          example: 1
+      required:
+        - experiment_id
+        - application_id
+        - environment_id
+        
+    ExperimentMetric:
+      type: object
+      properties:
+        experiment_id:
+          type: integer
+          description: "ID of the experiment"
+          example: 123
+        metric_id:
+          type: integer
+          description: "ID of the metric"
+          example: 456
+        is_primary:
+          type: boolean
+          description: "Whether this is a primary metric for the experiment"
+          example: true
+      required:
+        - experiment_id
+        - metric_id
+        
+    ExperimentTag:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the experiment tag"
+          example: 1
+        name:
+          type: string
+          description: "Name of the tag"
+          example: "frontend"
+        color:
+          type: string
+          description: "Color code for the tag"
+          example: "#FF5733"
+      required:
+        - id
+        - name
+        
+    ExperimentAnnotation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the annotation"
+          example: 1
+        experiment_id:
+          type: integer
+          description: "ID of the experiment this annotation belongs to"
+          example: 123
+        timestamp:
+          type: string
+          format: date-time
+          description: "When the annotated event occurred"
+          example: "2023-01-15T14:30:00Z"
+        title:
+          type: string
+          description: "Title of the annotation"
+          example: "Changed button color"
+        description:
+          type: string
+          description: "Detailed description of the annotation"
+          example: "Changed the button color from blue to green"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the annotation was created"
+          example: "2023-01-15T14:35:00Z"
+        created_by:
+          type: integer
+          description: "ID of the user who created the annotation"
+          example: 101
+      required:
+        - id
+        - experiment_id
+        - timestamp
+        - title
+
+    ExperimentRecommendedAction:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the recommended action"
+          example: 1
+        experiment_id:
+          type: integer
+          description: "ID of the experiment this recommended action belongs to"
+          example: 123
+        action:
+          type: string
+          description: "The recommended action"
+          example: "Increase sample size"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the recommended action was created"
+          example: "2023-01-15T14:30:00Z"
+      required:
+        - id
+        - experiment_id
+        - action
+
+    ExperimentNote:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the note"
+          example: 1
+        experiment_id:
+          type: integer
+          description: "ID of the experiment this note belongs to"
+          example: 123
+        note:
+          type: string
+          description: "The note"
+          example: "This action is not relevant for our use case"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the note was created"
+          example: "2023-01-15T14:35:00Z"
+      required:
+        - id
+        - experiment_id
+        - note
+
+    Activity:
+      type: object
+      description: "Represents an activity or comment on an experiment"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the activity"
+          example: 1
+        experiment_id:
+          type: integer
+          description: "ID of the experiment this activity is for"
+          example: 123
+        message:
+          type: string
+          description: "Content of the activity or comment"
+          example: "I think we should increase the sample size"
+        type:
+          type: string
+          description: "Type of activity (comment, state change, etc.)"
+          example: "comment"
+          enum: ["comment", "state_change", "annotation", "system"]
+        created_at:
+          type: string
+          format: date-time
+          description: "When the activity was created"
+          example: "2023-01-01T00:00:00Z"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created this activity"
+          example: 456
+        parent_id:
+          type: integer
+          nullable: true
+          description: "ID of the parent activity if this is a reply"
+          example: null
+        replies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Activity"
+          description: "Replies to this activity"
+      required:
+        - id
+        - experiment_id
+        - message
+        - type
+        - created_at
+        - created_by_user_id
+
+    Comment:
+      type: object
+      description: "Represents a comment on an experiment"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the comment"
+          example: 1
+        experiment_id:
+          type: integer
+          description: "ID of the experiment this comment is for"
+          example: 123
+        message:
+          type: string
+          description: "Content of the comment"
+          example: "This experiment is showing great conversion results"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the comment was created"
+          example: "2023-01-01T00:00:00Z"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created this comment"
+          example: 456
+        parent_id:
+          type: integer
+          nullable: true
+          description: "ID of the parent comment if this is a reply"
+          example: null
+      required:
+        - id
+        - experiment_id
+        - message
+        - created_at
+        - created_by_user_id

@@ -1,0 +1,232 @@
+metric_tags:
+  get:
+    summary: Metric Tags [LIST]
+    description: "**Required Permissions**: `Metric List` or `Metric Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "tag"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - Metric Tags
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/MetricTag"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listmetricTags
+  post:
+    summary: Metric Tag [CREATE]
+    description: "**Required Permissions**: `Metric Create` or `Metric Admin`"
+    tags:
+      - Metric Tags
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tag:
+                type: string
+                description: "Tag name"
+                example: "conversion"
+            required:
+              - tag
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                metric_tag:
+                  $ref: "#/components/schemas/MetricTag"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: createmetricTag
+metric_tags_by_id:
+  get:
+    summary: Metric Tag [GET]
+    description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
+    parameters:
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Metric Tags
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metric_tag:
+                  $ref: "#/components/schemas/MetricTag"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Metric Tag not found
+    operationId: getmetricTag
+  put:
+    summary: Metric Tag [UPDATE]
+    description: "**Required Permissions**: `Metric Edit` or `Metric Admin`"
+    parameters:
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Metric Tags
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tag:
+                type: string
+                description: "Tag name"
+                example: "conversion-v2"
+            required:
+              - tag
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                metric_tag:
+                  $ref: "#/components/schemas/MetricTag"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Metric Tag not found
+    operationId: updatemetricTag
+  delete:
+    summary: Metric Tag [DELETE]
+    description: "**Required Permissions**: `Metric Archive` or `Metric Admin`"
+    parameters:
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Metric Tags
+    responses:
+      "204":
+        description: No Content
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Metric Tag not found
+
+# Components
+    operationId: deletemetricTag
+components:
+  schemas:
+    MetricTag:
+      type: object
+      description: "Represents a tag for metrics"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the metric tag"
+          example: 1
+        tag:
+          type: string
+          description: "Tag name"
+          example: "conversion"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the tag was created"
+          example: "2023-01-01T00:00:00Z"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created the tag"
+          example: 1
+        created_by:
+          $ref: "#/components/schemas/User"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the tag was last updated"
+          example: "2023-01-02T00:00:00Z"
+        updated_by_user_id:
+          type: integer
+          description: "ID of the user who last updated the tag"
+          example: 1
+        updated_by:
+          $ref: "#/components/schemas/User"
+      required:
+        - id
+        - tag
+        - created_at
+        - created_by_user_id

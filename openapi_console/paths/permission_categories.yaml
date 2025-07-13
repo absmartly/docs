@@ -1,0 +1,41 @@
+permission_categories:
+  get:
+    summary: Permission Categories [LIST]
+    description: "**Required Permissions**: `Authenticated`"
+    tags:
+      - Permission Categories
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                permission_categories:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/PermissionCategory"
+              required:
+                - permission_categories
+      "401":
+        description: Unauthorized
+
+    operationId: listpermissionCategories
+components:
+  schemas:
+    PermissionCategory:
+      type: object
+      description: "Represents a category for grouping permissions"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the permission category"
+          example: 1
+        name:
+          type: string
+          description: "Category name"
+          example: "User Management"
+      required:
+        - id
+        - name
