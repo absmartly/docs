@@ -1,27 +1,24 @@
 # August 2025
 
-## Overview  
-This release includes a number of small but meaningful improvements and bug fixes. While the team continues work on major backend updates coming soon, this update focuses on performance optimizations and fixes that improve clarity and usability.
+## Overview
+
+This release brings several UX improvements and bug fixes aimed at making experimentation and collaboration smoother and more reliable. We’ve made owner management more flexible, improved graph interactions, and fixed key issues around estimations and data tables.
 
 ---
 
-## Performance Improvements  
-To improve platform performance and reduce unnecessary load, we have made the following changes:
-
-- **Feature flag**: We no longer fetch data older than 30 days by default  
-- **Long-running experiments**: We have reduced how frequently data is updated for experiments running longer than 60 days
-
-These changes help improve performance without impacting the accuracy or freshness of recent results.
+## Improved Owner Filters and Flexibility
+Managing ownership is now easier and more consistent across the platform and allowing us to improve in the future who has access to what:
+- An owner can now be either a single user or a team
+- The Owner field now accepts both single users and teams when filtering, making results more inclusive.
 
 ---
 
-## Notable Bug Fixes  
-
-- **Table sorting restored**: Sorting on list tables (e.g. experiments, metrics) has been re-enabled after being unintentionally removed in a previous release  
-- **Improved clarity for GST experiments**: To avoid confusion during interim analyses, the GST data switch is now disabled until the experiment is complete. Previously, we showed non-GST-adjusted data when no boundary had been crossed, which led to misinterpretation.
-- **Caching issues on the Activity tab fixed**: We addressed some caching issues on the activity tab where data would not update until the page was refreshed.
-- **Add to favorite fixed**: We fixed an issue where adding experiments to the list of favorites did not always work.
+## Bug Fixes and Usability Improvements
+A series of fixes ensure the platform behaves more intuitively and reliably, like:
+- **MDE and Max Runtime Automatic Estimation Refresh**: Estimates now update automatically when the standard deviation is changed. We also improved our estimation precision.
+- **Graph Zoom Behavior**: Y-axis now updates correctly when zooming in, giving you a clearer view of trends.
+- **GST Estimate Accuracy**: The next GST analysis estimate now correctly respects the minimum time between analyses.
 
 ---
 
-Let us know if you have any questions or feedback — and stay tuned for bigger changes coming soon!
+Let us know if you have any questions or feedback — we're always happy to hear from you.

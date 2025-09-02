@@ -1,0 +1,26 @@
+# September 2025
+
+## Overview  
+This release includes a number of small but meaningful improvements and bug fixes. While the team continues to work on major backend updates, this update focuses on performance optimisations and fixes that improve clarity and usability.
+---
+
+## Performance Improvements  
+To improve platform performance and reduce unnecessary load, we have made the following changes:
+
+- **Feature flag**: We no longer fetch data older than 30 days by default  
+- **Long-running experiments**: We have reduced how frequently data is updated for experiments running longer than 60 days
+
+These changes help improve performance without impacting the accuracy or freshness of recent results.
+
+---
+
+## Notable Bug Fixes  
+
+- **Table sorting restored**: Sorting on list tables (e.g. experiments, metrics) has been re-enabled after being unintentionally removed in a previous release  
+- **Improved clarity for GST experiments**: To avoid confusion during interim analyses, the GST data switch is now disabled until the experiment is complete. Previously, we showed non-GST-adjusted data when no boundary had been crossed, which led to misinterpretation.
+- **Caching issues on the Activity tab fixed**: We addressed some caching issues on the activity tab where data would not update until the page was refreshed.
+- **Add to favourites: fixed**: Resolved an issue where adding experiments to favourites did not always work.
+
+---
+
+Let us know if you have any questions or feedback — and stay tuned for bigger changes coming soon!
