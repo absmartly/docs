@@ -1,0 +1,63 @@
+# October 2025
+
+## Overview  
+The main focus of this release is the introduction of our new **ownership model**, specifically **team-level roles and permissions**. We’ve also included a number of small improvements and bug fixes to improve usability and platform flexibility.
+
+---
+## Team-Level Roles and Permissions  
+
+
+You can now assign users to teams and grant them **team-level roles** — such as Team contributor, Team viewer, or Team admin — that define how they interact with experiments, metrics, goals, templates, and features owned by that team.
+
+This release is an **intermediate step** toward the full rollout of our new ownership model. Unless you explicitly add users to teams and assign them roles, there should be **no changes in behavior** and everything will continue working as before.
+
+If you encounter any issues or inconsistencies related to roles and permissions, please contact us.
+
+### What's New
+
+We have introduced four new built-in roles:
+
+- **Team Viewer**  
+  Can view all experiments, features, templates, metrics, and goals owned by the team.
+
+- **Team Contributor**  
+  Can do everything a Team Viewer can, plus create/edit experiments, features, templates, metrics, and goals within the team and manage the life cycle (start, stop) of those experiments and features.
+
+- **Team Admin**  
+  Can do everything a Team Contributor can, and also manage the team — including adding/removing members, assigning roles, editing metadata, etc.
+
+- **Base User**  
+  This will replace the current default "User" role. Following the principle of least privilege, this new role provides read-only access to most components, but **does not** include access to experiments, features, templates, metrics, or goals — which will be managed at the **team level**.
+
+> These roles are immutable, but **custom roles** (e.g. "Metric Owner", "Experiment Reviewer") will be supported in future releases to meet your unique needs.
+
+All existing global roles remain valid and can be assigned at the **Global Team level**, which represents your organisation. Team role permissions are **inherited**: roles granted at any level apply to all child teams.
+
+If you haven't started yet, you can begin managing your team hierarchy at:  `/settings/teams`
+
+If you have any questions or want to learn how to get the most from this model, feel free to reach out!
+
+---
+
+## Other Notable Improvements and Fixes  
+
+- **Ignore exposure events**  
+  You can now tag exposure events with a `__ignore` attribute to have them excluded from experiment analysis. This is useful for excluding internal users from your experiments.
+
+- **Experiment export fix**  
+  Fixed an issue where re-exporting experiment data for an existing export request would break the export process.
+
+- **Metrics list UI cleanup**  
+  Improved the layout of the metrics list page to avoid overly long description text dominating the screen.
+
+---
+
+## Upcoming Change: Fair Usage Policy Update  
+
+In our next release, we plan to introduce a **2KB limit** on the JSON payload sent with goal and exposure events. This change is needed to keep a better control over cost and performance of the ABsmartly platform. **Events whose payload is above the threshold will not be processed** by the ABsmartly platform. While this limit is way over what most of our customers are currently using, we will query past events and reach out to you separately if we see that you have used larger payloads in the past so we can better prepare for this upcoming change. 
+
+If you have any concerns or use cases that require larger payloads, please let us know as soon as possible.
+
+---
+## Questions or Feedback?  
+As always, if you have questions about this release or anything else, don't hesitate to get in touch.
