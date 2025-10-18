@@ -1,0 +1,230 @@
+goal_tags:
+  get:
+    summary: Goal Tags [LIST]
+    description: "**Required Permissions**: `Goal List` or `Goal Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "tag"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - Goal Tags
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/GoalTag"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listgoalTags
+  post:
+    summary: Goal Tag [CREATE]
+    description: "**Required Permissions**: `Goal Create` or `Goal Admin`"
+    tags:
+      - Goal Tags
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tag:
+                type: string
+                description: "Tag name"
+                example: "revenue"
+            required:
+              - tag
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                goal_tag:
+                  $ref: "#/components/schemas/GoalTag"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: creategoalTag
+goal_tags_by_id:
+  get:
+    summary: Goal Tag [GET]
+    description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
+    parameters:
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Goal Tags
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                goal_tag:
+                  $ref: "#/components/schemas/GoalTag"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Goal Tag not found
+    operationId: getgoalTag
+  put:
+    summary: Goal Tag [UPDATE]
+    description: "**Required Permissions**: `Goal Edit` or `Goal Admin`"
+    parameters:
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Goal Tags
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tag:
+                type: string
+                description: "Tag name"
+                example: "revenue-v2"
+            required:
+              - tag
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                goal_tag:
+                  $ref: "#/components/schemas/GoalTag"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Goal Tag not found
+    operationId: updategoalTag
+  delete:
+    summary: Goal Tag [DELETE]
+    description: "**Required Permissions**: `Goal Archive` or `Goal Admin`"
+    parameters:
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Goal Tags
+    responses:
+      "204":
+        description: No Content
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Goal Tag not found
+    operationId: deletegoalTag
+components:
+  schemas:
+    GoalTag:
+      type: object
+      description: "Represents a tag for goals"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the goal tag"
+          example: 1
+        tag:
+          type: string
+          description: "Tag name"
+          example: "revenue"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the tag was created"
+          example: "2023-01-01T00:00:00Z"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created the tag"
+          example: 1
+        created_by:
+          $ref: "#/components/schemas/User"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the tag was last updated"
+          example: "2023-01-02T00:00:00Z"
+        updated_by_user_id:
+          type: integer
+          description: "ID of the user who last updated the tag"
+          example: 1
+        updated_by:
+          $ref: "#/components/schemas/User"
+      required:
+        - id
+        - tag
+        - created_at
+        - created_by_user_id
