@@ -1,8 +1,9 @@
 context.ready().then(function () {
+  const variant = context.treatment("experiment_name");
   // A/B/C Test
-  if (context.treatment("experiment_name") == 1) {
+  if (variant === 1) {
     // insert code to show on variant 1
-  } else if (context.treatment("experiment_name") == 2) {
+  } else if (variant === 2) {
     // insert code to show on variant 2
   } else {
     // insert the control treatment code
@@ -13,8 +14,10 @@ context.ready().then(function () {
 async function runExperiment() {
   await context.ready();
 
+  const variant = context.treatment("experiment_name");
+
   // A/B Test
-  if (context.treatment("experiment_name")) {
+  if (variant) {
     // insert code to show on variant 1
   } else {
     // insert the control treatment code
