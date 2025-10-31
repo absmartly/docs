@@ -15,16 +15,16 @@ This guide assumes that you already installed and configured the LaunchPad.
 
 Begin by defining the core information for your experiment.  
 
-<Image img="launchpad/create-metadata.png" alt="Experiment metadata" maxWidh="20rem" />
+<Image img="launchpad/create-metadata.png" alt="Experiment metadata" maxWidth="20rem" />
 
 
 | Field | Description | Tips |
 |-------|--------------|------|
 | **Display Name** *| The name displayed in the LaunchPad & in the web console. | Use a clear, human-readable name that reflects the purpose of the test. |
 | **Experiment Name** *| The technical identifier used in your implementation code. | Keep this concise, lowercase, and use underscores (e.g. `checkout_flow_test`). |
-| **Traffic Percentage** | The proportion of total eligible traffic that will be included in the experiment. | Unless you have a good reason keep it at 100%. |
+| **Traffic Percentage** | The proportion of total eligible traffic that will be included in the experiment. | Unless you have a good reason, keep it at 100%. |
 | **Unit Type** *| Determines how visitors are tracked (email, user id, anonymous id, etc). | Choose the same unit type you use in your SDK implementation. |
-| **Applications** | The applications where this experiment will run. | The same experiment can runs across multiple apps or sites. |
+| **Applications** | The applications where this experiment will run. | The same experiment can run across multiple apps or sites. |
 | **Owners** | Team(s) responsible for creating and maintaining the experiment. | Helps accountability and tracking in large organizations. |
 | **Tags** | Optional keywords for organizing and filtering experiments. | Tag experiments by feature, product area, or release cycle. |
 
@@ -34,15 +34,15 @@ All fields marked with * are required before proceeding.
 
 ## Variants
 
-Each experiment requires at least a control variant and one or more treatment variants. By default experiments are creating with 1 treament variant.
+Each experiment requires at least a control variant and one or more treatment variants. By default, experiments are creating with 1 treatment variant.
 
-<Image img="launchpad/create-variants.png" alt="Experiment variants" maxWidh="20rem" />
+<Image img="launchpad/create-variants.png" alt="Experiment variants" maxWidth="20rem" />
 
 
 ### Add Variants
 Click **Add Variant** to add a new variant to your experiment.
 
-> **Note:** When using the LaunchPad, traffic is always split equally between all the variants. To change this you can open the experiment on the web console and change the traffic split.
+> **Note:** When using the LaunchPad, traffic is always split equally between all the variants. To change this, you can open the experiment on the web console and change the traffic split.
 
 ---
 
@@ -57,7 +57,7 @@ Fine-tune the behavior of each variant in this section.
 ### URL Filtering
 Use **URL Filtering** to define exactly where the experiment is active. Rules can target different parts of the URL, support multiple match types, and can be combined as include or exclude conditions.
 
-<Image img="launchpad/create-url-targeting.png" alt="URL targeting" maxWidh="20rem" />
+<Image img="launchpad/create-url-targeting.png" alt="URL targeting" maxWidth="20rem" />
 
 
 #### What you can match
@@ -105,7 +105,7 @@ Set default values that apply across all variants unless explicitly overridden.
 This provides a consistent baseline configuration for new variants.
 
 | Setting | Description | 
-|-------|--------------|------|
+|-------|--------------|
 | **Use !important flag**| The changes will overwrite existing CSS. | 
 | **Wait for element (lazy-loaded)**| The changes will only be applied once the element has appeared in the DOM. | 
 | **Persist styles **| The changes will be reapplied after the JS framework (React/Vue/Angular) overwrites them. | 
@@ -120,7 +120,7 @@ Use **DOM Changes** to capture all the changes made to the page.
 Use **DOM Changes** to apply direct modifications to page elements for each variant.  
 These actions are configured manually in the **Add DOM Changes** panel.
 
-<Image img="launchpad/create-dom-changes.png" alt="DOM changes" maxWidh="20rem" />
+<Image img="launchpad/create-dom-changes.png" alt="DOM changes" maxWidth="20rem" />
 
 | Change Type | Description | Typical Use | Tips |
 |--------------|--------------|--------------|------|
@@ -142,7 +142,7 @@ These actions are configured manually in the **Add DOM Changes** panel.
 The **Visual Editor** allows interactive, point-and-click modifications to page elements without writing code.  
 Each action updates the page in real time and can be previewed before saving.
 
-<Image img="launchpad/create-visual-editor.png" alt="Visual Editor" maxWidh="60rem" />
+<Image img="launchpad/create-visual-editor.png" alt="Visual Editor" maxWidth="60rem" />
 
 
 | Action | Description | Typical Use | Tips |
