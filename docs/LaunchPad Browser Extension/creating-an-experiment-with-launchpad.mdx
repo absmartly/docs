@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import Image from "../../src/components/Image";
+
 # Creating an experiment using the ABsmartly LaunchPad
 
 This guide explains how to create a new experiment from scratch using the **ABsmartly LaunchPad**.  
@@ -12,6 +14,8 @@ This guide assumes that you already installed and configured the LaunchPad.
 ## Experiment Metadata
 
 Begin by defining the core information for your experiment.  
+
+<Image img="launchpad/create-metadata.png" alt="Experiment metadata" maxWidh="20rem" />
 
 
 | Field | Description | Tips |
@@ -32,6 +36,9 @@ All fields marked with * are required before proceeding.
 
 Each experiment requires at least a control variant and one or more treatment variants. By default experiments are creating with 1 treament variant.
 
+<Image img="launchpad/create-variants.png" alt="Experiment variants" maxWidh="20rem" />
+
+
 ### Add Variants
 Click **Add Variant** to add a new variant to your experiment.
 
@@ -50,6 +57,9 @@ Fine-tune the behavior of each variant in this section.
 ### URL Filtering
 Use **URL Filtering** to define exactly where the experiment is active. Rules can target different parts of the URL, support multiple match types, and can be combined as include or exclude conditions.
 
+<Image img="launchpad/create-url-targeting.png" alt="URL targeting" maxWidh="20rem" />
+
+
 #### What you can match
 - **Hostname / subdomain** (e.g., `www.example.com`, `staging.example.com`)
 - **Path** (full path or segments, e.g., `/checkout`, `/product/*`)
@@ -64,7 +74,6 @@ Use **URL Filtering** to define exactly where the experiment is active. Rules ca
 - **contains** – value contains a substring (e.g., `/promo/`)  
 - **matches wildcard** – supports `*` for any sequence (e.g., `/product/*/reviews`)  
 - **matches regex** – advanced pattern using regular expressions
-
 
 #### Include vs. exclude
 - **Include rules** explicitly allow the experiment to run when matched.  
@@ -101,7 +110,6 @@ This provides a consistent baseline configuration for new variants.
 | **Wait for element (lazy-loaded)**| The changes will only be applied once the element has appeared in the DOM. | 
 | **Persist styles **| The changes will be reapplied after the JS framework (React/Vue/Angular) overwrites them. | 
 
-
 ---
 
 ### DOM Changes
@@ -111,6 +119,8 @@ Use **DOM Changes** to capture all the changes made to the page.
 
 Use **DOM Changes** to apply direct modifications to page elements for each variant.  
 These actions are configured manually in the **Add DOM Changes** panel.
+
+<Image img="launchpad/create-dom-changes.png" alt="DOM changes" maxWidh="20rem" />
 
 | Change Type | Description | Typical Use | Tips |
 |--------------|--------------|--------------|------|
@@ -131,6 +141,9 @@ These actions are configured manually in the **Add DOM Changes** panel.
 
 The **Visual Editor** allows interactive, point-and-click modifications to page elements without writing code.  
 Each action updates the page in real time and can be previewed before saving.
+
+<Image img="launchpad/create-visual-editor.png" alt="Visual Editor" maxWidh="60rem" />
+
 
 | Action | Description | Typical Use | Tips |
 |---------|--------------|-------------|------|
