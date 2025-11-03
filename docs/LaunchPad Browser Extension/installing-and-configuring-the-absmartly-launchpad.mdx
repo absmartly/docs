@@ -2,10 +2,76 @@
 sidebar_position: 1
 ---
 
-// import Image from "../../src/components/Image";
+import Image from "../../src/components/Image";
 
-# Installing the ABsmartly LaunchPad from the Chromestore
+# Installing the ABsmartly LaunchPad from the Chrome Store
 
 1. Go to https://chromewebstore.google.com/
 2. Search for **ABsmartly LaunchPad**
 3. Click **Add to Chrome**
+
+<Image
+  img="chrome-webstore-launchpad.png"
+  alt="ABsmartly LaunchPad in Chrome Web Store"
+  maxWidth="50rem"
+  centered
+/>
+
+## Configuring the DOM Changes SDK Plugin
+
+To enable the DOM Changes plugin in your website, you need to initialize it after your ABsmartly SDK context is ready. The plugin automatically applies DOM changes defined in your experiments.
+
+### Installation
+
+```bash
+npm install @absmartly/sdk-plugins
+```
+
+### Basic Setup
+
+```javascript
+import { SDK, Context } from '@absmartly/javascript-sdk';
+import { DOMChangesPluginLite as DOMChangesPlugin } from '@absmartly/sdk-plugins';
+
+// Initialize your SDK and context
+const sdk = new SDK({
+  endpoint: 'YOUR_ENDPOINT',
+  apiKey: 'YOUR_API_KEY',
+  environment: 'YOUR_ENVIRONMENT',
+  application: 'YOUR_APPLICATION',
+});
+
+const context = sdk.createContext({ units: { absId: 'your-unit-id' } });
+
+// Wait for context to be ready
+await context.ready();
+
+// Initialize DOM changes plugin
+const domPlugin = new DOMChangesPlugin({
+  context: context,
+  autoApply: true,        // Automatically apply DOM changes
+  spa: true,              // Enable SPA support for dynamic content
+  visibilityTracking: true, // Track element visibility
+  debug: false,           // Enable debug logging
+});
+
+await domPlugin.ready();
+```
+
+### Configuration Options
+
+- **context**: Your ABsmartly SDK context instance (required)
+- **autoApply**: When `true`, automatically applies DOM changes for assigned variants
+- **spa**: When `true`, observes DOM changes and reapplies changes for single-page applications
+- **visibilityTracking**: When `true`, tracks when modified elements become visible
+- **debug**: When `true`, enables detailed console logging for troubleshooting
+
+### How It Works
+
+The DOM Changes plugin:
+1. Reads DOM change configurations from your experiment variants
+2. Automatically applies the changes for the user's assigned variant
+3. Continues to monitor and reapply changes as the DOM updates (when `spa: true`)
+4. Tracks element visibility for analytics (when `visibilityTracking: true`)
+
+This plugin works seamlessly with the ABsmartly LaunchPad extension, which allows you to create and manage DOM changes visually through your browser.
