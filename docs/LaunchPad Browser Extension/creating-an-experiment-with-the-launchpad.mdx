@@ -36,7 +36,7 @@ All fields marked with * are required before proceeding.
 
 ## Variants
 
-Each experiment requires at least a control variant and one or more treatment variants. By default, experiments are creating with 1 treatment variant.
+Each experiment requires at least a control variant and one or more treatment variants. By default, experiments are created with 1 treatment variant.
 
 <Image img="launchpad/create-variants.png" alt="Experiment variants" maxWidth="20rem" />
 
@@ -78,7 +78,7 @@ Use **URL Filtering** to define exactly where the experiment is active. Rules ca
 - **matches regex** – advanced pattern using regular expressions
 
 #### Include vs. exclude
-- **Include rules** explicitly allow the experiment to run when matched.  
+- **Include rules** explicitly allow the experiment to run when conditions are matched.
 - **Exclude rules** prevent the experiment from running when matched, even if an include would otherwise match.
 
 #### Combining multiple rules
@@ -110,7 +110,7 @@ This provides a consistent baseline configuration for new variants.
 |-------|--------------|
 | **Use !important flag**| The changes will overwrite existing CSS. | 
 | **Wait for element (lazy-loaded)**| The changes will only be applied once the element has appeared in the DOM. | 
-| **Persist styles **| The changes will be reapplied after the JS framework (React/Vue/Angular) overwrites them. | 
+| **Persist styles**| The changes will be reapplied after the JS framework (React/Vue/Angular) overwrites them. | 
 
 ---
 
