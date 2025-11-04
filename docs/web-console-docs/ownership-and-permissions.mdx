@@ -13,10 +13,10 @@ Over the last few months we incrementally released many new features related to 
 
 The first building block was to make it possible to map your internal team structure in ABsmartly so your teams can be structured just like they are in your organisation.
 
-<Image img="ownership-model/team-structure.png" alt="Team structure" maxWidh="50rem" />
+<Image img="ownership-model/team-structure.png" alt="Team structure" maxWidth="50rem" />
 
-:::info
-**Action item**: If you have not done so yet, we encourage you to go to /settings/teams and start building a team structure which aligns with the way you are structured and operating (or any other which makes most sense from the organizational point of view). Unless you start building your team hierarchy in ABsmartly you won't be able to start making use of the new features described below.
+:::action item
+If you have not done so yet, we encourage you to go to /settings/teams and start building a team structure which aligns with the way you are structured and operating (or any other which makes most sense from the organizational point of view). Unless you start building your team hierarchy in ABsmartly you won't be able to start making use of the new features described below.
 :::
 
 
@@ -33,12 +33,12 @@ Other assets like `Applications`, `Tracking Unit`, etc which are platform level 
 
 For backward compatibility, existing assets will retain their current individual owners but it won't be possible to add new ones.
 
-:::note
-**Note**: While Team Ownership is the new default and preferred way of assigning ownership for Experiments, Features, Templates, Goals & Metrics, it is possible to re-enable user level ownership in the platform settings (/settings/platform).
+:::info
+While Team Ownership is the new default and preferred way of assigning ownership for Experiments, Features, Templates, Goals & Metrics, it is possible to re-enable user level ownership in the platform settings (/settings/platform).
 :::
 
-:::info
-**Action item**: To get the most of the new model we encourage you to move the ownership of your existing Experiments, Features, Templates, Goals & Metrics to the most relevant team in your organisation. To do that, just edit assets that you currently own and re-assign ownership to the correct team. Make sure that you are a member of that team if you want to retain your access to that asset.
+:::action item
+To get the most of the new model we encourage you to move the ownership of your existing Experiments, Features, Templates, Goals & Metrics to the most relevant team in your organisation. To do that, just edit assets that you currently own and re-assign ownership to the correct team. Make sure that you are a member of that team if you want to retain your access to that asset.
 :::
 
 ---
@@ -57,11 +57,12 @@ Possible team roles are :
 - **Team Contributor**: The member will be able to create new assets and edit, share all assets owned by that team.
 - **Team Admin**: Same as Team Contributor + the member will be able to manage the team (add/remove members, edit metadata, etc).
 
-<Image img="ownership-model/team-roles.png" alt="Team roles" maxWidh="20rem" />
-<Image img="ownership-model/team-members-with-roles.png" alt="Team members with roles" maxWidh="50rem" />
+<Image img="ownership-model/team-roles.png" alt="Team roles" maxWidth="20rem" />
 
-:::note
-**Note**: If team members are not assigned any of those roles, they will be team members but won't be able to view or interact with any of the team's assets.
+<Image img="ownership-model/team-members-with-roles.png" alt="Team members with roles" maxWidth="50rem" />
+
+:::info
+If team members are not assigned any of those roles, they will be team members but won't be able to view or interact with any of the team's assets.
 :::
 
 Team membership and team roles cascade down the team hierarchy. 
@@ -71,11 +72,8 @@ Team membership can be explicit when a user is directly added to a team but it c
 For example if a user is added explicitly as `Team Contributor` in team Development, then this user would also be an implicit member of the parent teams (Engineering). 
 Implicit members are, by default, not assigned any particular role in that team.
 
-:::info
-**Action item**: Make sure to add all platform users to their respective team and assign them the correct role so they can interact with the team's assets.
-
-**Future plans**: We do have plans to add new pre-defined custom roles (ie: Can Review, Can Start) and possibly the ability to create custom team level roles. 
-We are curious to hear what use cases you have so we can better cater for your specific needs.
+:::action item
+ Make sure to add all platform users to their respective team and assign them the correct role so they can interact with the team's assets.
 :::
 
 ---
@@ -94,8 +92,8 @@ To facilitate the transition to the new ownership model, we created a new (immut
 This role does not grant the user any permission to view or edit `Experiments`, `Features`, `Templates`, `Goals` & `Metrics`. 
 In time this role should replace the current User role assigned by default to all new users of the platform.
 
-:::info
-**Action Item**: Review your current roles & permissions to align with the new model (Ideally no global roles, besides the fulladmin role, should grant permissions to `Experiments`, `Features`, `Templates`, `Goals` & `Metrics`) and start migrating your user from the `User` role to the new `Base User`. 
+:::action item
+Review your current roles & permissions to align with the new model (Ideally no global roles, besides the fulladmin role, should grant permissions to `Experiments`, `Features`, `Templates`, `Goals` & `Metrics`) and start migrating your user from the `User` role to the new `Base User`. 
 If you need help automating this step please let us know. Once the migration is done, you can let us know so we can remove it and make `Base User` the new default role for all new users.
 :::
 
@@ -112,21 +110,16 @@ For now there are 2 types of possible permissions associated with sharing of ass
 - **Can View**: Grants the ability to search for, to view, comment on and to use this specific asset. A good use case for this is if you want to make your metric or a template available to another team or if you want other people to be able to view your experiment on the search page without being able to edit it.
 - **Can Edit**: Grants the ability to edit and collaborate on this specific asset. A typical use case here is to invite other individuals to collaborate on an experiment or a feature.
 
-<Image img="ownership-model/invite-user.png" alt="Invite user" maxWidh="20rem" />
-<Image img="ownership-model/shared-asset.png" alt="Shared asset" maxWidh="20rem" />
+<Image img="ownership-model/invite-user.png" alt="Invite user" maxWidth="20rem" />
 
-:::note
+<Image img="ownership-model/shared-asset.png" alt="Shared asset" maxWidth="20rem" />
+
+:::info
 **Note**: If Can View or Can Edit is granted to a team, then all members of that team will be able to view/edit that asset irrespective of their role in that team. Following the least privilege principle, and unless there is a good reason, it is usually good practice to grant Can Edit only to relevant individuals.
 :::
 
-:::info
-**Action Item:** Go over your list of Experiments, Features, Templates, Goals & Metrics that you own (or that your team owns) and make sure to share it with the relevant individual(s) or team(s). For example if you want a metric or a goal to be available for everybody to use, then share it with the Global Team with Can View permission.
+:::action item
+Go over your list of Experiments, Features, Templates, Goals & Metrics that you own (or that your team owns) and make sure to share it with the relevant individual(s) or team(s). For example if you want a metric or a goal to be available for everybody to use, then share it with the Global Team with Can View permission.
 It is possible that you want all your existing metrics, goals and possibly all your experiments, features and templates to be discoverable and usable by anyone on the platform. If this is the case, just let us know and we will run a script to automatically grant Can View to all your existing assets saving you loads of manual work.
-
-**Future plans**: Let us know if you wish to see other types of permissions besides can view and can edit. 
 :::
-
-
----
-## Next steps
 
