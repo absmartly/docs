@@ -4,19 +4,26 @@ import Image from "../../../src/components/Image";
 
 ## Overview  
 
+This new release is packed with new features and improvements to help you manage your experiemntation program and make it easier to create simple experiments without the need for developers
+
 ---
 ## The ABsmartly Chrome Extension - The ABsmartly LaunchPad Beta
 
-We made it easier to create experiments using our new ABsmartly LaunchPad. This Chrome Extension makes it possible to create experiments using a simple Visual Editor.
-While the Chrome Extension is still in Beta, we encourage you to give it a try.
+We made it easier to create simple experiments using our new **ABsmartly LaunchPad**. This Chrome Extension makes it possible to create experiments using our new Visual Editor and without the need for developers.
+While the Chrome Extension is still in Beta, we encourage you to give it a try and give us feedback. 
 
 Before you get started see our guides on [getting started with the LaunchPad](/docs/LaunchPad%20Browser%20Extension/getting-started-with-the-launchpad) and [creating your first experiment](/docs/LaunchPad%20Browser%20Extension/creating-an-experiment-with-the-launchpad).
 
+You can also watch this video where Jonas takes you through the process of creating a simple experiment.
+
 VIDEO OF JONAS
+
+This first release is only the first step as we have big plans for the **ABsmartly LaunchPad** in 2026.
 
 ## Ownership & Permissions model - Sharing of Assets
 
 In this release we make it possible to share **experiments**, **features**, **templates**, **goals** and **metrics** with users and teams so they collaborate and make use of those assets.
+This feature makes it easier for teams to collaborate without having to share ownership of the asset.
 
 <Image
   img="release-notes/sharing-assets.png"
@@ -35,17 +42,24 @@ When you are ready to start making use of the new functionalities, let us know a
 
 ## Improved experiment search list
 
-We've improved the filters on the experiments list to make it easier to find what you are looking for and to align with how experiments are filtered on the velocity reports. 
-Here is a list of the changes we made to the search filters:
+We've improved the filters on the experiments list to make it easier to find what you are looking for and to align with how experiments are filtered on the `Velocity Report`. 
+Here is a list of the changes we made to the search filters & search list:
 
 - Added a new `Type` filter so you can differentiate between `experiment` and `full on` instances. You can now easily find running or stopped experiment without seeing the full on instances.
 - Added `Completed`, `Not Completed` and `Aborted` to the `State` filter to align with how experiments are filtered on the velocity reports.
 - Removed `Running - Not full on` from the `State` filter, as you can now find running experiments by selecting `experiment` in the `Type` filter.
 - Renamed the `Significance` filter to `Result` and changed it values to `Insignificant`, `Negative`, `Positive` to avoid confusion about the states and statistical significance of the experiments 
+- Fixed the issue where reporting on the impact of GST experiments was not correct on the experiment list.
+- Fixed an issue so the color of the impact of inconclusive experiments is gray as on the experiment's overview page.
 
 ## Data Retention Update  
 
-We are continuing our work in improving efficiency
+As part of our ongoing work on performance and cost optimisation we are planning to introduce the following data retention rules in a future update : 
+- **1 year retention for experiment goal and exposure data**. While experiment results will always remain available and visible, this change means
+that you won't be able to explore metrics and to slice and dice data for experiments which are stopped for 1 year or more.
+- **30 days retention for unused exposure data**. Exposure events which are not linked to any actual experiment will be deleted after 30 days.
+
+Do you think this will impact you? If yes, get in touch so we understand your need for this data.
 
 ---
 ## Questions or Feedback?  
