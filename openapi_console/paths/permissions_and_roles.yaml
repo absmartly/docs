@@ -1,0 +1,456 @@
+# Permission endpoints
+permission_categories:
+  get:
+    summary: Permission Category [LIST]
+    description: "**Required Permissions**: `Role Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/PermissionCategory"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+    operationId: listpermissionCategory
+permissions:
+  get:
+    summary: Permission [LIST]
+    description: "**Required Permissions**: `Role Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Permission"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+# Role endpoints
+    operationId: listpermission
+roles:
+  get:
+    summary: Role [LIST]
+    description: "**Required Permissions**: `Role List` or `Role Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Role"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listrole
+  post:
+    summary: Role [CREATE]
+    description: "**Required Permissions**: `Role Create` or `Role Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              role:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Administrator"
+                  permission_ids:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2, 3]
+                required:
+                  - name
+                  - permission_ids
+            required:
+              - role
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                role:
+                  $ref: "#/components/schemas/Role"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+    operationId: createrole
+roles_by_id:
+  get:
+    summary: Role [GET]
+    description: "**Required Permissions**: `Role Get` or `Role Admin`"
+    parameters:
+      - name: roleId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  $ref: "#/components/schemas/Role"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Role not found
+    operationId: getrole
+  put:
+    summary: Role [UPDATE]
+    description: "**Required Permissions**: `Role Edit` or `Role Admin`"
+    parameters:
+      - name: roleId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the Role that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              role:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Updated Role Name"
+                  permission_ids:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2, 3, 4]
+            required:
+              - role
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                role:
+                  $ref: "#/components/schemas/Role"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Role not found
+    operationId: updaterole
+  delete:
+    summary: Role [DELETE]
+    description: "**Required Permissions**: `Role Delete` or `Role Admin`"
+    parameters:
+      - name: roleId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Role not found
+
+    operationId: deleterole
+components:
+  schemas:
+    PermissionCategory:
+      type: object
+      description: "Represents a category grouping related permissions"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the permission category"
+          example: 1
+        name:
+          type: string
+          description: "Name of the permission category"
+          example: "Experiment"
+        display_order:
+          type: integer
+          description: "Order in which this category should be displayed in UI"
+          example: 10
+        created_at:
+          type: string
+          format: date-time
+          description: "When the permission category was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the permission category was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - name
+        - display_order
+      example:
+        id: 1
+        name: "Experiment"
+        display_order: 10
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"
+        
+    Permission:
+      type: object
+      description: "Represents a permission that can be assigned to roles for access control"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the permission"
+          example: 1
+        name:
+          type: string
+          description: "Name of the permission"
+          example: "Experiment View"
+        category:
+          type: string
+          description: "Category this permission belongs to"
+          example: "Experiment"
+        description:
+          type: string
+          description: "Detailed description of what this permission allows"
+          example: "Allows viewing experiments"
+        scope:
+          type: string
+          description: "Scope of the permission (Global, Team, or Application)"
+          enum: ["Global", "Team", "Application"]
+          example: "Application"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the permission was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the permission was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - name
+        - category
+        - scope
+      example:
+        id: 1
+        name: "Experiment View"
+        category: "Experiment"
+        description: "Allows viewing experiments"
+        scope: "Application"
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"
+        
+    Role:
+      type: object
+      description: "Represents a set of permissions that can be assigned to users"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the role"
+          example: 1
+        name:
+          type: string
+          description: "Name of the role"
+          example: "Administrator"
+        description:
+          type: string
+          description: "Detailed description of the role"
+          example: "Full administrative access to all features"
+        is_system_role:
+          type: boolean
+          description: "Whether this is a system-defined role (cannot be modified by users)"
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          description: "When the role was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the role was last updated"
+          example: "2023-01-02T00:00:00Z"
+        permissions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Permission"
+      required:
+        - id
+        - name
+        - is_system_role
+      example:
+        id: 1
+        name: "Administrator"
+        description: "Full administrative access to all features"
+        is_system_role: true
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"
