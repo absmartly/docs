@@ -1,0 +1,123 @@
+---
+sidebar_position: 1
+---
+
+import Image from "../../../src/components/Image/"
+
+# Exposure Events
+
+## The assignment moment
+
+Exposure events happen every time the `treatment` function is called to check which variant of an experiment to show a visitor. 
+This is how it might look in case of an A/B/C experiment.
+
+```javascript
+
+context.ready().then(function () {
+  var exp_assignment = context.treatment("experiment_name");
+  if (exp_assignment == 1) {
+    // insert code to show for Variant 1
+  } else if (exp_assignment == 2) {
+    // insert code to show for Variant 2
+  } else {
+    // insert the Control/Base code
+  }
+});
+
+```
+
+This `treatment` function call will return the variant assignment. `0` for base, `1` for variant 1 or `2` for variant 2.
+
+:::info
+For a given user identifier, the **treatment** call will always return the same value, making the assignment sticky. 
+This is a very important feature as this means the same visitor will always be shown the same variant.
+:::
+
+Before sending exposure events, make sure to correctly initialise and enrish the ABsmartly's context with the [visitor's identity](visitors-identity).
+
+## The events page
+
+As soon as your code is deployed and visitors enter this part of your product, exposure events will start being appearing in the ABsmartly's [events' page](the-events-page).
+
+<Image
+  img="events/events-page-exposure.png"
+  alt="Exposure events on the events page"
+  maxWidth="50rem"
+  centered
+/>
+
+
+Monitoring events on the events' page is a great way to ensure your tracking is set up properly.
+
+:::tip 
+You can even start monitoring the events page before the experiment is started. 
+:::
+
+## Understanding exposure events data
+
+From the events' page, you can inspect any exposure event raw json data by clicking the event on the event's page.
+
+```ts
+
+{
+  "event_type": "exposure",
+  "unit_uid": "of2dhFlqHRXpW8iQG9mepw",
+  "unit_uid_hex": "a1fd9d84596a1d15e95bc8901bd99ea7",
+  "unit_type": "absId",
+  "unit_type_id": 42,
+  "agent": "absmartly-javascript-sdk",
+  "application": "absmartly.com",
+  "application_id": 39,
+  "environment": "Prod",
+  "environment_id": 3,
+  "environment_type": "production",
+  "event_at": 1762888120666,
+  "unit_attributes": {
+    "application": "absmartly.com",
+    "user_agent": {
+      "device_type": "Mobile",
+      "crawler": "no",
+      "value": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+      "platform": "iOS",
+      "browser": "Safari",
+      "browser_type": "Browser"
+    },
+    "__crawler": false
+  },
+  "experiment_id": 3214,
+  "experiment_name": "absmartly_site_aa",
+  "experiment_iteration": 0,
+  "variant": 0,
+  "flags": 1,
+  "properties": null
+}
+
+```
+
+Below is an overview of some of the data you will find in the exposure event's raw data.
+
+| Field | Description | 
+|-------|--------------|
+| **event_type** | This indicates the sort of event. In this case `exposure`. |
+| **unit_type**| The sort of unit used to identify the visitor. |
+| **unit_uid**| The visitor's unique identifier for this unit type. One event is sent for each register identifier. |
+| **application**| Indicates the application where this event comes from. |
+| **event_at**| The event's timestamp. |
+| **unit_attributes** | The list of visitor's attributes registered for this event. |
+| **experiment_id**| The experiment's id. |
+| **experiment_name**| The experiment's name. |
+| **variant**| The variant's assignment'. 0 for base. 1 for variant 1. etc. |
+
+## Special attributes
+
+<!--  _crawler in unit attribute
+ internal user -->
+
+## Events info & warning 
+
+Exposure events can be labelled with extra information or warning
+
+| Label | Type | Description |
+|-------|--------------|-------------|
+| **An experiment with this name was not running at the time of ingestion** | warning | Indicates that the underlying experiment was not running when this event was triggered . |
+| **The experiment was full on at the time of ingestion**| info | The experiment related to this event is full on. It is good practice to clean up full on experiments. |

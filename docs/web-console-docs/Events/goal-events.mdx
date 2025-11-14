@@ -1,0 +1,95 @@
+---
+sidebar_position: 2
+---
+
+import Image from "../../../src/components/Image/"
+
+
+# Goal Events
+
+## Capturing user actions
+
+Goal events are sent by the SDKs when the `track` function is called. 
+Those events capture visitor actions (`page view`, `button clicked`, `purchase`, etc) with optional contextual data like `price`, `quantity`, and `product_id`, etc.
+
+```javascript
+
+// Triggered when a visitor buys a product
+context.track("purchase", {
+  price: 1000,
+  currency: 'euro',
+  order_number: '0000982532',
+  product_id: "ABC123",
+  category_id: 'ZYZ123'
+});
+
+```
+
+Before sending goal events, make sure to correctly initialise the ABsmartly's context and enrish it with the visitor's attributes.
+See the [visitor's identity page](visitors-identity) for more details.
+
+## The events page
+
+As soon as your code is deployed and visitors trigger the action, goal events will start being appearing in the ABsmartly's [events' page](the-events-page).
+
+<Image
+  img="events/events-page-goal.png"
+  alt="Goal events on the events page"
+  maxWidth="50rem"
+  centered
+/>
+
+You can use this page while debugging and to ensure that events are correctly been triggered when users perform a specific action on your application.
+
+## Understanding goal events 
+
+You can click any event on the events' page to inspect the event.
+
+```ts
+{
+  "event_type": "goal",
+  "unit_uid": "LTSLmGJb-oGQVJhxElUwtQ",
+  "unit_uid_hex": "2d348b98625bfa8190549871125530b5",
+  "unit_type": "absId",
+  "unit_type_id": 42,
+  "agent": "absmartly-javascript-sdk",
+  "application": "absmartly.com",
+  "application_id": 39,
+  "environment": "Prod",
+  "environment_id": 3,
+  "environment_type": "production",
+  "event_at": 1763124336749,
+  "goal_id": 106,
+  "goal_name": "purchase",
+  "properties": {
+    "price": 1000,
+    "currency": "euro",
+    "order_number": "0000982532",
+    "product_id": "ABC123",
+    "category_id": "ZYZ123"
+  },
+}
+```
+
+Below is an overview of some of the data you will find in the exposure event's raw data.
+
+| Field | Description | 
+|-------|--------------|
+| **event_type** | This indicates the sort of event. In this case `goal`. |
+| **unit_type**| The sort of unit used to identify the visitor. |
+| **unit_uid**| The visitor's unique identifier for this unit type. One event is sent for each register identifier. |
+| **application**| Indicates the application where this event comes from. |
+| **event_at**| The event's timestamp. |
+| **unit_attributes** | The list of visitor's attributes registered for this event. |
+| **goal_id**| The goal's id. |
+| **goal_name**| The goals's name. |
+| **properties**| The list of all properties associated with this goal. Those can used as part of the metric computation. |
+
+
+## Events info & warning 
+
+Goal events can be labelled with extra information or warning
+
+| Label | Type | Description |
+|-------|--------------|-------------|
+| **A goal with this name was not known at the time of ingestion** | warning | Indicates that the goal does not exist in ABsmartly. |
