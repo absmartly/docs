@@ -2,8 +2,8 @@
 sidebar_position: 5
 ---
 
-import Image from "../../src/components/Image";
-import FutureDate from "../../src/components/FutureDate";
+import Image from "../../../src/components/Image";
+import FutureDate from "../../../src/components/FutureDate";
 
 # Creating A Feature Flag
 
@@ -32,17 +32,15 @@ have screenshots added to it and can be assigned some [variant variables](/docs/
 <Image img="feature_flag_audiences.png" alt="The Audiences step of the Feature Flag creation form." maxWidth="45rem" />
 
 The audiences step allows you to choose who will see your feature flag. You 
-choose your [unit type](/docs/web-console-docs/creating-an-experiment#tracking-unit), 
-and [applications](/docs/web-console-docs/creating-an-experiment#applications) 
-and can then select a [targeting audience](/docs/web-console-docs/creating-an-experiment#targeting-audience) 
-to refine the flag to a specific group of users.
+choose your [unit type](/docs/web-console-docs/configuration/units), 
+and [applications](/docs/web-console-docs/configuration/applications) 
+and can then select a targeting audience to refine the flag to a specific group of users.
 
 ## Metrics
 
 <Image img="feature_flag_metrics.png" alt="The Metrics step of the Feature Flag creation form." maxWidth="45rem" />
 
-In the [metrics](/docs/web-console-docs/creating-an-experiment#metrics) step, 
-you can choose which metrics you want to track for the duration of your 
+In this step, you can choose which metrics you want to track for the duration of your 
 feature flag. Unlike experiments though, feature flag primary metrics are not 
 required.
 
