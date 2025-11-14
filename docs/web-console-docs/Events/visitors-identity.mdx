@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## What is it?
 
-The Visitors Identity is uses to uniquely identify and track visitors over time and across your products.
+The Visitors Identity is used to uniquely identify and track visitors over time and across your products.
 There are 2 parts to it, the unique identifiers and the attributes.
 
 The Visitors Identify is used by the SDKs to create and enrish the experimentation context from which exposure and goals events can be triggered.
@@ -36,10 +36,10 @@ const context = sdk.createContext(request);
 
 ```
 
-:::Note
+:::info
 Not all identifiers are equal, some, like `user_id`, allow for tracking visitors across sessions and even platforms. 
-Others like `anonymous_id` are much more transient. This means that the same physical person could potentially have several `anonymous_id` (and as a result see different variant of your experiment).
-This is the case for example when they use several devices or if they clear they cookies between different sessions.
+Others like `anonymous_id` are much more transient. This means that the same physical person could potentially have several `anonymous_id` (and as a result see a different variant of your experiment).
+This is the case for example when they use several devices or if they clear their cookies between different sessions.
 While an `anonymous_id` identifier is likey always available, the `user_id` might only be available in parts of the applications where the visitor is logged in.
 :::
 
@@ -47,7 +47,7 @@ While an `anonymous_id` identifier is likey always available, the `user_id` migh
 
 ## Visitors Attributes
 
-Visitors Attribute are used to enrish the ABsmartly context with any information you might have about this visitor,
+Visitors Attributes are used to enrich the ABsmartly context with any information you might have about this visitor,
 for example `language`, `country`, `device`, `power_user`, etc.
 Those attributes can then be used for creating targeting audiences (i.e. An experiment targeting only power users) or
  for segmenting data on your results page (i.e. Explore experiment results per device type).
