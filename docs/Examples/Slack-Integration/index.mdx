@@ -191,17 +191,17 @@ We are going to make sure our webhook is `Enabled` and `Ordered`; we will give i
 and we will choose to send events whenever any experiment event occurs.
 
 This includes:
-- [ExperimentCreated](/docs/web-console-docs/settings#experiment-created)
-- [ExperimentDevelopment](/docs/web-console-docs/settings#experiment-started-in-development)
-- [ExperimentStarted](/docs/web-console-docs/settings#experiment-started)
-- [ExperimentStopped](/docs/web-console-docs/settings#experiment-stopped)
-- [ExperimentRestarted](/docs/web-console-docs/settings#experiment-restarted)
-- [ExperimentFullOn](/docs/web-console-docs/settings#experiment-put-full-on)
-- [ExperimentEdited](/docs/web-console-docs/settings#experiment-edited)
-- [ExperimentCommented](/docs/web-console-docs/settings#experiment-commented-on)
-- [ExperimentArchived](/docs/web-console-docs/settings#experiment-archived)
-- [ExperimentUnarchived](/docs/web-console-docs/settings#experiment-unarchived)
-- [ExperimentAlertCreated](/docs/web-console-docs/settings#experiment-alert-created)
+- [ExperimentCreated](/docs/web-console-docs/configuration/settings#experiment-created)
+- [ExperimentDevelopment](/docs/web-console-docs/configuration/settings#experiment-started-in-development)
+- [ExperimentStarted](/docs/web-console-docs/configuration/settings#experiment-started)
+- [ExperimentStopped](/docs/web-console-docs/configuration/settings#experiment-stopped)
+- [ExperimentRestarted](/docs/web-console-docs/configuration/settings#experiment-restarted)
+- [ExperimentFullOn](/docs/web-console-docs/configuration/settings#experiment-put-full-on)
+- [ExperimentEdited](/docs/web-console-docs/configuration/settings#experiment-edited)
+- [ExperimentCommented](/docs/web-console-docs/configuration/settings#experiment-commented-on)
+- [ExperimentArchived](/docs/web-console-docs/configuration/settings#experiment-archived)
+- [ExperimentUnarchived](/docs/web-console-docs/configuration/settings#experiment-unarchived)
+- [ExperimentAlertCreated](/docs/web-console-docs/configuration/settings#experiment-alert-created)
 
 Click `Create Webhook` and we should start receiving events in our express app!
 
@@ -246,7 +246,7 @@ app.listen(PORT, () => {
 
 Now, whenever an experiment is changed or has an alert created, that event will be sent as a message to your Slack channel!
 
-For further formatting of the messages, checkout the [various Webhook Payloads](/docs/web-console-docs/settings#payloads) that ABsmartly can send, and
+For further formatting of the messages, checkout the [various Webhook Payloads](/docs/web-console-docs/configuration/settings#payloads) that ABsmartly can send, and
 have a look at Slack's [Message Formatting](https://api.slack.com/messaging/composing) documentation.
 
 Our final `index.ts` file should look like this:
