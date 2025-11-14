@@ -30,5 +30,8 @@ section of the **Creating an Experiment** docs for more information.
 />
 
 :::info
-to be able experiment on this application you will first need to install the ABsmartly's SDK. 
+Not all units are equal, some, like `user_id`, allow for tracking visitors across sessions and even platforms. 
+Others like `anonymous_id` are much more transient. This means that the same physical user could potentially have several `anonymous_id` (and as a result see a different variant of your experiment).
+This is the case for example when they use several devices or if they clear their cookies between different sessions.
+While an `anonymous_id` identifier is likey always available, the `user_id` might only be available in parts of the applications where the visitor is logged in.
 :::
