@@ -1,0 +1,35 @@
+---
+sidebar_position: 1
+---
+
+# Goals Overview
+
+## Goals
+
+Goals capture the fundamental events that occur during an experiment. 
+They represent actions that are meaningful to the product or business — such as viewing a page, clicking a button, adding an item to a cart, or completing a purchase. 
+Each goal is defined by a name and any associated contextual data (for example, `product ID`, `price`, or `category`). 
+Goals are the building blocks of measurement: they define what to observe in the experiment. Goals is the raw data used to compute [Metrics](../metrics/overview).
+
+## Goal Events
+
+For a goal to be registered in ABsmartly, an event must be triggered by calling the `track` function from the SDK.
+
+```javascript
+
+// Triggered when a visitor buys a product
+context.track("purchase", {
+  price: 1000,
+  currency: 'euro',
+  order_number: '0000982532',
+  product_id: "ABC123",
+  category_id: 'ZYZ123'
+});
+
+```
+
+In the example above, a goal with the name **purchase** was triggered.
+To learn more about events you can read the dedicated page [Goal Events page](../../events/goal-events) in the knowledge base.
+
+
+
