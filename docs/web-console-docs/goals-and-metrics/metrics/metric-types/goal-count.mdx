@@ -1,5 +1,36 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 # Goal Count
+
+## Overview
+
+Counts how many times a specific goal event is triggered, even if the same user fires it multiple times.
+
+## Examples
+
+```javascript
+
+context.track("purchase", {
+  price: 1000,
+  order_number: "0000982532",
+  product_id: "ABC123",
+  category_id: "ZYZ123"
+});
+
+```
+
+Given a `purchase` event shown above, a `Total purchases` metric could be created. 
+This metric would simply **count all the purchased** made by visitors.
+
+Using a metric's filter it is also possible to create `Total purchases Category ZYZ123` from such events.
+In this case, the metric would count all the purchase of product from category ZYZ123.
+
+## Good to know
+
+What you need to know about `Goal Count` metrics. 
+
+- Good for measuring total activity volume.
+- Simple to understand and compute.
+- Can be skewed by heavy users who trigger the event repeatedly.
