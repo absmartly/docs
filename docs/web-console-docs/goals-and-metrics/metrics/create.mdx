@@ -10,7 +10,7 @@ To create a new metric, navigate to the Metric's catalog and click on `Create me
 
 | Field | Description | 
 |-------|--------------|
-| **Metric name** | This metric's unique name. |
+| **Metric name** | This metric's name. This name must bee unique across the entire platform. |
 | **Owners**| The list of teams and individual owners for this asset. |
 
 :::info
@@ -25,7 +25,9 @@ Future changes to those fields will apply to all existing and future version of 
 |-------|--------------|
 | **Description** | The metric's description. Providing a good description is important as it helps experiment choose the right metric.|
 | **Impact**| Directionality of the metric. `positive` means that increasing this metric is good. `negative` means that decreasing the metric is good. Use `unknown` if the metric has no preferred direction.|
-| **Metric type**| The metric's type. Choose between `goal count`, `goal unique count`, `ratio`, `property` etc. See the metrics' type page for more details. |
+| **Metric type**| The metric's type. Choose between [`count`](metric-types/goal-count), [`goal unique count`](metric-types/goal-unique-count), [`ratio`](metric-types/ratio), 
+[`property`](metric-types/property), [`retention`](metric-types/retention), [`time to achievement`](metric-types/time-to-achievement) and [`unique property count`](metric-types/unique-property-count). 
+See the Metric Types pages for more details on each type. |
 
 
 ## Metadata

@@ -1,5 +1,33 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # Goal Unique Count
+
+## Overview
+
+Counts how many unique users triggered a goal event at least once.
+
+## Examples
+
+```javascript
+
+context.track("purchase", {
+  price: 1000,
+  order_number: "0000982532",
+  product_id: "ABC123",
+  category_id: "ZYZ123"
+});
+
+```
+
+From this event, a `Unique purchasers` metric could be created.
+This metric counts how many distinct users triggered the purchase event, regardless of how many times they purchased.
+
+A filtered version such as `Unique purchasers (Category ZYZ123)` would count only users who purchased from category ZYZ123.
+
+## Good to know
+
+- Great for conversion-style metrics.
+- More stable than total counts since each user counts once.
+- Does not capture purchase volume per user.

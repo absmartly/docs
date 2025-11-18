@@ -3,3 +3,28 @@ sidebar_position: 3
 ---
 
 # Time to Achievement
+
+## Overview
+
+Measures how long it takes a user to reach a specific goal after entering an experiment.
+
+## Examples
+
+```javascript
+
+context.track("purchase", {
+  price: 1000,
+  order_number: "0000982532",
+  product_id: "ABC123",
+  category_id: "ZYZ123"
+});
+
+```
+
+A possible `Time to Achievement` metric create from this event could be `Time to first purchase`.
+
+## Good to know
+
+- Great for understanding friction and delays in the user journey.
+- Can be skewed by users who never reach the goal.
+- Can have a very long tail. 
