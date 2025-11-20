@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Goals
 
-Goals capture the fundamental events that occur during an experiment. 
+`Goals` capture the fundamental events that occur during an experiment. 
 They represent actions that are meaningful to the product or business — such as viewing a page, clicking a button, adding an item to a cart, or completing a purchase. 
 Each goal is defined by a name and any associated contextual data (for example, `product ID`, `price`, or `category`). 
 Goals are the building blocks of measurement: they define what to observe in the experiment. 
@@ -14,7 +14,7 @@ Goals are the raw data used to compute [Metrics](../metrics/overview).
 
 ## Goal Events
 
-For a goal to be registered in ABsmartly, an event must be triggered by calling the `track` function from the SDK.
+For a `goal` to be registered in ABsmartly, an event must be triggered by calling the `track` function from the SDK.
 
 ```javascript
 // Triggered when a visitor buys a product
@@ -27,8 +27,74 @@ context.track("purchase", {
 });
 ```
 
-In the example above, a goal with the name **purchase** was triggered.
-To learn more about events you can read the dedicated page [Goal Events page](../../events/goal-events) in the knowledge base.
+In the example above, a `goal` with the name **purchase** was triggered.
+To learn more about `events` you can read the dedicated [Goal Events page](../../events/goal-events) in the knowledge base.
 
 
+## Ownership & permissions
+
+`goals` (like `Experiments`, `Features`, `Metrics` & `Templates`) are Managed-Assets and, as such, have a specific [ownership model](/docs/web-console-docs/ownership-and-permissions)
+
+### Ownership
+
+A goal can owned by 1 or more teams and, if the feature was enable for your organisation, individual users.
+
+:::info
+Team ownership is generally a better fit for governance because it creates stability, resilience, and accountability at the right level.
+
+A team persists even when individuals change roles, leave, or shift priorities, so the goal keeps a reliable steward over time. 
+Expertise is usually distributed across a group rather than held by one person, which reduces risks from single-point knowledge and avoids bottlenecks. 
+Team ownership is better suited to review changes, ensure consistency, and maintain quality.
+:::
+
+:::warning
+Auto-created `goals` do not have an owner when created. 
+For governance reasons, make sure to claim ownership of a goal before you start using it.
+:::
+
+### Permissions
+
+The following permissions exist when managing and working with `goals`.
+
+| Permission | Description |
+|-------------|--------------|
+| **Admin goals** | Grants full administrative control over goals, including managing permissions, visibility, and configuration settings for all goals within the workspace or team. |
+| **Archive a goal** | Allows archiving a goal that is no longer in use, removing it from active lists while keeping its history for reference. |
+| **Create a goal** | Enables the creation of new goals by defining event names, parameters, and associated metadata. |
+| **Edit a goal** | Allows modification of existing goal definitions, such as updating the event name, description, or metadata. |
+| **Get a goal** | Permits viewing the details of a specific goal, including its configuration and usage across experiments or metrics. |
+| **List goals** | Grants access to view the list of all available goals within the workspace or team. |
+| **Unarchive a goal** | Allows restoring a previously archived goal, making it active and available for use again. |
+
+
+#### Global access
+
+Permission to create and manage `goals` can be granted to the relevant users through their [role](../../configuration/settings#roles) at the platform level.
+
+:::info
+It is not recommended to provide access to `goals` at the platform level. 
+:::
+
+#### built-in team level roles
+
+Permission to create and manage `goals` can be provided to the relevant users at the team level by granting them the correct role in that team.
+
+| Permission | Description |
+|-------------|--------------|
+| **Team Admin** | Grants full control over goals owned by that team. |
+| **Team Contributor** | Grant ability to create and to manage goals in the team scope. |
+| **Team Viewer** | Grant ability to view and list Goals owned by the team. |
+
+:::info
+Team roles are inherited, so if a user is a `Team Contributor` in a team then this user would also be a `Team Contributor` in all child teams.
+:::
+
+### Sharing goals
+
+While `goals` are owned by teams, they can be shared with other teams and individual across the organisation.
+
+| Permission | Description |
+|-------------|--------------|
+| **can_view** | Grants this user or team the ability to view and use this goal.   |
+| **can_edit** | Grant this user or team the ability to contribute to this goal. |
 

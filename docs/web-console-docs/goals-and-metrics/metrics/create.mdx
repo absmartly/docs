@@ -10,7 +10,7 @@ To create a new metric, navigate to the Metric's catalog and click on `Create me
 
 | Field | Description | 
 |-------|--------------|
-| **Metric name** | This metric's name. This name must be unique across the entire platform. |
+| **Metric name** | This name of the metric must be unique across the entire platform. |
 | **Owners**| The list of team and individual owners for this metric. |
 
 :::info
@@ -21,21 +21,67 @@ Future changes to those fields will apply to all existing and future version of 
 ## Details & Metadata
 
 The Metric detail and Metadata sections provide some advanced information about the metric.
-This information is version-specific and as such can differ between different versions of the same metric.
+This information is version-specific and, as such, can differ between different versions of the same metric.
 
 | Field | Description | 
 |-------|--------------|
-| **Description** | The metric's description. Providing a good description is important as it helps experiment choose the right metric.|
+| **Description** | Providing a good description is important as it helps experiments choose the right metric.|
 | **Impact**| Directionality of the metric. `positive` means that increasing this metric is good. `negative` means that decreasing the metric is good. Use `unknown` if the metric has no preferred direction.|
 | **Metric type**| Describes how the metric is implemented. Choose between [`count`](metric-types/goal-count), [`goal unique count`](metric-types/goal-unique-count), [`ratio`](metric-types/ratio), [`property`](metric-types/property), [`retention`](metric-types/retention), [`time to achievement`](metric-types/time-to-achievement) and [`unique property count`](metric-types/unique-property-count). See the Metric Types pages for more details on each type. |
 | **Tags** (optional)| Makes the metric more discoverable by providing relevant [tags](/docs/web-console-docs/configuration/settings#tags).|
-| **Category** (optional)| The [category](categories) the metric belongs to. Choosing the right category makes it easier for experiment to find relevant metrics. |
-| **Applications** (optional)| Select the [applications](../../configuration/applications) where this metric makes sense. Only experiments running on these application should track this metric. |
-| **Units** (optional)| Select the [tracking units](../../configuration/units) for which this metric is relevant & computed. |
+| **Category** (optional)| The [category](categories) the metric belongs to. While optional, selecting a category makes it easier for experimenters to find relevant metrics. |
+| **Applications** (optional)| Select the [applications](../../configuration/applications) where this metric makes sense. Only experiments running on these applications should track this metric. While optional setting the correct **Application(s)** helps experimenters find relevant metrics for their experiments. |
+| **Units** (optional)| Select the [tracking units](../../configuration/units) for which this metric is computed. The tracking unit of the metric should match the tracking unit of the experiments where it is tracked. While optional setting the correct **Tracking Unit(s)** will help experimenters track relevant metrics in their experiments. |
 
 ## Goal
 
-In this section you can select the [goal](../goals/overview) from which this metric is computed.
+In this section you can select and configure the [goal](../goals/overview) which provides the raw data for this metric. 
+
+```javascript
+// Triggered when a visitor buys a product
+context.track("purchase", {
+  price: 1000,
+  currency: 'euro',
+  order_number: '0000982532',
+  product_id: "ABC123",
+  category_id: 'ZYZ123'
+});
+```
+
+### Goal
+
+Select the [goal](../goals/overview) to use as a source for this metric. 
+In the example above, the name of the goal is `purchase`. 
+
+If you don't see a goal in the list, make sure it exist and make sure you have the correct permissions to view and use it.
+
+:::warning
+Auto-created goals do not have an owner. For governance reasons, make sure to claim ownership of a goal before you start using it for your metric.
+:::
+
+## Property
+
+In the case of [`Property`](/metric-types/property) or [`Unique Property Count`](/metric-types/unique-property-count) metrics, you also need to choose which property of the metric to use.
+
+```javascript
+// Triggered when a visitor buys a product
+context.track("purchase", {
+  price: 1000,
+  currency: 'euro',
+  order_number: '0000982532',
+  product_id: "ABC123",
+  category_id: 'ZYZ123'
+});
+```
+
+
+
+### Property filters
+
+### Time filters
+
+### Goal Relations
+
 
 ## Format, scale and precisions
 
