@@ -103,29 +103,6 @@ through your goals and experiments to find a specific one.
 We recommend prefixing each tag with the tag's type. For example,
 `location:Header`, `stack:Backend` or `psychological:Trust`.
 
-## Teams
-
-In the teams section, you can declare the teams that will be running
-experiments. This will allow you to assign and search for experiments by a
-specific team.
-
-## Units
-
-Units are the unique identifiers that are going to be used to generate a variant.
-For experiments running across different platforms (iOS, Android, web, email, etc.) the
-unit should be known across all the platforms. Most likely the authenticated
-user's `user-id`. For experiments running in apps or parts of the website where
-the user is not authenticated, you might want to create a unit by device.
-`anonymous-id` or `device-id` are common names for those.
-
-For experiments running in email newsletters, you could even have a unit based
-on the user’s email address, but if you are interested in collecting metrics
-tracked in the website that the newsletter is linking to, it’s better to use
-the same unit that is being used for the experiments running in the website.
-
-Have a look at the [Tracking Unit](/docs/web-console-docs/creating-an-experiment#tracking-unit)
-section of the **Creating an Experiment** docs for more information.
-
 ## Users
 
 In Users, you can create and give permissions to the users who should have
