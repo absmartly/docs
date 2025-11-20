@@ -11,14 +11,12 @@ Counts how many unique users triggered a goal event at least once.
 ## Examples
 
 ```javascript
-
 context.track("purchase", {
   price: 1000,
   order_number: "0000982532",
   product_id: "ABC123",
   category_id: "ZYZ123"
 });
-
 ```
 
 From this event, a `Unique purchasers` metric could be created.
