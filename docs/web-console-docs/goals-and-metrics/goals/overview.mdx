@@ -17,7 +17,6 @@ Goals are the raw data used to compute [Metrics](../metrics/overview).
 For a goal to be registered in ABsmartly, an event must be triggered by calling the `track` function from the SDK.
 
 ```javascript
-
 // Triggered when a visitor buys a product
 context.track("purchase", {
   price: 1000,
@@ -26,7 +25,6 @@ context.track("purchase", {
   product_id: "ABC123",
   category_id: 'ZYZ123'
 });
-
 ```
 
 In the example above, a goal with the name **purchase** was triggered.

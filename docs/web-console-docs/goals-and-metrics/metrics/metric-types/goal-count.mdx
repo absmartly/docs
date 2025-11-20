@@ -11,14 +11,12 @@ Counts how many times a specific goal event is triggered, even if the same user 
 ## Examples
 
 ```javascript
-
 context.track("purchase", {
   price: 1000,
   order_number: "0000982532",
   product_id: "ABC123",
   category_id: "ZYZ123"
 });
-
 ```
 
 Given a `purchase` event shown above, a `Total purchases` metric could be created. 
