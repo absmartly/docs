@@ -14,7 +14,7 @@ Goals are the raw data used to compute [Metrics](../metrics/overview).
 
 ## Goal Events
 
-For a `goal` to be registered in ABsmartly, an event must be triggered by calling the `track` function from the SDK.
+`Goals` are registered ABsmartly when the `track` function is called from the SDK.
 
 ```javascript
 // Triggered when a visitor buys a product
@@ -27,13 +27,13 @@ context.track("purchase", {
 });
 ```
 
-In the example above, a `goal` with the name **purchase** was triggered.
+In the example above, a `goal` with the name **purchase** was triggered. This goal has additional property information which can be used to compute the metric.
 To learn more about `events` you can read the dedicated [Goal Events page](../../events/goal-events) in the knowledge base.
 
 
 ## Ownership & permissions
 
-`goals` (like `Experiments`, `Features`, `Metrics` & `Templates`) are Managed-Assets and, as such, have a specific [ownership model](/docs/web-console-docs/users-teams-permissions/ownership-and-permissions)
+`Goals` are Managed-Assets and, as such, have a specific [ownership model](/docs/web-console-docs/users-teams-permissions/ownership-and-permissions)
 
 ### Ownership
 
@@ -47,7 +47,7 @@ Expertise is usually distributed across a group rather than held by one person, 
 Team ownership is better suited to review changes, ensure consistency, and maintain quality.
 :::
 
-:::warning
+:::info
 Auto-created `goals` do not have an owner when created. 
 For governance reasons, make sure to claim ownership of a goal before you start using it.
 :::
@@ -57,7 +57,7 @@ For governance reasons, make sure to claim ownership of a goal before you start 
 The following permissions exist when managing and working with `goals`.
 
 | Permission | Description |
-|-------------|--------------|
+|-------------------------|----------------------------|
 | **Admin goals** | Grants full administrative control over goals, including managing permissions, visibility, and configuration settings for all goals within the workspace or team. |
 | **Archive a goal** | Allows archiving a goal that is no longer in use, removing it from active lists while keeping its history for reference. |
 | **Create a goal** | Enables the creation of new goals by defining event names, parameters, and associated metadata. |
@@ -80,7 +80,7 @@ It is not recommended to provide access to `goals` at the platform level.
 Permission to create and manage `goals` can be provided to the relevant users at the team level by granting them the correct role in that team.
 
 | Permission | Description |
-|-------------|--------------|
+|-------------------------|--------------|
 | **Team Admin** | Grants full control over goals owned by that team. |
 | **Team Contributor** | Grant ability to create and to manage goals in the team scope. |
 | **Team Viewer** | Grant ability to view and list Goals owned by the team. |
