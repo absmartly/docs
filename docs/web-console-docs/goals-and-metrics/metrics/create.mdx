@@ -88,7 +88,7 @@ Outlier limits help control the influence of extreme metric values.
 They reduce noise and variance by capping or removing values that sit outside a defined range. 
 When calculating a metric based on a property such as **price** in our example, you can choose one of four methods to manage outliers:
 
-::: warning
+:::warning
 Outlier limits can reduce variance and make metrics more stable, but they also change the underlying data. 
 When used incorrectly, they may hide meaningful effects or introduce bias in experiment results. 
 Always ensure your limits reflect real-world constraints rather than engineering convenience, and avoid tuning them in response to specific experiment outcomes. 
@@ -113,7 +113,8 @@ If you set:
 
 Then:
 - If `1000` falls between the 5th and 95th percentile of all purchase prices, it is kept.
-- If `1000` is higher than the 95th percentile (for example if most prices are between 10 and 300), it is **removed from the data**.
+- If `1000` is higher than the 95th percentile (for example if most prices are between 10 and 300), 
+it is **removed from the data**.
 ```
 
 Quantile filtering is useful when your data contains long tails or rare extreme highs.
@@ -183,6 +184,102 @@ Then:
 Fixed limits are useful when you already know the acceptable bounds for your metric (e.g., price can never be negative or above a business-defined maximum).
 
 ### Goal Relations
+
+Goal relations let you connect different goal events that represent follow-up actions on the same underlying item. 
+They are useful when events such as `cancellations`, `refunds`, or `replacements` should modify the way a metric is calculated.
+
+For example, if a purchase is later refunded, you may want the refund event to reduce the revenue metric. 
+Or if a purchased item is replaced with a different product, you may want to adjust the associated value.
+
+Goal relations define how one goal (the current one) is linked to another goal (the foreign one) using a shared identifier. 
+This identifier is provided through a property in both events (for example **order_number**, **purchase_id**, or **transaction_id**).
+
+Each relation type has its own behaviour and additional fields.
+
+#### Cancellation
+
+A cancellation relation ties a “current” goal to a cancellation event belonging to the same item. 
+This is useful when the current goal should be counted only if it has not been cancelled.
+This makes it possible to create metrics such as `Net Conversions` which only accounts for purchases which were not cancelled, 
+giving experimenter a more accurate view of the actual business impact of their changes.
+
+Below is a sample `cancellation` events cancelling the purchase event made above.
+
+```javascript
+// Triggered when a visitor cancels a purchase
+context.track("purchase_cancelled", {
+  order_number: '0000982532',
+});
+```
+To configure a cancellation relation, you need to provide:
+
+- Current goal key property
+This is the property on the current goal event that identifies the item.
+Example for a **purchase** event: **order_number**.
+
+- Foreign goal
+This is the goal event that represents the cancellation.
+Example: **purchase_cancelled**.
+
+- Foreign goal key property
+This is the property on the cancellation event that refers to the same item.
+Example: also **order_number**.
+
+When both events share the same key value, the cancellation will be applied to the current goal according to the metric’s logic 
+(for example, removing the contribution of that purchase).
+
+#### Refund
+
+A refund relation is used when a purchase can generate one or more refund events that should adjust the metric.
+
+Refund relations have additional configuration, as refund events may include both an identifier and a refund amount.
+
+To configure a refund relation, you define:
+
+Current goal key property
+The identifier on the current goal (e.g., order_number).
+
+Refund operation
+How the refund should affect the metric (for example, subtracting refunded value, replacing value, or another supported operation).
+
+Foreign goal
+The goal event representing the refund (e.g., refund).
+
+Foreign goal key property
+Identifier on the refund event used to match the purchase.
+
+Foreign goal value property
+The numeric value to use for the refund adjustment, such as refund_amount.
+
+Duplicated foreign goal aggregation
+Determines how to combine multiple refund events referring to the same item (sum, max, last, etc.).
+
+This relation ensures that metrics involving values such as revenue or GMV reflect the impact of refunds accurately.
+
+#### Replacement
+
+A replacement relation applies when the original event is substituted by another event of the same category. A typical use case is item replacements: a customer receives a replacement product instead of the original purchase.
+
+Replacement relations allow the metric to use information from the new event rather than the original one.
+
+Configuration includes:
+
+Current goal key property
+Identifier on the current event (e.g., order_number).
+
+Foreign goal
+The event representing the replacement (e.g., replacement).
+
+Foreign goal key property
+The matching identifier on the replacement event.
+
+Foreign goal value property
+Value from the replacement event that should override or adjust the original. For example replacement_price.
+
+Duplicated foreign goal aggregation
+How to combine multiple replacement events if they exist.
+
+Replacement relations allow the metric to reflect up-to-date values when items are swapped or reissued.
 
 ## Format, scale and precisions
 
