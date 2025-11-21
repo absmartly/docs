@@ -40,6 +40,11 @@ This information is version-specific and, as such, can differ between different 
 
 In this section, you can select and configure the [goal](../goals/overview) which provides the raw data for this metric. 
 
+:::info
+This part of a metric’s setup is version-controlled.  
+Editing these fields will require creating a new version of the metric.
+:::
+
 ```javascript
 // Triggered when a visitor buys a product
 context.track("purchase", {
@@ -89,7 +94,8 @@ This ensures your metric measures behavior in a controlled, meaningful period (f
 
 Outlier limits help control the influence of extreme metric values. 
 They reduce noise and variance by **capping values that sit outside a defined range to the value of the boundary**. 
-When calculating a metric based on a property such as **price** in our example, you can choose one of four methods to manage outliers:
+
+You can choose one of four methods to manage outliers:
 
 :::caution
 Outlier limits can reduce variance and make metrics more stable, but they also change the underlying data. 
@@ -106,7 +112,7 @@ Use this option when you want full fidelity of raw data and are not concerned ab
 
 This method filters values based on chosen quantiles. 
 You define a lower quantile and an upper quantile (for example, 0.05 and 0.95). 
-Values below the lower quantile or above the upper quantile capped to the limit.
+Values below the lower quantile or above the upper quantile are capped to the limit.
 
 How it behaves with the sample purchase event:
 ```
@@ -317,6 +323,11 @@ Replacement relations allow the metric to reflect up-to-date values when items a
 This section controls how your metric’s **Value** and **Mean** are displayed in the results table. 
 It does not change how the metric is calculated: it only affects the formatting applied when values are shown in the metric's tables.
 
+:::info
+This part of a metric’s setup is version-controlled.  
+Editing these fields will require creating a new version of the metric.
+:::
+
 <Image
   img="metrics/gross-conversion-rate.png"
   alt="Gross Conversion Rate metric table to illustrate how Value and Mean are shown"
@@ -395,10 +406,16 @@ Examples:
 
 ## Metric threshold alert
 
+
 A metric threshold alert notifies you when the observed effect of a metric crosses a value you consider important. 
 Instead of waiting for full statistical significance, the alert triggers as soon as the relative effect becomes large enough (either positively or negatively) to matter.
 
 The alert works by watching the confidence interval (CI) of the impact.
+
+:::info
+This part of a metric’s setup is version-controlled.  
+Editing these fields will require creating a new version of the metric.
+:::
 
 
 ### Falls below threshold
