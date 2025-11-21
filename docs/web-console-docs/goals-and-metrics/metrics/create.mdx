@@ -314,6 +314,78 @@ Replacement relations allow the metric to reflect up-to-date values when items a
 
 ## Format, scale and precisions
 
+This section controls how your metric’s Value and Mean are displayed in the results table. 
+It does not change how the metric is calculated: it only affects the formatting applied when values are shown in the metric's tables.
+
+You can customise three aspects for both **Value** and **Mean**:
+- Format
+- Scale
+- Precision
+
+These settings allow you to present the metric in a readable and meaningful way depending on the type of data (counts, currency, percentages, ratios, etc.).
+
+### Value
+
+The Value column in the results table displays the total summed value of your metric for each variant.
+You can control how this number appears using:
+
+#### Format
+A string template that determines how the number is wrapped or displayed.
+For example:
+- `{}` → shows the raw number
+- `{} €` → appends a currency symbol
+- `$ {}` → prefixes a dollar sign
+- `{} items` → useful for quantity metrics
+
+#### Scale
+
+A multiplier applied before formatting the output.
+Common uses:
+- `1` → show the value as-is
+- `0.01` → convert cents to euros
+- `100` → convert a ratio to a percentage during display
+
+Example:
+If the raw total value is 1500.123456 and scale is 1, the displayed value might be 1,500.
+
+#### Precision
+
+How many decimal places to show.
+Examples:
+- `0` → no decimals (ideal for counts)
+- `2` → two decimals (useful for money)
+- `3` → three decimals (fractions, averages, conversion rates)
+
+### Mean
+
+The Mean column displays the average metric value per participant for each variant.
+You can format it separately because mean values often need different formatting than totals (e.g., percentages vs absolute numbers).
+
+#### Format
+
+Same behaviour as for Value.
+Examples:
+- `{}` → raw
+- `{}%` → percentage
+- `${}` → currency
+
+#### Scale
+
+Scale is especially important for means:
+
+For conversion rate metrics, raw mean tends to be a ratio (0.0485).
+With scale = 100, it becomes 4.85.
+
+For monetary means, if your underlying value is in cents, scaling by 0.01 converts to dollars or euros.
+
+#### Precision
+
+How many decimal places to show.
+Examples:
+- `0` → no decimals (ideal for counts)
+- `2` → two decimals (useful for money)
+- `3` → three decimals (fractions, averages, conversion rates)
+
 ## Metric threshold alert
 
 A metric threshold alert notifies you when the observed effect of a metric crosses a value you consider important. 
