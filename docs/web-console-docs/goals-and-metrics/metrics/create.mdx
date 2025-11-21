@@ -88,7 +88,7 @@ This ensures your metric measures behavior in a controlled, meaningful period (f
 ### Outliers
 
 Outlier limits help control the influence of extreme metric values. 
-They reduce noise and variance by capping or removing values that sit outside a defined range. 
+They reduce noise and variance by **capping values that sit outside a defined range to the value of the boundary**. 
 When calculating a metric based on a property such as **price** in our example, you can choose one of four methods to manage outliers:
 
 :::caution
@@ -106,7 +106,7 @@ Use this option when you want full fidelity of raw data and are not concerned ab
 
 This method filters values based on chosen quantiles. 
 You define a lower quantile and an upper quantile (for example, 0.05 and 0.95). 
-Values below the lower quantile or above the upper quantile are excluded.
+Values below the lower quantile or above the upper quantile capped to the limit.
 
 How it behaves with the sample purchase event:
 ```
@@ -115,9 +115,9 @@ If you set:
 - Upper quantile: `0.95`
 
 Then:
-- If `1000` falls between the 5th and 95th percentile of all purchase prices, it is kept.
+- If `1000` falls between the 5th and 95th percentile of all purchase prices, it is kept as it is.
 - If `1000` is higher than the 95th percentile (for example if most prices are between 10 and 300), 
-it is **removed from the data**.
+it is capped to the upper quantile boundary's value.
 ```
 
 Quantile filtering is useful when your data contains long tails or rare extreme highs.
@@ -134,7 +134,7 @@ The limits are calculated as:
 - Upper limit: mean + (stdev × upper multiplier)
 ```
 
-Any value outside these limits is **removed from the data**.
+Any value outside these limits is capped to the value of the boundary.
 
 Example with the sample purchase event:
 Suppose across all purchases:
@@ -152,7 +152,7 @@ Then:
 - Upper limit = 200 + (150 × 2) = 500
 
 Our event's price:
-- 1000 > 500 → it is excluded.
+- 1000 > 500 → it is capped to 500.
 
 Setting multipliers to 0 effectively disables trimming on that side:
 - Lower multiplier 0 → lower limit = mean → keeps all values below the mean
@@ -181,7 +181,7 @@ If you change to:
 - Upper limit value: 500
 
 Then:
-- price = 1000 → above 500 → excluded
+- price = 1000 → above 500 → capped to 500
 ```
 
 Fixed limits are useful when you already know the acceptable bounds for your metric (e.g., price can never be negative or above a business-defined maximum).
@@ -314,7 +314,7 @@ Replacement relations allow the metric to reflect up-to-date values when items a
 
 ## Format, scale and precisions
 
-This section controls how your metric’s Value and Mean are displayed in the results table. 
+This section controls how your metric’s **Value** and **Mean** are displayed in the results table. 
 It does not change how the metric is calculated: it only affects the formatting applied when values are shown in the metric's tables.
 
 <Image
