@@ -40,7 +40,7 @@ In this section you can select and configure the [goal](../goals/overview) which
 ```javascript
 // Triggered when a visitor buys a product
 context.track("purchase", {
-  price: 99.99,
+  price: 1000,
   currency: 'euro',
   order_number: '0000982532',
   product_id: "ABC123",
@@ -80,7 +80,7 @@ Every visitor becomes exposed to an experiment at a specific moment. We call it 
 That timestamp is the reference point for all time-based filters.
 
 A time filter lets you include only the goal events that happen within a defined window after that first exposure. 
-This ensures your metric measures behavior in a controlled, meaningful period (for example, “purchases within the first hour” or “engagement in the first 7 days”).
+This ensures your metric measures behavior in a controlled, meaningful period (for example, `purchases within the first hour` or `engagement in the first 7 days`).
 
 ### Outliers
 
@@ -88,7 +88,7 @@ Outlier limits help control the influence of extreme metric values.
 They reduce noise and variance by capping or removing values that sit outside a defined range. 
 When calculating a metric based on a property such as **price** in our example, you can choose one of four methods to manage outliers:
 
-::: warning: Use Outlier Limits Carefully
+::: warning
 Outlier limits can reduce variance and make metrics more stable, but they also change the underlying data. 
 When used incorrectly, they may hide meaningful effects or introduce bias in experiment results. 
 Always ensure your limits reflect real-world constraints rather than engineering convenience, and avoid tuning them in response to specific experiment outcomes. 
@@ -108,12 +108,10 @@ Values below the lower quantile or above the upper quantile are excluded.
 How it behaves with the sample purchase event:
 ```
 If you set:
-
 - Lower quantile: `0.05`
 - Upper quantile: `0.95`
 
 Then:
-
 - If `1000` falls between the 5th and 95th percentile of all purchase prices, it is kept.
 - If `1000` is higher than the 95th percentile (for example if most prices are between 10 and 300), it is **removed from the data**.
 ```
@@ -152,9 +150,7 @@ Then:
 Our event's price:
 - 1000 > 500 → it is excluded.
 
-Both limits equal the mean.
-This effectively disables trimming on one side depending on the multiplier:
-
+Setting multipliers to 0 effectively disables trimming on that side:
 - Lower multiplier 0 → lower limit = mean → keeps all values below the mean
 - Upper multiplier 0 → upper limit = mean → keeps all values above the mean
 
@@ -163,9 +159,9 @@ Setting both to 0 is the equivalent of setting no outlier limit.
 
 Standard deviation limits are helpful when extreme values are several standard deviations from the average.
 
-####Fixed
+#### Fixed
 
-This option lets you define explicit numeric boundaries. Any value below the lower limit or above the upper limit is removed.
+This option lets you define explicit numeric boundaries. Any value below the lower limit or above the upper limit **is removed**.
 
 Example with the sample purchase event:
 
@@ -187,7 +183,6 @@ Then:
 Fixed limits are useful when you already know the acceptable bounds for your metric (e.g., price can never be negative or above a business-defined maximum).
 
 ### Goal Relations
-
 
 ## Format, scale and precisions
 
