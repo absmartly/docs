@@ -204,7 +204,7 @@ Each relation type has its own behaviour and additional fields.
 A cancellation relation ties a “current” goal to a cancellation event belonging to the same item. 
 This is useful when the current goal should be counted only if it has not been cancelled.
 This makes it possible to create metrics such as `Net Conversions` which only accounts for purchases which were not cancelled, 
-giving experimenter a more accurate view of the actual business impact of their changes.
+giving experimenters a more accurate view of the actual business impact of their changes.
 
 <Image
   img="metrics/goal-relation-cancellation.png"
@@ -300,13 +300,13 @@ context.track("replacement", {
 Configuration includes:
 
 - Current goal key property
-Identifier on the current event (e.g., order_number).
+Identifier on the current event (e.g., **order_number**).
 - Foreign goal
-The event representing the replacement (e.g., replacement).
+The event representing the replacement (e.g., **replacement**).
 - Foreign goal key property
-The matching identifier on the replacement event.
+The matching identifier on the replacement event (e.g., **order_number**).
 - Foreign goal value property
-Value from the replacement event that should override or adjust the original. For example replacement_price.
+Value from the replacement event that should override or adjust the original. For example, **replacement_price**.
 - Duplicated foreign goal aggregation
 How to combine multiple replacement events if they exist.
 
@@ -316,6 +316,13 @@ Replacement relations allow the metric to reflect up-to-date values when items a
 
 This section controls how your metric’s Value and Mean are displayed in the results table. 
 It does not change how the metric is calculated: it only affects the formatting applied when values are shown in the metric's tables.
+
+<Image
+  img="metrics/gross-conversion-rate.png"
+  alt="Gross Conversion Rate metric table to illustrate how Value and Mean are shown"
+  maxWidth="50rem"
+  centered
+/>
 
 You can customise three aspects for both **Value** and **Mean**:
 - Format
