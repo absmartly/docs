@@ -19,7 +19,7 @@ To download an experiment's raw event data
 - Click the ... in the top right.
 - Select `Export Data` from the dropdown. This option will only be visible if you have the correct permissions to download raw data.
 - An export request is made a processed asynchronously.
-- When the export file is ready a notification will show on the report's activity tab.
+- When the export file is ready, a notification will show on the report's activity tab.
 - Click on the link to download the raw data file.
 
 ::: note
@@ -70,7 +70,7 @@ storage bucket. The fields are described in the following table:
 | **Secret Key**  | The secret access key for the object storage bucket.                          |
 | **Endpoint**    | The S3-compatible endpoint to connect to the object storage bucket. **Examples:**<br /> AWS: https://s3.amazonaws.com<br />GCP: https://storage.googleapis.com<br />|
 | **Format**      | The format of the exported data. CSV and TSV include a header row with column names. JSON is a newline-delimited JSON file. Parquet is a very efficient column oriented storage format.|
-| **Compression** | The compression method to use. GZIP is widely supported and provides good compression. ZSTD is similar to GZIP in compression level but faster, and less widely supported. LZ4 is much faster but provides slightly less compression. None is no compression. |
+| **Compression** | The compression method to use. GZIP is widely supported and provides good compression. ZSTD is similar to GZIP in compression level but faster and less widely supported. LZ4 is much faster but provides slightly less compression. None is no compression. |
 
 :::info Interoperability with GCP to S3
 1. Go to the [Cloud Storage Settings page](http://console.cloud.google.com/storage/settings/) in the [Google Cloud Platform Console](https://console.cloud.google.com/).
