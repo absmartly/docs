@@ -15,7 +15,7 @@ To create a new metric, navigate to the Metric's catalog and click on `Create me
 
 :::info
 Metric's global settings are shared across all versions of a metric. 
-Future changes to those fields will apply to all existing and future version of a metric.
+Future changes to those fields will apply to all existing and future versions of a metric.
 :::
 
 ## Details & Metadata
@@ -29,9 +29,9 @@ This information is version-specific and, as such, can differ between different 
 | **Impact**| Directionality of the metric. `positive` means that increasing this metric is good. `negative` means that decreasing the metric is good. Use `unknown` if the metric has no preferred direction.|
 | **Metric type**| Describes how the metric is implemented. Choose between [`count`](metric-types/goal-count), [`goal unique count`](metric-types/goal-unique-count), [`ratio`](metric-types/ratio), [`property`](metric-types/property), [`retention`](metric-types/retention), [`time to achievement`](metric-types/time-to-achievement) and [`unique property count`](metric-types/unique-property-count). See the Metric Types pages for more details on each type. |
 | **Tags** (optional)| Makes the metric more discoverable by providing relevant [tags](/docs/web-console-docs/configuration/settings#tags).|
-| **Category** (optional)| The [category](categories) the metric belongs to. While optional, selecting a category makes it easier for experimenters to find relevant metrics. |
-| **Applications** (optional)| Select the [applications](../../configuration/applications) where this metric makes sense. Only experiments running on these applications should track this metric. While optional setting the correct **Application(s)** helps experimenters find relevant metrics for their experiments. |
-| **Units** (optional)| Select the [tracking units](../../configuration/units) for which this metric is computed. The tracking unit of the metric should match the tracking unit of the experiments where it is tracked. While optional setting the correct **Tracking Unit(s)** will help experimenters track relevant metrics in their experiments. |
+| **Category** (optional)| The [category](categories) the metric belongs to (`conversion`, `performance`, etc). While optional, selecting a category makes it easier for experimenters to find relevant metrics. |
+| **Applications** (optional)| Select the [applications](../../configuration/applications) where this metric makes sense. Only experiments running on these applications should track this metric. While optional, setting the correct `Application(s)` helps experimenters find relevant metrics for their experiments. |
+| **Units** (optional)| Select the [tracking units](../../configuration/units) for which this metric is computed. The tracking unit of the metric should match the tracking unit of the experiments where it is tracked. While optional, setting the correct `Tracking Unit(s)` will help experimenters track relevant metrics in their experiments. |
 
 ## Goal
 
@@ -40,7 +40,7 @@ In this section you can select and configure the [goal](../goals/overview) which
 ```javascript
 // Triggered when a visitor buys a product
 context.track("purchase", {
-  price: 1000,
+  price: 99.99,
   currency: 'euro',
   order_number: '0000982532',
   product_id: "ABC123",
@@ -53,32 +53,138 @@ context.track("purchase", {
 Select the [goal](../goals/overview) to use as a source for this metric. 
 In the example above, the name of the goal is `purchase`. 
 
-If you don't see a goal in the list, make sure it exist and make sure you have the correct permissions to view and use it.
+If you don't see a goal in the list, make sure it exists and make sure you have the correct permissions to view and use it.
 
-:::warning
-Auto-created goals do not have an owner. For governance reasons, make sure to claim ownership of a goal before you start using it for your metric.
+:::info
+Auto-created goals do not have an owner when created. For governance reasons, make sure to claim ownership of a goal before you start using it for your metric.
 :::
 
-## Property
+### Property
 
-In the case of [`Property`](metric-types/property) or [`Unique Property Count`](metric-types/unique-property-count) metrics, you also need to choose which property of the metric to use.
-
-```javascript
-// Triggered when a visitor buys a product
-context.track("purchase", {
-  price: 1000,
-  currency: 'euro',
-  order_number: '0000982532',
-  product_id: "ABC123",
-  category_id: 'ZYZ123'
-});
-```
-
-
+In the case of [`Property`](metric-types/property) or [`Unique Property Count`](metric-types/unique-property-count) metrics,
+you also need to choose which property of the metric to use.
+For example, a `revenue` metric built using the goal event above, would use the event property **price**. 
 
 ### Property filters
 
+Property filters let you include only the goal events whose properties match specific conditions.
+These filters apply to the properties inside the event payload.
+With the example above, we might want to create a `conversion` metric but only for product of a certain category, 
+in that case a **category_id** property filter can be used to filter only the relevent **purchases** events.
+
+From that event, we could also create a `revenue (euro)` metric by filtering events by **currency**.
+
 ### Time filters
+
+Every visitor becomes exposed to an experiment at a specific moment. We call it the **first-seen** event. 
+That timestamp is the reference point for all time-based filters.
+
+A time filter lets you include only the goal events that happen within a defined window after that first exposure. 
+This ensures your metric measures behavior in a controlled, meaningful period (for example, “purchases within the first hour” or “engagement in the first 7 days”).
+
+### Outliers
+
+Outlier limits help control the influence of extreme metric values. 
+They reduce noise and variance by capping or removing values that sit outside a defined range. 
+When calculating a metric based on a property such as **price** in our example, you can choose one of four methods to manage outliers:
+
+::: warning: Use Outlier Limits Carefully
+Outlier limits can reduce variance and make metrics more stable, but they also change the underlying data. 
+When used incorrectly, they may hide meaningful effects or introduce bias in experiment results. 
+Always ensure your limits reflect real-world constraints rather than engineering convenience, and avoid tuning them in response to specific experiment outcomes. 
+:::
+
+#### Unlimited
+
+This is the default. This option applies no outlier treatment. All values are kept exactly as they appear in the event data.
+Use this option when you want full fidelity of raw data and are not concerned about extreme values skewing results.
+
+#### Quantile
+
+This method filters values based on chosen quantiles. 
+You define a lower quantile and an upper quantile (for example, 0.05 and 0.95). 
+Values below the lower quantile or above the upper quantile are excluded.
+
+How it behaves with the sample purchase event:
+```
+If you set:
+
+- Lower quantile: `0.05`
+- Upper quantile: `0.95`
+
+Then:
+
+- If `1000` falls between the 5th and 95th percentile of all purchase prices, it is kept.
+- If `1000` is higher than the 95th percentile (for example if most prices are between 10 and 300), it is **removed from the data**.
+```
+
+Quantile filtering is useful when your data contains long tails or rare extreme highs.
+
+#### Standard Deviation
+
+This method caps values based on the mean and standard deviation of all observed values. 
+You enter multipliers that determine how far from the mean the lower and upper limits should be.
+
+The limits are calculated as:
+
+```
+- Lower limit: mean − (stdev × lower multiplier)
+- Upper limit: mean + (stdev × upper multiplier)
+```
+
+Any value outside these limits is **removed from the data**.
+
+Example with the sample purchase event:
+Suppose across all purchases:
+
+```
+- mean price = 200
+- standard deviation = 150
+
+If you set:
+- Lower multiplier = 1
+- Upper multiplier = 2
+
+Then:
+- Lower limit = 200 − (150 × 1) = 50
+- Upper limit = 200 + (150 × 2) = 500
+
+Our event's price:
+- 1000 > 500 → it is excluded.
+
+Both limits equal the mean.
+This effectively disables trimming on one side depending on the multiplier:
+
+- Lower multiplier 0 → lower limit = mean → keeps all values below the mean
+- Upper multiplier 0 → upper limit = mean → keeps all values above the mean
+
+Setting both to 0 is the equivalent of setting no outlier limit.
+```
+
+Standard deviation limits are helpful when extreme values are several standard deviations from the average.
+
+####Fixed
+
+This option lets you define explicit numeric boundaries. Any value below the lower limit or above the upper limit is removed.
+
+Example with the sample purchase event:
+
+```
+- Lower limit value: −1000
+- Upper limit value: 1000
+
+Then:
+- price = 1000 → exactly at the upper limit → kept
+
+If you change to:
+- Lower limit value: 0
+- Upper limit value: 500
+
+Then:
+- price = 1000 → above 500 → excluded
+```
+
+Fixed limits are useful when you already know the acceptable bounds for your metric (e.g., price can never be negative or above a business-defined maximum).
 
 ### Goal Relations
 
