@@ -148,3 +148,54 @@ Examples:
 
 ## Metric Versioning
 
+Metrics are ***version-controlled** to ensure that your experiment results remain stable, interpretable, and historically accurate. 
+When a metric definition changes, its meaning changes and that can impact how past and ongoing experiments would be understood. 
+To prevent this, changes to certain fields require a new version of the metric to be created.
+
+Versioning ensures that:
+
+- Historical results remain trustworthy
+Experiments that used an older version of the metric will always continue to use that exact definition, so their numbers do not change retroactively.
+- Metric definitions are transparent and reproducible
+You can always refer back to earlier versions and understand exactly how a metric was constructed at any point in time.
+- Teams can evolve metrics safely
+You can improve outlier handling, adjust filters, or refine properties without affecting other teams or ongoing experiments.
+- Experiments remain comparable over time
+Versioning prevents silent drift in metric definitions that would otherwise make comparisons unreliable.
+
+Versioning gives you confidence that when you modify a metric, you are not rewriting the past, and your experiment results remain consistent and dependable.
+
+Each metric contains configuration fields that play different roles in versioning. 
+To balance flexibility with historical accuracy, fields fall into three categories:
+
+### Editable, shared across all versions
+
+These fields belong to the metric itself, not to a specific version.
+If you edit them, the change applies to every version of the metric.
+
+- `Name`
+- `Owner`
+
+### Editable, version-specific fields
+
+These fields define the behaviour of the metric for a given version.
+Editing them only modifies the current version, and does not impact older versions.
+
+- All fields in the `Metrics Detail` section
+- All fields in the `Metadata` section
+
+These fields allow you to refine the metric without altering the meaning of historical results.
+
+### Non-editable, version-specific fields
+
+These fields define the core logic of the metric: how values are extracted, filtered, capped, or related to other goals. 
+They are locked once a version is created.
+
+If any of these fields need to change, a new metric version must be created.
+
+Locked fields include:
+- All fields in the `Goal` section
+- All fields in the `Format, Scale & Precision` section
+- All fields in the `Metric threshold alert` section
+
+Locking these fields ensures that metrics remain stable and reproducible over time, and that historical experiment results never change unexpectedly.
