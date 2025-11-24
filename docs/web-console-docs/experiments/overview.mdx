@@ -165,6 +165,80 @@ Most of the time, Group Sequential Testing should be the preferred method (who d
 
 Because it is a 2-sided test, Fixed Horizon is a better choice if differentiating between inconclusive and significantly negative results is important. 
 
+## Server side vs client side experiments
+
+ABsmartly supports both server side and client side experimentation seamlessly. 
+Each approach has different strengths depending on where the change is implemented and how data flows through your system.
+
+### Server side experiments
+
+Server side experiments are implemented inside your backend or API layer. The variant assignment happens before the response is sent to the client.
+
+**How it works**  
+Your backend receives the experiment key, retrieves the assigned variant from the SDK, and returns different data or logic depending on the variant.
+
+**Use cases**
+- Pricing logic
+- Ranking and recommendation algorithms
+- API responses
+- Feature toggles
+- Checkout and order processing
+- Any business logic that must run before rendering
+
+**Benefits**
+- High performance and stable assignment
+- No flicker or visible changes after load
+- Works regardless of device or browser
+- Ideal for experiments that influence logic rather than UI
+- Better security and protection against manipulation
+- Can be shipped immediately without any code change
+
+**Things to consider**
+- Requires backend engineering work
+- QA may take longer
+- Changes often require deployments
+
+---
+
+### Client side experiments
+
+Client side experiments run inside the user’s browser. The SDK assigns a variant, and client side code applies the appropriate UI changes.
+
+**How it works**  
+The frontend calls `context.track`. The SDK returns the assigned variant, and the UI is updated accordingly.
+
+**Use cases**
+- Simple Layout and visual changes
+- Styling and copy updates
+- Interaction tweaks
+- Landing page optimisation
+- Experiments that do not require backend involvement
+
+**Benefits**
+- Very fast iteration
+- No backend deployment needed
+- Ideal for design and UX teams
+- Non engineers to create visually in the [Visual Editor](../launchpad-browser-extension/getting-started)
+
+**Things to consider**
+- Must be implemented correctly to avoid flicker
+- Not suitable for logic or sensitive values such as pricing
+- Some browsers block scripts which can impact exposure if not configured well
+- Network timing can affect when changes appear
+
+### How to choose
+
+Choose **server side** when:
+- the change affects APIs, data or business logic
+- correctness and performance are important
+- full consistency across the user journey is required
+
+Choose **client side** when:
+- the change is purely visual
+- you want fast trial and error
+- backend changes are not possible or needed
+
+Many teams use both approaches together. ABsmartly fully supports hybrid experimentation.
 
 ## Experiment lifecycle
 
@@ -278,7 +352,7 @@ The following permissions exist when managing and working with `experiments`.
 
 #### Global access
 
-Permission to create and manage `experiments` can be granted to the relevant users through their [role](../../configuration/settings#roles) at the platform level.
+Permission to create and manage `experiments` can be granted to the relevant users through their [role](../configuration/settings#roles) at the platform level.
 
 :::info
 It is not recommended to provide access to `metrics` to non platform admin users at the platform level. 
