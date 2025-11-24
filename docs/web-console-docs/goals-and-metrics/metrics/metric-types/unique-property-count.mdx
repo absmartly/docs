@@ -3,3 +3,33 @@ sidebar_position: 5
 ---
 
 # Unique Property Count
+
+## Overview
+
+Counts how many unique values of a specific property appear in the goal events triggered by users.
+Instead of counting users, this metric measures the variety or diversity within a property, such as the number of different products purchased, 
+the number of distinct categories reached, etc.
+
+This metric helps you understand breadth rather than volume or frequency.
+
+## Examples
+
+```javascript
+context.track("purchase", {
+  price: 1000,
+  order_number: "0000982532",
+  product_id: "ABC123",
+  category_id: "ZYZ123"
+});
+```
+
+From this event, a `Unique products purchased` metric could be created by selecting the **product_id** property.
+
+## Good to know
+
+- Great for understanding variety, breadth, and coverage within your goals.
+- Useful for marketplaces, catalog browsing, search, merchandising, and content variety analyses.
+- Each property value is counted once, regardless of how many times it appears.
+- Filtering the goal event first (e.g., to a category or price range) affects which values contribute to the unique count.
+- Outlier settings do not apply here since the metric counts distinct strings or identifiers, not numeric values.
+- Can complement total count or user-based metrics by revealing diversity even when volume is stable.
