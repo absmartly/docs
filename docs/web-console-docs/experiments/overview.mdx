@@ -117,6 +117,8 @@ The experiment produced a harmful effect or a technical issue made results inval
 
 Decisions are tracked across the platform to support transparency, accountability, and long-term learning.
 
+---
+
 ## Analysis methods
 
 ABsmartly supports two types of statistical analysis: fixed horizon and group sequential. 
@@ -159,12 +161,14 @@ At ABsmartly we believe Group Sequential Testing provides the right compromise b
 product decisions in a fast-moving business context.
 :::
 
-### Which one to choose?
+### How to choose?
 
 Both methods ensure reliable results, but group sequential analysis provides more flexibility, while fixed horizon follows a more traditional “run to completion” approach.
 Most of the time, Group Sequential Testing should be the preferred method (who does not want faster trustworthy results?), but there are a few use cases where you might decide to use a Fixed Horizon setup. This is mainly when you are dealing with a strong novelty effect (Group Sequential Testing might come to a premature conclusion which might not reflect the true impact) or where you have a long action cycle and wish to observe the visitors for a pre-defined period of time.
 
 Because it is a 2-sided test, Fixed Horizon is a better choice if differentiating between inconclusive and significantly negative results is important. 
+
+---
 
 ## Server-side vs client-side experiments
 
@@ -199,8 +203,6 @@ Your backend receives the experiment key, retrieves the assigned variant from th
 - QA may take longer
 - Changes often require deployments
 
----
-
 ### Client-side experiments
 
 Client-side experiments run inside the user’s browser. The SDK assigns a variant, and client-side code applies the appropriate UI changes.
@@ -226,6 +228,7 @@ The frontend calls `context.track`. The SDK returns the assigned variant, and th
 - Not suitable for logic or sensitive values such as pricing
 - Some browsers block scripts which can impact exposure if not configured well
 - Network timing can affect when changes appear
+- Must be re-implemented fully in code when shipped and before the experiment can be cleaned-up
 
 ### How to choose
 
@@ -235,11 +238,13 @@ Choose **server side** when:
 - full consistency across the user journey is required
 
 Choose **client-side** when:
-- the change is purely visual
+- the change is purely visual and simple
 - you want fast trial and error
 - backend changes are not possible or needed
 
 Many teams use both approaches together. ABsmartly fully supports hybrid experimentation.
+
+---
 
 ## Experiment lifecycle
 
@@ -311,6 +316,8 @@ The experiment is closed and archived.
 - results and metadata remain stored for historical context and learning  
 
 Archiving keeps your workspace clean while preserving your experimentation history.
+
+---
 
 ## Ownership & permissions
 

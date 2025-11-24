@@ -305,16 +305,27 @@ context.track("replacement", {
 
 Configuration includes:
 
-- Current goal key property
+- **Current goal key property**
 Identifier on the current event (e.g., **order_number**).
-- Foreign goal
+- **Foreign goal**
 The event representing the replacement (e.g., **replacement**).
-- Foreign goal key property
+- **Foreign goal key property**
 The matching identifier on the replacement event (e.g., **order_number**).
-- Foreign goal value property
+- **Foreign goal value property**
 Value from the replacement event that should override or adjust the original. For example, **replacement_price**.
-- Duplicated foreign goal aggregation
-How to combine multiple replacement events if they exist.
+- **Duplicated foreign goal aggregation**
+How the value of the foreign goal achievement will be aggregated
+when there are multiple foreign goal achievements that match the **Foreign goal relation key property**.
+
+There are five options:
+
+| Aggregation Type | Description                                                                                              |
+|------------------|----------------------------------------------------------------------------------------------------------|
+| Pick first       | The first foreign goal achievement will be used to update the value of the current goal.                 |
+| Pick last        | The last foreign goal achievement will be used to update the value of the current goal.                  |
+| Sum              | The sum of all foreign goal achievements will be used to update the value of the current goal.           |
+| Minimum          | The minimum value of all foreign goal achievements will be used to update the value of the current goal. |
+| Maximum          | The maximum value of all foreign goal achievements will be used to update the value of the current goal. |
 
 Replacement relations allow the metric to reflect up-to-date values when items are swapped or reissued.
 
