@@ -39,7 +39,7 @@ When a user reaches an experiment, ABsmartly assigns them to a variant using a d
 - consistent behaviour during the entire experiment
 - predictable control of traffic allocation
 
-[Exposure events](../events/exposure-events) are sent automatically by the SDK, and these events define when users become part of the analysis dataset.
+[Exposure events](../Events/exposure-events) are sent automatically by the SDK, and these events define when users become part of the analysis dataset.
 
 ### Variants
 
@@ -91,7 +91,8 @@ for example when a performance metric becomes slower or when a business KPI show
 
 ### Analysing results
 
-ABsmartly uses sound statistical methods to compute the impact of each variant compared to control. For each metric you will see:
+ABsmartly uses sound statistical methods to compute the impact of each variant compared to control. 
+For each metric you will see:
 - visitor count 
 - total value
 - mean value per user
@@ -114,7 +115,7 @@ Keep the current implementation and either **iterate** or **abandon**.
 **Abort**
 The experiment produced a harmful effect or a technical issue made results invalid.
 
-Decisions are tracked across the platform to support transparency, accountability, and long term learning.
+Decisions are tracked across the platform to support transparency, accountability, and long-term learning.
 
 ## Analysis methods
 
@@ -161,18 +162,18 @@ product decisions in a fast-moving business context.
 ### Which one to choose?
 
 Both methods ensure reliable results, but group sequential analysis provides more flexibility, while fixed horizon follows a more traditional “run to completion” approach.
-Most of the time, Group Sequential Testing should be the preferred method (who does not want faster trustworthy results?) but there are a few use cases where you might decide to use a Fixed Horizon setup. This is mainly when you are dealing with a strong novelty effect (Group Sequential Testing might come to a premature conclusion which might not reflect the true impact) or where you have a long action cycle and wish to observe the visitors for a pre-defined period of time.
+Most of the time, Group Sequential Testing should be the preferred method (who does not want faster trustworthy results?), but there are a few use cases where you might decide to use a Fixed Horizon setup. This is mainly when you are dealing with a strong novelty effect (Group Sequential Testing might come to a premature conclusion which might not reflect the true impact) or where you have a long action cycle and wish to observe the visitors for a pre-defined period of time.
 
 Because it is a 2-sided test, Fixed Horizon is a better choice if differentiating between inconclusive and significantly negative results is important. 
 
-## Server side vs client side experiments
+## Server-side vs client-side experiments
 
-ABsmartly supports both server side and client side experimentation seamlessly. 
+ABsmartly supports both server-side and client-side experimentation seamlessly. 
 Each approach has different strengths depending on where the change is implemented and how data flows through your system.
 
-### Server side experiments
+### Server-side experiments
 
-Server side experiments are implemented inside your backend or API layer. The variant assignment happens before the response is sent to the client.
+Server-side experiments are implemented inside your backend or API layer. The variant assignment happens before the response is sent to the client.
 
 **How it works**  
 Your backend receives the experiment key, retrieves the assigned variant from the SDK, and returns different data or logic depending on the variant.
@@ -200,9 +201,9 @@ Your backend receives the experiment key, retrieves the assigned variant from th
 
 ---
 
-### Client side experiments
+### Client-side experiments
 
-Client side experiments run inside the user’s browser. The SDK assigns a variant, and client side code applies the appropriate UI changes.
+Client-side experiments run inside the user’s browser. The SDK assigns a variant, and client-side code applies the appropriate UI changes.
 
 **How it works**  
 The frontend calls `context.track`. The SDK returns the assigned variant, and the UI is updated accordingly.
@@ -233,7 +234,7 @@ Choose **server side** when:
 - correctness and performance are important
 - full consistency across the user journey is required
 
-Choose **client side** when:
+Choose **client-side** when:
 - the change is purely visual
 - you want fast trial and error
 - backend changes are not possible or needed
@@ -276,7 +277,7 @@ During this stage:
 - metrics begin accumulating  
 - guardrails and monitoring are active  
 - you can review interim results depending on the chosen analysis method (fixed horizon or group sequential)
-- experiment setup can no longer
+- experiment setup can no longer be edited (some metada can still be edited)
 
 This continues until the experiment is stopped, either when it reaches significance or when it is aborted.
 
@@ -317,7 +318,7 @@ Archiving keeps your workspace clean while preserving your experimentation histo
 
 ### Ownership
 
-An experiment can be owned by 1 or more teams and, if the feature was enable for your organisation, individual users.
+An experiment can be owned by 1 or more teams and, if the feature was enabled for your organisation, individual users.
 
 :::info
 Team ownership is generally a better fit for governance because it creates stability, resilience, and accountability at the right level.
