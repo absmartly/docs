@@ -7,7 +7,7 @@ import Image from "../../../src/components/Image";
 # Units
 
 Units are the unique identifiers for the visitors, they are used to track those visitors over time and across your [applications](applications). 
-Units are also referred as tracking identifiers.
+Units are also referred to as tracking identifiers.
 
 For experiments running across different platforms (iOS, Android, web, email, etc.) the unit should be known across all the platforms. 
 Most likely the authenticated user's user-id. 
@@ -16,8 +16,8 @@ For experiments running in apps or parts of the website where the user is not au
 anonymous-id or device-id are common names for those.
 
 For experiments running in email newsletters, you could even have a unit based on the user's email address, 
-but if you are interested in collecting metrics tracked in the website that the newsletter is linking to, 
-it's better to use the same unit that is being used for the experiments running in the website.
+but if you are interested in collecting metrics tracked on the website that the newsletter is linking to, 
+it's better to use the same unit that is being used for the experiments running on the website.
 
 Have a look at the [Tracking Unit](/docs/web-console-docs/experiments/creating-an-experiment#tracking-unit)
 section of the **Creating an Experiment** docs for more information.
@@ -31,7 +31,7 @@ section of the **Creating an Experiment** docs for more information.
 
 :::info
 Not all units are equal, some, like `user_id`, allow for tracking visitors across sessions and even platforms. 
-Others like `anonymous_id` are much more transient. This means that the same physical user could potentially have several `anonymous_id` (and as a result see a different variant of your experiment).
+Others like `anonymous_id` are much more transient. This means that the same physical user could potentially have several `anonymous_id`, (and as a result see a different variant of your experiment).
 This is the case for example when they use several devices or if they clear their cookies between different sessions.
-While an `anonymous_id` identifier is likey always available, the `user_id` might only be available in parts of the applications where the visitor is logged in.
+While an `anonymous_id` identifier is likely always available, the `user_id` might only be available in parts of the applications where the visitor is logged in.
 :::

@@ -1,0 +1,115 @@
+---
+sidebar_position: 1
+---
+
+# Overview
+
+## What is an experiment
+
+An experiment evaluates the impact of a product change by comparing the behaviour of users who see the change with those who do not. 
+ABsmartly makes this possible by assigning users to variants, tracking their actions with goal events, 
+and analysing the difference between variants with reliable statistics.
+
+An experiment contains several key elements:
+
+- **Exposure**
+How users enter the experiment and how they are assigned to variants.
+
+- **Variants**
+Different experiences shown to users.
+
+- **Goals and Metrics**
+Events and measurements used to evaluate the impact.
+
+- **Monitoring**
+Automatic checks that help ensure the experiment is healthy and safe to run.
+
+- **Results and Decisions**
+The analysis of variant impact and the decision you take once the data is clear.
+
+ABsmartly handles all randomisation, data collection, metric computation, and statistical inference so you can focus on learning from your product changes.
+
+## Exposure and assignment
+
+When a user reaches an experiment, ABsmartly assigns them to a variant using a deterministic hashing method. This ensures:
+- stable assignment
+- no cross contamination across variants
+- consistent behaviour during the entire experiment
+- predictable control of traffic allocation
+
+[Exposure events](../events/exposure-events) are sent automatically by the SDK, and these events define when users become part of the analysis dataset.
+
+## Variants
+
+Experiments usually include a control variant and one or more treatment variants. Each variant represents a specific user experience. 
+ABsmartly allows you to configure:
+- variant names
+- traffic allocation
+- rollout rules
+- targeting rules
+- experiment overrides for testing or QA
+
+Variants determine what users see, while the metrics determine how those differences are evaluated.
+
+## Goals and metrics
+
+Experiments are measured using [goals](../goals-and-metrics/goals/overview) and the [metrics](../goals-and-metrics/metrics/overview) derived from them.
+
+Examples of goals:
+
+```javascript
+context.track("purchase", { price: 1000 });
+context.track("add_to_cart", { product_id: "ABC123" });
+context.track("view_item", { item_id: "XYZ987" });
+```
+
+Metrics take your [goal events](../Events/goal-events) and turn them into meaningful measurements of user behaviour. 
+They let you answer questions like:
+
+- how many times something happened
+- how many users performed an action
+- how much value was generated
+- how behaviour changes between variants
+
+ABsmartly handles all the computation and presents the results in a clear, comparable way across variants.
+
+## Guardrails and monitoring
+
+Before experiment results can be trusted, ABsmartly performs several [health checks](Experiment-health-checks) automatically:
+- Sample Ratio Mismatch at the experiment level
+- assignment and exposure conflicts
+- guardrail metric thresholds
+- unexpected behaviour in exposure or goal events
+- data quality anomalies
+
+Guardrails help detect harmful side effects and make it possible to [abort experiments](Aborting-experiments) if needed.
+
+You can also configure guardrail metrics with [thresholds](../goals-and-metrics/metrics/create#metric-threshold-alert) that alert you when impact crosses meaningful limits, 
+for example when a performance metric becomes slower or when a business KPI shows a potential drop.
+
+## Analysing results
+
+ABsmartly uses sound statistical methods to compute the impact of each variant compared to control. For each metric you will see:
+- visitor count 
+- total value
+- mean value per user
+- relative impact
+- confidence interval
+- impact per day
+
+You can use our guide on [interpreting metrics results](interpreting-metrics-in-experiment-results) to help with the analysis step.
+
+## Decisions
+
+Once results are stable and clear, you can record a decision:
+
+**Full on**
+The treatment performs well enough to roll out fully.
+
+**Keep Current**
+Keep the current implementation and either **iterate** or **abandon**.
+
+**Abort**
+The experiment produced a harmful effect or a technical issue made results invalid.
+
+Decisions are tracked across the platform to support transparency, accountability, and long term learning.
