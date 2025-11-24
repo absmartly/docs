@@ -148,54 +148,121 @@ Examples:
 
 ## Metric Versioning
 
-Metrics are ***version-controlled** to ensure that your experiment results remain stable, interpretable, and historically accurate. 
+Metrics are **version-controlled** to ensure that your experiment results remain stable, interpretable, and historically accurate. 
 When a metric definition changes, its meaning changes and that can impact how past and ongoing experiments would be understood. 
 To prevent this, changes to certain fields require a new version of the metric to be created.
 
 Versioning ensures that:
 
-- Historical results remain trustworthy
+- Historical results remain trustworthy: 
 Experiments that used an older version of the metric will always continue to use that exact definition, so their numbers do not change retroactively.
-- Metric definitions are transparent and reproducible
+- Metric definitions are transparent and reproducible: 
 You can always refer back to earlier versions and understand exactly how a metric was constructed at any point in time.
-- Teams can evolve metrics safely
+- Teams can evolve metrics safely: 
 You can improve outlier handling, adjust filters, or refine properties without affecting other teams or ongoing experiments.
-- Experiments remain comparable over time
+- Experiments remain comparable over time: 
 Versioning prevents silent drift in metric definitions that would otherwise make comparisons unreliable.
 
 Versioning gives you confidence that when you modify a metric, you are not rewriting the past, and your experiment results remain consistent and dependable.
 
+:::note
+While past and current experiments can make use of an older version of a metric, only the currently **active** version of a metric can be added to new experiments.
+:::
+
 Each metric contains configuration fields that play different roles in versioning. 
 To balance flexibility with historical accuracy, fields fall into three categories:
 
-### Editable, shared across all versions
+### Editable and shared across all versions
 
 These fields belong to the metric itself, not to a specific version.
 If you edit them, the change applies to every version of the metric.
 
-- `Name`
-- `Owner`
+- `Name`. To ensure consistency and discoverability, the name of a metric needs to be the same across all versions of a metric.
+- `Owner`. To better enforce ownership and governance, metric's owners must own the entire history of a metric including all its past versions.
 
-### Editable, version-specific fields
+### Editable and version-specific fields
 
-These fields define the behaviour of the metric for a given version.
+These fields define the behaviour of a certain version of a metric.
 Editing them only modifies the current version, and does not impact older versions.
 
-- All fields in the `Metrics Detail` section
-- All fields in the `Metadata` section
+- All fields in the `Metrics Detail` section.
+- All fields in the `Metadata` section.
 
-These fields allow you to refine the metric without altering the meaning of historical results.
+These fields allow you to enrish the metric's version without altering the meaning of historical results.
 
 ### Non-editable, version-specific fields
 
 These fields define the core logic of the metric: how values are extracted, filtered, capped, or related to other goals. 
-They are locked once a version is created.
+Those fields are **immutable** and tied to a certain version of the metric.
 
-If any of these fields need to change, a new metric version must be created.
+A new version of the metric must be created to be able to change those fields.
 
 Locked fields include:
-- All fields in the `Goal` section
-- All fields in the `Format, Scale & Precision` section
-- All fields in the `Metric threshold alert` section
+- All fields in the `Goal` section.
+- All fields in the `Format, Scale & Precision` section.
+- All fields in the `Metric threshold alert` section.
 
 Locking these fields ensures that metrics remain stable and reproducible over time, and that historical experiment results never change unexpectedly.
+
+## Ownership & permissions
+
+`Metrics` are Managed-Assets and, as such, follow a specific [ownership model](/docs/web-console-docs/users-teams-permissions/ownership-and-permissions).
+
+### Ownership
+
+A goal can owned by 1 or more teams and, if the feature was enable for your organisation, individual users.
+
+:::info
+Team ownership is generally a better fit for governance because it creates stability, resilience, and accountability at the right level.
+
+A team persists even when individuals change roles, leave, or shift priorities, so the metric keeps a reliable steward over time. 
+Expertise is usually distributed across a group rather than held by one person, which reduces risks from single-point knowledge and avoids bottlenecks. 
+Team ownership is better suited to review changes, ensure consistency, and maintain quality.
+:::
+
+### Permissions
+
+The following permissions exist when managing and working with `goals`.
+
+| Permission | Description |
+|-------------------------|----------------------------|
+| **Admin metrics** | Grants full administrative control over metrics, including managing permissions, visibility, and configuration settings for all metrics within the workspace or team. |
+| **Archive a metric** | Allows archiving a metric that is no longer in use, archign a metric archive **all the versions** of that metric. |
+| **Create a metric** | Enables the creation of new metrics. |
+| **Edit a metric** | Allows modification of existing metric definitions and for the creation of new versions of that metric. |
+| **Get a metric** | Permits viewing the details of a specific metric, including its configuration and usage across experiments. |
+| **List metrics** | Grants access to view the list of all available metrics within the workspace or team. |
+| **Unarchive a metric** | Allows restoring a previously archived metric |
+
+
+#### Global access
+
+Permission to create and manage `metrics` can be granted to the relevant users through their [role](../../configuration/settings#roles) at the platform level.
+
+:::info
+It is not recommended to provide access to `metrics` to non platform admin users at the platform level. 
+:::
+
+#### built-in team level roles
+
+Permission to create and manage `metrics` can be provided to the relevant users at the team level by granting them the correct role in that team.
+
+| Permission | Description |
+|-------------------------|--------------|
+| **Team Admin** | Grants full control over metrics owned by that team. |
+| **Team Contributor** | Grant ability to create and to manage metrics in the team scope. |
+| **Team Viewer** | Grant ability to view and list metrics owned by the team. |
+
+:::info
+Team roles are inherited, so if a user is a `Team Contributor` in a team then this user would also be a `Team Contributor` in all child teams.
+:::
+
+### Sharing metrics
+
+While `metrics` are owned by teams, they can be shared with other teams and individual across the organisation.
+
+| Permission | Description |
+|-------------|--------------|
+| **can_view** | Grants this user or team the ability to view and make use of this metric in their experiments.   |
+| **can_edit** | Grant this user or team the ability to edit to this metric. |
+
