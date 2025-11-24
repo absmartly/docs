@@ -53,7 +53,7 @@ ABsmartly allows you to configure:
 
 Variants determine what users see, while the metrics determine how those differences are evaluated.
 
-## Goals and metrics
+### Goals and metrics
 
 Experiments are measured using [goals](../goals-and-metrics/goals/overview) and the [metrics](../goals-and-metrics/metrics/overview) derived from them.
 
@@ -142,11 +142,11 @@ Results in a 2 sided-test can be significantly positive, significantly negative 
 At ABsmartly you can decide how often or how many interim analyses you want. 
 A Group Sequential approach provides the flexibility to stop the experiments early for efficacy or for futility.
 
-<Image img="gst-setup.png" alt="Setting up a Group Sequential Test" maxWidth="40rem" />
+<Image img="experiment-create/gst-setup.png" alt="Setting up a Group Sequential Test" maxWidth="40rem" />
 
 While adding more interim analysis will slightly reduce statistical power compared to fixed-horizon testing, overall it greatly speeds up decision-making, as significance is commonly reached before the full sample is collected. This efficiency gained from using Group Sequential Testing is making a real difference to ABsmartly customers, to the pace at which decisions can be made.
 
-<Image img="gst-widget.png" alt="A Group Sequential Test result" maxWidth="40rem" />
+<Image img="experiment-results/gst-results.png" alt="A Group Sequential Test result" maxWidth="40rem" />
 
 Unlike Fixed Horizon, Group Sequential Testing uses a 1-sided test, meaning it evaluates whether the observed effect is significant only in the expected direction. Results in a 1-sided test can either be significant in the expected direction or insignificant.
 
@@ -158,7 +158,7 @@ At ABsmartly we believe Group Sequential Testing provides the right compromise b
 product decisions in a fast-moving business context.
 :::
 
-## Which one to choose?
+### Which one to choose?
 
 Both methods ensure reliable results, but group sequential analysis provides more flexibility, while fixed horizon follows a more traditional “run to completion” approach.
 Most of the time, Group Sequential Testing should be the preferred method (who does not want faster trustworthy results?) but there are a few use cases where you might decide to use a Fixed Horizon setup. This is mainly when you are dealing with a strong novelty effect (Group Sequential Testing might come to a premature conclusion which might not reflect the true impact) or where you have a long action cycle and wish to observe the visitors for a pre-defined period of time.
@@ -168,5 +168,142 @@ Because it is a 2-sided test, Fixed Horizon is a better choice if differentiatin
 
 ## Experiment lifecycle
 
+Experiments move through several stages from creation to completion. Each stage reflects where the experiment is in its setup, execution, or decision flow.
+
+### Draft
+The experiment has been created but is **not yet ready to run**.  
+At this stage you typically:
+- define the hypothesis  
+- configure variants  
+- choose goals and metrics  
+- set targeting and traffic allocation  
+
+Nothing is live, and the experiment is not visible to end users.
+
+### Ready
+The experiment is fully configured and reviewed.  
+It can be started in development or production at any time once the team is ready.  
+No traffic is assigned yet.
+
+### Development
+The experiment is running in dev mode.
+During this phase:
+- developers add the experiment key and variant logic  
+- teams QA the experience  
+- exposure events may appear only from testing environments
+
+The experiment is not yet running for real users.
+
+### Running
+The experiment is live, and real users are being assigned to variants.
+
+During this stage:
+- traffic is split according to the configured allocation  
+- metrics begin accumulating  
+- guardrails and monitoring are active  
+- you can review interim results depending on the chosen analysis method (fixed horizon or group sequential)
+- experiment setup can no longer
+
+This continues until the experiment is stopped, either when it reaches significance or when it is aborted.
+
+### Stopped
+The experiment has been manually or automatically stopped.
+
+Common reasons include:
+- reaching the predefined horizon  
+- detecting a harmful effect  
+- encountering operational issues  
+- pausing development or product rollout
+
+Traffic is no longer entering the experiment.
+
+### Full on
+A final decision has been made to fully release the treatment.
+
+In this stage:
+- the winning variant is rolled out to one hundred percent of traffic  
+- the experiment is locked for editing  
+- results remain accessible for reference  
+- the decision is tracked in the decision history
+
+This marks the successful completion of the experiment.
+
+### Archived
+The experiment is closed and archived.
+
+- the code has been cleaned-up of experiment code
+- it will not appear in active experiment lists  
+- results and metadata remain stored for historical context and learning  
+
+Archiving keeps your workspace clean while preserving your experimentation history.
 
 ## Ownership & permissions
+
+`Experiments` are Managed-Assets and, as such, follow a specific [ownership model](/docs/web-console-docs/users-teams-permissions/ownership-and-permissions).
+
+### Ownership
+
+An experiment can be owned by 1 or more teams and, if the feature was enable for your organisation, individual users.
+
+:::info
+Team ownership is generally a better fit for governance because it creates stability, resilience, and accountability at the right level.
+
+A team persists even when individuals change roles, leave, or shift priorities, so the metric keeps a reliable steward over time. 
+Expertise is usually distributed across a group rather than held by one person, which reduces risks from single-point knowledge and avoids bottlenecks. 
+Team ownership is better suited to review changes, ensure consistency, and maintain quality.
+:::
+
+### Permissions
+
+The following permissions exist when managing and working with `experiments`.
+
+## Experiment permissions
+
+| Permission | Description |
+|-----------|-------------|
+| **Admin experiments** | Grants full administrative control over all experiments, including permissions, visibility, and configuration settings across the workspace or team. |
+| **Archive an experiment** | Allows archiving an experiment. Archiving removes it from active lists while preserving all results and metadata. |
+| **Comment on an experiment** | Permits adding comments to an experiment for collaboration, reviews, or decision discussions. |
+| **Create an experiment** | Allows creating a new experiment from scratch or from a template. |
+| **Create an experiment from template** | Permits creating a new experiment specifically using an existing experiment template. |
+| **Start an experiment in development** | Allows setting the experiment status to *Development*, enabling implementation and QA. |
+| **Edit an experiment** | Grants permission to modify an experiment’s configuration before it is running (variants, goals, metrics, targeting, etc.). |
+| **Full-on an experiment** | Allows marking the experiment as *Full on*, indicating the winning variant is rolled out to all traffic. |
+| **Get an experiment** | Allows viewing a specific experiment and its metrics. |
+| **List experiments** | Grants access to view the list of all experiments in the workspace or team. |
+| **Restart an experiment** | Allows restarting an experiment after it has been stopped, sending new traffic into the experiment. |
+| **Start an experiment** | Allows changing an experiment’s status to *Running*, making it live for real users. |
+| **Stop an experiment** | Allows stopping a running experiment. New users will no longer enter the experiment. |
+| **Unarchive an experiment** | Allows restoring a previously archived experiment so it becomes active again. |
+
+#### Global access
+
+Permission to create and manage `experiments` can be granted to the relevant users through their [role](../../configuration/settings#roles) at the platform level.
+
+:::info
+It is not recommended to provide access to `metrics` to non platform admin users at the platform level. 
+:::
+
+#### built-in team level roles
+
+Permission to create and manage `experiments` can be provided to the relevant users at the team level by granting them the correct role in that team.
+
+| Permission | Description |
+|-------------------------|--------------|
+| **Team Admin** | Grants full control over experiments owned by that team. |
+| **Team Contributor** | Grant ability to create, start, stop and to manage experiments in the team scope. |
+| **Team Viewer** | Grant ability to view and list experiments owned by the team. |
+
+:::info
+Team roles are inherited, so if a user is a `Team Contributor` in a team, then this user would also be a `Team Contributor` in all child teams.
+:::
+
+### Sharing experiments
+
+While `experiments` are owned by teams, they can be shared with other teams and individual across the organisation.
+
+| Permission | Description |
+|-------------|--------------|
+| **can_view** | Grants this user or team the ability to view this experiment.   |
+| **can_edit** | Grants this user or team the ability to edit/start/stop to this experiment. |
+
