@@ -2,7 +2,7 @@
 sidebar_position: 12
 ---
 
-import Image from "../../src/components/Image";
+import Image from "../../../src/components/Image";
 
 # Experiment Reports
 
@@ -102,7 +102,7 @@ Knowing that something does not have the expected impact on customer behaviour c
 In the case of **early stopped experiments** (also known as aborted experiments), the decisions to abort can happen because of bugs in the implementation, 
 early worrying negative signals, strategic reasons or for any other reason. 
 Depending on the reason for early stopping, aborted experiments are typically restarted once the underlying issue is fixed. 
-Read our [When to abort an experiment?](/docs/web-console-docs/Aborting-experiments) guide to understand more about aborting experiments.
+Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
 
 While aborting experiments is common and part of the process, **early full on**, should be rare as they indicate that changes were pushed without supporting evidence.
 This can sometimes happen for strategic or legal reasons but because the experiment did not complete, it does not provide the reliable evidence needed to support or discard the underlying hypothesis.
@@ -140,7 +140,7 @@ It is nonetheless possible for `Full on` decisions to not be fully supported by 
 Currently a `Full on` decision is shown as supported by evidence **if and only if the experiment was completed and the primary metric is significant in the expected direction**.
 
 :::caution
-The supported by evidence validation does not currently includes checks on the secondary and guardrail metrics nor on the experiment [health checks](/docs/web-console-docs/experiment-health-checks).
+The supported by evidence validation does not currently includes checks on the secondary and guardrail metrics nor on the experiment [health checks](experiment-health-checks).
 :::
 
 

@@ -2,14 +2,16 @@
 sidebar_position: 12
 ---
 
-import Image from "../../src/components/Image";
+import Image from "../../../src/components/Image";
 
 # Experiment Health Checks
 
 
 ## What are experiment Health Checks?
 
-When running experiments, ensuring their reliability and validity is critical for making data-driven decisions. To achieve this, ABsmartly performs a series of automated health checks in the background. These checks are designed to identify potential issues that could compromise the integrity of the results. Below, we outline the health checks we currently perform and their importance in maintaining experiment quality.
+When running experiments, ensuring their reliability and validity is critical for making data-driven decisions. 
+To achieve this, ABsmartly performs a series of automated health checks in the background. 
+These checks are designed to identify potential issues that could compromise the integrity of the results. Below, we outline the health checks we currently perform and their importance in maintaining experiment quality.
 
 ---
 ## Where can I see them?
@@ -58,7 +60,7 @@ The experiment should be aborted and the reasons for SRM should be investigated.
 
 ### Audience Mismatch
 **What is it?**
-Ensures that the actual audience for the experiment matches the intended target audience.  This check is only performed when [Audience Enforced is turned off](/docs/web-console-docs/creating-an-experiment#targeting-audience). This serves as a reminder to put the required checks in your code to separate that targeting audience.
+Ensures that the actual audience for the experiment matches the intended target audience. This check is only performed when [Audience Enforced is turned off](/docs/web-console-docs/experiments/creating-an-experiment#targeting-audience). This serves as a reminder to put the required checks in your code to separate that targeting audience.
 
 **Why is it important?**  
 It means that a non-intended audience is being exposed to your changes.Including the wrong audience can dilute the experiment’s impact and obscure meaningful insights.
