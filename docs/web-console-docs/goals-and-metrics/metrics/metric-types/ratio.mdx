@@ -3,3 +3,62 @@ sidebar_position: 7
 ---
 
 # Ratio
+
+## Overview
+
+A Ratio metric compares two related metrics by dividing one value (the numerator) by another (the denominator).
+This creates a normalized measure that reveals the relationship between the two quantities rather than their absolute values.
+
+Ratio metrics are useful when you want to understand efficiency, conversion, quality, or per-user averages, because they remove scale effects and highlight how one metric behaves relative to another.
+
+## Examples
+
+Suppose you track the following events:
+
+```javascript
+context.track("click", {
+  element: "add_to_cart",
+  product_id: "ABC123"
+});
+
+context.track("page_view", {
+  page: "product_detail",
+  product_id: "ABC123"
+});
+```
+
+You could build a `Click-through rate ratio` metric defined as:
+- **Numerator**: `Clicks per visitor`
+- **Denominator**: `Page views per visitor`
+
+This produces a meaningful relative measure that answers:
+“Out of all page views, how often do users click the add-to-cart button?”
+
+More examples:
+- `Average revenue per order`
+-- Numerator: Revenue
+-- Denominator: Orders
+
+- `Purchases per active session`
+-- Numerator: Purchase count
+-- Denominator: Session count
+
+- `Errors per request` (for performance / reliability metrics)
+-- Numerator: Error events
+-- Denominator: API requests
+
+- `Unique products purchased per purchaser`
+-- Numerator: Goal Property Unique Count (product_id)
+-- Denominator: Unique purchasers
+
+In all cases, the ratio reveals relative performance rather than total scale.
+
+## Good to know
+
+- Ratio metrics are derived metrics: they depend on two other existing metrics.
+- They allow you to normalize behaviors across traffic volumes, user counts, or content types.
+- Fluctuations in either numerator or denominator can change the ratio — interpreting ratios requires understanding both sides.
+- They are highly effective for comparing efficiency (e.g., clicks per page view), value (e.g., revenue per user), or quality (e.g., errors per request).
+- Outlier settings, goal filters, and definitions of numerator and denominator are inherited from their underlying metrics.
+- A ratio metric does not directly count events — instead, it evaluates the relationship between two already-defined metrics.
+- Changes to numerator or denominator definitions typically require versioning, since a ratio metric’s meaning depends entirely on those definitions.

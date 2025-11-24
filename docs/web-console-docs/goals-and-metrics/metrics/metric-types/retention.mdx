@@ -3,3 +3,60 @@ sidebar_position: 6
 ---
 
 # Retention
+
+## Overview
+
+A `Goal Retention` metric measures how many users return to complete a goal again after a defined period of time.
+It tells you whether users continue performing the same action after a delay, rather than only measuring their initial behavior.
+
+You can track retention either:
+
+- from the moment a user is first exposed to the experiment, or
+- from the moment the user first completes the goal itself
+
+This makes it possible to measure longer-term engagement and whether your experiment influences users’ likelihood to come back and repeat an action.
+
+## Examples
+
+```javascript
+context.track("purchase", {
+  price: 1000,
+  order_number: "0000982532",
+  product_id: "ABC123",
+  category_id: "ZYZ123"
+});
+```
+
+Imagine you want to measure how many users who first purchased **make another purchase within 7 days**.
+
+You can create a `Purchase Retention (7 days)` metric by:
+- Selecting the `purchase` goal
+- Setting the `Retention Period` to 7 days
+- Choosing whether the retention window starts from:
+-- the user’s first exposure, or
+-- the user’s first purchase
+
+Then the metric counts users who satisfy:
+- they completed the initial purchase
+- and they completed another purchase after 7 days, within the configured retention window
+
+**More examples**
+
+- `Checkout Recovery (24 hours)`:
+Users who returned to complete a purchase within 24 hours after first adding to cart.
+
+- `Content Return (3 days)`:
+Users who read an article again within 3 days after their first reading.
+
+- `Subscription Renewal (30 days)`:
+Users who returned to perform a renewal action after a 30-day cycle
+
+## Good to know
+
+- Great for measuring long-term impact rather than immediate conversions.
+- Helps identify behaviors such as repeat purchases, content revisits, subscription renewals, or delayed engagement.
+- The metric counts users, not events — a user either meets retention criteria or does not.
+- Filters on the goal event apply before evaluating retention (for example: “retention among users who purchased category ZYZ123”).
+- Retention metrics are often more stable and less noisy than total repeated activations, since each user contributes at most once.
+- Changing the retention period alters the meaning of the metric and will requires a new version.
+- Useful for experiments where the impact is delayed: onboarding experiences, notifications, emails, recommendations, reminders, etc.
