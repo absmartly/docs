@@ -26,17 +26,17 @@ const HomepageHeader: FC<{}> = () => {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className="styles"></div>
         <div className={styles.buttons}>
-          <Link
+          <!-- Link
             to="/docs/SDK-Documentation"
             className="button button--light button--lg"
           >
             Read the Docs
-          </Link>
+          </Link -->
           <Link
             to="docs/web-console-docs/tutorial"
             className="button button--dark button--lg"
           >
-            Web Console Tutorial
+            Knowledge Base
           </Link>
         </div>
       </div>

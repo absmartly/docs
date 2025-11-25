@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "The ABsmartly Docs",
   tagline:
-    "Booking.com and Netflix's experimentation culture without the big investment.",
+    "Booking.com experimentation culture without the big investment.",
   url: "https://docs.absmartly.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -136,22 +136,7 @@ const config = {
           {
             to: "docs/web-console-docs/tutorial",
             position: "left",
-            label: "Web Console Tutorial",
-          },
-          {
-            to: "docs/SDK-documentation",
-            position: "left",
-            label: "SDK Docs",
-          },
-          {
-            to: "docs/SDK-API/absmartly-collector-api",
-            position: "left",
-            label: "SDK API",
-          },
-          {
-            to: "docs/Web-Console-API/absmartly-web-console-api",
-            position: "left",
-            label: "Web Console API",
+            label: "Knowledge Base",
           },
           {
             to: "https://absmartly.com/blog",
