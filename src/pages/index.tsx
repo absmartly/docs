@@ -33,7 +33,7 @@ const HomepageHeader: FC<{}> = () => {
             Knowledge Base
           </Link>
           <Link
-            to="/docs/SDK-Documentation"
+            to="/docs/APIs-and-SDKs/SDK-Documentation"
             className="button button--light button--lg"
           >
             SDK Documentation

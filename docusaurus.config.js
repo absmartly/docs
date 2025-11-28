@@ -126,7 +126,7 @@ const config = {
       navbar: {
         title: "ABsmartly Docs",
         logo: {
-          alt: "The A B Smartly logo",
+          alt: "The ABsmartly logo",
           src: "img/logo.svg",
           style: {
             width: "3rem",
@@ -158,7 +158,7 @@ const config = {
             items: [
               {
                 label: "SDK Docs",
-                to: "/docs/SDK-Documentation",
+                to: "/docs/APIs-and-SDKs/SDK-Documentation",
               },
               {
                 label: "API Docs",
