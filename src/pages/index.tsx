@@ -3,7 +3,7 @@ import React, { FC } from "react";
 
 const Home: FC<{}> = () => {
   React.useEffect(() => {
-    window.location.href = 'https://deploy-preview-238--absmartly-docs.netlify.app/docs/get-started';
+    window.location.href = '/docs/get-started';
   }, []);
   return null;
 };
