@@ -2,11 +2,12 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import React, { FC } from "react";
 
 
-function Home() {
+const Home: FC<{}> = () => {
+  const { siteConfig } = useDocusaurusContext();
   React.useEffect(() => {
-    window.location.href = useBaseUrl('/docs/get-started');
+    window.location.href = 'https://deploy-preview-238--absmartly-docs.netlify.app/docs/get-started';
   }, []);
   return null;
-}
+};
 
-
+export default Home;
