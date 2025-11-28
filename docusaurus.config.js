@@ -85,7 +85,7 @@ const config = {
         config: {
           collector: {
             specPath: "api-spec.yaml", // Path to designated spec file
-            outputDir: "docs/SDK-API", // Output directory for generated .mdx docs
+            outputDir: "docs/APIs-and-SDKs/SDK-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,
@@ -93,7 +93,7 @@ const config = {
           },
           nodeapi: {
             specPath: "nodeapi-spec.yaml",
-            outputDir: "docs/Web-Console-API", // Output directory for generated .mdx docs
+            outputDir: "docs/APIs-and-SDKs/Web-Console-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,
@@ -157,6 +157,10 @@ const config = {
             title: "Documentation",
             items: [
               {
+                label: "Product Docs",
+                to: "/docs/web-console-docs/tutorial",
+              },
+              {
                 label: "SDK Docs",
                 to: "/docs/APIs-and-SDKs/SDK-Documentation",
               },
@@ -187,10 +191,6 @@ const config = {
             title: "Social Media",
             items: [
               {
-                label: "Twitter",
-                href: "https://twitter.com/absmartly",
-              },
-              {
                 label: "LinkedIn",
                 href: "https://www.linkedin.com/company/absmartly",
               },
@@ -200,7 +200,7 @@ const config = {
         copyright: `&copy; Copyright ${new Date().getFullYear()} ABsmartly B.V.`,
         logo: {
           src: "img/logo.svg",
-          alt: "The A B Smartly Logo",
+          alt: "The ABsmartly Logo",
           style: { width: "3rem" },
         },
       },
