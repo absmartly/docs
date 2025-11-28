@@ -27,7 +27,7 @@ const HomepageHeader: FC<{}> = () => {
         <div className="styles"></div>
         <div className={styles.buttons}>
           <Link
-            to="docs/web-console-docs/tutorial"
+            to="docs/get-started"
             className="button button--dark button--lg"
           >
             Knowledge Base
