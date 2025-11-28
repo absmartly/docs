@@ -1,0 +1,27 @@
+---
+sidebar_position: 4
+---
+
+# Property
+
+## Overview
+
+Aggregates a numerical value included in the event payload, such as price, quantity, or duration.
+
+## Examples
+
+```javascript
+context.track("purchase", {
+  price: 1000,
+  order_number: "0000982532",
+  product_id: "ABC123",
+  category_id: "ZYZ123"
+});
+```
+
+A common example is `Revenue`, which would sum the `price` for all `purchase` events.
+
+## Good to know
+
+- Essential for money- or quantity-based metrics.
+- Sensitive to outliers; clipping or CUPED may help.

@@ -1,0 +1,385 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsImport from "!!raw-loader!./js/import.js";
+
+import PythonImport from "!!raw-loader!./python/import.py";
+
+import ReactImport from "!!raw-loader!./react/import.jsx";
+
+import SwiftImport from "!!raw-loader!./swift/import.swift";
+
+import VueImport from "!!raw-loader!./vue/import.js";
+
+import Vue3Import from "!!raw-loader!./vue3/import.js";
+
+import JavaImport from "!!raw-loader!./java/import.java";
+import JavaImportAndroid6 from "!!raw-loader!./java/importForAndroid6.java";
+
+import GoImport from "!!raw-loader!./go/initialize.go";
+
+import DotNetStartupCode from "!!raw-loader!./dotnet/startupCode.cs";
+import DotNetSDKInjection from "!!raw-loader!./dotnet/sdkInjection.cs";
+import DotNetManualSDKInstance from "!!raw-loader!./dotnet/manualSDKInstance.cs";
+
+import PHPImportAndInitialize from "!!raw-loader!./php/importAndInitialize.php";
+import PHPParamsInOrder from "!!raw-loader!./php/paramsInOrder.php";
+import PHPGranularChoice from "!!raw-loader!./php/granularChoice.php";
+
+import RubyImport from "!!raw-loader!./ruby/import.rb";
+
+import FlutterImport from "!!raw-loader!./flutter/import.dart";
+
+Once the SDK is installed, it can be initialized in your project.
+
+:::info
+The following examples assume that an [Api Key with SDK permissions](/docs/web-console-docs/configuration/settings#api-keys),
+an [Application](/docs/web-console-docs/Configuration/Applications), and an
+[Environment](/docs/web-console-docs/configuration/settings#environments) have been created in the ABsmartly Web Console.
+:::
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+<CodeBlock language="py">{PythonImport}</CodeBlock>
+
+**SDK Options**
+
+| Config               | Type                                          | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :------------------- | :-------------------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint             | `string`                                      |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey               | `string`                                      |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment          | `"production"` or `"development"`             |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application          | `string`                                      |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| max_retries          | `number`                                      | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| connection_timeout   | `number`                                      | &#10060;  |                                  `3`                                  | An amount of time, in seconds, before the SDK will stop trying to connect.                                                                                                    |
+| context_event_logger | `(self, event_type: EventType, data: object)` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx" title="src/index.js">
+  {ReactImport}
+</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+**Initializing the SDK with a Pre-Fetched Context**
+
+If you have used the Javascript SDK to create a context, you can pass it
+directly into the Provider component, like so:
+
+```jsx
+ReactDOM.render(
+  <ABSmartly context={context}>
+    <App />
+  </ABSmartly>,
+  document.getElementById("root")
+);
+```
+
+:::info NextJS
+If you are using NextJS and want to fetch the context on the server side, 
+you can leverage `getServerSideProps` and add the ABsmartly Provider on a 
+per-page basis. For example:
+
+```tsx title="pages/index.tsx"
+export const getServerSideProps: GetServerSideProps = async () => {
+  const sdkOptions = {
+    endpoint: "https://<your-assigned-subdomain>.absmartly.io/v1",
+    apiKey: "<your-api-key>",
+    application: "web",
+    environment: process.env.NODE_ENV
+  }
+
+  const serverSDK = new absmartly.SDK(sdkOptions)
+
+  const contextOptions = {
+    units: {
+      user_id: "123",
+      anonymous_id: "456",
+      device_id: "789",
+    }
+  }
+
+  const context = serverSDK.createContext(contextOptions);
+
+  await context.ready();
+
+  return {
+    props: {
+      contextData: context.data(), contextOptions, sdkOptions
+    },
+  };
+}
+
+export default function Home({ contextData, contextOptions, sdkOptions }) {
+  const clientSDK = new absmartly.SDK(sdkOptions)
+
+  const clientContext = clientSDK.createContextWith(contextOptions, contextData);
+
+  return (
+    <ABsmartly context={clientContext}>
+      {/* Your page content */}
+    </ABsmartly>
+  )
+}
+```
+:::
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+<CodeBlock language="js">{VueImport}</CodeBlock>
+
+This makes the `$absmartly` extension available in every Vue instance.
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+<CodeBlock language="js">{Vue3Import}</CodeBlock>
+
+This makes the `$absmartly` extension available in every Vue instance.
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+<CodeBlock language="java">{JavaImport}</CodeBlock>
+
+:::caution Android 6.0 or Earlier
+When targeting Android 6.0 or earlier, set the default Java Security Provider
+for SSL to Conscrypt by creating the Client instance as follows:
+
+<CodeBlock language="java">{JavaImportAndroid6}</CodeBlock>
+:::
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+<CodeBlock language="go">{GoImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+If your project uses .NET dependency injection, the default setup for the SDK can be used:
+
+<CodeBlock language="csharp">{DotNetStartupCode}</CodeBlock>
+
+```json title="appsettings.json"
+{
+  "ABSmartly": {
+    "Environment": "development",
+    "Application": "website",
+    "Endpoint": "https://your-company.absmartly.io/v1",
+    "ApiKey": "YOUR-API-KEY"
+  }
+}
+```
+
+The `ABSdk` instance is then added as a singleton and can be injected wherever
+necessary:
+
+<CodeBlock language="csharp">{DotNetSDKInjection}</CodeBlock>
+
+The `AddABSmartly` extension method allows for configuring SDK settings, configuring HTTP
+connection settings, injecting custom implementations of context-specific services
+and configuring additional HTTP requests policies using Polly.
+
+Alternatively, an SDK instance can be created manually like in the following
+example:
+
+<CodeBlock language="csharp">{DotNetManualSDKInstance}</CodeBlock>
+
+The SDK uses `IHttpClientFactory` abstraction to effectively manage the HTTP
+connections pool. This factory is injected using `IABSdkHttpClientFactory`
+as seen in the example above. If you require custom behavior or implementation,
+you can inject your own implementation of the `IHttpClientFactory` or
+the `IABSdkHttpClientFactory`.
+
+If you are injecting your own `IABSdkHttpClientFactory` implementation, make
+sure it creates named `IHttpClient` instances with the name `ABSmartlySDK.HttpClient`
+(you can use a static field in the `ABSdk` class, `ABSdk.HttpClientName`).
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+<CodeBlock language="php">{PHPImportAndInitialize}</CodeBlock>
+
+Note that the above example uses named parameters introduced in PHP 8.0.
+Although it is strongly recommended to use the latest PHP version, PHP 7.4 is
+supported as well. On PHP 7.4, parameters are only passed in their order, as
+named parameters are not supported.
+
+**For example:**
+
+<CodeBlock language="php">{PHPParamsInOrder}</CodeBlock>
+
+The above is a short-cut that creates an SDK instance quickly using default
+values. If you would like granular choice of individual components (such as a
+custom event logger), it can be done as following:
+
+<CodeBlock language="php">{PHPGranularChoice}</CodeBlock>
+
+**SDK Options**
+
+| Config        | Type                                        | Required? |                    Default                    | Description                                                                                                                                                                   |
+| :------------ | :------------------------------------------ | :-------: | :-------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `endpoint`    | string                                      |  &#9989;  |                  _undefined_                  | The URL to your API endpoint. Most commonly "your-company.absmartly.io"                                                                                                       |
+| `apiKey`      | `string`                                    |  &#9989;  |                  _undefined_                  | Your API key which can be found on the Web Console.                                                                                                                           |
+| `environment` | `"production"` or `"development"`           |  &#9989;  |                  _undefined_                  | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| `application` | `string`                                    |  &#9989;  |                  _undefined_                  | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| `retries`     | `int`                                       | &#10060;  |                       5                       | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| `timeout`     | `int`                                       | &#10060;  |                    `3000`                     | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| `eventLogger` | `\ABSmartly\SDK\Context\ContextEventLogger` | &#10060;  | `null`, See Using a Custom Event Logger below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+<CodeBlock language="ruby">{RubyImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                 Default                 | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |               `undefined`               | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |               `undefined`               | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |               `undefined`               | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |               `undefined`               | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                   `5`                   | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                 `3000`                  | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See "Using a Custom Event Logger" below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+<CodeBlock language="dart">{FlutterImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                              | Required? |   Default   | Description                                                                                                                                                                   |
+| :---------- | :-------------------------------- | :-------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                          |  &#9989;  | `undefined` | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                          |  &#9989;  | `undefined` | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"` |  &#9989;  | `undefined` | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                          |  &#9989;  | `undefined` | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+
+</TabItem>
+
+</Tabs>
