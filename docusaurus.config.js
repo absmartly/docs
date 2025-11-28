@@ -134,7 +134,7 @@ const config = {
         },
         items: [
           {
-            to: "docs/web-console-docs/tutorial",
+            to: "docs/get-started",
             position: "left",
             label: "Knowledge Base",
           },
@@ -158,7 +158,7 @@ const config = {
             items: [
               {
                 label: "Product Docs",
-                to: "/docs/web-console-docs/tutorial",
+                to: "/docs/get-started",
               },
               {
                 label: "SDK Docs",
