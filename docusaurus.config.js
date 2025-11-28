@@ -166,7 +166,7 @@ const config = {
               },
               {
                 label: "API Docs",
-                to: "/docs/SDK-API/absmartly-collector-api",
+                to: "/docs/APIs-and-SDKs/SDK-APIabsmartly-collector-api",
               },
             ],
           },
