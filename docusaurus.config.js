@@ -134,12 +134,12 @@ const config = {
         },
         items: [
           {
-            to: "docs/web-console-docs/product-docs",
+            to: "docs/web-console-docs/overview",
             position: "left",
             label: "Product Documentation",
           },
           {
-            to: "docs/web-console-docs/product-docs",
+            to: "docs/web-console-docs/overview",
             position: "left",
             label: "APIs & SDKs",
           },
