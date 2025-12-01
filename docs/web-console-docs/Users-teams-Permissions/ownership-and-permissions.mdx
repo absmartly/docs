@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 5
 ---
 
 import Image from "../../../src/components/Image";
@@ -9,7 +9,11 @@ import Image from "../../../src/components/Image";
 Over the last few months we incrementally released many new features related to teams, ownership & collaboration aimed at improving how teams are experimenting and collaborating with each other.
 In this document we will discuss those changes and how you can start making use of them.
 
-Assets in scope: Experiments, Features, Templates, Metrics  & Goals.
+Experiment Assets in scope: **Experiments**, **Features**, **Templates**, **Metrics**  & **Goals**.
+
+All other configuration settings are managed using global roles. For more details see our [Roles](./roles) page.
+
+---
 
 ## Team structure
 
@@ -17,7 +21,7 @@ The first building block was to make it possible to map your internal team struc
 
 <Image img="ownership-model/team-structure.png" alt="Team structure" maxWidth="50rem" />
 
-:::tip action
+:::tip 
 If you have not done so yet, we encourage you to go to /settings/teams and start building a team structure which aligns with the way you are structured and operating (or any other which makes most sense from the organizational point of view). Unless you start building your team hierarchy in ABsmartly you won't be able to start making use of the new features described below.
 :::
 
@@ -37,7 +41,7 @@ For backward compatibility, existing assets will retain their current individual
 While Team Ownership is the new default and preferred way of assigning ownership for Experiments, Features, Templates, Goals & Metrics, it is possible to re-enable user level ownership in the platform settings (/settings/platform).
 :::
 
-:::tip action
+:::tip
 To get the most of the new model we encourage you to move the ownership of your existing Experiments, Features, Templates, Goals & Metrics to the most relevant team in your organisation. To do that, just edit assets that you currently own and re-assign ownership to the correct team. Make sure that you are a member of that team if you want to retain your access to that asset.
 :::
 
@@ -72,7 +76,7 @@ Team membership can be explicit when a user is directly added to a team but it c
 For example if a user is added explicitly as `Team Contributor` in team Development, then this user would also be an implicit member of the parent teams (Engineering).
 Implicit members are, by default, not assigned any particular role in that team.
 
-:::tip action
+:::tip
 Make sure to add all platform users to their respective team and assign them the correct role so they can interact with the team's assets.
 :::
 
@@ -119,7 +123,7 @@ For now there are 2 types of possible permissions associated with sharing of ass
 Following the least privilege principle, and unless there is a good reason, it is usually good practice to grant Can Edit only to relevant individuals.
 :::
 
-:::tip action
+:::tip
 Go over your list of Experiments, Features, Templates, Goals & Metrics that you own (or that your team owns) and make sure to share it with the relevant individual(s) or team(s).
 For example if you want a metric or a goal to be available for everybody to use, then share it with the Global Team with Can View permission.
 It is possible that you want all your existing metrics, goals and possibly all your experiments, features and templates to be discoverable and usable by anyone on the platform.
