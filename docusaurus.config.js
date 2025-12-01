@@ -134,9 +134,9 @@ const config = {
         },
         items: [
           {
-            to: "docs/get-started",
+            to: "docs/web-console-docs/product-docs",
             position: "left",
-            label: "Knowledge Base",
+            label: "Product Documentation",
           },
           {
             to: "https://absmartly.com/blog",
