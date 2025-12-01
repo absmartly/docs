@@ -139,6 +139,11 @@ const config = {
             label: "Product Documentation",
           },
           {
+            to: "docs/apis-and-sdks/api-and-sdks",
+            position: "left",
+            label: "APIs & SDKs",
+          },
+          {
             to: "https://absmartly.com/blog",
             position: "left",
             label: "Blog",
