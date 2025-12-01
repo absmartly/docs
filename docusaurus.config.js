@@ -139,7 +139,7 @@ const config = {
             label: "Product Documentation",
           },
           {
-            to: "docs/web-console-docs/overview",
+            to: "docs/APIs-and-SDKs/overview",
             position: "left",
             label: "APIs & SDKs",
           },
