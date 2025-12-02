@@ -1,0 +1,421 @@
+---
+sidebar_position: 10
+---
+
+# Glossary
+
+This glossary explains the key concepts used throughout ABsmartly and in product experimentation more broadly.  
+It is designed as a quick reference for anyone designing, running or analysing experiments.
+
+---
+
+## A
+
+### A/A experiment  
+**Definition:** An experiment where users are randomly split between two (or more) *identical* variants. The goal is not to test a product change, but to validate the experimentation setup itself.  
+**Why it matters:** A/A experiments help detect issues such as sample ratio mismatch (SRM), tracking bugs or unexpected bias in randomisation before you start testing real changes. :contentReference[oaicite:0]{index=0}  
+**Example:** Splitting traffic 50/50 between two identical versions of the homepage to verify that traffic allocation, event tracking and metrics behave as expected.
+
+### A/B experiment  
+**Definition:** A controlled experiment that compares a baseline experience (control, variant A) to a single alternative (treatment, variant B) to estimate the impact of a change.  
+**Why it matters:** A/B experiments are the core building block of product experimentation and allow teams to quantify how a change affects key metrics. :contentReference[oaicite:1]{index=1}  
+**Example:** Testing a new “Buy now” button design (B) against the current design (A) and measuring the change in purchase conversion rate.
+
+### A/B/n experiment  
+**Definition:** An experiment that compares a control to *multiple* treatments at the same time (A vs B vs C, etc.).  
+**Why it matters:** A/B/n experiments speed up exploration when several ideas are available, but they increase the number of comparisons and therefore require more traffic or careful error control. :contentReference[oaicite:2]{index=2}  
+**Example:** Testing three alternative product page layouts (B, C, D) against the current layout (A) to find the best-performing design.
+
+---
+
+## B
+
+### Audience targeting  
+**Definition:** The practice of restricting an experiment or a variant to a specific subset of users based on attributes, behaviour or context.  
+**Why it matters:** Targeting ensures that experiments are run on the right population (for example, new users only), but aggressive targeting can reduce sample size and affect generalisability. :contentReference[oaicite:3]{index=3}  
+**Example:** Running an experiment only for traffic from a specific country or only for logged-in customers.
+
+### Binomial  
+**Definition:** A statistical model describing outcomes that have exactly two states such as success / failure or convert / not convert.  
+**Why it matters:** Many core metrics in experimentation, like conversion rate, follow a binomial process and use binomial-based methods for confidence intervals and tests. :contentReference[oaicite:4]{index=4}  
+**Example:** Whether each visitor completed checkout (yes or no) in a cart conversion experiment.
+
+### Behavioral metric  
+**Definition:** A metric that captures what users *do* in the product rather than what the business earns from them.  
+**Why it matters:** Behavioural metrics such as clicks, scroll depth or page views are often more sensitive and can explain *why* a business metric moves.  
+**Example:** Click-through rate on a recommendation widget, or the number of search queries per user.
+
+### Business metric  
+**Definition:** A metric directly tied to business outcomes such as revenue, profit, retention or subscription renewal.  
+**Why it matters:** Business metrics connect experimentation to company goals, but they can be noisier and slower to respond than behavioural metrics.  
+**Example:** Revenue per user, paid subscription rate, or 90-day retention.
+
+---
+
+## C
+
+### Conversion rate  
+**Definition:** The proportion of users who complete a defined goal out of all eligible users.  
+**Why it matters:** Conversion rate is one of the most common primary metrics, and small changes in conversion can have large business impact.  
+**Example:** 4.8 percent of visitors who saw the checkout page completed a purchase.
+
+### Confidence interval  
+**Definition:** A range of values that represents where the true effect size is likely to lie, given the data and the chosen confidence level.  
+**Why it matters:** Confidence intervals convey both the size and the uncertainty of an effect, which is more informative than a p-value alone. :contentReference[oaicite:5]{index=5}  
+**Example:** An observed lift of 5 percent with a 95 percent confidence interval from 2 percent to 8 percent.
+
+### Confirmation bias  
+**Definition:** The tendency to focus on data that supports pre-existing beliefs and ignore or downplay conflicting evidence.  
+**Why it matters:** Confirmation bias can lead teams to cherry-pick metrics or time windows that “prove” a desired outcome.  
+**Example:** Highlighting only secondary metrics that moved in the expected direction and ignoring a neutral or negative primary metric.
+
+### Confidence level  
+**Definition:** The probability that the confidence interval procedure will capture the true value, across many hypothetical repetitions of the experiment.  
+**Why it matters:** Common choices such as 95 percent or 99 percent define how strict you are about uncertainty and directly relate to the significance level.  
+**Example:** Using a 95 percent confidence level means accepting a 5 percent chance that the interval misses the true effect.
+
+### Continuous metric  
+**Definition:** A numeric metric that can take many possible values on a range, not just discrete categories.  
+**Why it matters:** Continuous metrics such as revenue or session duration often carry richer information but can be skewed and require outlier handling.  
+**Example:** Average order value, time on page, or number of items in a basket.
+
+### Continuous monitoring  
+**Definition:** Checking experiment results repeatedly over time as new data arrives.  
+**Why it matters:** Continuous monitoring can invalidate fixed-horizon statistical guarantees if no correction is used; sequential methods are designed to handle this safely. :contentReference[oaicite:6]{index=6}  
+**Example:** Reviewing the dashboard every morning and considering stopping early based on the latest numbers.
+
+### Continuous learning  
+**Definition:** A way of working where teams regularly run experiments, use insights to refine their hypotheses and feed results back into discovery and design.  
+**Why it matters:** Continuous learning turns experimentation into a long-term advantage instead of one-off tests.  
+**Example:** Iteratively testing onboarding flows, using each result to inform the next design.
+
+### Continuous delivery  
+**Definition:** A software practice that keeps code in a releasable state so that changes can be deployed frequently and safely.  
+**Why it matters:** Continuous delivery and experimentation complement each other: experiments de-risk changes, and frequent releases make it easier to act on experiment outcomes.  
+**Example:** Automatically deploying small, tested increments behind feature flags several times per day.
+
+### CUPED (Controlled Using Pre-Experiment Data)  
+**Definition:** A variance reduction technique that adjusts experiment metrics using correlated pre-experiment data as a covariate.  
+**Why it matters:** CUPED can significantly improve sensitivity so experiments reach conclusions faster or detect smaller effects using the same traffic. :contentReference[oaicite:7]{index=7}  
+**Example:** Using each user’s historical spend as a baseline when analysing purchase revenue during the test.
+
+---
+
+## D
+
+### Data-driven decision making  
+**Definition:** A decision process that relies on evidence from data and experiments instead of intuition or opinion alone.  
+**Why it matters:** Data-driven decisions reduce guesswork and help teams focus on changes that measurably improve user and business outcomes.  
+**Example:** Releasing a new navigation only after experiments show a statistically supported improvement in engagement and revenue.
+
+---
+
+## E
+
+### Efficiency gain  
+**Definition:** Any improvement that lets you answer the same experimental question with fewer users, less time or lower risk.  
+**Why it matters:** Techniques such as CUPED or group sequential testing can deliver more learning with the same experimentation budget. :contentReference[oaicite:8]{index=8}  
+**Example:** Reducing required sample size by 20 percent through variance reduction while keeping the same power.
+
+### Efficiency boundary  
+**Definition:** In sequential testing, a boundary that indicates results are strong enough that continuing the experiment is no longer worth the extra cost or risk.  
+**Why it matters:** Crossing an efficiency boundary lets you stop early when evidence is already clear, preserving traffic and time. :contentReference[oaicite:9]{index=9}  
+**Example:** Stopping an experiment ahead of schedule after the sequential test shows the treatment is convincingly better than control.
+
+### Experiment interaction  
+**Definition:** A situation where the effect of one experiment depends on whether another experiment is also running for the same users.  
+**Why it matters:** Strong interactions can distort results and make it hard to attribute observed effects to a single change.  
+**Example:** A new search ranking algorithm combined with a new layout that changes click patterns in unexpected ways.
+
+### Experimentation power  
+**Definition:** The probability that an experiment will detect a true effect of the planned size (or larger), given its design.  
+**Why it matters:** Power determines how often genuinely useful changes will show up as significant; low power leads to many missed opportunities.  
+**Example:** Designing an experiment with 80 percent power to detect a 2 percent lift in conversion.
+
+### Experiment replication  
+**Definition:** Running the same or very similar experiment again to confirm that a previous result was not a fluke.  
+**Why it matters:** Replication strengthens trust in findings and helps identify results that were driven by noise, novelty effects or local conditions.  
+**Example:** Repeating a successful test on a different country site to verify that the effect generalises.
+
+### Exploratory vs confirmatory experiment  
+**Definition:** Exploratory experiments are used to search for patterns or promising directions; confirmatory experiments are designed to rigorously test a specific hypothesis.  
+**Why it matters:** Mixing the two modes can lead to inflated false positives; exploratory insights should ideally be confirmed with a follow-up confirmatory test.  
+**Example:** Trying several onboarding variants to see what seems promising (exploratory) then running a focused A/B test on the chosen design (confirmatory).
+
+---
+
+## F
+
+### False discovery rate (FDR)  
+**Definition:** The expected proportion of false positives among the results you declare significant.  
+**Why it matters:** When running many experiments or looking at many metrics, controlling FDR helps keep the overall rate of wrong “winners” under control. :contentReference[oaicite:10]{index=10}  
+**Example:** Using an FDR procedure so that, on average, no more than 5 percent of launched “winners” are actually false signals.
+
+### False positive  
+**Definition:** Concluding that an effect exists when, in reality, there is none; equivalent to a Type I error.  
+**Why it matters:** False positives lead to rolling out changes that do not help and may even hurt the business.  
+**Example:** Launching a redesign because the experiment happened to show a spurious uplift.
+
+### False negative  
+**Definition:** Failing to detect a real effect; equivalent to a Type II error.  
+**Why it matters:** False negatives cause missed opportunities where genuinely beneficial changes are discarded.  
+**Example:** Abandoning a feature improvement that would have increased conversion by 1 percent because the test was underpowered.
+
+### Feature flag  
+**Definition:** A control mechanism that lets you turn a feature on or off, or vary it across users, without redeploying code.  
+**Why it matters:** Feature flags make it easier to run experiments, carry out gradual rollouts and quickly roll back problematic changes.  
+**Example:** Enabling a new checkout flow only for 10 percent of traffic via a flag while monitoring guardrail metrics.
+
+### Fishing  
+**Definition:** Searching through many metrics, segments or time windows without predefined hypotheses until something appears significant.  
+**Why it matters:** Fishing inflates the chance of false positives and can produce misleading “insights” that do not replicate.  
+**Example:** Testing dozens of segment combinations after the fact and reporting only the one combination that shows a significant effect.
+
+### Fixed horizon testing  
+**Definition:** A testing approach where sample size or duration is specified in advance and data is formally analysed only once, at the end.  
+**Why it matters:** Fixed horizon methods are conceptually simple but are not robust to unplanned peeking or early stopping. :contentReference[oaicite:11]{index=11}  
+**Example:** Committing to run an experiment for exactly two weeks and making a decision only after both weeks have completed.
+
+### Fully sequential testing (mSPRT)  
+**Definition:** A testing framework that allows continuous monitoring and stopping at any time while maintaining valid error guarantees, often based on sequential probability ratio tests.  
+**Why it matters:** Fully sequential methods offer maximum flexibility in when to stop, at the cost of more complex design and interpretation. :contentReference[oaicite:12]{index=12}  
+**Example:** Using an always-valid test that lets product teams check results whenever they want without inflating Type I error.
+
+### Futility boundary  
+**Definition:** A boundary in sequential testing that indicates it is unlikely the experiment will show a meaningful effect even if it continues.  
+**Why it matters:** Crossing a futility boundary allows an experiment to be stopped early and resources to be reallocated to more promising ideas. :contentReference[oaicite:13]{index=13}  
+**Example:** Ending a test after interim analysis shows that, given current trends, a practically important uplift is very unlikely.
+
+### Futility type  
+**Definition:** A classification describing *why* an experiment is futile, such as effect size being too small, variance too high or traffic too low to reach a useful conclusion.  
+**Why it matters:** Understanding the futility type helps decide whether to redesign the experiment, improve metrics or simply move on to other ideas.  
+**Example:** Concluding that a test is futile because traffic constraints make it impossible to detect the MDE within a reasonable timeframe.
+
+---
+
+## G
+
+### Group sequential testing  
+**Definition:** A sequential approach where you predefine a small number of checkpoints (interim looks) at which you are allowed to analyse data and possibly stop early.  
+**Why it matters:** Group sequential designs balance flexibility with simplicity and are well suited to practical experimentation where a few well-timed looks are enough. :contentReference[oaicite:14]{index=14}  
+**Example:** Planning interim analyses after 25 percent, 50 percent and 75 percent of the planned sample has been collected.
+
+### Guardrail metrics  
+**Definition:** Metrics monitored to ensure experiments stay within acceptable safety or performance constraints, independent of the primary success metric.  
+**Why it matters:** Guardrails protect user experience and business health while teams try bold ideas.  
+**Example:** Monitoring error rate and page load time while testing a new recommendation algorithm.
+
+---
+
+## H
+
+### Hierarchy of evidence  
+**Definition:** A conceptual ranking of evidence strength, from weaker forms such as anecdotes and observational data up to randomised controlled experiments and meta-analyses.  
+**Why it matters:** The hierarchy of evidence helps teams prioritise decisions based on how reliable and causal the underlying evidence is.  
+**Example:** Giving more weight to results from a well-run A/B test than to a simple correlation in historical analytics.
+
+### Hold-out group  
+**Definition:** A subset of users deliberately excluded from a feature rollout or experimentation and kept on the old experience for comparison.  
+**Why it matters:** Hold-outs help measure long-term or background effects, and can act as a control for rolling experiments or feature flags.  
+**Example:** Keeping 5 percent of users on the previous pricing model to track long-term revenue impact.
+
+---
+
+## I
+
+### Impact estimate  
+**Definition:** A forecast of how large an effect a change is expected to have on a metric, based on prior data, modelling or expert judgement.  
+**Why it matters:** Impact estimates help prioritise which experiments to run and inform sample size planning.  
+**Example:** Estimating that a new search filter could increase search-driven purchases by 3 to 5 percent.
+
+### Interaction effect  
+**Definition:** A situation where the combined effect of two variables differs from the sum of their individual effects.  
+**Why it matters:** Interaction effects can explain why a change works well in one context but not another.  
+**Example:** A new layout increases conversion for mobile users but decreases it for desktop users, altering the overall result.
+
+### Lower bound estimate  
+**Definition:** The lower end of a confidence interval, often used as a conservative estimate of effect size.  
+**Why it matters:** Reporting lower bounds can give decision makers a “worst plausible improvement” and reduce over-optimism.  
+**Example:** A lift of 5 percent with a 95 percent interval from 1 percent to 9 percent has a 1 percent lower bound.
+
+---
+
+## M
+
+### MDE (Minimum detectable effect)  
+**Definition:** The smallest true effect size that an experiment is designed to detect with the chosen power and significance level.  
+**Why it matters:** MDE connects business expectations with statistical design; too small and tests become expensive, too large and you miss meaningful improvements. :contentReference[oaicite:15]{index=15}  
+**Example:** Planning a test to detect at least a 2 percent relative increase in checkout conversion.
+
+### Mean  
+**Definition:** The arithmetic average of a set of values.  
+**Why it matters:** Many metrics are reported as means, such as revenue per user, and assumptions about distributions often centre on the mean.  
+**Example:** Total revenue of 10,000 across 200 users gives a mean of 50 per user.
+
+### Metric variance  
+**Definition:** The degree to which a metric’s values differ across users or sessions.  
+**Why it matters:** High variance makes it harder to detect effects and often drives sample size requirements.  
+**Example:** Daily revenue per user that fluctuates widely from one user to another has high variance.
+
+---
+
+## N
+
+### Null hypothesis  
+**Definition:** The default assumption that the experiment has no effect and that any observed difference is due to random variation.  
+**Why it matters:** Statistical tests typically measure how compatible the data is with the null hypothesis.  
+**Example:** “The new checkout flow does not change conversion rate compared to the old flow.”
+
+---
+
+## O
+
+### Observed effect  
+**Definition:** The measured difference between treatment and control groups in an experiment.  
+**Why it matters:** The observed effect is the best point estimate available from the data, but it is subject to sampling variability.  
+**Example:** Treatment shows a 5.1 percent conversion rate, control 4.8 percent, so the observed lift is 0.3 percentage points.
+
+### One-sided analysis  
+**Definition:** A hypothesis test that considers only one direction of change, such as whether a metric increased but not whether it decreased.  
+**Why it matters:** One-sided tests can be more powerful for directional questions but must be justified in advance to avoid bias.  
+**Example:** Testing only whether a new recommendation model increases click-through rate, not whether it might decrease it.
+
+### Operational metric  
+**Definition:** A metric that reflects system health or performance rather than direct user or business outcomes.  
+**Why it matters:** Operational metrics act as guardrails and basic safety checks during experiments.  
+**Example:** Error rate, latency, CPU utilisation or cache hit rate.
+
+---
+
+## P
+
+### Peeking  
+**Definition:** Examining experiment results before the planned end in a fixed-horizon design and using those interim looks to influence decisions.  
+**Why it matters:** Uncontrolled peeking increases the chance of false positives and can make p-values and intervals unreliable. :contentReference[oaicite:16]{index=16}  
+**Example:** Stopping a two-week fixed-horizon test after four days because the early data looks promising.
+
+### Power calculation  
+**Definition:** The process of choosing sample size, MDE, significance level and power so that an experiment is appropriately designed.  
+**Why it matters:** Good power calculations align statistical design with practical constraints like traffic, time and business priorities.  
+**Example:** Deciding that you need 50,000 users per variant to detect a 1 percent lift with 80 percent power at a 5 percent significance level.
+
+### Pre-selection bias  
+**Definition:** Bias introduced when the users who enter a study are not representative of the broader population or when assignment is not properly random.  
+**Why it matters:** Pre-selection bias can make experiment results look better or worse than they will be in real-world rollout.  
+**Example:** Testing a new feature only on highly engaged users and then rolling it out to everyone.
+
+### Primary metrics  
+**Definition:** The main metrics used to judge success or failure of an experiment.  
+**Why it matters:** Primary metrics should be chosen carefully in advance to reflect the experiment’s objective; they drive decisions.  
+**Example:** Checkout conversion rate for an experiment on the payment page.
+
+### Product experimentation  
+**Definition:** The use of controlled experiments to evaluate product changes and make product decisions grounded in evidence.  
+**Why it matters:** Product experimentation turns hypotheses about user behaviour into measurable tests and supports continuous improvement.  
+**Example:** Testing new onboarding journeys, pricing presentations or recommendations.
+
+### Product operating model  
+**Definition:** A framework that describes how product teams discover opportunities, deliver solutions and use experimentation and data as part of their regular workflow.  
+**Why it matters:** A coherent operating model ensures experimentation is not a one-off activity but a core part of how the organisation builds products.  
+**Example:** Marty Cagan’s model of empowered product teams that continuously discover, deliver and measure outcomes.
+
+### P-value  
+**Definition:** The probability of observing data at least as extreme as what you saw, assuming the null hypothesis is true.  
+**Why it matters:** P-values are widely used but easily misinterpreted; they are not the probability that the null is true. :contentReference[oaicite:17]{index=17}  
+**Example:** A p-value of 0.03 indicates that, if there were no true effect, you would see a result this extreme or more in about 3 percent of repeated tests.
+
+### P-hacking  
+**Definition:** Manipulating analysis choices, data cuts or stopping rules until a desired level of significance is achieved.  
+**Why it matters:** P-hacking severely inflates false positives and creates misleading “evidence”.  
+**Example:** Trying different subsets of users and time windows until one yields p < 0.05, then reporting only that result.
+
+---
+
+## S
+
+### Sample size  
+**Definition:** The number of users, sessions or units included per variant (or overall) in an experiment.  
+**Why it matters:** Sample size, together with variance and effect size, determines power and the time needed to reach a conclusion.  
+**Example:** An experiment that receives 20,000 users in control and 20,000 in treatment.
+
+### Secondary metrics  
+**Definition:** Additional metrics monitored in an experiment to understand side effects or support interpretation of the primary metric.  
+**Why it matters:** Secondary metrics reveal trade-offs and help explain why a primary metric changed.  
+**Example:** Monitoring average order value and page load time while the primary metric is conversion rate.
+
+### Significance level (alpha)  
+**Definition:** The maximum acceptable probability of a Type I error that you are willing to tolerate in a single hypothesis test, often set to 0.05.  
+**Why it matters:** Alpha determines the threshold at which you consider a result statistically significant.  
+**Example:** Using alpha = 0.05 means you treat results with p < 0.05 as significant.
+
+### Spillover effect  
+**Definition:** When the impact of a change spills over from users in one variant to users in another, breaking the independence assumption.  
+**Why it matters:** Spillover can bias results and is especially relevant for social features, shared environments or marketplaces.  
+**Example:** Discounts shown only to the treatment group affecting reference prices for control users.
+
+### SRM (sample ratio mismatch)  
+**Definition:** A discrepancy between the expected allocation of users across variants and what is actually observed.  
+**Why it matters:** SRM is a strong signal that something is wrong with assignment or tracking; experiment results should not be trusted until the cause is understood. :contentReference[oaicite:18]{index=18}  
+**Example:** Configuring a 50/50 split but observing 60 percent of traffic in control and 40 percent in treatment.
+
+### Standard deviation  
+**Definition:** A measure of how spread out values are around the mean of a distribution.  
+**Why it matters:** Standard deviation is central to many formulas for confidence intervals, z-scores and sample size calculations.  
+**Example:** Daily revenue per user with a mean of 50 and a standard deviation of 10.
+
+### Statistical power  
+**Definition:** The probability that a test will detect a true effect of the planned size or larger.  
+**Why it matters:** High power means you are less likely to miss real improvements; very low power leads to many inconclusive or misleading tests.  
+**Example:** An experiment with 90 percent power will detect the target effect in 9 out of 10 repeated tests on average.
+
+### Statistical significance (threshold)  
+**Definition:** A label applied when results meet the predefined significance criterion, usually p < alpha.  
+**Why it matters:** Statistical significance indicates that the observed effect is unlikely to be due to chance alone under the null model, but it does not guarantee practical importance.  
+**Example:** A 3 percent lift in conversion with p = 0.01 at alpha = 0.05 is statistically significant.
+
+---
+
+## T
+
+### Two-sided analysis  
+**Definition:** A hypothesis test that considers both possible directions of change, looking for either an increase or a decrease in the metric.  
+**Why it matters:** Two-sided tests are more conservative but safer when you care about both positive and negative outcomes.  
+**Example:** Testing whether a UI change alters conversion in *either* direction, not just improvement.
+
+### Twyman’s law  
+**Definition:** A heuristic that states “the more surprising a result looks, the more likely it is to be wrong or misleading”.  
+**Why it matters:** Twyman’s law reminds teams to double-check interesting or extreme results for errors, bias or artefacts.  
+**Example:** Discovering a 50 percent uplift from a minor colour change should trigger strong suspicion and careful validation.
+
+### Type I error  
+**Definition:** Incorrectly rejecting the null hypothesis when it is actually true; also called a false positive.  
+**Why it matters:** Type I errors lead to rolling out ineffective changes based on spurious results.  
+**Example:** Believing a feature boosts revenue when any measured difference is due only to randomness.
+
+### Type II error  
+**Definition:** Failing to reject the null hypothesis when it is false; also called a false negative.  
+**Why it matters:** Type II errors cause teams to miss out on beneficial changes that would have helped users or the business.  
+**Example:** Concluding that a genuinely helpful onboarding change has no effect because the test was underpowered.
+
+---
+
+## V
+
+### Variance  
+**Definition:** A measure of spread that averages the squared distance between each value and the mean.  
+**Why it matters:** Variance is the foundation for standard deviation and influences sample size and sensitivity.  
+**Example:** A metric with low variance has values clustered tightly around the mean; high variance means values are more scattered.
+
+### Variance reduction  
+**Definition:** Any method that reduces the variance of metric estimates without changing their meaning, such as using pre-experiment covariates or better metric definitions.  
+**Why it matters:** Lower variance improves power and reduces how long experiments need to run. :contentReference[oaicite:19]{index=19}  
+**Example:** Applying CUPED to revenue per user so that differences between variants become clearer with the same traffic.
+
+---
+
+## Z
+
+### Z-score  
+**Definition:** A standardised value expressing how many standard deviations a data point or effect is away from the mean or from zero.  
+**Why it matters:** Z-scores provide a common scale for test statistics and link directly to p-values in many tests.  
+**Example:** A z-score of 2 corresponds to an effect about two standard deviations above zero, which roughly maps to p ≈ 0.045 in a two-sided test.
