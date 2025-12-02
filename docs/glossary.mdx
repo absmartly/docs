@@ -258,27 +258,51 @@ Feature flags make it easier to run experiments, carry out gradual rollouts and 
 ### Fishing  
 Searching through many metrics, segments or time windows without predefined hypotheses until something appears significant.  
 Fishing inflates the chance of false positives and can produce misleading “insights” that do not replicate.  
+
+To prevent fishing, it is recommended to pre-register decision criteria before the experiment starts.
+
 **Example:** Testing dozens of segment combinations after the fact and reporting only the one combination that shows a significant effect.
 
 ### Fixed horizon testing  
 A testing approach where sample size or duration is specified in advance and data is formally analysed only once, at the end.  
-Fixed horizon methods are conceptually simple but are not robust to unplanned peeking or early stopping. :contentReference[oaicite:11]{index=11}  
+Fixed horizon methods are conceptually simple but are not robust to unplanned peeking or early stopping. 
+
+See also [Group Sequential Testing](group-sequential-testing).
+
 **Example:** Committing to run an experiment for exactly two weeks and making a decision only after both weeks have completed.
 
 ### Fully sequential testing (mSPRT)  
 A testing framework that allows continuous monitoring and stopping at any time while maintaining valid error guarantees, often based on sequential probability ratio tests.  
-Fully sequential methods offer maximum flexibility in when to stop, at the cost of more complex design and interpretation. :contentReference[oaicite:12]{index=12}  
-**Example:** Using an always-valid test that lets product teams check results whenever they want without inflating Type I error.
+Fully sequential methods offer maximum flexibility in when to stop, at the cost of experimentation power and more complex design and interpretation. 
+
+See also [Group Sequential Testing](group-sequential-testing).
 
 ### Futility boundary  
-A boundary in sequential testing that indicates it is unlikely the experiment will show a meaningful effect even if it continues.  
-Crossing a futility boundary allows an experiment to be stopped early and resources to be reallocated to more promising ideas. :contentReference[oaicite:13]{index=13}  
-**Example:** Ending a test after interim analysis shows that, given current trends, a practically important uplift is very unlikely.
+A statistical threshold used [Group Sequential Testing](group-sequential-testing) that, if crossed during an interim analysis,
+allows the experiment to stop early for lack of effect — indicating that the treatment is unlikely to produce a meaningful or statistically significant improvement, 
+even if the test continues to full sample size.
+
+Futility boundaries improve efficiency by preventing wasted time and traffic on experiments that show little promise.
+They help teams focus on higher-impact ideas, but must be pre-defined and adjusted to avoid inflating the Type II error (false negatives) across multiple analyses.
 
 ### Futility type  
-A classification describing *why* an experiment is futile, such as effect size being too small, variance too high or traffic too low to reach a useful conclusion.  
-Understanding the futility type helps decide whether to redesign the experiment, improve metrics or simply move on to other ideas.  
-**Example:** Concluding that a test is futile because traffic constraints make it impossible to detect the MDE within a reasonable timeframe.
+The rule or criterion used to define what constitutes “futility” during interim analyses in [Group Sequential Testing](group-sequential-testing). 
+It determines whether an experiment should stop early because it is unlikely to lead to a statistically significant result or if it should continue running.
+
+There are two common futility types:
+
+**Non-binding futility**: You may stop the test if the boundary is crossed, but you’re not required to. It doesn’t affect the final significance level if you continue.
+
+**Binding futility**: If the futility boundary is crossed, the test must stop. Ignoring it would invalidate the final p-value, potentially inflating Type I error.
+
+Choosing a futility type affects both statistical validity and decision flexibility. 
+Non-binding futility provides optionality for business judgment, while binding futility enforces stricter control over error rates.
+
+By default GST experiment in ABsmartly uses a binding futility type but this can be changed during the setup.
+
+Example:
+A company sets a non-binding futility boundary at the halfway point of an A/B test. 
+The treatment effect is flat, but the team decides to continue because external factors suggest the impact may emerge later — a valid choice under the non-binding rule.
 
 ---
 
@@ -411,7 +435,7 @@ Uncontrolled peeking increases the chance of false positives and can make p-valu
 
 ### Power level
 
-See [Experimentation power](experimentation-power).
+See [Experimentation power](#experimentation-power).
 
 ### Power calculation  
 The process of choosing sample size, MDE, significance level and power so that an experiment is appropriately designed.  
