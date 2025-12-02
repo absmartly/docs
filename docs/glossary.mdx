@@ -14,24 +14,32 @@ It is designed as a quick reference for anyone designing, running or analysing e
 ### A/A experiment  
 **Definition:** A special type of A/B experiment where users are randomly split between two *identical* variants. 
 The goal is not to test a product change, but to validate the experimentation setup itself.  
+
 **Why it matters:** A/A experiments help validate tracking and detect issues such as sample ratio mismatch (SRM), tracking bugs or unexpected bias in randomisation before you start testing real changes.
+
 **Example:** Splitting traffic 50/50 between two identical versions of the homepage to verify that traffic allocation, event tracking and metrics behave as expected.
 
 ### A/B experiment  
 **Definition:** A controlled experiment that compares a baseline experience (control, variant A) to a single alternative (treatment, variant B) to estimate the impact of a change.  
 This is the most common type of experiment setup and the default when creating a new experiment using ABsmartly.
+
 **Why it matters:** A/B experiments are the core building block of product experimentation and allow teams to quantify how a change affects key metrics.
+
 **Example:** Testing a new “Buy now” button design (B) against the current design (A) and measuring the change in purchase conversion rate.
 
 ### A/B/n experiment  
 **Definition:** A special type of A/B experiment that compares a control to *multiple* treatments at the same time (A vs B vs C, etc.). 
-A/B/n experiments are also sometimes refered to as multi-variant. Not to be confused with [Multivariate Experiment](#multivariate-experiment)
+A/B/n experiments are also sometimes refered to as multi-variant. Not to be confused with [Multivariate Experiment](#multivariate-experiment).
+
 **Why it matters:** A/B/n experiments speed up exploration when several ideas are available, but they increase the number of comparisons and therefore require more traffic.
+
 **Example:** Testing three alternative product page layouts (B, C, D) against the current layout (A) to find the best-performing design.
 
 ### Audience targeting  
 **Definition:** The practice of restricting an experiment to a specific subset of visitors based on attributes, behaviour or context.  
+
 **Why it matters:** Targeting ensures that experiments are run on the right population (for example, new users only), but aggressive targeting can reduce sample size and affect generalisability.
+
 **Example:** Running an experiment only for traffic from a specific country or only for logged-in customers.
 
 ---
@@ -39,21 +47,29 @@ A/B/n experiments are also sometimes refered to as multi-variant. Not to be conf
 ## B
 
 ### Binomial  
-**Definition:** A statistical model describing outcomes that have exactly two states such as success / failure or convert / not convert.  
+**Definition:** A statistical model describing outcomes that have exactly two discrete values such as 0 / 1, true / false, success / failure or convert / not convert.  
+
 **Why it matters:** Many core metrics in experimentation, like conversion rate, follow a binomial process and use binomial-based methods for confidence intervals and tests.  
+
 **Example:** Whether each visitor completed checkout (yes or no) in a cart conversion experiment.
 
 ### Behavioral metrics  
 **Definition:** A metric that captures what users *do* in the product rather than what the business earns from them.  
+
 **Why it matters:** Behavioural metrics such as clicks, scroll depth or page views are often more sensitive and can explain *why* a [business metric](#business-metrics) moves. 
-They can also help identify potential [false positive](##false-positive) when the effect on the user behaviour does not match the observed effect on the [primary metric](#primary-metric).
-ABsmartly recommends using behavioural metrics as [secondary metrics](#secondary-metrics) to help support the decision and reduce the risk of [false positive](##false-positive) on the [primary metric](#primary-metric).
+They can also help identify potential [false positive](#false-positive) when the effect on the user behaviour does not match the observed effect on the [primary metric](#primary-metric).
+
+ABsmartly recommends using behavioural metrics as [secondary metrics](#secondary-metrics) to help support the decision and reduce the risk of false positive on the primary metric.
+
 **Example:** Click-through rate on a recommendation widget, or the number of search queries per user.
 
 ### Business metrics
-**Definition:** A metric directly tied to business outcomes such as revenue, profit, retention or subscription renewal.  
+**Definition:** A metric directly tied to business outcomes such as revenue, profit, retention or subscription renewal. 
+
 **Why it matters:** Business metrics connect experimentation to company goals, but they can be noisier and slower to respond than behavioural metrics.
-ABsmartly recommends, whgen possible, using a business metric as the [primary metric](#primary-metric) when setting up experiments.
+
+ABsmartly recommends, when possible, using a business metric as the [primary metric](#primary-metric) when setting up experiments.
+
 **Example:** Revenue per user, paid subscription rate, or 90-day retention.
 
 ---
@@ -61,24 +77,37 @@ ABsmartly recommends, whgen possible, using a business metric as the [primary me
 ## C
 
 ### Conversion rate  
-**Definition:** The proportion of users who complete a defined goal out of all eligible users.  
-**Why it matters:** Conversion rate is one of the most common primary metric, and small changes in conversion can have large business impact.  
+**Definition:** The proportion of visitors who complete a defined goal out of all eligible visitors.  
+
+**Why it matters:** Conversion rate is one of the most common primary metric, and small changes in conversion can have large business impact. 
+
 **Example:** 4.8 percent of visitors who saw the checkout page completed a purchase.
 
 ### Confidence interval  
 **Definition:** A range of values that represents where the true effect size is likely to lie, given the data and the chosen confidence level.  
-**Why it matters:** Confidence intervals convey both the size and the uncertainty of an effect, which is more informative than a p-value alone. :contentReference[oaicite:5]{index=5}  
-**Example:** An observed lift of 5 percent with a 95 percent confidence interval from 2 percent to 8 percent.
+In experimentation, it is most often used to estimate the range in which the true difference between treatment and control lies. 
+
+**Why it matters:** Confidence intervals convey both the size and the uncertainty of an effect, which is more informative than a p-value alone. 
+Confidence intervals help assess both statistical significance (does the CI exclude zero?) and practical significance (is the effect large enough to matter?).
+
+**Example:** If a test result shows a +2.3% lift with a 95% confidence interval of [+0.5%, +4.1%], 
+it means means that if you were to repeat the same experiment 100 times, the true effect would lie within the CI in about 95 of those.
+
+You could say “We are 95% confident that the true effect of the treatment is between +0.5% and +4.1%.”
 
 ### Confirmation bias  
-**Definition:** The tendency to focus on data that supports pre-existing beliefs and ignore or downplay conflicting evidence.  
-**Why it matters:** Confirmation bias can lead teams to cherry-pick metrics or time windows that “prove” a desired outcome.  
+**Definition:** The tendency to focus on data that supports pre-existing beliefs and ignore or downplay the evidence. 
+
+**Why it matters:** Confirmation bias can lead teams to cherry-pick metrics or time windows that “prove” a desired outcome. 
+To avoid such bias, ABsmartly recommends pre-registering the [decision criteria](#decision-criteria) before the experiment runs. 
+
 **Example:** Highlighting only secondary metrics that moved in the expected direction and ignoring a neutral or negative primary metric.
 
 ### Confidence level  
-**Definition:** The probability that the confidence interval procedure will capture the true value, across many hypothetical repetitions of the experiment.  
-**Why it matters:** Common choices such as 95 percent or 99 percent define how strict you are about uncertainty and directly relate to the significance level.  
-**Example:** Using a 95 percent confidence level means accepting a 5 percent chance that the interval misses the true effect.
+**Definition:** The probability that the [confidence interval](#confidence-interval) procedure will capture the true value, across many hypothetical repetitions of the experiment.
+
+**Why it matters:** Common choices such as 90, 95 percent or 99 percent define how strict you are about uncertainty and directly relate to the [significance level](#significance-level). 
+A higher confidence level reduces the risk of [false positive](#false-positive) but requires more data (wider intervals).
 
 ### Continuous metric  
 **Definition:** A numeric metric that can take many possible values on a range, not just discrete categories.  
@@ -113,6 +142,8 @@ ABsmartly recommends, whgen possible, using a business metric as the [primary me
 **Definition:** A decision process that relies on evidence from data and experiments instead of intuition or opinion alone.  
 **Why it matters:** Data-driven decisions reduce guesswork and help teams focus on changes that measurably improve user and business outcomes.  
 **Example:** Releasing a new navigation only after experiments show a statistically supported improvement in engagement and revenue.
+
+### Decision criteria
 
 ---
 
@@ -322,6 +353,10 @@ Not to be confused with [Multivariate experiment](#multivariate-experiment).
 **Definition:** Examining experiment results before the planned end in a fixed-horizon design and using those interim looks to influence decisions.  
 **Why it matters:** Uncontrolled peeking increases the chance of false positives and can make p-values and intervals unreliable. :contentReference[oaicite:16]{index=16}  
 **Example:** Stopping a two-week fixed-horizon test after four days because the early data looks promising.
+
+### Point estimate
+
+### Power level
 
 ### Power calculation  
 **Definition:** The process of choosing sample size, MDE, significance level and power so that an experiment is appropriately designed.  
