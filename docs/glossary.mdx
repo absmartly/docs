@@ -267,7 +267,7 @@ To prevent fishing, it is recommended to pre-register decision criteria before t
 A testing approach where sample size or duration is specified in advance and data is formally analysed only once, at the end.  
 Fixed horizon methods are conceptually simple but are not robust to unplanned peeking or early stopping. 
 
-See also [Group Sequential Testing](group-sequential-testing).
+See also [Group Sequential Testing](#group-sequential-testing).
 
 **Example:** Committing to run an experiment for exactly two weeks and making a decision only after both weeks have completed.
 
@@ -275,10 +275,10 @@ See also [Group Sequential Testing](group-sequential-testing).
 A testing framework that allows continuous monitoring and stopping at any time while maintaining valid error guarantees, often based on sequential probability ratio tests.  
 Fully sequential methods offer maximum flexibility in when to stop, at the cost of experimentation power and more complex design and interpretation. 
 
-See also [Group Sequential Testing](group-sequential-testing).
+See also [Group Sequential Testing](#group-sequential-testing).
 
 ### Futility boundary  
-A statistical threshold used [Group Sequential Testing](group-sequential-testing) that, if crossed during an interim analysis,
+A statistical threshold used [Group Sequential Testing](#group-sequential-testing) that, if crossed during an interim analysis,
 allows the experiment to stop early for lack of effect — indicating that the treatment is unlikely to produce a meaningful or statistically significant improvement, 
 even if the test continues to full sample size.
 
@@ -286,7 +286,7 @@ Futility boundaries improve efficiency by preventing wasted time and traffic on 
 They help teams focus on higher-impact ideas, but must be pre-defined and adjusted to avoid inflating the Type II error (false negatives) across multiple analyses.
 
 ### Futility type  
-The rule or criterion used to define what constitutes “futility” during interim analyses in [Group Sequential Testing](group-sequential-testing). 
+The rule or criterion used to define what constitutes “futility” during interim analyses in [Group Sequential Testing](#group-sequential-testing). 
 It determines whether an experiment should stop early because it is unlikely to lead to a statistically significant result or if it should continue running.
 
 There are two common futility types:
@@ -309,9 +309,13 @@ The treatment effect is flat, but the team decides to continue because external 
 ## G
 
 ### Group sequential testing  
-A sequential approach where you predefine a small number of checkpoints (interim looks) at which you are allowed to analyse data and possibly stop early.  
-Group sequential designs balance flexibility with simplicity and are well suited to practical experimentation where a few well-timed looks are enough. :contentReference[oaicite:14]{index=14}  
-**Example:** Planning interim analyses after 25 percent, 50 percent and 75 percent of the planned sample has been collected.
+A sequential approach where you predefine interim analyses (checkpoints) at which you are allowed to analyse data and possibly stop early.  
+Group sequential designs balance flexibility with simplicity and are well suited to practical experimentation where a few well-timed looks are enough. 
+
+Group Sequential Testing is the default method when creating new experiment. 
+It leads to making decisions up to 80% than with a more traditional [Fixed Horizon Experiment](#fixed-horizon-testing).
+
+Do you want to know more about GST? Read our [dedicated article]('https://absmartly.com/gst')
 
 ### Guardrail metrics  
 Metrics monitored to ensure experiments stay within acceptable safety or performance constraints, independent of the primary success metric.  
