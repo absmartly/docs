@@ -301,8 +301,7 @@ Non-binding futility provides optionality for business judgment, while binding f
 By default GST experiment in ABsmartly uses a binding futility type but this can be changed during the setup.
 
 Example:
-A company sets a non-binding futility boundary at the halfway point of an A/B test. 
-The treatment effect is flat, but the team decides to continue because external factors suggest the impact may emerge later — a valid choice under the non-binding rule.
+At the halfway point of an A/B test, the test crosses the futility boundary, but the team decides to continue because external factors suggest the impact may emerge later — a valid choice under the non-binding rule.
 
 ---
 
@@ -315,7 +314,7 @@ Group sequential designs balance flexibility with simplicity and are well suited
 Group Sequential Testing is the default method when creating new experiment. 
 It leads to making decisions up to 80% than with a more traditional [Fixed Horizon Experiment](#fixed-horizon-testing).
 
-Do you want to know more about GST? Read our [dedicated article]('https://absmartly.com/gst')
+Do you want to know more about GST? Read our [dedicated article](https://absmartly.com/gst)
 
 ### Guardrail metrics  
 Metrics monitored to ensure experiments stay within acceptable safety or performance constraints, independent of the primary success metric.  
@@ -361,7 +360,7 @@ Reporting lower bounds can give decision makers a “worst plausible improvement
 
 ### MDE (Minimum detectable effect)  
 The smallest true effect size that an experiment is designed to detect with the chosen power and significance level.  
-MDE connects business expectations with statistical design; too small and tests become expensive, too large and you miss meaningful improvements. :contentReference[oaicite:15]{index=15}  
+MDE connects business expectations with statistical design; too small and tests become expensive, too large and you miss meaningful improvements.   
 **Example:** Planning a test to detect at least a 2 percent relative increase in checkout conversion.
 
 ### Mean  
@@ -432,7 +431,7 @@ Operational metrics act as guardrails and basic safety checks during experiments
 
 ### Peeking  
 Examining experiment results before the planned end in a fixed-horizon design and using those interim looks to influence decisions.  
-Uncontrolled peeking increases the chance of false positives and can make p-values and intervals unreliable. :contentReference[oaicite:16]{index=16}  
+Uncontrolled peeking increases the chance of false positives and can make p-values and intervals unreliable.   
 **Example:** Stopping a two-week fixed-horizon test after four days because the early data looks promising.
 
 ### Point estimate
@@ -468,7 +467,7 @@ A coherent operating model ensures experimentation is not a one-off activity but
 
 ### P-value  
 The probability of observing data at least as extreme as what you saw, assuming the null hypothesis is true.  
-P-values are widely used but easily misinterpreted; they are not the probability that the null is true. :contentReference[oaicite:17]{index=17}  
+P-values are widely used but easily misinterpreted; they are not the probability that the null is true.   
 **Example:** A p-value of 0.03 indicates that, if there were no true effect, you would see a result this extreme or more in about 3 percent of repeated tests.
 
 ### P-hacking  
@@ -502,7 +501,7 @@ Spillover can bias results and is especially relevant for social features, share
 
 ### SRM (sample ratio mismatch)  
 A discrepancy between the expected allocation of users across variants and what is actually observed.  
-SRM is a strong signal that something is wrong with assignment or tracking; experiment results should not be trusted until the cause is understood. :contentReference[oaicite:18]{index=18}  
+SRM is a strong signal that something is wrong with assignment or tracking; experiment results should not be trusted until the cause is understood.   
 **Example:** Configuring a 50/50 split but observing 60 percent of traffic in control and 40 percent in treatment.
 
 ### Standard deviation  
@@ -557,7 +556,7 @@ Variance is the foundation for standard deviation and influences sample size and
 
 ### Variance reduction  
 Any method that reduces the variance of metric estimates without changing their meaning, such as using pre-experiment covariates or better metric definitions.  
-Lower variance improves power and reduces how long experiments need to run. :contentReference[oaicite:19]{index=19}  
+Lower variance improves power and reduces how long experiments need to run.   
 **Example:** Applying CUPED to revenue per user so that differences between variants become clearer with the same traffic.
 
 ---
