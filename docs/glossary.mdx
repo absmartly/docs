@@ -12,42 +12,48 @@ It is designed as a quick reference for anyone designing, running or analysing e
 ## A
 
 ### A/A experiment  
-**Definition:** An experiment where users are randomly split between two (or more) *identical* variants. The goal is not to test a product change, but to validate the experimentation setup itself.  
-**Why it matters:** A/A experiments help detect issues such as sample ratio mismatch (SRM), tracking bugs or unexpected bias in randomisation before you start testing real changes. :contentReference[oaicite:0]{index=0}  
+**Definition:** A special type of A/B experiment where users are randomly split between two *identical* variants. 
+The goal is not to test a product change, but to validate the experimentation setup itself.  
+**Why it matters:** A/A experiments help validate tracking and detect issues such as sample ratio mismatch (SRM), tracking bugs or unexpected bias in randomisation before you start testing real changes.
 **Example:** Splitting traffic 50/50 between two identical versions of the homepage to verify that traffic allocation, event tracking and metrics behave as expected.
 
 ### A/B experiment  
 **Definition:** A controlled experiment that compares a baseline experience (control, variant A) to a single alternative (treatment, variant B) to estimate the impact of a change.  
-**Why it matters:** A/B experiments are the core building block of product experimentation and allow teams to quantify how a change affects key metrics. :contentReference[oaicite:1]{index=1}  
+This is the most common type of experiment setup and the default when creating a new experiment using ABsmartly.
+**Why it matters:** A/B experiments are the core building block of product experimentation and allow teams to quantify how a change affects key metrics.
 **Example:** Testing a new “Buy now” button design (B) against the current design (A) and measuring the change in purchase conversion rate.
 
 ### A/B/n experiment  
-**Definition:** An experiment that compares a control to *multiple* treatments at the same time (A vs B vs C, etc.).  
-**Why it matters:** A/B/n experiments speed up exploration when several ideas are available, but they increase the number of comparisons and therefore require more traffic or careful error control. :contentReference[oaicite:2]{index=2}  
+**Definition:** A special type of A/B experiment that compares a control to *multiple* treatments at the same time (A vs B vs C, etc.). 
+A/B/n experiments are also sometimes refered to as multi-variant. Not to be confused with [Multivariate Experiment](#multivariate-experiment)
+**Why it matters:** A/B/n experiments speed up exploration when several ideas are available, but they increase the number of comparisons and therefore require more traffic.
 **Example:** Testing three alternative product page layouts (B, C, D) against the current layout (A) to find the best-performing design.
+
+### Audience targeting  
+**Definition:** The practice of restricting an experiment to a specific subset of visitors based on attributes, behaviour or context.  
+**Why it matters:** Targeting ensures that experiments are run on the right population (for example, new users only), but aggressive targeting can reduce sample size and affect generalisability.
+**Example:** Running an experiment only for traffic from a specific country or only for logged-in customers.
 
 ---
 
 ## B
 
-### Audience targeting  
-**Definition:** The practice of restricting an experiment or a variant to a specific subset of users based on attributes, behaviour or context.  
-**Why it matters:** Targeting ensures that experiments are run on the right population (for example, new users only), but aggressive targeting can reduce sample size and affect generalisability. :contentReference[oaicite:3]{index=3}  
-**Example:** Running an experiment only for traffic from a specific country or only for logged-in customers.
-
 ### Binomial  
 **Definition:** A statistical model describing outcomes that have exactly two states such as success / failure or convert / not convert.  
-**Why it matters:** Many core metrics in experimentation, like conversion rate, follow a binomial process and use binomial-based methods for confidence intervals and tests. :contentReference[oaicite:4]{index=4}  
+**Why it matters:** Many core metrics in experimentation, like conversion rate, follow a binomial process and use binomial-based methods for confidence intervals and tests.  
 **Example:** Whether each visitor completed checkout (yes or no) in a cart conversion experiment.
 
-### Behavioral metric  
+### Behavioral metrics  
 **Definition:** A metric that captures what users *do* in the product rather than what the business earns from them.  
-**Why it matters:** Behavioural metrics such as clicks, scroll depth or page views are often more sensitive and can explain *why* a business metric moves.  
+**Why it matters:** Behavioural metrics such as clicks, scroll depth or page views are often more sensitive and can explain *why* a [business metric](#business-metrics) moves. 
+They can also help identify potential [false positive](##false-positive) when the effect on the user behaviour does not match the observed effect on the [primary metric](#primary-metric).
+ABsmartly recommends using behavioural metrics as [secondary metrics](#secondary-metrics) to help support the decision and reduce the risk of [false positive](##false-positive) on the [primary metric](#primary-metric).
 **Example:** Click-through rate on a recommendation widget, or the number of search queries per user.
 
-### Business metric  
+### Business metrics
 **Definition:** A metric directly tied to business outcomes such as revenue, profit, retention or subscription renewal.  
-**Why it matters:** Business metrics connect experimentation to company goals, but they can be noisier and slower to respond than behavioural metrics.  
+**Why it matters:** Business metrics connect experimentation to company goals, but they can be noisier and slower to respond than behavioural metrics.
+ABsmartly recommends, whgen possible, using a business metric as the [primary metric](#primary-metric) when setting up experiments.
 **Example:** Revenue per user, paid subscription rate, or 90-day retention.
 
 ---
@@ -56,7 +62,7 @@ It is designed as a quick reference for anyone designing, running or analysing e
 
 ### Conversion rate  
 **Definition:** The proportion of users who complete a defined goal out of all eligible users.  
-**Why it matters:** Conversion rate is one of the most common primary metrics, and small changes in conversion can have large business impact.  
+**Why it matters:** Conversion rate is one of the most common primary metric, and small changes in conversion can have large business impact.  
 **Example:** 4.8 percent of visitors who saw the checkout page completed a purchase.
 
 ### Confidence interval  
@@ -257,6 +263,29 @@ It is designed as a quick reference for anyone designing, running or analysing e
 **Why it matters:** High variance makes it harder to detect effects and often drives sample size requirements.  
 **Example:** Daily revenue per user that fluctuates widely from one user to another has high variance.
 
+### Multivariate experiment
+**Definition:** An experiment that tests multiple elements of a page or experience at the same time by combining different versions of each element into many variant combinations. 
+Instead of only comparing A vs B, a multivariate test evaluates how several changes and their interactions affect the outcome.
+Not to be confused with [Multi-variant experiment](#multi-variant-experiment).
+**Why it matters:**  
+Multivariate experiments help you understand not just *whether* a change works, but *which combination* of changes works best. 
+They are useful when you want to optimise several components together, such as headline, image and call to action. 
+However, they require significantly more traffic than a simple A/B test, because traffic must be spread across many variant combinations and the analysis is more complex.
+For this reason Multivariate experiments are not supported in ABsmartly.
+
+**Example:**  
+You want to optimise a landing page with:  
+- 2 different headlines (H1, H2)  
+- 3 different hero images (I1, I2, I3)  
+- 2 different call to action buttons (C1, C2)  
+
+A multivariate experiment would test all 2 × 3 × 2 = 12 combinations (for example H1–I2–C1, H2–I3–C2, and so on) and estimate which combination yields the highest conversion rate, as well as whether certain headlines work better only with specific images or buttons.
+
+### Multi-variant experiment
+See [A/B/n experiment](#abn-experiment).
+Not to be confused with [Multivariate experiment](#multivariate-experiment).
+
+
 ---
 
 ## N
@@ -304,7 +333,7 @@ It is designed as a quick reference for anyone designing, running or analysing e
 **Why it matters:** Pre-selection bias can make experiment results look better or worse than they will be in real-world rollout.  
 **Example:** Testing a new feature only on highly engaged users and then rolling it out to everyone.
 
-### Primary metrics  
+### Primary metric  
 **Definition:** The main metrics used to judge success or failure of an experiment.  
 **Why it matters:** Primary metrics should be chosen carefully in advance to reflect the experiment’s objective; they drive decisions.  
 **Example:** Checkout conversion rate for an experiment on the payment page.
