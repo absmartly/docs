@@ -351,6 +351,28 @@ Hold-outs help measure long-term or background effects, and can act as a control
 
 **Example:** Keeping 5 percent of visitors on the previous pricing model to track long-term revenue impact.
 
+
+### Hypothesis
+
+A specific, testable prediction about the outcome of an experiment usually describing how a change (treatment) is expected to affect a key metric.
+
+A well-formed hypothesis helps ensure that tests are intentional and interpretable, not just random trial-and-error ("spaghetti testing"). 
+It provides a clear basis for decision-making, learning, and iteration.
+
+**Example:** “Reducing the number of form fields on the checkout page will increase conversion rate by at least 2%.”
+
+A good hypothesis is falsifiable (can be proven wrong), linked to user behavior or product theory, and often includes an expected direction and magnitude of effect.
+
+
+### Hypothesis testing
+A statistical framework used to evaluate whether observed differences in an experiment are likely due to chance or reflect a real effect.
+
+Hypothesis testing helps teams make data-driven decisions by providing a structured way to accept or reject the null hypothesis. 
+It's the foundation for calculating p-values, confidence intervals, and determining statistical significance.
+
+**Example:** In an A/B test comparing two landing pages, hypothesis testing is used to assess whether the observed +3.2% lift in conversion rate is statistically significant, 
+or just a result of random variation.
+
 ---
 
 ## I
@@ -398,7 +420,7 @@ In A/B testing, high variance means the metric fluctuates widely from visitor to
 High variance makes it harder to detect real effects, requiring larger sample sizes or longer test durations to reach statistical significance. 
 Low variance metrics are generally more sensitive and more efficient for testing.
 
-High variance issues can be mitigated using techniques like [CUPED](#cuped-controlled-experiments-using-pre-experiment-data) or by managing outliers.
+High variance issues can be mitigated using techniques like [CUPED](#cuped-controlled-experiments-using-pre-experiment-data) or by managing [outliers](#outliers).
 
 **Example:** 
 High variance metric:
@@ -436,9 +458,25 @@ Not to be confused with [Multivariate experiment](#multivariate-experiment).
 ## N
 
 ### Null hypothesis  
-The default assumption that the experiment has no effect and that any observed difference is due to random variation.  
-Statistical tests typically measure how compatible the data is with the null hypothesis.  
-**Example:** “The new checkout flow does not change conversion rate compared to the old flow.”
+A formal assumption in statistical testing that there is no true effect or difference between the treatment and control groups. 
+It represents the default position that any observed difference is due to random chance.
+
+The null hypothesis is the foundation of significance testing. 
+In A/B testing, you aim to collect enough evidence to reject the null hypothesis and conclude that the treatment likely has a real effect. 
+If you fail to reject it, you assume the data is consistent with no meaningful difference.
+
+**Example:** 
+You run an A/B test on a checkout button.
+
+Null hypothesis (H₀): The new button (Variant B) has the same conversion rate as the original (Variant A).
+
+If your p-value is below your chosen threshold (e.g. α = 0.05), you reject H₀ and infer that Variant B likely has an effect.
+
+**Important Notes:**
+
+Rejecting the null does not prove the treatment is better — only that the observed data is unlikely if there were no effect.
+
+Failing to reject H₀ does not prove the variants are the same — just that there's not enough evidence to conclude a difference.
 
 ---
 
@@ -451,16 +489,41 @@ The observed effect is the best point estimate available from the data, but it i
 **Example:** Treatment shows a 5.1 percent conversion rate, control 4.8 percent, so the observed effect is 0.3 percentage points.
 
 ### One-sided analysis  
-A hypothesis test that considers only one direction of change, such as whether a metric increased but not whether it decreased.  
-One-sided tests can be more powerful for directional questions but must be justified in advance to avoid bias.  
-**Example:** Testing only whether a new recommendation model increases click-through rate, not whether it might decrease it.
+A statistical test that checks for an effect in only one direction. Either whether the treatment is better than the control, or worse than, but not both. 
+It does not test for two-way differences.
+
+One-sided tests offer greater statistical power than two-sided tests, meaning they can detect effects with smaller sample sizes but only when you care about a change in one direction.
+
+When it's appropriate:
+One-sided analysis makes sense if:
+- You're only interested in detecting improvement
+- You would make the same decision (ie not ship) if the result is neutral or negative.
+
+This applies in “ship vs. no-ship” scenarios, where you only want to ship if the variant is better, and don't need to detect harm because you wouldn’t ship it anyway.
+
+**Example:** You test a new pricing design. If it improves revenue, you’ll ship it. If it’s flat or worse, you won’t — so a one-sided test for improvement is appropriate.
 
 ### Operational metric  
 A metric that reflects system health or performance rather than direct user or business outcomes.  
-Operational metrics act as guardrails and basic safety checks during experiments.  
+While some experiment might be targeting them, perational metrics often act as guardrails and basic safety checks during experiments.  
+
+ABsmartly recommends using some key operational metrics as guardrail metrics to ensure the experimentation program does not hurt those key KPIs.
+
 **Example:** Error rate, latency, CPU utilisation or cache hit rate.
 
 ### Outliers
+Outliers are data points that are significantly higher or lower than the rest of the data. 
+In experimentation, they often represent extreme user behavior (e.g., unusually large purchases or anomalous session lengths) and can disproportionately affect averages and [variances](#metric-variance).
+
+Outliers can inflate variance, distort means, and reduce test sensitivity, especially for metrics like revenue or engagement that are naturally skewed. 
+Even a few extreme values can lead to misleading results, particularly in small or medium-sized experiments.
+
+**Example:** In a test measuring revenue per user, most users spend $0–$50, but one user spends $5,000. 
+This outlier can shift the average upward, making the treatment look better than it really is.
+
+**Risks:**
+- Loss of signal: Outliers are real users. Trimming them can hide important effects or exclude some key user segment.
+- Lack of transparency: Unclear or inconsistent handling of outliers can erode trust in experimentation results.
 
 ---
 
