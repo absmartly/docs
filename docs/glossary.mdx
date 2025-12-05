@@ -64,7 +64,6 @@ ABsmartly recommends using behavioural metrics as [secondary metrics](#secondary
 
 ### Business metrics
 A metric directly tied to business outcomes such as revenue, profit, retention or subscription renewal. 
-
 Business metrics connect experimentation to company goals, but they can be noisier and slower to respond than behavioural metrics.
 
 ABsmartly recommends, when possible, using a business metric as the [primary metric](#primary-metric) when setting up experiments.
@@ -146,7 +145,7 @@ The predefined rules or thresholds used to determine the outcome of an experimen
 
 ABsmartly recommends pre-registering decisions criteria before the start of the experiment.
 
-**Example:** “Ship if the primary metric improves by at least 2% with p < 0.05 and no guardrail metrics regress.”
+**Example:** “Ship if we see the expected impact on the primary metric and secondary metrics and no guardrail metrics regress.”
 
 ---
 
@@ -215,6 +214,23 @@ Mixing the two modes can lead to inflated false positives; exploratory insights 
 ## F
 
 ### False discovery
+A false discovery occurs when an experiment shows a statistically significant result, 
+but there is no real effect — meaning the “win” is actually due to random noise, not the treatment.
+
+**False discoveries are a normal part of experimentation**. When you run many A/B tests with a given significance level — some “wins” will occur by chance. 
+Accepting this is part of working in a probabilistic system.
+
+However, blindly acting on false discoveries can waste resources, mislead strategy, or harm user experience. 
+That's why understanding — and managing — the risk of false discoveries is essential.
+
+A few things to consider to reduce the risks of False Discoveries
+
+-- Start with strong hypotheses grounded in user behavior, prior data, or product theory. Avoid “spaghetti testing” — randomly trying ideas just to see what sticks.
+-- Retest or replicate high-impact or surprising results before launching. This adds confidence and filters out false positives.
+-- Use falsifiable hypotheses and define what success and failure look like before running the experiment.
+
+**Example:**  You run 100 experiments with a significance level of 0.05. Even if none of the treatments actually work, about 5 will show false “wins” by chance. 
+These are false discoveries — not because of bad math, but because that’s how probability works.
 
 ### False discovery rate (FDR)  
 The proportion of all statistically significant results that are actually false positives across a group of experiments.
@@ -224,7 +240,7 @@ This matters when you run many experiments, especially if you don’t adjust for
 
 See also [False positive risk](#false-positive-risk)
 
-**Example:** If your team ran 500 A/B tests and 100 were statistically significant, but only 60 of those are based on true effects, then your False Discovery Rate is 40% — meaning 40 out of 100 wins are likely false.
+**Example:** If your team ran 500 A/B tests and 100 were statistically significant, but only 60 of those have an actual true effects, then your False Discovery Rate is 40% — meaning 40 out of 100 wins are likely false.
 
 ### False negative  
 Failing to detect a real effect when it exist; equivalent to a Type II error.  
@@ -300,8 +316,8 @@ Non-binding futility provides optionality for business judgment, while binding f
 
 By default GST experiment in ABsmartly uses a binding futility type but this can be changed during the setup.
 
-Example:
-At the halfway point of an A/B test, the test crosses the futility boundary, but the team decides to continue because external factors suggest the impact may emerge later — a valid choice under the non-binding rule.
+**Example:**  At the halfway point of an A/B test, the test crosses the futility boundary, 
+but the team decides to continue because external factors suggest the impact may emerge later — a valid choice under the non-binding rule.
 
 ---
 
@@ -314,26 +330,26 @@ Group sequential designs balance flexibility with simplicity and are well suited
 Group Sequential Testing is the default method when creating new experiment. 
 It leads to making decisions up to 80% than with a more traditional [Fixed Horizon Experiment](#fixed-horizon-testing).
 
-Do you want to know more about GST? Read our [dedicated article](https://absmartly.com/gst)
+Do you want to know more about Group sequential testing? Read our [dedicated GST article](https://absmartly.com/gst)
 
 ### Guardrail metrics  
-Metrics monitored to ensure experiments stay within acceptable safety or performance constraints, independent of the primary success metric.  
+Metrics monitored to ensure experiments stay within acceptable safety or performance constraints on some key KPIs, independent of the impact observed on the primary or secondary metrics.
 Guardrails protect user experience and business health while teams try bold ideas.  
+
+The best practice is for all experimenting teams within a product area to agree on a set of guardrail metrics to monitor for all experiments. 
+That way all decisions are made with the same level of confidence on the potential impact on some key KPIs.
+
 **Example:** Monitoring error rate and page load time while testing a new recommendation algorithm.
 
 ---
 
 ## H
 
-### Hierarchy of evidence  
-A conceptual ranking of evidence strength, from weaker forms such as anecdotes and observational data up to randomised controlled experiments and meta-analyses.  
-The hierarchy of evidence helps teams prioritise decisions based on how reliable and causal the underlying evidence is.  
-**Example:** Giving more weight to results from a well-run A/B test than to a simple correlation in historical analytics.
-
 ### Hold-out group  
-A subset of users deliberately excluded from a feature rollout or experimentation and kept on the old experience for comparison.  
+A subset of visitors deliberately excluded from a feature rollout or an experiment and kept on the old experience for comparison.  
 Hold-outs help measure long-term or background effects, and can act as a control for rolling experiments or feature flags.  
-**Example:** Keeping 5 percent of users on the previous pricing model to track long-term revenue impact.
+
+**Example:** Keeping 5 percent of visitors on the previous pricing model to track long-term revenue impact.
 
 ---
 
