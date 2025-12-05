@@ -225,9 +225,9 @@ That's why understanding — and managing — the risk of false discoveries is e
 
 A few things to consider to reduce the risks of False Discoveries
 
--- Start with strong hypotheses grounded in user behavior, prior data, or product theory. Avoid “spaghetti testing” — randomly trying ideas just to see what sticks.
--- Retest or replicate high-impact or surprising results before launching. This adds confidence and filters out false positives.
--- Use falsifiable hypotheses and define what success and failure look like before running the experiment.
+-ehavior, prior data, or product theory. Avoid “spaghetti testing” — randomly trying ideas just to see what sticks.
+- Retest or replicate high-impact or surprising results before launching. This adds confidence and filters out false positives.
+- Use falsifiable hypotheses and define what success and failure look like before running the experiment.
 
 **Example:**  You run 100 experiments with a significance level of 0.05. Even if none of the treatments actually work, about 5 will show false “wins” by chance. 
 These are false discoveries — not because of bad math, but because that’s how probability works.
@@ -356,38 +356,57 @@ Hold-outs help measure long-term or background effects, and can act as a control
 ## I
 
 ### Impact estimate  
-A forecast of how large an effect a change is expected to have on a metric, based on prior data, modelling or expert judgement.  
-Impact estimates help prioritise which experiments to run and inform sample size planning.  
-**Example:** Estimating that a new search filter could increase search-driven purchases by 3 to 5 percent.
+An estimate of the observed performance of a treatment variant compared to the control, 
+typically calculated as a relative increase or decrease in the metric.
+
+The relative impact tells you how much better or worse the treatment performed relative to the baseline. 
 
 ### Interaction effect  
 A situation where the combined effect of two variables differs from the sum of their individual effects.  
 Interaction effects can explain why a change works well in one context but not another.  
+
+ABsmartly automatically warn experimenters of possible interactions between 2 or more experiments. 
+
 **Example:** A new layout increases conversion for mobile users but decreases it for desktop users, altering the overall result.
 
 ### Lower bound estimate  
 The lower end of a confidence interval, often used as a conservative estimate of effect size.  
 Reporting lower bounds can give decision makers a “worst plausible improvement” and reduce over-optimism.  
-**Example:** A lift of 5 percent with a 95 percent interval from 1 percent to 9 percent has a 1 percent lower bound.
+
+**Example:** A lift of 5% with a 95 percent interval from 1% to 9% has a 1% lower bound.
 
 ---
 
 ## M
 
 ### MDE (Minimum detectable effect)  
-The smallest true effect size that an experiment is designed to detect with the chosen power and significance level.  
+The smallest effect size that an experiment is designed to detect with the chosen power and significance level.  
 MDE connects business expectations with statistical design; too small and tests become expensive, too large and you miss meaningful improvements.   
-**Example:** Planning a test to detect at least a 2 percent relative increase in checkout conversion.
+
+**Example:** Planning a test to detect at least a 2% relative increase in checkout conversion.
 
 ### Mean  
 The arithmetic average of a set of values.  
 Many metrics are reported as means, such as revenue per user, and assumptions about distributions often centre on the mean.  
+
 **Example:** Total revenue of 10,000 across 200 users gives a mean of 50 per user.
 
 ### Metric variance  
-The degree to which a metric’s values differ across users or sessions.  
-High variance makes it harder to detect effects and often drives sample size requirements.  
-**Example:** Daily revenue per user that fluctuates widely from one user to another has high variance.
+Metric variance refers to the amount of variability or spread in the values of a metric across visitors. 
+In A/B testing, high variance means the metric fluctuates widely from visitor to visitor, while low variance means it remains relatively stable.
+
+High variance makes it harder to detect real effects, requiring larger sample sizes or longer test durations to reach statistical significance. 
+Low variance metrics are generally more sensitive and more efficient for testing.
+
+High variance issues can be mitigated using techniques like [CUPED](#cuped-controlled-experiments-using-pre-experiment-data) or by managing outliers.
+
+**Example:** 
+High variance metric:
+Revenue per user — some users spend a lot, most spend nothing. This distribution is heavily skewed, leading to large variance.
+
+Low variance metric:
+Click-through rate (CTR) on a button — most users either click or don’t, and the values are bounded (0 or 1), resulting in low variance.
+
 
 ### Multivariate experiment
 An experiment that tests multiple elements of a page or experience at the same time by combining different versions of each element into many variant combinations. 
@@ -440,6 +459,8 @@ One-sided tests can be more powerful for directional questions but must be justi
 A metric that reflects system health or performance rather than direct user or business outcomes.  
 Operational metrics act as guardrails and basic safety checks during experiments.  
 **Example:** Error rate, latency, CPU utilisation or cache hit rate.
+
+### Outliers
 
 ---
 
