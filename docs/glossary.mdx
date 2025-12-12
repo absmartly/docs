@@ -518,7 +518,7 @@ In experimentation, they often represent extreme user behavior (e.g., unusually 
 Outliers can inflate variance, distort means, and reduce test sensitivity, especially for metrics like revenue or engagement that are naturally skewed. 
 Even a few extreme values can lead to misleading results, particularly in small or medium-sized experiments.
 
-**Example:** In a test measuring revenue per user, most users spend $0–$50, but one user spends $5,000. 
+**Example:** In a ˛test measuring revenue per user, most users spend $0–$50, but one user spends $5,000. 
 This outlier can shift the average upward, making the treatment look better than it really is.
 
 **Risks:**
@@ -531,10 +531,9 @@ This outlier can shift the average upward, making the treatment look better than
 
 ### Peeking  
 Examining experiment results before the planned end in a fixed-horizon design and using those interim looks to influence decisions.  
-Uncontrolled peeking increases the chance of false positives and can make p-values and intervals unreliable.   
-**Example:** Stopping a two-week fixed-horizon test after four days because the early data looks promising.
+Uncontrolled peeking increases the chance of false positives and leads to unreliable decisions. 
 
-### Point estimate
+**Example:** Stopping a two-week fixed-horizon test after four days because the early data looks promising.
 
 ### Power level
 
@@ -542,37 +541,49 @@ See [Experimentation power](#experimentation-power).
 
 ### Power calculation  
 The process of choosing sample size, MDE, significance level and power so that an experiment is appropriately designed.  
-Good power calculations align statistical design with practical constraints like traffic, time and business priorities.  
-**Example:** Deciding that you need 50,000 users per variant to detect a 1 percent lift with 80 percent power at a 5 percent significance level.
+Good power calculations align statistical design with practical constraints like traffic, time and business priorities. 
+
+Properly powering an experiment is a requirement for making good reliable data-informed decisions.
+
+ABsmartly built-in power calculator makes it easy to deign your experiment correctly.
+
+**Example:** Deciding that you need 50000 visitors per variant to detect a 1% increase with 80 percent power at a 5 percent significance level.
 
 ### Pre-selection bias  
 Bias introduced when the users who enter a study are not representative of the broader population or when assignment is not properly random.  
 Pre-selection bias can make experiment results look better or worse than they will be in real-world rollout.  
+
 **Example:** Testing a new feature only on highly engaged users and then rolling it out to everyone.
 
 ### Primary metric  
 The main metrics used to judge success or failure of an experiment.  
 Primary metrics should be chosen carefully in advance to reflect the experiment’s objective; they drive decisions.  
+
+When creating an experiment in ABsmartly, users must choose a single primary metric. This will be the main decision making metric.
+It is usually good practice to choose a business metric as the primary metric.
+
 **Example:** Checkout conversion rate for an experiment on the payment page.
 
 ### Product experimentation  
 The use of controlled experiments to evaluate product changes and make product decisions grounded in evidence.  
 Product experimentation turns hypotheses about user behaviour into measurable tests and supports continuous improvement.  
+
 **Example:** Testing new onboarding journeys, pricing presentations or recommendations.
 
 ### Product operating model  
 A framework that describes how product teams discover opportunities, deliver solutions and use experimentation and data as part of their regular workflow.  
 A coherent operating model ensures experimentation is not a one-off activity but a core part of how the organisation builds products.  
-**Example:** Marty Cagan’s model of empowered product teams that continuously discover, deliver and measure outcomes.
 
 ### P-value  
 The probability of observing data at least as extreme as what you saw, assuming the null hypothesis is true.  
 P-values are widely used but easily misinterpreted; they are not the probability that the null is true.   
+
 **Example:** A p-value of 0.03 indicates that, if there were no true effect, you would see a result this extreme or more in about 3 percent of repeated tests.
 
 ### P-hacking  
 Manipulating analysis choices, data cuts or stopping rules until a desired level of significance is achieved.  
 P-hacking severely inflates false positives and creates misleading “evidence”.  
+
 **Example:** Trying different subsets of users and time windows until one yields p < 0.05, then reporting only that result.
 
 ---
@@ -580,9 +591,9 @@ P-hacking severely inflates false positives and creates misleading “evidence�
 ## S
 
 ### Sample size  
-The number of users, sessions or units included per variant (or overall) in an experiment.  
+The number of visitors included in an experiment.  
 Sample size, together with variance and effect size, determines power and the time needed to reach a conclusion.  
-**Example:** An experiment that receives 20,000 users in control and 20,000 in treatment.
+
 
 ### Secondary metrics  
 Additional metrics monitored in an experiment to understand side effects or support interpretation of the primary metric.  
