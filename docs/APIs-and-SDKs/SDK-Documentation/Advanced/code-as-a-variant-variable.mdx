@@ -1,0 +1,179 @@
+import Image from "@theme/IdealImage";
+
+# Code as a Variant Variable
+
+[Variant Variables](/docs/APIs-and-SDKs/SDK-Documentation/basic-usage#treatment-variables) 
+are incredibly useful for setting particular values in your experiments, but 
+sometimes it can be useful to run code as a variable instead. This section 
+will show you a few examples of how this can be implemented; connecting your 
+code and the web console.
+
+## Starting Point
+
+For our examples, we will be using a basic Vite app with the following code in our `main.ts` file:
+
+```ts
+import absmartly from "@absmartly/javascript-sdk"
+import './style.css'
+
+const sdk = new absmartly.SDK({
+    endpoint: process.env.ABSMARTLY_ENDPOINT_URL,
+    apiKey: process.env.ABSMARTLY_API_KEY,
+    environment: "development",
+    application: "web"
+})
+
+// NOTE: In production, this should be linked to your users' actual user_id. 
+// This is for demonstration purposes.
+const request = {
+    units: {
+        user_id: Math.floor(Math.random() * 1000000).toString(),
+    }
+}
+
+const context = sdk.createContext(request)
+
+document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+<div>
+    <h1>Variant Variables as Code</h1>
+</div>
+`
+```
+
+Which looks like this:
+
+<Image
+    img={require("/img/variant_variables_as_code_blank.png")}
+    alt='A screen capture of the base web script. It has a large h1 tag that says "Variant Variables As Code"'
+/>
+
+Now let's see how we can use variant variables to implement some code on this page.
+
+## Adding HTML Elements
+
+Let's say we have an experiment named `hello_world_heading_color`. When 
+creating this experiment, we can add the heading tag as a `string` variant 
+variable, like so:
+
+<Image
+    img={require("/img/variant_variables_as_code_adding.png")}
+    alt='A screen capture of the absmartly web console variants section where a h1 tag has been added as a variant variable to variant B'
+/>
+
+We can now access this variant variable in our code to display the heading to 
+the correct audience.
+
+:::info
+In the Javascript SDK, variant variables can be accessed with the `context.variableValue("VARIABLE_NAME", defaultValue)` method.
+:::
+
+The simplest way to implement this with JS would be to use the innerHTML 
+property of a DOM element in our code.
+
+In our base `main.ts` file, we can add the following code:
+
+```ts
+context.ready().then(() => {
+    document.querySelector<HTMLDivElement>('#app')!
+        .appendChild(document.createElement("div"))
+        .innerHTML = context.variableValue("heading", '<h1 style="color: red;">Hello World!</h1>')
+}).catch((err: Error) => {
+    console.error(err)
+})
+```
+
+This code makes it so that users in the **Control Variant** see a red `Hello World!`, 
+and users in **Variant B** will see a blue one:
+
+<Image
+    img={require("/img/variant_variables_as_code_red.png")}
+    alt='A screen capture of the website where the control variant is being shown with a large, red Hello World heading'
+/>
+
+<Image
+    img={require("/img/variant_variables_as_code_blue.png")}
+    alt='A screen capture of the website where variant B is being shown with a large, blue Hello World heading'
+/>
+
+## Running Functions
+
+Another use case that may be necessary is to run some code that is based on 
+which variant the user is in.
+
+Let's create a new experiment and add an alert function to **Variant B**.
+
+<Image
+    img={require("/img/variant_variables_as_code_adding_function.png")}
+    alt='A screen capture of the absmartly web console variants section where an alert function has been added as a variant variable to variant B'
+/>
+
+Now, we can add more code to our `main.ts` file to run the function variable 
+as code when the context is ready:
+
+```ts
+context.ready().then(() => {
+    const code = context.variableValue("function", '');
+
+    const F = new Function(code); // Turning the string into a function
+    window.onload = F(); // Executing the function on page load
+
+}).catch((err: Error) => {
+    console.error(err)
+});
+```
+
+You also could add a `<script>` tag to the DOM, to have the function run
+when the DOM is ready.
+
+```ts
+context.ready().then(() => {
+    const code = context.variableValue("function", '');
+
+    const script = document.createElement('script');
+    script.innerHTML = code;
+    document.body.appendChild(script);
+
+}).catch((err: Error) => {
+    console.error(err)
+});
+```
+
+Now users who are part of **Variant B** will receive a Hello World alert and those 
+in the **Control Variant** will not!
+
+## Injecting CSS
+
+The last example we will look at is injecting CSS into the page. This can be
+useful for changing the look and feel of your page based on the variant the
+user is in.
+
+Let's create a new experiment and add some CSS to **Variant B**.
+
+<Image
+    img={require("/img/variant_variables_as_code_adding_css.png")}
+    alt='A screen capture of the absmartly web console variants section where a CSS rule has been added as a variant variable to variant B'
+/>
+
+Now, we can add more code to our `main.ts` file to inject the CSS variable
+as code when the context is ready:
+
+```ts
+context.ready().then(() => {
+    const css = context.variableValue("css", '');
+
+    const style = document.createElement('style');
+    style.innerHTML = css;
+    document.head.appendChild(style);
+
+}).catch((err: Error) => {
+    console.error(err)
+});
+```
+
+Now users who are part of **Variant B** will see a red background and those
+in the **Control Variant** will not!
+
+<Image
+    img={require("/img/variant_variables_as_code_bg_red.png")}
+    alt='A screen capture of the website where variant B is being shown with a red background'
+/>

@@ -1,0 +1,145 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsSetAttributes from "!!raw-loader!./js/setAttributes.js";
+
+import PythonSetAttributes from "!!raw-loader!./python/setAttributes.py";
+
+import ReactSetAttributes from "!!raw-loader!./react/setAttributes.js";
+import ReactSetAttributesAsProps from "!!raw-loader!./react/setAttributesAsProps.tsx";
+
+import SwiftSetAttributes from "!!raw-loader!./swift/setAttributes.swift";
+
+import VueSetAttributesScript from "!!raw-loader!./vue/setAttributes.js";
+import VueSetAttributesTemplate from "!!raw-loader!./vue/SetAttributes.vue";
+
+import JavaSetAttributes from "!!raw-loader!./java/setAttributes.java";
+
+import GoSetAttributes from "!!raw-loader!./go/setAttributes.go";
+
+import DotNetSetAttributes from "!!raw-loader!./dotnet/setAttributes.cs";
+
+import PHPSetAttributes from "!!raw-loader!./php/setAttributes.php";
+
+import RubySetAttributes from "!!raw-loader!./ruby/setAttributes.rb";
+
+import FlutterSetAttributes from "!!raw-loader!./flutter/setAttributes.dart";
+
+Attributes are used to pass meta-data about the user and/or the request. They
+can be used later in the Web Console to create segments or audiences. They can
+be set using the `attribute()` or `attributes()` methods, before or after the
+context is ready.
+
+One of the most useful and commonly used attributes, is the `user_agent` attribute
+which, when passed to the SDK, will be split up into multiple attributes that
+can be used to target specific browsers or devices in the Web Console. You can read
+more about how this works in [the Segments section of the Dashboard Settings docs](/docs/web-console-docs/configuration/settings#segments).
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+<CodeBlock language="py">{PythonSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+The context can be used directly to set attributes, like so:
+
+<CodeBlock language="tsx">{ReactSetAttributes}</CodeBlock>
+
+Or you can pass them as a prop to the `Treatment` or `TreatmentFunction` components.
+
+<CodeBlock language="tsx">{ReactSetAttributesAsProps}</CodeBlock>
+
+:::note
+The `attribute()` and `attributes()` methods can be called inside or outside
+of a useEffect.
+:::
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+Attributes can be set in script.
+
+<CodeBlock language="js">{VueSetAttributesScript}</CodeBlock>
+
+Or directly in templates with the `:attributes` property of the `Treatment`
+component.
+
+<CodeBlock language="html">{VueSetAttributesTemplate}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+Attributes can be set in script.
+
+<CodeBlock language="js">{VueSetAttributesScript}</CodeBlock>
+
+Or directly in templates with the `:attributes` property of the `Treatment`
+component.
+
+<CodeBlock language="html">{VueSetAttributesTemplate}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+<CodeBlock language="java">{JavaSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+<CodeBlock language="go">{GoSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+<CodeBlock language="csharp">{DotNetSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+<CodeBlock language="php">{PHPSetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+<CodeBlock language="ruby">{RubySetAttributes}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+<CodeBlock language="dart">{FlutterSetAttributes}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
+
+:::caution
+You should create audiences with the same attributes as those in the Web Console.
+By default it will not enforce these conditions, but if for some reason the
+`treatment()` method is called for a user that doesn’t meet the correct criteria, the
+Web Console will warn you about it.
+:::
