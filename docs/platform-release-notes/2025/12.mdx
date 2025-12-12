@@ -1,0 +1,99 @@
+import Image from "../../../src/components/Image";
+
+# December 2025
+
+## Overview  
+This release is all about **metrics**. As part of our broader initiative to improve **metric governance**, 
+we’ve introduced powerful new capabilities to help you better manage, understand, and select the right metrics for your experiments.
+
+---
+
+## General improvements
+
+We've made some general improvements to metric which you will see across the platform.
+
+### New **Metric Categories** type
+We've added a new configuration types which can be used to categorise and group metrics. This new metric categories will make it easier to find the right metrics when creating an experiment.
+While the categories should reflect your own needs, here is a list of possible metric categories you can add to your ABsmartly instance:
+
+- `Conversion`: Measures whether users complete a desired action.
+- `Revenue`: Captures direct monetary impact.
+- `Engagement`: Reflects how actively users interact with the product.
+- `Retention`: Shows whether users come back or continue using the product over time.
+- `Performance`: Measures speed and responsiveness, such as load time or latency.
+- `Reliability`: Tracks stability and correctness, including errors, failures, or availability.
+- `Quality`: Represents outcome quality or user experience signals like cancellations, refunds, or unsuccessful outcomes.
+
+### New metric's metadata fields  
+You can now add some new metadata to metrics to improve filtering and sorting. This includes:
+
+- **Unit type**: This is the list of Unit type(s) for which this metric is computed. While optional, setting the correct Unit type(s) will help experimenters choose the right metric for their experiments. (e.g. user_id, device_id)
+- **Application**: This is the list of Application(s) where this metric make sense. For example an `app_crashes` metrics only makes sense for experimemts running on app platforms. 
+- **Metric category**: This is the category the metric belongs to. This will make your metric more discoverable. See above.
+
+All those fields are optional but we recommend you update your existing metrics as this will improve general discoverability of your metrics.
+
+### Metric View page
+You can now click on the name of any metric across the platform to open the new metric **view page**. 
+This page will give you a readable overview of the metric.
+This new view page is the new entry point for managing metrics (editing and creating new versions) and many new upcoming features.
+
+---
+
+## Improved Metric Discoverability  
+
+We’ve made it easier to find, understand, and select the right metrics when creating your experiments.
+
+### Usability improvement
+We have totally redesign the metric selection step of the experiment setup. The goal of the new UI is to make it simpler to choose the right metrics for your experiments.
+
+### Smarter metric selection in experiments  
+The metric selection step during experiment setup now highlights by default the most relevant metrics based on the chosen **unit type** and **application** (make sure to update your metric metadata to get the most out of this new feature).
+Metrics can now also easily be searched by name, tags, owners, etc so you don't have to scroll throught your long list of existing metrics to find what you are looking for.
+
+### Usage insights
+In all steps of the metric selection in experiment setup, you can now see how often a metric has been used in past experiments to help you assess its relevance and importance.
+
+**Tip:** To get the most out of these improvements, we recommend reviewing your existing metrics, filling in missing metadata, and adding clear descriptions where needed.
+
+---
+
+## Metric Versioning (Foundations)
+
+A key part of **metric governance** is **version control**, ensuring that metric definitions are transparent, traceable, and stable over time. 
+This release lays the groundwork for more robust version management in the future.
+
+### Metric versioning 1.0
+It is now possible for metric owners to create a new version of an existing metric. 
+This can be done, for example, when the definition of a metric change.
+
+- Creating new version of a metric will not impact past and running experiments/features which are using a previous version of that metric.
+- Only the latest version of a metric will be discoverable and can be added to new experiments. Experimenters will only be able to see the latest version of each metric.
+- Experiments/Features cannot be started when they use an old version of a metric. Experimenters will be asked to update to the latest version before they can start the experiment/feature.
+
+### Edit vs New Version
+With the launch of metric versioning some fields can be edited in the current version of the metric and other will require a new version to be created in order to be updated.
+
+- **Editable fields**: Fields like Description, Tags, Category, Applications, Tracking units can safely be updated without changing the definition of a metric.
+- **Non-editable fields**: All other fields which might have an impact on how the metric is computed or how the result might be interpreted cannot be edited and a new version of the metric will need to be created to be able to change those fields.
+
+As a metric owner you will be able to **edit** and **create new version** from the new Metric view page.
+
+---
+
+## What’s Next
+
+We’re continuing our focus on **metric governance** in the coming sprints. Upcoming improvements include:
+
+- **CUPED support**  
+- **Metric lifecycle**
+- **Metric approval workflows**  
+- **Metric usage overviews and reporting**  
+
+These updates are part of our broader effort to improve trust, transparency, and governance around metrics.
+
+---
+
+## Questions or Feedback?  
+As always, if you have questions about this release or want to talk about how to get more out of your metrics, reach out to us anytime.
+
