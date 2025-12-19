@@ -46,6 +46,11 @@ Targeting ensures that experiments are run on the right population (for example,
 
 ## B
 
+### Baseline
+The baseline (or baseline value) is the current performance of your metric usually measured in AA experiment or a previous AB test.
+
+It represents the starting point against which you compare your Treatment.
+
 ### Binomial  
 A statistical model describing outcomes that have exactly two discrete values such as 0 / 1, true / false, success / failure or convert / not convert.  
 
@@ -413,6 +418,20 @@ Many metrics are reported as means, such as revenue per user, and assumptions ab
 
 **Example:** Total revenue of 10,000 across 200 users gives a mean of 50 per user.
 
+### Metric sensitivity 
+It refers to how responsive a metric is to real changes in user behavior and how easy it is to detect those changes statistically.
+
+A sensitive metric will show a statistically significant effect even for small real improvements.
+An insensitive metric will require large changes (or large sample sizes) to detect a significant effect.
+
+Metric sensitivity = how likely a metric is to detect true effects.
+
+It depends on:
+- [Effect size](#effect-size) — how much the treatment actually impacts the metric
+- [Variance](#variance) — how noisy or stable the metric is
+- [Sample size](#sample-size) — how much data you collect
+- [Baseline value](#baseline) — some metrics behave differently at different scales
+
 ### Metric variance  
 Metric variance refers to the amount of variability or spread in the values of a metric across visitors. 
 In A/B testing, high variance means the metric fluctuates widely from visitor to visitor, while low variance means it remains relatively stable.
@@ -473,10 +492,8 @@ Null hypothesis (H₀): The new button (Variant B) has the same conversion rate 
 If your p-value is below your chosen threshold (e.g. α = 0.05), you reject H₀ and infer that Variant B likely has an effect.
 
 **Important Notes:**
-
-Rejecting the null does not prove the treatment is better — only that the observed data is unlikely if there were no effect.
-
-Failing to reject H₀ does not prove the variants are the same — just that there's not enough evidence to conclude a difference.
+- Rejecting the null does not prove the treatment is better — only that the observed data is unlikely if there were no effect.
+- Failing to reject H₀ does not prove the variants are the same — just that there's not enough evidence to conclude a difference.
 
 ---
 
@@ -661,26 +678,55 @@ Statistical significance indicates that the observed effect is unlikely to be du
 ## T
 
 ### True effect
+The true effect is the actual impact a treatment (e.g., new feature, UI change, algorithm tweak) has on a metric in the entire population, not just in your sample.
+We never know the true effect. We can only estimate it.
+
+The true effect is what you would observe if you ran the experiment on every user forever, under ideal conditions, with perfect measurement.
+
+But since we can't do that, we:
+- Run the test on a sample of the population, and
+- Use statistics to estimate the true effect.
+
+**Example:** 
+You run an A/B test and observe that Treatment increased conversion rate by +1.2%, with a p-value of 0.03.
+That +1.2% is your [observed effect](#observed-effect).
+
+But the true effect might be different, it could be +0.5% or +1.7%.
+
+The [confidence interval](#confidence-interval) tells you the range where the true effect likely lies (e.g., [0.2%, 2.2%]).
+
+An experiment gives you a statistical estimate (with uncertainty) of that true effect.
 
 ### Two-tailed analysis  
-A hypothesis test that considers both possible directions of change, looking for either an increase or a decrease in the metric.  
-Two-tailed tests are more conservative but safer when you care about both positive and negative outcomes.  
-**Example:** Testing whether a UI change alters conversion in *either* direction, not just improvement.
+A statistical test that checks for an effect in either direction whether the treatment is better or worse than the control. 
+It evaluates for any significant difference in both direction, not just improvement.
+
+Two-tailed tests are more conservative than [one-tailed](#one-trailed-analysis) tests: they require stronger evidence to detect an effect, 
+but they protect against surprises in both directions.
+
+A Two-tailed analysis makes sense if:
+- You care about any meaningful change, positive or negative
+- You want to detect both improvements and regressions
+- A negative result would cause a different decision (e.g. rollback, investigation)
+
+This applies in scenarios where risk of harm matters, or where learning about both upside and downside is important.
+
+Example: You test a new signup flow. If it improves conversion, you’ll ship. 
+But if it hurts conversion, you want to detect that too so you use a two-tailed test.
 
 ### Twyman’s law  
 A heuristic that states “the more surprising a result looks, the more likely it is to be wrong or misleading”.  
 Twyman’s law reminds teams to double-check interesting or extreme results for errors, bias or artefacts.  
+
 **Example:** Discovering a 50 percent uplift from a minor colour change should trigger strong suspicion and careful validation.
 
 ### Type I error  
-Incorrectly rejecting the null hypothesis when it is actually true; also called a false positive.  
+Incorrectly rejecting the null hypothesis when it is actually true; also called a [false positive](#false-positive).  
 Type I errors lead to rolling out ineffective changes based on spurious results.  
-**Example:** Believing a feature boosts revenue when any measured difference is due only to randomness.
 
 ### Type II error  
-Failing to reject the null hypothesis when it is false; also called a false negative.  
+Failing to reject the null hypothesis when it is false; also called a [false negative](#flase-negative).  
 Type II errors cause teams to miss out on beneficial changes that would have helped users or the business.  
-**Example:** Concluding that a genuinely helpful onboarding change has no effect because the test was underpowered.
 
 ---
 
@@ -688,7 +734,8 @@ Type II errors cause teams to miss out on beneficial changes that would have hel
 
 ### Variance  
 A measure of spread that averages the squared distance between each value and the mean.  
-Variance is the foundation for standard deviation and influences sample size and sensitivity.  
+Variance is the foundation for [standard deviation](#standard-deviation) and influences sample size and sensitivity.  
+
 **Example:** A metric with low variance has values clustered tightly around the mean; high variance means values are more scattered.
 
 ### Variance reduction  
