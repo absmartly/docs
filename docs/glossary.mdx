@@ -488,24 +488,24 @@ The observed effect is the best point estimate available from the data, but it i
 
 **Example:** Treatment shows a 5.1 percent conversion rate, control 4.8 percent, so the observed effect is 0.3 percentage points.
 
-### One-sided analysis  
+### One-tailed analysis  
 A statistical test that checks for an effect in only one direction. Either whether the treatment is better than the control, or worse than, but not both. 
 It does not test for two-way differences.
 
-One-sided tests offer greater statistical power than two-sided tests, meaning they can detect effects with smaller sample sizes but only when you care about a change in one direction.
+One-tailed tests offer greater statistical power than [two-tailed](#two-tailed-analysis) tests, meaning they can detect effects with smaller sample sizes but only when you care about a change in one direction.
 
 When it's appropriate:
-One-sided analysis makes sense if:
+One-tailed analysis makes sense if:
 - You're only interested in detecting improvement
 - You would make the same decision (ie not ship) if the result is neutral or negative.
 
 This applies in “ship vs. no-ship” scenarios, where you only want to ship if the variant is better, and don't need to detect harm because you wouldn’t ship it anyway.
 
-**Example:** You test a new pricing design. If it improves revenue, you’ll ship it. If it’s flat or worse, you won’t — so a one-sided test for improvement is appropriate.
+**Example:** You test a new pricing design. If it improves revenue, you’ll ship it. If it’s flat or worse, you won’t — so a one-tailed test for improvement is appropriate.
 
 ### Operational metric  
 A metric that reflects system health or performance rather than direct user or business outcomes.  
-While some experiment might be targeting them, perational metrics often act as guardrails and basic safety checks during experiments.  
+While some experiment might be targeting them, operational metrics often act as guardrails and basic safety checks during experiments.  
 
 ABsmartly recommends using some key operational metrics as guardrail metrics to ensure the experimentation program does not hurt those key KPIs.
 
@@ -518,10 +518,10 @@ In experimentation, they often represent extreme user behavior (e.g., unusually 
 Outliers can inflate variance, distort means, and reduce test sensitivity, especially for metrics like revenue or engagement that are naturally skewed. 
 Even a few extreme values can lead to misleading results, particularly in small or medium-sized experiments.
 
-**Example:** In a ˛test measuring revenue per user, most users spend $0–$50, but one user spends $5,000. 
+**Example:** In a test measuring revenue per user, most users spend $0–$50, but one user spends $5,000. 
 This outlier can shift the average upward, making the treatment look better than it really is.
 
-**Risks:**
+**Risks associated with outliers:**
 - Loss of signal: Outliers are real users. Trimming them can hide important effects or exclude some key user segment.
 - Lack of transparency: Unclear or inconsistent handling of outliers can erode trust in experimentation results.
 
@@ -530,10 +530,16 @@ This outlier can shift the average upward, making the treatment look better than
 ## P
 
 ### Peeking  
-Examining experiment results before the planned end in a fixed-horizon design and using those interim looks to influence decisions.  
-Uncontrolled peeking increases the chance of false positives and leads to unreliable decisions. 
+Peeking refers to looking at experiment results before the test is completed, especially to check for statistical significance and 
+making decisions based on those early results without proper statistical adjustments.
 
-**Example:** Stopping a two-week fixed-horizon test after four days because the early data looks promising.
+Peeking inflates the [false positive rate](##false-discovery-rate-fdr), making it more likely that you'll incorrectly conclude a treatment is effective when it’s not. 
+This happens because repeatedly checking increases the chance that random noise appears significant at least once.
+
+**Example**:
+You run an A/B test designed for 100,000 users, but check results every day. 
+On day 6, with only 40% of the data collected, you decide to stop early and ship because you see some promissing results. 
+This is peeking and you may be acting on a false discovery.
 
 ### Power level
 
@@ -592,42 +598,62 @@ P-hacking severely inflates false positives and creates misleading “evidence�
 
 ### Sample size  
 The number of visitors included in an experiment.  
-Sample size, together with variance and effect size, determines power and the time needed to reach a conclusion.  
-
+Sample size, together with [variance](#variance) and [effect size](#effect-size), determines [power](##experimentation-power) and the time needed to reach a conclusion.  
 
 ### Secondary metrics  
-Additional metrics monitored in an experiment to understand side effects or support interpretation of the primary metric.  
-Secondary metrics reveal trade-offs and help explain why a primary metric changed.  
-**Example:** Monitoring average order value and page load time while the primary metric is conversion rate.
+Additional metrics tracked in an experiment to understand side effects or support interpretation of the primary metric.  
+Secondary metrics reveal trade-offs and help explain why a primary metric changed. Secondary metrics can also be used to reduce the risk of false positive on the primary metric
+
+**Example:** Monitoring average order value and gross conversions while the primary metric is net conversion rate.
 
 ### Significance level (alpha)  
-The maximum acceptable probability of a Type I error that you are willing to tolerate in a single hypothesis test, often set to 0.05.  
-Alpha determines the threshold at which you consider a result statistically significant.  
-**Example:** Using alpha = 0.05 means you treat results with p < 0.05 as significant.
+The maximum acceptable probability of a [Type I error](#type-1-error) that you are willing to tolerate in a single hypothesis test.  
+It determines the threshold at which you consider a result statistically significant.  
+
+**Example:** If you set α = 0.05, and your p-value is below 0.05, you declare the test result statistically significant — i.e., there's enough evidence to reject the null hypothesis.
 
 ### Spillover effect  
 When the impact of a change spills over from users in one variant to users in another, breaking the independence assumption.  
 Spillover can bias results and is especially relevant for social features, shared environments or marketplaces.  
+
 **Example:** Discounts shown only to the treatment group affecting reference prices for control users.
 
 ### SRM (sample ratio mismatch)  
 A discrepancy between the expected allocation of users across variants and what is actually observed.  
-SRM is a strong signal that something is wrong with assignment or tracking; experiment results should not be trusted until the cause is understood.   
+SRM is a strong signal that something is wrong with the implementation of the test. 
+Experiment results should not be trusted until the cause is understood. 
+
+ABsmartly automatically checks for SRM and reports any issue to the experimenters.
+
 **Example:** Configuring a 50/50 split but observing 60 percent of traffic in control and 40 percent in treatment.
 
 ### Standard deviation  
-A measure of how spread out values are around the mean of a distribution.  
-Standard deviation is central to many formulas for confidence intervals, z-scores and sample size calculations.  
-**Example:** Daily revenue per user with a mean of 50 and a standard deviation of 10.
+A measure of how spread out or variable your data is. It tells you, on average, how far each data point is from the mean (average).
+Standard deviation is central to many formulas for [confidence intervals](#confidnce-interval), [z-scores](#z-score) and sample size calculations.  
+
+- If your data points are close to the mean, the standard deviation is small.
+- If your data points are widely spread out, the standard deviation is large.
+
+**Example:**
+Imagine two sets of A/B test results for daily revenue (in dollars):
+Group A: [100, 102, 98, 101, 99]
+Mean = 100, Standard deviation ≈ 1.58 → very stable
+
+Group B: [80, 120, 70, 130, 100]
+Mean = 100, Standard deviation ≈ 23.45 → much more variation
+
+Same mean, very different variability!
 
 ### Statistical power  
 The probability that a test will detect a true effect of the planned size or larger.  
 High power means you are less likely to miss real improvements; very low power leads to many inconclusive or misleading tests.  
-**Example:** An experiment with 90 percent power will detect the target effect in 9 out of 10 repeated tests on average.
+
+In AB testing, power is typiocally set to 80% meaning that 8 out of 10 times, the test will detect the planned effect.
 
 ### Statistical significance (threshold)  
 A label applied when results meet the predefined significance criterion, usually p < alpha.  
-Statistical significance indicates that the observed effect is unlikely to be due to chance alone under the null model, but it does not guarantee practical importance.  
+Statistical significance indicates that the observed effect is unlikely to be due to chance alone under the null model, but it does not guarantee practical importance and says nothing about the size of the effect.  
+
 **Example:** A 3 percent lift in conversion with p = 0.01 at alpha = 0.05 is statistically significant.
 
 ---
@@ -636,9 +662,9 @@ Statistical significance indicates that the observed effect is unlikely to be du
 
 ### True effect
 
-### Two-sided analysis  
+### Two-tailed analysis  
 A hypothesis test that considers both possible directions of change, looking for either an increase or a decrease in the metric.  
-Two-sided tests are more conservative but safer when you care about both positive and negative outcomes.  
+Two-tailed tests are more conservative but safer when you care about both positive and negative outcomes.  
 **Example:** Testing whether a UI change alters conversion in *either* direction, not just improvement.
 
 ### Twyman’s law  
@@ -679,4 +705,4 @@ Lower variance improves power and reduces how long experiments need to run.
 A standardised value expressing how many standard deviations a data point or effect is away from the mean or from zero.  
 Z-scores provide a common scale for test statistics and link directly to p-values in many tests.  
 
-**Example:** A z-score of 2 corresponds to an effect about two standard deviations above zero, which roughly maps to p ≈ 0.045 in a two-sided test.
+**Example:** A z-score of 2 corresponds to an effect about two standard deviations above zero, which roughly maps to p ≈ 0.045 in a two-tailed test.
