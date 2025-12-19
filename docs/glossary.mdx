@@ -29,7 +29,7 @@ A/B experiments are the core building block of product experimentation and allow
 
 ### A/B/n experiment  
 A special type of A/B experiment that compares a control to *multiple* treatments at the same time (A vs B vs C, etc.). 
-A/B/n experiments are also sometimes refered to as multi-variant. Not to be confused with [Multivariate Experiment](#multivariate-experiment).
+A/B/n experiments are also sometimes referred to as multi-variant. Not to be confused with [Multivariate Experiment](#multivariate-experiment).
 
 A/B/n experiments speed up exploration when several ideas are available, but they increase the number of comparisons and therefore require more traffic.
 
@@ -94,7 +94,7 @@ Confidence intervals convey both the size and the uncertainty of an effect, whic
 Confidence intervals help assess both statistical significance (does the CI exclude zero?) and practical significance (is the effect large enough to matter?).
 
 **Example:** If a test result shows a +2.3% lift with a 95% confidence interval of [+0.5%, +4.1%], 
-it means means that if you were to repeat the same experiment 100 times, the true effect would lie within the CI in about 95 of those.
+it means that if you were to repeat the same experiment 100 times, the true effect would lie within the CI in about 95 of those.
 
 You could say “We are 95% confident that the [true effect](#true-effect) of the treatment is between +0.5% and +4.1%.”
 
@@ -230,7 +230,7 @@ That's why understanding — and managing — the risk of false discoveries is e
 
 A few things to consider to reduce the risks of False Discoveries
 
--ehavior, prior data, or product theory. Avoid “spaghetti testing” — randomly trying ideas just to see what sticks.
+- Ground hypotheses in user research, behaviour,, prior data, or product theory. Avoid “spaghetti testing” — randomly trying ideas just to see what sticks.
 - Retest or replicate high-impact or surprising results before launching. This adds confidence and filters out false positives.
 - Use falsifiable hypotheses and define what success and failure look like before running the experiment.
 
@@ -248,7 +248,7 @@ See also [False positive risk](#false-positive-risk)
 **Example:** If your team ran 500 A/B tests and 100 were statistically significant, but only 60 of those have an actual true effects, then your False Discovery Rate is 40% — meaning 40 out of 100 wins are likely false.
 
 ### False negative  
-Failing to detect a real effect when it exist; equivalent to a Type II error.  
+Failing to detect a real effect when it exists; equivalent to a Type II error.  
 False negatives cause missed opportunities where genuinely beneficial changes are discarded.  
 
 **Example:** Abandoning a feature improvement that would have increased conversion by 1 percent because the test was underpowered.
@@ -319,7 +319,7 @@ There are two common futility types:
 Choosing a futility type affects both statistical validity and decision flexibility. 
 Non-binding futility provides optionality for business judgment, while binding futility enforces stricter control over error rates.
 
-By default GST experiment in ABsmartly uses a binding futility type but this can be changed during the setup.
+By default, GST experiment in ABsmartly uses a binding futility type but this can be changed during the setup.
 
 **Example:**  At the halfway point of an A/B test, the test crosses the futility boundary, 
 but the team decides to continue because external factors suggest the impact may emerge later — a valid choice under the non-binding rule.
@@ -460,10 +460,10 @@ However, they require significantly more traffic than a simple A/B test, because
 For this reason Multivariate experiments are not supported in ABsmartly.
 
 **Example:**  
-You want to optimise a landing page with:  
+You want to optimise a landing page with the following:  
 - 2 different headlines (H1, H2)  
 - 3 different hero images (I1, I2, I3)  
-- 2 different call to action buttons (C1, C2)  
+- 2 different call-to-action buttons (C1, C2)  
 
 A multivariate experiment would test all 2 × 3 × 2 = 12 combinations (for example H1–I2–C1, H2–I3–C2, and so on) and estimate which combination yields the highest conversion rate, as well as whether certain headlines work better only with specific images or buttons.
 
@@ -522,7 +522,7 @@ This applies in “ship vs. no-ship” scenarios, where you only want to ship if
 
 ### Operational metric  
 A metric that reflects system health or performance rather than direct user or business outcomes.  
-While some experiment might be targeting them, operational metrics often act as guardrails and basic safety checks during experiments.  
+While some experiments might be targeting them, operational metrics often act as guardrails and basic safety checks during experiments.  
 
 ABsmartly recommends using some key operational metrics as guardrail metrics to ensure the experimentation program does not hurt those key KPIs.
 
@@ -568,7 +568,7 @@ Good power calculations align statistical design with practical constraints like
 
 Properly powering an experiment is a requirement for making good reliable data-informed decisions.
 
-ABsmartly built-in power calculator makes it easy to deign your experiment correctly.
+The ABsmartly's built-in power calculator makes it easy to design your experiment correctly.
 
 **Example:** Deciding that you need 50000 visitors per variant to detect a 1% increase with 80 percent power at a 5 percent significance level.
 
