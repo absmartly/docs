@@ -1,0 +1,687 @@
+# User endpoints
+users:
+  get:
+    summary: User [LIST]
+    description: "**Required Permissions**: `User List` or `User Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/User"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listuser
+  post:
+    summary: User [CREATE]
+    description: "**Required Permissions**: `User Create` or `User Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                    example: "user@example.com"
+                  name:
+                    type: string
+                    example: "John Doe"
+                  role_id:
+                    type: integer
+                    example: 1
+                  team_ids:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2]
+                required:
+                  - email
+                  - name
+                  - role_id
+            required:
+              - user
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                user:
+                  $ref: "#/components/schemas/User"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+    operationId: createuser
+users_by_id:
+  get:
+    summary: User [GET]
+    description: "**Required Permissions**: `User Get` or `User Admin`"
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  $ref: "#/components/schemas/User"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: User not found
+    operationId: getuser
+  put:
+    summary: User [UPDATE]
+    description: "**Required Permissions**: `User Edit` or `User Admin`"
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the User that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                    example: "updated@example.com"
+                  name:
+                    type: string
+                    example: "Updated User Name"
+                  role_id:
+                    type: integer
+                    example: 2
+                  team_ids:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2, 3]
+            required:
+              - user
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                user:
+                  $ref: "#/components/schemas/User"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: User not found
+    operationId: updateuser
+  delete:
+    summary: User [DELETE]
+    description: "**Required Permissions**: `User Delete` or `User Admin`"
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: User not found
+    operationId: deleteuser
+users_api_keys:
+  get:
+    summary: User's API Keys [LIST]
+    description: "**Required Permissions**: `ApiKey List` or `ApiKey Admin`"
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "./api_keys.yaml#/components/schemas/ApiKey"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: User not found
+
+    operationId: listusersApiKeys
+teams:
+  get:
+    summary: Team [LIST]
+    description: "**Required Permissions**: `Team List` or `Team Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Team"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listteam
+  post:
+    summary: Team [CREATE]
+    description: "**Required Permissions**: `Team Create` or `Team Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              team:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Engineering Team"
+                  application_ids:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2]
+                  user_ids:
+                    type: array
+                    items: 
+                      type: integer
+                    example: [101, 102]
+                required:
+                  - name
+            required:
+              - team
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                team:
+                  $ref: "#/components/schemas/Team"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: createteam
+teams_by_id:
+  get:
+    summary: Team [GET]
+    description: "**Required Permissions**: `Team Get` or `Team Admin`"
+    parameters:
+      - name: teamId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                team:
+                  $ref: "#/components/schemas/Team"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Team not found
+    operationId: getteam
+  put:
+    summary: Team [UPDATE]
+    description: "**Required Permissions**: `Team Edit` or `Team Admin`"
+    parameters:
+      - name: teamId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the Team that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              team:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Updated Team Name"
+                  application_ids:
+                    type: array
+                    items:
+                      type: integer
+                    example: [1, 2, 3]
+                  user_ids:
+                    type: array
+                    items: 
+                      type: integer
+                    example: [101, 102, 103]
+            required:
+              - team
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                team:
+                  $ref: "#/components/schemas/Team"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Team not found
+    operationId: updateteam
+  delete:
+    summary: Team [DELETE]
+    description: "**Required Permissions**: `Team Delete` or `Team Admin`"
+    parameters:
+      - name: teamId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Team not found
+
+    operationId: deleteteam
+components:
+  schemas:
+    User:
+      type: object
+      description: "Represents a user of the system with authentication and authorization capabilities"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the user"
+          example: 1
+        email:
+          type: string
+          format: email
+          description: "User's email address, used for login"
+          example: "john.doe@example.com"
+        first_name:
+          type: string
+          description: "User's first name"
+          example: "John"
+        last_name:
+          type: string
+          description: "User's last name"
+          example: "Doe"
+        full_name:
+          type: string
+          description: "User's full name"
+          example: "John Doe"
+        is_superadmin:
+          type: boolean
+          description: "Whether the user has superadmin privileges"
+          example: false
+        avatar_url:
+          type: string
+          format: uri
+          description: "URL to the user's avatar image"
+          example: "https://example.com/avatars/johndoe.jpg"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the user was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the user was last updated"
+          example: "2023-01-02T00:00:00Z"
+        last_login_at:
+          type: string
+          format: date-time
+          description: "When the user last logged in"
+          example: "2023-01-15T10:30:00Z"
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMember"
+        global_role:
+          $ref: "./permissions_and_roles.yaml#/components/schemas/Role"
+      required:
+        - id
+        - email
+        - first_name
+        - last_name
+        - full_name
+        - is_superadmin
+        - created_at
+        - updated_at
+      example:
+        id: 1
+        email: "john.doe@example.com"
+        first_name: "John"
+        last_name: "Doe"
+        full_name: "John Doe"
+        is_superadmin: false
+        avatar_url: "https://example.com/avatars/johndoe.jpg"
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"
+        last_login_at: "2023-01-15T10:30:00Z"
+        
+    Team:
+      type: object
+      description: "Represents a team of users who collaborate on experiments and applications"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the team"
+          example: 1
+        name:
+          type: string
+          description: "Name of the team"
+          example: "Marketing Team"
+        description:
+          type: string
+          description: "Detailed description of the team"
+          example: "Team responsible for marketing experiments and campaigns"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the team was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the team was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - name
+      example:
+        id: 1
+        name: "Marketing Team"
+        description: "Team responsible for marketing experiments and campaigns"
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"
+        
+    TeamMember:
+      type: object
+      description: "Represents a user's membership in a team"
+      properties:
+        team_id:
+          type: integer
+          description: "ID of the team"
+          example: 1
+        user_id:
+          type: integer
+          description: "ID of the user"
+          example: 2
+        role_id:
+          type: integer
+          description: "ID of the role assigned to the user in this team"
+          example: 3
+        created_at:
+          type: string
+          format: date-time
+          description: "When the team membership was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the team membership was last updated"
+          example: "2023-01-02T00:00:00Z"
+        role:
+          $ref: "./permissions_and_roles.yaml#/components/schemas/Role"
+      required:
+        - team_id
+        - user_id
+        - role_id
+      example:
+        team_id: 1
+        user_id: 2
+        role_id: 3
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"
+        
+    TeamApplication:
+      type: object
+      description: "Represents an application assigned to a team"
+      properties:
+        team_id:
+          type: integer
+          description: "ID of the team"
+          example: 1
+        application_id:
+          type: integer
+          description: "ID of the application"
+          example: 2
+        created_at:
+          type: string
+          format: date-time
+          description: "When the application was assigned to the team"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the team-application relationship was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - team_id
+        - application_id
+      example:
+        team_id: 1
+        application_id: 2
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"

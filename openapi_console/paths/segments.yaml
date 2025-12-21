@@ -1,0 +1,272 @@
+segments:
+  get:
+    summary: Segment [LIST]
+    description: "**Required Permissions**: `Segment List` or `Segment Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Segment"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listsegment
+  post:
+    summary: Segment [CREATE]
+    description: "**Required Permissions**: `Segment Create` or `Segment Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              segment:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Mobile Users"
+                  application_id:
+                    type: integer
+                    example: 1
+                  environment_id:
+                    type: integer
+                    example: 1
+                  definition:
+                    type: object
+                    example: { "type": "mobile" }
+                required:
+                  - name
+                  - application_id
+                  - environment_id
+                  - definition
+            required:
+              - segment
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                segment:
+                  $ref: "#/components/schemas/Segment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: createsegment
+segments_by_id:
+  get:
+    summary: Segment [GET]
+    description: "**Required Permissions**: `Segment Get` or `Segment Admin`"
+    parameters:
+      - name: segmentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                segment:
+                  $ref: "#/components/schemas/Segment"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Segment not found
+    operationId: getsegment
+  put:
+    summary: Segment [UPDATE]
+    description: "**Required Permissions**: `Segment Edit` or `Segment Admin`"
+    parameters:
+      - name: segmentId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the Segment that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              segment:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Updated Segment Name"
+                  application_id:
+                    type: integer
+                    example: 1
+                  environment_id:
+                    type: integer
+                    example: 1
+                  definition:
+                    type: object
+                    example: { "type": "mobile", "version": "2.0" }
+            required:
+              - segment
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                segment:
+                  $ref: "#/components/schemas/Segment"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Segment not found
+    operationId: updatesegment
+  delete:
+    summary: Segment [DELETE]
+    description: "**Required Permissions**: `Segment Delete` or `Segment Admin`"
+    parameters:
+      - name: segmentId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Segment not found
+
+    operationId: deletesegment
+components:
+  schemas:
+    Segment:
+      type: object
+      description: "Represents a segment of users or traffic for targeting in experiments"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the segment"
+          example: 1
+        name:
+          type: string
+          description: "Name of the segment"
+          example: "Mobile Users"
+        description:
+          type: string
+          description: "Detailed description of the segment"
+          example: "Users accessing the site from mobile devices"
+        application_id:
+          type: integer
+          description: "ID of the application this segment belongs to"
+          example: 1
+        environment_id:
+          type: integer
+          description: "ID of the environment this segment belongs to"
+          example: 2
+        filter_expression:
+          type: string
+          description: "Expression used to evaluate if a user belongs to this segment"
+          example: "context.device.type == 'mobile'"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the segment was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the segment was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - name
+        - application_id
+        - environment_id
+      example:
+        id: 1
+        name: "Mobile Users"
+        description: "Users accessing the site from mobile devices"
+        application_id: 1
+        environment_id: 2
+        filter_expression: "context.device.type == 'mobile'"
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"

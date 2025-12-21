@@ -92,7 +92,7 @@ const config = {
             },
           },
           nodeapi: {
-            specPath: "nodeapi-spec.yaml",
+            specPath: "openapi_console/openapi.yaml",
             outputDir: "docs/Web-Console-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,

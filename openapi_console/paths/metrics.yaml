@@ -1,0 +1,514 @@
+metrics:
+  get:
+    summary: Metric [LIST]
+    description: "**Required Permissions**: `Metric List` or `Metric Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Metric"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listmetric
+  post:
+    summary: Metric [CREATE]
+    description: "**Required Permissions**: `Metric Create` or `Metric Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              metric:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Conversion Rate"
+                  application_id:
+                    type: integer
+                    example: 1
+                  unit_id:
+                    type: integer
+                    example: 1
+                  environment_id:
+                    type: integer
+                    example: 1
+                required:
+                  - name
+                  - application_id
+                  - unit_id
+                  - environment_id
+            required:
+              - metric
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                metric:
+                  $ref: "#/components/schemas/Metric"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: createmetric
+metrics_by_id:
+  get:
+    summary: Metric [GET]
+    description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
+    parameters:
+      - name: metricId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metric:
+                  $ref: "#/components/schemas/Metric"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Metric not found
+    operationId: getmetric
+  put:
+    summary: Metric [UPDATE]
+    description: "**Required Permissions**: `Metric Edit` or `Metric Admin`"
+    parameters:
+      - name: metricId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the Metric that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              metric:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Updated Conversion Rate"
+                  application_id:
+                    type: integer
+                    example: 1
+                  unit_id:
+                    type: integer
+                    example: 1
+                  environment_id:
+                    type: integer
+                    example: 1
+            required:
+              - metric
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                metric:
+                  $ref: "#/components/schemas/Metric"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Metric not found
+    operationId: updatemetric
+  delete:
+    summary: Metric [DELETE]
+    description: "**Required Permissions**: `Metric Delete` or `Metric Admin`"
+    parameters:
+      - name: metricId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Metric not found
+    operationId: deletemetric
+metric_tags:
+  get:
+    summary: Metric Tag [LIST]
+    description: "**Required Permissions**: `Metric Tag List` or `Metric Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "name"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/MetricTag"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listmetricTag
+  post:
+    summary: Metric Tag [CREATE]
+    description: "**Required Permissions**: `Metric Tag Create` or `Metric Admin`"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              metric_tag:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "conversion"
+                  color:
+                    type: string
+                    example: "#2196F3"
+                required:
+                  - name
+                  - color
+            required:
+              - metric_tag
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                metric_tag:
+                  $ref: "#/components/schemas/MetricTag"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: createmetricTag
+metric_tags_by_id:
+  get:
+    summary: Metric Tag [GET]
+    description: "**Required Permissions**: `Metric Tag Get` or `Metric Admin`"
+    parameters:
+      - name: metricTagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metric_tag:
+                  $ref: "#/components/schemas/MetricTag"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Metric Tag not found
+    operationId: getmetricTag
+  put:
+    summary: Metric Tag [UPDATE]
+    description: "**Required Permissions**: `Metric Tag Edit` or `Metric Admin`"
+    parameters:
+      - name: metricTagId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of the Metric Tag that you wish to update.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              metric_tag:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Updated Tag Name"
+                  color:
+                    type: string
+                    example: "#2196F3"
+            required:
+              - metric_tag
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+                metric_tag:
+                  $ref: "#/components/schemas/MetricTag"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Metric Tag not found
+    operationId: updatemetricTag
+  delete:
+    summary: Metric Tag [DELETE]
+    description: "**Required Permissions**: `Metric Tag Delete` or `Metric Admin`"
+    parameters:
+      - name: metricTagId
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Metric Tag not found
+
+    operationId: deletemetricTag
+components:
+  schemas:
+    Metric:
+      type: object
+      description: "A metric model that defines how to measure and calculate experiment results"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the metric (auto-generated)"
+          example: 15
+        name:
+          type: string
+          description: "Name of the metric. Must be unique within an application. Max length 256 characters."
+          example: "conversion_rate"
+          maxLength: 256
+        description:
+          type: string
+          description: "Detailed description of what the metric measures and how it's calculated. Max length 8192 characters."
+          example: "Percentage of users who complete a purchase"
+          maxLength: 8192
+        application_id:
+          type: integer
+          description: "ID of the application this metric is associated with"
+          example: 1
+        environment_id:
+          type: integer
+          description: "ID of the environment this metric is associated with"
+          example: 2
+        goal_id:
+          type: integer
+          description: "ID of the goal this metric is associated with, if any"
+          example: 3
+        unit_id:
+          type: integer
+          description: "ID of the unit type for this metric (e.g., percentage, count, currency)"
+          example: 5
+        expression:
+          type: string
+          description: "Mathematical expression used to calculate this metric, if it's a derived metric"
+          example: "(total_purchases / total_visitors) * 100"
+        sql_query:
+          type: string
+          description: "SQL query used to retrieve the data for this metric, if applicable"
+          example: "SELECT COUNT(*) FROM purchases WHERE completed = true"
+        created_at:
+          type: string
+          format: date-time
+          description: "When the metric was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the metric was last updated"
+          example: "2023-01-02T00:00:00Z"
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/MetricTag"
+      required:
+        - id
+        - name
+        - application_id
+        - environment_id
+        - unit_id
+      example:
+        id: 15
+        name: "conversion_rate"
+        description: "Percentage of users who complete a purchase"
+        goal_id: 70
+        application_id: 1
+        environment_id: 2
+        unit_id: 5
+        created_at: "2023-01-01T00:00:00Z"
+        updated_at: "2023-01-02T00:00:00Z"
+        
+    MetricTag:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the metric tag"
+          example: 1
+        name:
+          type: string
+          description: "Name of the tag"
+          example: "conversion"
+        color:
+          type: string
+          description: "Color code for the tag"
+          example: "#2196F3"
+      required:
+        - id
+        - name

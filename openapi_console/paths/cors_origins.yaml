@@ -1,0 +1,410 @@
+openapi: 3.0.3
+info:
+  title: ABSmartly API
+  version: 0.1.0
+paths:
+  /applications/{application_id}/cors-origins:
+    get:
+      summary: CORS Allowed Origins [LIST]
+      description: "**Required Permissions**: `Application View` or `Application Edit` or `Application Admin`"
+      operationId: listCorsAllowedOrigins
+      parameters:
+        - name: application_id
+          in: path
+          description: Application ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - $ref: "../components/parameters.yaml#/components/parameters/Pagination"
+        - name: sort
+          in: query
+          description: Sort specification
+          required: false
+          schema:
+            type: string
+            default: id.asc
+        - name: filter
+          in: query
+          description: Filter specification
+          required: false
+          schema:
+            type: string
+      tags:
+        - CORS Allowed Origins
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CorsAllowedOrigin"
+                  metadata:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: Number of items
+                      limit:
+                        type: integer
+                        description: Pagination limit
+                      offset:
+                        type: integer
+                        description: Pagination offset
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+    post:
+      summary: CORS Allowed Origin [CREATE]
+      description: "**Required Permissions**: `Application Edit` or `Application Admin`"
+      operationId: createCorsAllowedOrigin
+      parameters:
+        - name: application_id
+          in: path
+          description: Application ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      tags:
+        - CORS Allowed Origins
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                origin:
+                  type: string
+                  description: "Origin URL"
+                  example: "https://example.com"
+              required:
+                - origin
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  cors_allowed_origin:
+                    $ref: "#/components/schemas/CorsAllowedOrigin"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+  /applications/{application_id}/cors-origins/{cors_origin_id}:
+    get:
+      summary: CORS Allowed Origin [GET]
+      description: "**Required Permissions**: `Application View` or `Application Edit` or `Application Admin`"
+      operationId: getCorsAllowedOrigin
+      parameters:
+        - name: application_id
+          in: path
+          description: Application ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: cors_origin_id
+          in: path
+          description: CORS Allowed Origin ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      tags:
+        - CORS Allowed Origins
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cors_allowed_origin:
+                    $ref: "#/components/schemas/CorsAllowedOrigin"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: CORS Allowed Origin not found
+    delete:
+      summary: CORS Allowed Origin [DELETE]
+      description: "**Required Permissions**: `Application Edit` or `Application Admin`"
+      operationId: deleteCorsAllowedOrigin
+      parameters:
+        - name: application_id
+          in: path
+          description: Application ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: cors_origin_id
+          in: path
+          description: CORS Allowed Origin ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      tags:
+        - CORS Allowed Origins
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: CORS Allowed Origin not found
+
+# Define standalone paths for the main OpenAPI file to reference
+cors_origins:
+  get:
+    summary: CORS Origins [LIST]
+    description: "**Required Permissions**: `Application View` or `Application Admin`"
+    operationId: listCorsOrigins
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - CORS Origins
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/CorsAllowedOrigin"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+  post:
+    summary: CORS Origin [CREATE]
+    description: "**Required Permissions**: `Application Edit` or `Application Admin`"
+    operationId: createCorsOrigin
+    tags:
+      - CORS Origins
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              origin:
+                type: string
+                description: "Origin URL"
+                example: "https://example.com"
+              application_id:
+                type: integer
+                description: "ID of the application this CORS rule belongs to"
+                example: 1
+            required:
+              - origin
+              - application_id
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                cors_allowed_origin:
+                  $ref: "#/components/schemas/CorsAllowedOrigin"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+
+cors_origins_by_id:
+  get:
+    summary: CORS Origin [GET]
+    description: "**Required Permissions**: `Application View` or `Application Admin`"
+    operationId: getCorsOrigin
+    parameters:
+      - name: corsOriginId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - CORS Origins
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cors_allowed_origin:
+                  $ref: "#/components/schemas/CorsAllowedOrigin"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: CORS Origin not found
+  put:
+    summary: CORS Origin [UPDATE]
+    description: "**Required Permissions**: `Application Edit` or `Application Admin`"
+    operationId: updateCorsOrigin
+    parameters:
+      - name: corsOriginId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - CORS Origins
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              origin:
+                type: string
+                description: "Origin URL"
+                example: "https://example.com"
+              application_id:
+                type: integer
+                description: "ID of the application this CORS rule belongs to"
+                example: 1
+            required:
+              - origin
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                cors_allowed_origin:
+                  $ref: "#/components/schemas/CorsAllowedOrigin"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: CORS Origin not found
+  delete:
+    summary: CORS Origin [DELETE]
+    description: "**Required Permissions**: `Application Edit` or `Application Admin`"
+    operationId: deleteCorsOrigin
+    parameters:
+      - name: corsOriginId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - CORS Origins
+    responses:
+      "204":
+        description: No Content
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: CORS Origin not found
+
+# Components
+components:
+  schemas:
+    CorsAllowedOrigin:
+      type: object
+      description: "Represents an allowed origin for Cross-Origin Resource Sharing (CORS)"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the CORS allowed origin"
+          example: 1
+        origin:
+          type: string
+          description: "The allowed origin URL"
+          example: "https://example.com"
+        application_id:
+          type: integer
+          description: "ID of the application this CORS rule belongs to"
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          description: "When the CORS rule was created"
+          example: "2023-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "When the CORS rule was last updated"
+          example: "2023-01-02T00:00:00Z"
+      required:
+        - id
+        - origin
+        - application_id

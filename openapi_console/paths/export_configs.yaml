@@ -1,0 +1,577 @@
+export_configs:
+  get:
+    summary: Export Configs [LIST]
+    description: "**Required Permissions**: `ExportConfig List` or `ExportConfig Admin`"
+    parameters:
+      - name: ids
+        in: query
+        schema:
+          type: string
+          example: "1,2,3"
+        description: "Comma-separated list of export config IDs"
+      - name: config_types
+        in: query
+        schema:
+          type: string
+          example: "SCHEDULED,MANUAL"
+        description: "Comma-separated list of export config types"
+      - name: statuses
+        in: query
+        schema:
+          type: string
+          example: "COMPLETED,FAILED"
+        description: "Comma-separated list of export history statuses"
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "description"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - Export Configs
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ExportConfig"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listexportConfigs
+  post:
+    summary: Export Configs [CREATE]
+    description: "**Required Permissions**: `ExportConfig Create` or `ExportConfig Admin`"
+    tags:
+      - Export Configs
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+                description: "Export configuration description"
+                example: "Daily event export"
+              filters:
+                type: object
+                description: "JSON filters for the export"
+              target:
+                type: string
+                enum: [EVENTS, BACKUPS]
+                description: "Export target type"
+                example: "EVENTS"
+              export_type:
+                type: string
+                enum: [SCHEDULED, MANUAL]
+                description: "Export type"
+                example: "SCHEDULED"
+              cron_expression:
+                type: string
+                description: "Cron expression for scheduled exports"
+                example: "0 0 * * *"
+              storage_config:
+                $ref: "#/components/schemas/StorageConfigInput"
+            required:
+              - description
+              - filters
+              - target
+              - export_type
+              - storage_config
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExportConfig"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: createexportConfigs
+export_configs_by_id:
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  get:
+    summary: Export Configs [GET]
+    description: "**Required Permissions**: `ExportConfig List` or `ExportConfig Admin`"
+    tags:
+      - Export Configs
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExportConfig"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Not Found
+    operationId: getexportConfigs
+  put:
+    summary: Export Configs [UPDATE]
+    description: |
+      **Required Permissions**: `ExportConfig Update` or `ExportConfig Admin`
+
+      :::caution
+      Only fields provided in the request will be updated. Fields not included in the request body will retain their existing values.
+      :::
+    tags:
+      - Export Configs
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+                description: "Export configuration description"
+                example: "Daily event export"
+              filters:
+                type: object
+                description: "JSON filters for the export"
+              target:
+                type: string
+                enum: [EVENTS, BACKUPS]
+                description: "Export target type"
+                example: "EVENTS"
+              export_type:
+                type: string
+                enum: [SCHEDULED, MANUAL]
+                description: "Export type"
+                example: "SCHEDULED"
+              cron_expression:
+                type: string
+                description: "Cron expression for scheduled exports"
+                example: "0 0 * * *"
+              storage_config:
+                $ref: "#/components/schemas/StorageConfigInput"
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExportConfig"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Not Found
+    operationId: updateexportConfigs
+  delete:
+    summary: Export Configs [ARCHIVE]
+    description: "**Required Permissions**: `ExportConfig Archive` or `ExportConfig Admin`"
+    tags:
+      - Export Configs
+    responses:
+      "204":
+        description: No Content
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Not Found
+    operationId: deleteexportConfigs
+export_configs_id_export_histories:
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  get:
+    summary: Export Histories [LIST]
+    description: "**Required Permissions**: `ExportConfig List` or `ExportConfig Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - Export Configs
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ExportHistory"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Not Found
+    operationId: listexportHistories
+export_configs_id_export_histories_by_history_id:
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: history_id
+      in: path
+      required: true
+      schema:
+        type: integer
+  put:
+    summary: Export Histories [CANCEL]
+    description: "**Required Permissions**: `ExportConfig Update` or `ExportConfig Admin`"
+    tags:
+      - Export Configs
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cancelled_reason:
+                type: string
+                description: "Reason for cancellation"
+                example: "No longer needed"
+            required:
+              - cancelled_reason
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExportHistory"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Not Found
+    operationId: updateexportHistories
+components:
+  schemas:
+    ExportConfig:
+      type: object
+      description: "Configuration for data exports"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the export config"
+          example: 1
+        description:
+          type: string
+          description: "Export configuration description"
+          example: "Daily event export"
+        filters:
+          type: object
+          description: "JSON filters for the export"
+        target:
+          type: string
+          enum: [EVENTS, BACKUPS]
+          description: "Export target type"
+          example: "EVENTS"
+        storage_config_id:
+          type: integer
+          description: "ID of the associated storage configuration"
+          example: 1
+        storage_config:
+          $ref: "#/components/schemas/StorageConfig"
+        export_type:
+          type: string
+          enum: [SCHEDULED, MANUAL]
+          description: "Export type"
+          example: "SCHEDULED"
+        cron_expression:
+          type: string
+          description: "Cron expression for scheduled exports"
+          example: "0 0 * * *"
+        created_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the export config was created"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created the export config"
+        updated_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the export config was last updated"
+        updated_by_user_id:
+          type: integer
+          description: "ID of the user who last updated the export config"
+        cancelled_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the export config was cancelled"
+        archived:
+          type: boolean
+          description: "Whether the export config is archived"
+        export_histories:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExportHistory"
+          description: "List of export histories associated with this config"
+      required:
+        - id
+        - description
+        - filters
+        - target
+        - storage_config_id
+        - storage_config
+        - export_type
+        - created_at
+        - created_by_user_id
+        - archived
+
+    ExportHistory:
+      type: object
+      description: "History record of an export execution"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the export history"
+          example: 1
+        export_config_id:
+          type: integer
+          description: "ID of the associated export config"
+          example: 1
+        status:
+          type: string
+          enum: [IN_PROGRESS, COMPLETED, FAILED, WAITING, RETRYING, CANCELLED]
+          description: "Current status of the export"
+          example: "COMPLETED"
+        file_name:
+          type: string
+          description: "Name of the exported file"
+          example: "events_export_2023-01-01.csv"
+        progress:
+          type: integer
+          description: "Export progress percentage"
+          example: 75
+        remaining_seconds:
+          type: integer
+          format: int64
+          description: "Estimated remaining time in seconds"
+          example: 120
+        total_seconds:
+          type: integer
+          format: int64
+          description: "Total estimated time in seconds"
+          example: 600
+        exported_rows:
+          type: integer
+          format: int64
+          description: "Number of rows exported so far"
+          example: 750000
+        total_rows:
+          type: integer
+          format: int64
+          description: "Total number of rows to export"
+          example: 1000000
+        total_export_parts:
+          type: integer
+          description: "Total number of export parts"
+          example: 10
+        current_export_part:
+          type: integer
+          description: "Current export part being processed"
+          example: 7
+        exported_rows_part:
+          type: integer
+          format: int64
+          description: "Number of rows exported in the current part"
+          example: 75000
+        total_rows_part:
+          type: integer
+          format: int64
+          description: "Total number of rows in the current part"
+          example: 100000
+        retries:
+          type: integer
+          description: "Number of manual retries"
+          example: 1
+        automatic_retries:
+          type: integer
+          description: "Number of automatic retries"
+          example: 2
+        scheduled_exec_at:
+          type: string
+          format: date-time
+          description: "Scheduled execution time"
+        last_part_exec_at:
+          type: string
+          format: date-time
+          description: "Time when the last part was executed"
+        export_started_at:
+          type: string
+          format: date-time
+          description: "Time when the export started"
+        created_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the export history was created"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created the export history"
+        updated_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the export history was last updated"
+        cancelled_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the export was cancelled"
+        cancelled_by_user_id:
+          type: integer
+          description: "ID of the user who cancelled the export"
+        cancelled_reason:
+          type: string
+          description: "Reason for cancellation"
+          example: "No longer needed"
+        error_message:
+          type: string
+          description: "Error message if the export failed"
+          example: "Connection timeout to storage provider"
+      required:
+        - id
+        - export_config_id
+        - status
+        - created_at
+        - created_by_user_id
+
+    StorageConfig:
+      type: object
+      description: "Configuration for storage providers"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the storage configuration"
+          example: 1
+        provider:
+          type: string
+          description: "Storage provider name"
+          example: "S3"
+        config:
+          type: object
+          description: "Provider-specific configuration"
+        created_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the storage config was created"
+        created_by_user_id:
+          type: integer
+          description: "ID of the user who created the storage config"
+        updated_at:
+          type: string
+          format: date-time
+          description: "Timestamp when the storage config was last updated"
+        updated_by_user_id:
+          type: integer
+          description: "ID of the user who last updated the storage config"
+      required:
+        - id
+        - provider
+        - config
+        - created_at
+        - created_by_user_id
+        
+    StorageConfigInput:
+      type: object
+      description: "Input for creating or updating a storage configuration"
+      properties:
+        provider:
+          type: string
+          description: "Storage provider name"
+          example: "S3"
+        config:
+          type: object
+          description: "Provider-specific configuration"
+      required:
+        - provider
+        - config

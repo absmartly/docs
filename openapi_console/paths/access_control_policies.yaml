@@ -1,0 +1,259 @@
+access_control_policies:
+  get:
+    summary: Access Control Policies [LIST]
+    description: "**Required Permissions**: `Admin`"
+    parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          example: "created_at"
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          example: 15
+          default: 15
+    tags:
+      - Access Control Policies
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccessControlPolicy"
+                metadata:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                    page:
+                      type: integer
+                    page_count:
+                      type: integer
+                    per_page:
+                      type: integer
+                    total:
+                      type: integer
+              required:
+                - items
+                - metadata
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: listaccessControlPolicies
+  post:
+    summary: Access Control Policy [CREATE]
+    description: "**Required Permissions**: `Admin`"
+    tags:
+      - Access Control Policies
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "Name of the access control policy"
+                example: "Deny Experiment Creation"
+              effect:
+                type: string
+                description: "Effect of the policy (allow/deny)"
+                enum: ["allow", "deny"]
+                example: "deny"
+              condition:
+                type: string
+                description: "Condition expression for the policy"
+                example: "context.user.role !== 'admin'"
+              description:
+                type: string
+                description: "Description of the policy"
+                example: "Prevents non-admin users from creating experiments"
+              category_id:
+                type: integer
+                description: "ID of the permission category"
+                example: 1
+            required:
+              - name
+              - effect
+              - category_id
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                access_control_policy:
+                  $ref: "#/components/schemas/AccessControlPolicy"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+    operationId: createaccessControlPolicy
+access_control_policies_by_id:
+  get:
+    summary: Access Control Policy [GET]
+    description: "**Required Permissions**: `Admin`"
+    parameters:
+      - name: policyId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Access Control Policies
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_control_policy:
+                  $ref: "#/components/schemas/AccessControlPolicy"
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Access Control Policy not found
+    operationId: getaccessControlPolicy
+  put:
+    summary: Access Control Policy [UPDATE]
+    description: "**Required Permissions**: `Admin`"
+    parameters:
+      - name: policyId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Access Control Policies
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "Name of the access control policy"
+                example: "Deny Experiment Creation"
+              effect:
+                type: string
+                description: "Effect of the policy (allow/deny)"
+                enum: ["allow", "deny"]
+                example: "deny"
+              condition:
+                type: string
+                description: "Condition expression for the policy"
+                example: "context.user.role !== 'admin'"
+              description:
+                type: string
+                description: "Description of the policy"
+                example: "Prevents non-admin users from creating experiments"
+              category_id:
+                type: integer
+                description: "ID of the permission category"
+                example: 1
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                access_control_policy:
+                  $ref: "#/components/schemas/AccessControlPolicy"
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Access Control Policy not found
+    operationId: updateaccessControlPolicy
+  delete:
+    summary: Access Control Policy [DELETE]
+    description: "**Required Permissions**: `Admin`"
+    parameters:
+      - name: policyId
+        in: path
+        required: true
+        schema:
+          type: integer
+    tags:
+      - Access Control Policies
+    responses:
+      "204":
+        description: No Content
+      "401":
+        description: Unauthorized
+      "403":
+        description: Forbidden
+      "404":
+        description: Access Control Policy not found
+    operationId: deleteaccessControlPolicy
+components:
+  schemas:
+    AccessControlPolicy:
+      type: object
+      description: "Represents an access control policy for permissions"
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the access control policy"
+          example: 1
+        name:
+          type: string
+          description: "Name of the access control policy"
+          example: "Deny Experiment Creation"
+        effect:
+          type: string
+          description: "Effect of the policy (allow/deny)"
+          enum: ["allow", "deny"]
+          example: "deny"
+        condition:
+          type: string
+          description: "Condition expression for the policy"
+          example: "context.user.role !== 'admin'"
+        description:
+          type: string
+          description: "Description of the policy"
+          example: "Prevents non-admin users from creating experiments"
+        category_id:
+          type: integer
+          description: "ID of the permission category"
+          example: 1
+      required:
+        - id
+        - name
+        - effect
+        - category_id
