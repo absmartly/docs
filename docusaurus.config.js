@@ -42,6 +42,9 @@ const config = {
     locales: ["en"],
   },
 
+  // Client modules for anchor redirects
+  clientModules: [require.resolve("./src/anchorRedirects.js")],
+
   presets: [
     [
       "classic",
