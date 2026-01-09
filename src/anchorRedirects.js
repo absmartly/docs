@@ -21,21 +21,34 @@ function handleAnchorRedirect() {
   const path = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash
   const hash = window.location.hash.slice(1);
 
+  console.log('[AnchorRedirect] Checking:', { path, hash, hasRedirects: !!ANCHOR_REDIRECTS[path] });
+
   if (!hash) return;
 
   const redirects = ANCHOR_REDIRECTS[path];
   if (!redirects) return;
 
   const newDestination = redirects[hash];
+  console.log('[AnchorRedirect] Found mapping:', { hash, newDestination });
   if (!newDestination) return;
 
   if (newDestination.startsWith('/')) {
+    console.log('[AnchorRedirect] Redirecting to different page:', newDestination);
     window.location.replace(newDestination);
   } else {
-    window.location.replace(`${path}#${newDestination}`);
+    const newUrl = `${path}#${newDestination}`;
+    console.log('[AnchorRedirect] Redirecting anchor:', newUrl);
+    window.location.replace(newUrl);
   }
 }
 
 if (typeof window !== 'undefined') {
+  // Run on initial load
   handleAnchorRedirect();
+
+  // Also run after client-side navigation (for SPAs like Docusaurus)
+  if (window.addEventListener) {
+    window.addEventListener('load', handleAnchorRedirect);
+    window.addEventListener('hashchange', handleAnchorRedirect);
+  }
 }
