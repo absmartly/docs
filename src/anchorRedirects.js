@@ -12,11 +12,13 @@ const ANCHOR_REDIRECTS = {
   '/docs/web-console-docs/feature-flags/creating-a-feature': {
     'feature-name': 'basics',
     'tracking-unit': 'audiences',
+    'application': 'audiences',
+    'targeting-audiences': 'audiences',
   },
 };
 
 function handleAnchorRedirect() {
-  const path = window.location.pathname;
+  const path = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash
   const hash = window.location.hash.slice(1);
 
   if (!hash) return;
