@@ -1,5 +1,6 @@
 // Client-side anchor redirects for URL structure changes
-// This handles cases where anchor names changed or moved to different pages
+// This handles ONLY cases where anchor names changed or moved to different pages
+// Note: Browsers automatically preserve unchanged anchors during 302 redirects per HTTP spec
 
 interface AnchorRedirects {
   [path: string]: {
@@ -8,10 +9,12 @@ interface AnchorRedirects {
 }
 
 const ANCHOR_REDIRECTS: AnchorRedirects = {
-  // NEW paths (after server redirect) - handle anchor transformations
+  // NEW paths (after server redirect) - ONLY anchors that transform or move
   '/docs/web-console-docs/experiments/creating-an-experiment': {
+    // Same-page anchor renames
     'application': 'applications',
     'targeting-audiences': 'audiences',
+    // Cross-page redirects (content moved to different pages)
     'error-control': '/docs/web-console-docs/experiments/setting-up-a-gst-experiment#error-control',
     'sample-size-calculation': '/docs/web-console-docs/experiments/setting-up-a-gst-experiment#what-is-the-experiment-duration-based-on',
     'type-of-analysis': '/docs/web-console-docs/experiments/overview#analysis-methods',
@@ -23,14 +26,10 @@ const ANCHOR_REDIRECTS: AnchorRedirects = {
     'targeting-audiences': 'audiences',
   },
   // OLD paths (for local testing and fallback) - redirect to new structure
+  // Only include anchors that TRANSFORM - browser preserves unchanged anchors automatically
   '/docs/web-console-docs/creating-an-experiment': {
     'application': '/docs/web-console-docs/experiments/creating-an-experiment#applications',
     'targeting-audiences': '/docs/web-console-docs/experiments/creating-an-experiment#audiences',
-    'metadata': '/docs/web-console-docs/experiments/creating-an-experiment#metadata',
-    'experiment-name': '/docs/web-console-docs/experiments/creating-an-experiment#experiment-name',
-    'tracking-unit': '/docs/web-console-docs/experiments/creating-an-experiment#tracking-unit',
-    'variants': '/docs/web-console-docs/experiments/creating-an-experiment#variants',
-    'metrics': '/docs/web-console-docs/experiments/creating-an-experiment#metrics',
     'error-control': '/docs/web-console-docs/experiments/setting-up-a-gst-experiment#error-control',
     'sample-size-calculation': '/docs/web-console-docs/experiments/setting-up-a-gst-experiment#what-is-the-experiment-duration-based-on',
     'type-of-analysis': '/docs/web-console-docs/experiments/overview#analysis-methods',
@@ -40,8 +39,6 @@ const ANCHOR_REDIRECTS: AnchorRedirects = {
     'tracking-unit': '/docs/web-console-docs/feature-flags/creating-a-feature#audiences',
     'application': '/docs/web-console-docs/feature-flags/creating-a-feature#audiences',
     'targeting-audiences': '/docs/web-console-docs/feature-flags/creating-a-feature#audiences',
-    'variants': '/docs/web-console-docs/feature-flags/creating-a-feature#variants',
-    'metrics': '/docs/web-console-docs/feature-flags/creating-a-feature#metrics',
   },
 };
 

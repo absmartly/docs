@@ -7,7 +7,7 @@
 # Note: Adding trailing slashes to match Docusaurus URL normalization
 /docs/web-console-docs/creating-an-experiment /docs/web-console-docs/experiments/creating-an-experiment/ 302
 /docs/web-console-docs/creating-a-feature /docs/web-console-docs/feature-flags/creating-a-feature/ 302
-/docs/web-console-docs/setting-up-a-gst-experiment /docs/web-console-docs/experiments/setting-up-a-fixed-horizon-experiment/ 302
+/docs/web-console-docs/setting-up-a-gst-experiment /docs/web-console-docs/experiments/setting-up-a-gst-experiment/ 302
 /docs/web-console-docs/Experiment-reports /docs/web-console-docs/experiments/Experiment-reports/ 302
 /docs/web-console-docs/understanding-experimentation-metrics/* /docs/web-console-docs/goals-and-metrics/metrics/overview/ 302
 /docs/web-console-docs/settings /docs/web-console-docs/Configuration/settings/ 302
