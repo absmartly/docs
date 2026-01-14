@@ -4,27 +4,76 @@
  * Comprehensive URL Testing Script
  * Tests ALL documentation pages + all redirects using Playwright
  *
- * Usage: node test-all-urls.js [URL]
- * Example: node test-all-urls.js http://localhost:3000
- * Example: node test-all-urls.js https://deploy-preview-243--absmartly-docs.netlify.app
+ * Usage: node test-all-urls.js [URL] [--only-failed]
+ *
+ * Examples:
+ *   node test-all-urls.js http://localhost:3000
+ *   node test-all-urls.js https://deploy-preview-243--absmartly-docs.netlify.app
+ *   node test-all-urls.js https://deploy-preview-243--absmartly-docs.netlify.app --only-failed
+ *
+ * Flags:
+ *   --only-failed  Test only the pages that failed in the previous run (avoids rate limits)
  *
  * This script:
- * 1. Finds all .mdx files in the docs directory
+ * 1. Finds all .mdx files in the docs directory (or uses failed list if --only-failed)
  * 2. Converts them to URL paths
  * 3. Tests that each page loads successfully (200 OK)
  * 4. Tests ALL old→new redirects work correctly
  *
- * Last Updated: 2026-01-14 (commits 45eeaf3, 666c96c, 9e122f8)
- * Total Redirects: 25 server-side + 9 anchor transforms + anchor preservation tests = ~50 total
+ * Last Updated: 2026-01-14 (commits 45eeaf3, 666c96c, 9e122f8, 99e1733)
+ * Total Redirects: 25 server-side + 9 anchor transforms + anchor preservation tests = 48 total
  */
 
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
-// Get URL from command line argument or use default
-const BASE_URL = process.argv[2] || 'http://localhost:3000';
+// Parse command line arguments
+const args = process.argv.slice(2);
+const onlyFailed = args.includes('--only-failed') || args.includes('--failed-only');
+const BASE_URL = args.find(arg => !arg.startsWith('--')) || 'http://localhost:3000';
 const DOCS_DIR = path.join(__dirname, 'docs');
+
+// Previously failed pages from last run (HTTP 403)
+const PREVIOUSLY_FAILED_PAGES = [
+  '/docs/platform-release-notes/2025/10',
+  '/docs/platform-release-notes/2025/11',
+  '/docs/platform-release-notes/2025/12',
+  '/docs/web-console-docs/Configuration/Applications',
+  '/docs/web-console-docs/Configuration/Units',
+  '/docs/web-console-docs/Configuration/settings',
+  '/docs/web-console-docs/Events/downloading-events',
+  '/docs/web-console-docs/Events/exposure-events',
+  '/docs/web-console-docs/Events/goal-events',
+  '/docs/web-console-docs/Events/the-events-page',
+  '/docs/web-console-docs/Events/visitors-identity',
+  '/docs/web-console-docs/Users-teams-Permissions/Roles',
+  '/docs/web-console-docs/Users-teams-Permissions/Teams',
+  '/docs/web-console-docs/Users-teams-Permissions/ownership-and-permissions',
+  '/docs/web-console-docs/experiments/Aborting-experiments',
+  '/docs/web-console-docs/experiments/Experiment-reports',
+  '/docs/web-console-docs/experiments/Interpreting-metrics-in-experiment-results',
+  '/docs/web-console-docs/experiments/creating-an-experiment',
+  '/docs/web-console-docs/experiments/overview',
+  '/docs/web-console-docs/experiments/setting-up-a-fixed-horizon-experiment',
+  '/docs/web-console-docs/experiments/setting-up-a-gst-experiment',
+  '/docs/web-console-docs/experiments/templates',
+  '/docs/web-console-docs/feature-flags/creating-a-feature',
+  '/docs/web-console-docs/goals-and-metrics/goals/create',
+  '/docs/web-console-docs/goals-and-metrics/goals/overview',
+  '/docs/web-console-docs/goals-and-metrics/metrics/categories',
+  '/docs/web-console-docs/goals-and-metrics/metrics/create',
+  '/docs/web-console-docs/goals-and-metrics/metrics/metric-types/goal-count',
+  '/docs/web-console-docs/goals-and-metrics/metrics/metric-types/goal-unique-count',
+  '/docs/web-console-docs/goals-and-metrics/metrics/metric-types/property',
+  '/docs/web-console-docs/goals-and-metrics/metrics/metric-types/ratio',
+  '/docs/web-console-docs/goals-and-metrics/metrics/metric-types/time-to-achievement',
+  '/docs/web-console-docs/goals-and-metrics/metrics/metric-types/unique-property-count',
+  '/docs/web-console-docs/goals-and-metrics/metrics/overview',
+  '/docs/web-console-docs/launchpad-browser-extension/creating-an-experiment-with-the-launchpad',
+  '/docs/web-console-docs/launchpad-browser-extension/getting-started',
+  '/docs/web-console-docs/overview',
+];
 
 /**
  * Convert filesystem path to URL path
@@ -242,14 +291,25 @@ async function testAllUrls() {
   console.log('🔍 Comprehensive URL Testing');
   console.log('━'.repeat(80));
   console.log('Base URL:', BASE_URL);
+  if (onlyFailed) {
+    console.log('Mode: Testing ONLY previously failed pages (--only-failed)');
+  }
   console.log('');
 
   // Find all MDX files and convert to URLs
-  console.log('📁 Scanning for documentation files...');
-  const mdxFiles = findAllMdxFiles(DOCS_DIR);
-  const pageUrls = mdxFiles.map(filePathToUrl);
+  let pageUrls;
 
-  console.log(`Found ${mdxFiles.length} documentation pages`);
+  if (onlyFailed) {
+    console.log('📁 Using previously failed pages list...');
+    pageUrls = PREVIOUSLY_FAILED_PAGES;
+    console.log(`Testing ${pageUrls.length} previously failed pages`);
+  } else {
+    console.log('📁 Scanning for documentation files...');
+    const mdxFiles = findAllMdxFiles(DOCS_DIR);
+    pageUrls = mdxFiles.map(filePathToUrl);
+    console.log(`Found ${mdxFiles.length} documentation pages`);
+  }
+
   console.log(`Found ${ALL_REDIRECT_TESTS.length} redirect tests`);
   console.log(`  - ${SERVER_REDIRECTS.length} server-side redirects`);
   console.log(`  - ${ANCHOR_REDIRECTS.length} JS anchor transforms`);
