@@ -43,7 +43,7 @@ const config = {
   },
 
   // Client modules for anchor redirects
-  clientModules: [require.resolve("./src/anchorRedirects.js")],
+  clientModules: [require.resolve("./src/anchorRedirects.ts")],
 
   presets: [
     [

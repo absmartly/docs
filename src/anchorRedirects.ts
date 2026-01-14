@@ -1,7 +1,13 @@
 // Client-side anchor redirects for URL structure changes
 // This handles cases where anchor names changed or moved to different pages
 
-const ANCHOR_REDIRECTS = {
+interface AnchorRedirects {
+  [path: string]: {
+    [anchor: string]: string;
+  };
+}
+
+const ANCHOR_REDIRECTS: AnchorRedirects = {
   // NEW paths (after server redirect) - handle anchor transformations
   '/docs/web-console-docs/experiments/creating-an-experiment': {
     'application': 'applications',
@@ -39,10 +45,11 @@ const ANCHOR_REDIRECTS = {
   },
 };
 
-function handleAnchorRedirect() {
+function handleAnchorRedirect(): void {
   const path = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash
   const hash = window.location.hash.slice(1);
 
+  // Early return if no anchor present - no need to check redirects
   if (!hash) return;
 
   const redirects = ANCHOR_REDIRECTS[path];

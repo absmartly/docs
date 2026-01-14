@@ -1,0 +1,42 @@
+---
+id: users-list
+title: "Users LIST"
+description: "**Required Permissions**: `User List` or `User Admin`"
+sidebar_label: "Users LIST"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVU1z2zYQ/SsYHFVGH53pRaeqnUwnTVJ7ant6sBx5Sa5ExCCALJaOGQ3/e2cJypItxfHEF5nA4mH37cPbrS4xFmQCG+/0XI9G/+KXxhCW6hypNjEa7+JoNFe3VxFJfTCRb5Wn4XNR1sbd6kwHIKiRkaKeX2+1gxr1XEdPrDNtBPlLg9Tq7Nl9lxUqn3/GgtUdtoq9kjOKK1SEsbEcVd6OdaZjUWENer7V3IYem8m4jc40PkAdrCz1t3Zd9uT+FcTieQ5HYLn3FsEdojE1eIgVYIM/xDGOcYN0iDM7BDGMdfwZlN+67ibThDF4FzFK8K/Tqfw85XOh/r44+0edJUoL7xiMM26jwCkgglb5tQJrVRORohArMehYoCAEawoQqMnnKHjb4+RSt6Tl5AMSm5RNquy4hi5LzJ2qrjbO1E0tHGWaPYM9DdDnerDVFyIsPrvzO6kBFZW5x/Llfq/BRuwyDffAQKdQXWMt5I/a2IWu1sbiqgnWQ7lqyL6s0UlBPlyRncym04fZdDqZjYPbSJUFITCWK+BTCGtPtezoEhjfsBGl78/k7UpIWpnyx0SXGIC4Hnr+/Uw/At0hm5Qc1mBOVvaYV4ropJOGewBxCN0Nf5mukStf6rneYN8j4Er4SM3NdES639lHz6KumEOcTyYRXJn7hzHksQZi244LX0/uZ1qeRMSiIcNtf05uXATzHuXz5nD7QmSc5HAYtJdUWhheZoVQ9sQ9f1zJ9M7fqffYqrVP/0PDlSfzrX84YzUafWwiqxyVcb2RJYrUUi+CeSMHW99Q6hcEs7rDdqlHIxFYMonFId7OH2Tj0wCwXMbl8uKXnmzj1r6vYyB98cdAkvoPc/Wnd9FblDR1poXfVMlsPB1Pj+tz6iygk5ouAhZmPZiB4gpYpdgcY1/U/h4JFyq+eroTp/lquOpLVPgQkIwoLapAfkNQ18CmAGvbnfVA0ctwV7pc3YSQ5sYgOmnO70+aL4q0pkAX8eDwOflABhmo7akJPnIN7iBC2hfVh3cXl89r3+598Kdn4CAlxgeeBAvG9d6VDCGp/XqwsptMVz6yLGy3OUS8Itt1spxmgmi5NFHMphyc6YV8Xz1DTyZ4J+9gN6nvwTYSomVmHWWwDx2G6mvCh7n5mtDddNzH3sgHmeS61zddtnuawlA6tCgKDIe5H00xQXk0n7/eXuqu+x/GqQ1V
+sidebar_class_name: "get api-method"
+info_path: docs/APIs-and-SDKs/Web-Console-API/absmartly-web-console-api
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Users LIST</h1>
+
+<MethodEndpoint method={"get"} path={"/users"}></MethodEndpoint>
+
+
+
+**Required Permissions**: `User List` or `User Admin`
+
+## Request
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Query Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"sort","in":"query","description":"The object key to sort the results by.","schema":{"type":"string","example":"name"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"sort_asc","in":"query","schema":{"type":"boolean","example":true}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"page","in":"query","schema":{"type":"integer","example":1}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"items","in":"query","schema":{"type":"integer","example":5}}}></ParamsItem></ul></div></details><div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+
+A JSON Object containing an array of all users.
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"items"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"page"} required={false} schemaName={"integer"} qualifierMessage={"**Possible values:** `>= 1`"} schema={{"type":"integer","minimum":1}}></SchemaItem><SchemaItem collapsible={false} name={"total"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>users</strong><span className={"openapi-schema__name"}> object[]</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"archived"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","example":false}}></SchemaItem><SchemaItem collapsible={false} name={"avatar"} required={false} schemaName={"object"} qualifierMessage={undefined} schema={{"type":"object","nullable":true}}></SchemaItem><SchemaItem collapsible={false} name={"avatar_file_upload_url"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"/cropUrl/100x100/1.png"}}></SchemaItem><SchemaItem collapsible={false} name={"created_at"} required={false} schemaName={"date-time"} qualifierMessage={undefined} schema={{"type":"string","format":"date-time"}}></SchemaItem><SchemaItem collapsible={false} name={"created_by_user_id"} required={false} schemaName={"integer"} qualifierMessage={"**Possible values:** `>= 1`"} schema={{"type":"integer","minimum":1}}></SchemaItem><SchemaItem collapsible={false} name={"department"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"Marketing"}}></SchemaItem><SchemaItem collapsible={false} name={"email"} required={false} schemaName={"email"} qualifierMessage={undefined} schema={{"type":"string","format":"email"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"items\": 0,\n  \"page\": 0,\n  \"total\": 0,\n  \"users\": [\n    {\n      \"archived\": false,\n      \"avatar\": {},\n      \"avatar_file_upload_url\": \"/cropUrl/100x100/1.png\",\n      \"created_at\": \"2026-01-14T09:35:17.647Z\",\n      \"created_by_user_id\": 0,\n      \"department\": \"Marketing\",\n      \"email\": \"user@example.com\"\n    }\n  ]\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      

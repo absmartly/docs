@@ -1,0 +1,42 @@
+---
+id: cors-allowed-origin-get
+title: "CORS Allowed Origin GET"
+description: "**Required Permissions**: `CorsAllowedOrigin Get` or `CorsAllowedOrigin Admin`"
+sidebar_label: "CORS Allowed Origin GET"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1Vk1v4zYQ/SvEXNq6Wn/0qFPdoFiki62DzQY9xKkzlsYWNxLJHVKOXUP/vRhRdpTYyRZo64Mtk5x58+bjUXvIyWesXdDWQAqDwSf6WmumXF0RV9p7bY0fDFJ1f2HZT8vSPlI+Y73WRr2ncK8sn9ua5pU295CAQ8aKArGH9HYPBiuCFNC5UmcooJc5JKAF22EoIAHuAoA0cE0J+KygCiHdQ9g5MdYm0JoYmuRF8J8LUjpXdqVCQepi9uladVGpLqxQYFA7W6tH7QsVrFpTUDkGVCu21RCaO8H3zhpPXiB/Go/l5znOVP12PftdzZZfKAsqsyagNtqsFSqvzbo8i/2db4GGkIBYkAniuJeI0Rcv3venhG0LJMlk64iDjrFllv0CI8jCtiDfNtL5+UzGlT2QqStIb4FpTVtIwDvK9EpncJcAbbFypRgeV5sETpB9YG3WkMDKcoUBUqi5PKnW6fEn97OaVWErcrgmMcyYMFC+wPAmTI6B3gVdPbNZ7ha1J168Rrx2ec+3qcsSlxJEbL5/hnXw8RzrFV897KcYv1045KzQG+qzWFpbEpp+6lZYemoSwA0G5HNen0d1PLpY6ZIWtSst5gup15sFGmVs3Q2Xo8l4vJ2Mx6PJ0Jn1/1qqBCptdCXdOWl7ySGHqhuj1yP9iPxAQcfgqEJ9ltkxrniikYHQoXVw46VWvQWZbWjiJ4GKQmFzSGFNbc1EwyQ/lv1oL9+XeSNjRLw5aGCbXShCcD4djTyafGm3Q1z6CjmUu2Fmq9Fm0mqRp6xmHXatnUQydfoDyd+7/va1KEZsk/6hI0+MC53OFoR5m9CXqia2anp1qT7QTq1sfMY6FJb1X61GDdVg8LH2QS1JtXJKKqZOzWHq9Dsx3NmaYx3R6cUD7eYwGEjjRemf9v1BJ++y8WfnYD738/n1j23OtVnZlkeX++kvXZLUH7RUF9Z4W5KECQlIfiOTyXA8HJ/yM2rmyAin606+2hjipRDPLsm3pJ5w5Lik4tHyg0j8ow5FS1HR1hFr6UCvHNs1Y1Vh0BmW5e6g8phFVemoC3TtnGVpla4ZpTg/Pyu+dGqpMzKeesZXbB1rCsi7NjXO+lCh6Z04d+G9//Xzy0Tsn+6f//667xou0DaMXInatPIY5STOxm17b0ECaZwOuVgK64Ps7PdL9HTDZdPI8teauO31BDbIOqrW7R5y7eU57+TuDX7fH+j9oP79y8Er7A4zZmTANljW8g8SeJARfPGm09w1yWH+hEk8M80ycqFnffJWIMN+VBqpadP8DdFMWPk=
+sidebar_class_name: "get api-method"
+info_path: docs/APIs-and-SDKs/Web-Console-API/absmartly-web-console-api
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>CORS Allowed Origin GET</h1>
+
+<MethodEndpoint method={"get"} path={"/cors/{corsId}"}></MethodEndpoint>
+
+
+
+**Required Permissions**: `CorsAllowedOrigin Get` or `CorsAllowedOrigin Admin`
+
+## Request
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Path Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"applicationId","in":"path","required":true,"schema":{"type":"integer"},"description":"The id of the CORS Allowed Origin that you wish to get data from."}}></ParamsItem></ul></div></details><div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+
+A JSON Object containing a single CORS Allowed Origin's data.
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>cors_allowed_origin</strong><span className={"openapi-schema__name"}> object</span></span></summary><div style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"id"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"type"} required={false} schemaName={""} qualifierMessage={"**Possible values:** [`regex`, `specific`]"} schema={{"enum":["regex","specific"],"example":"specific"}}></SchemaItem><SchemaItem collapsible={false} name={"origin"} required={false} schemaName={"url"} qualifierMessage={undefined} schema={{"type":"string","format":"url"}}></SchemaItem><SchemaItem collapsible={false} name={"description"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"Our homepage"}}></SchemaItem><SchemaItem collapsible={false} name={"created_at"} required={false} schemaName={"date-time"} qualifierMessage={undefined} schema={{"type":"string","format":"date-time"}}></SchemaItem><SchemaItem collapsible={false} name={"created_by_user_id"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"updated_at"} required={false} schemaName={"date-time"} qualifierMessage={undefined} schema={{"nullable":true,"type":"string","format":"date-time"}}></SchemaItem><SchemaItem collapsible={false} name={"updated_by_user_id"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"nullable":true,"type":"integer"}}></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>created_by</strong><span className={"openapi-schema__name"}> object</span></span></summary><div style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"archived"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","example":false}}></SchemaItem><SchemaItem collapsible={false} name={"avatar"} required={false} schemaName={"object"} qualifierMessage={undefined} schema={{"type":"object","nullable":true}}></SchemaItem><SchemaItem collapsible={false} name={"avatar_file_upload_url"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"/cropUrl/100x100/1.png"}}></SchemaItem><SchemaItem collapsible={false} name={"created_at"} required={false} schemaName={"date-time"} qualifierMessage={undefined} schema={{"type":"string","format":"date-time"}}></SchemaItem><SchemaItem collapsible={false} name={"created_by_user_id"} required={false} schemaName={"integer"} qualifierMessage={"**Possible values:** `>= 1`"} schema={{"type":"integer","minimum":1}}></SchemaItem><SchemaItem collapsible={false} name={"department"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"Marketing"}}></SchemaItem><SchemaItem collapsible={false} name={"email"} required={false} schemaName={"email"} qualifierMessage={undefined} schema={{"type":"string","format":"email"}}></SchemaItem></div></details></SchemaItem></div></details></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"cors_allowed_origin\": {\n    \"id\": 0,\n    \"type\": \"specific\",\n    \"origin\": \"string\",\n    \"description\": \"Our homepage\",\n    \"created_at\": \"2026-01-14T09:35:17.603Z\",\n    \"created_by_user_id\": 0,\n    \"updated_at\": \"2026-01-14T09:35:17.603Z\",\n    \"updated_by_user_id\": 0,\n    \"created_by\": {\n      \"archived\": false,\n      \"avatar\": {},\n      \"avatar_file_upload_url\": \"/cropUrl/100x100/1.png\",\n      \"created_at\": \"2026-01-14T09:35:17.603Z\",\n      \"created_by_user_id\": 0,\n      \"department\": \"Marketing\",\n      \"email\": \"user@example.com\"\n    }\n  }\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      

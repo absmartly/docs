@@ -13,19 +13,17 @@ Goal events are sent by the SDKs when the `track` function is called.
 Those events capture visitor actions (`page view`, `button clicked`, `purchase`, etc) with optional contextual data like `price`, `quantity`, and `product_id`, etc.
 
 ```javascript
-
 // Triggered when a visitor buys a product
 context.track("purchase", {
   price: 1000,
-  currency: 'euro',
-  order_number: '0000982532',
+  currency: "euro",
+  order_number: "0000982532",
   product_id: "ABC123",
-  category_id: 'ZYZ123'
+  category_id: "ZYZ123"
 });
-
 ```
 
-Before sending goal events, make sure to correctly initialise the ABsmartly's context and enrich it with the visitor's attributes.
+Before sending goal events, make sure to correctly initialize the ABsmartly context and enrich it with the visitor's attributes.
 See the [visitor's identity page](visitors-identity) for more details.
 
 ## The events page
@@ -45,7 +43,7 @@ You can use this page while debugging and to ensure that events are correctly be
 
 You can click any event on the events' page to inspect the event.
 
-```ts
+```json
 {
   "event_type": "goal",
   "unit_uid": "LTSLmGJb-oGQVJhxElUwtQ",
@@ -67,7 +65,7 @@ You can click any event on the events' page to inspect the event.
     "order_number": "0000982532",
     "product_id": "ABC123",
     "category_id": "ZYZ123"
-  },
+  }
 }
 ```
 

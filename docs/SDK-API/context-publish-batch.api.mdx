@@ -1,0 +1,134 @@
+---
+id: context-publish-batch
+title: "Publish Experiment Events for Multiple Contexts"
+description: "A PUT request for publishing your exposures, goals and attributes from multiple contexts."
+sidebar_label: "Publish Experiment Events for Multiple Contexts"
+hide_title: true
+hide_table_of_contents: true
+api: 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
+sidebar_class_name: "put api-method"
+info_path: docs/SDK-API/absmartly-collector-api
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Publish Experiment Events for Multiple Contexts</h1>
+
+<MethodEndpoint method={"put"} path={"/context/batch"}></MethodEndpoint>
+
+
+
+A PUT request for publishing your exposures, goals and attributes from multiple contexts.
+
+## Request
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Header Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"X-Agent","in":"header","required":true,"description":"The User-Agent of your SDK.","example":"absmartly-Java-SDK v1.0.1","schema":{"type":"string"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"X-Environment","in":"header","required":true,"description":"The environment in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.","example":"development","schema":{"type":"string"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"X-Application","in":"header","required":true,"description":"The application in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.","example":"www","schema":{"type":"string"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"X-Application-Version","in":"header","required":true,"description":"The application version which you are running your experiments on.","example":0,"schema":{"type":"integer","format":"int64"}}}></ParamsItem></ul></div></details><MimeTabs className={"openapi-tabs__mime"}><TabItem label={"application/json"} value={"application/json-schema"}><details style={{}} className={"openapi-markdown__details mime"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-mime"}><h3 className={"openapi-markdown__details-summary-header-body"}>Body</h3><strong className={"openapi-schema__required"}>required</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}><div style={{"marginTop":"1rem","marginBottom":"1rem"}}>
+
+An array of data to publish.
+
+**Hashed**
+
+The hashed value describes whether your values have already been hashed, or if they are to be hashed by the Collector.
+
+**Historic**
+
+The historic value tells the Collector whether this is new or old data.
+
+**Published At**
+
+The publishedAt value is the time at which the request was made.
+
+**Units**
+
+Units are the values which are used to choose the variant
+assignments for each user. Unit types can be found and created in
+your ABsmartly Web Console settings. The payload takes the form of:
+
+```json
+{
+  "type": "user_id" // The name of the unit type
+  "uid": "4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408" // The value of the unit that you are tracking.
+}
+```
+
+**Exposures**
+
+Exposures tell the collector information about which variant of an experiment was shown to the user, and when:
+
+```json
+{
+  "id": 3, // The ID of the exposed experiment.
+  "name": "exp_banner_color", // The name of the exposed experiment.
+  "unit": "user_id", // The unit that was used together with the experiment seed to generate the variant.
+  "variant": 1, // The variant that was shown.
+  "exposedAt": 1609244179528, // The time at which the exposure happened.
+  "assigned": true, // Whether the user was exposed to the experiment in this specific request, it could be that the user was not assigned because it doesn’t match the audience, or the experiment is already fullOn, or the variant was overriden, etc.
+  "eligible": true, // Whether the experiment is in the right part of the traffic allocation to this experiment and can be triggered.
+  "overridden": false, // Whether the variant was overridden or not.
+  "fullOn": false, // True if this experiment is fullOn and the winning variant is being forced to everyone.
+  "custom": false, // Whether this variant was a custom assignment.
+  "audienceMismatch": false // Whether this variant was shown outside of it’s specified target audience.
+}
+```
+
+**Goals**
+
+Goals are used to track various metrics that are related to your
+experiment. Goals can be created and found in your ABsmartly Web
+Console settings:
+
+```json
+{
+  "name": "banner_click", // The name of the goal that you are tracking.
+  "achievedAt": 1609254179528, // The time that the goal was achieved.
+  "properties": {} // Any properties that you wish to pass along with this goal.
+}
+```
+
+**Attributes**
+
+Attributes allow for segmentation of your data on the Web Console:
+
+```json
+{
+  "name": "age", // The name of the attribute.
+  "value": 39, // The attribute's value.
+  "setAt": 1609244179528 // The time at which the value was set.
+}
+```
+
+
+</div></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>requests</strong><span className={"openapi-schema__name"}> object[]</span><span className={"openapi-schema__divider"}></span><span className={"openapi-schema__required"}>required</span></span></summary><div style={{"marginLeft":"1rem"}}><div style={{"marginTop":".5rem","marginBottom":".5rem"}}>
+
+**Possible values:** `>= 1`, `<= 500`
+
+</div><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"hashed"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","nullable":true,"default":false}}></SchemaItem><SchemaItem collapsible={false} name={"historic"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","nullable":true,"default":false}}></SchemaItem><SchemaItem collapsible={false} name={"publishedAt"} required={true} schemaName={"int64"} qualifierMessage={undefined} schema={{"type":"integer","format":"int64","example":1609244179528}}></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>units</strong><span className={"openapi-schema__name"}> object[]</span><span className={"openapi-schema__divider"}></span><span className={"openapi-schema__required"}>required</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"type"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"user_id"}}></SchemaItem><SchemaItem collapsible={false} name={"uid"} required={false} schemaName={"string"} qualifierMessage={"**Possible values:** `non-empty` and `<= 640 characters`"} schema={{"type":"string","minLength":1,"maxLength":640,"example":"4a42766ca6313d26f49985e799ff4f3790fb86efa0fce46edb3ea8fbf1ea3408"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>exposures</strong><span className={"openapi-schema__name"}> object[]</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"id"} required={true} schemaName={"int32"} qualifierMessage={undefined} schema={{"type":"integer","format":"int32","minimum":0,"example":3}}></SchemaItem><SchemaItem collapsible={false} name={"name"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"exp_banner_color"}}></SchemaItem><SchemaItem collapsible={false} name={"unit"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","nullable":true,"example":"user_id"}}></SchemaItem><SchemaItem collapsible={false} name={"variant"} required={true} schemaName={"int32"} qualifierMessage={"**Possible values:** `<= 128`"} schema={{"type":"integer","format":"int32","minimum":0,"maximum":128,"example":1}}></SchemaItem><SchemaItem collapsible={false} name={"exposedAt"} required={true} schemaName={"int64"} qualifierMessage={undefined} schema={{"type":"integer","format":"int64","example":1609244179528}}></SchemaItem><SchemaItem collapsible={false} name={"assigned"} required={true} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","example":true}}></SchemaItem><SchemaItem collapsible={false} name={"eligible"} required={true} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","example":true}}></SchemaItem><SchemaItem collapsible={false} name={"overridden"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","example":false}}></SchemaItem><SchemaItem collapsible={false} name={"fullOn"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","example":false}}></SchemaItem><SchemaItem collapsible={false} name={"custom"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","example":false}}></SchemaItem><SchemaItem collapsible={false} name={"audienceMismatch"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean","example":false}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>goals</strong><span className={"openapi-schema__name"}> object[]</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"name"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"banner_click"}}></SchemaItem><SchemaItem collapsible={false} name={"achievedAt"} required={true} schemaName={"int64"} qualifierMessage={undefined} schema={{"type":"integer","format":"int64","example":1609254179528}}></SchemaItem><SchemaItem collapsible={false} name={"properties"} required={false} schemaName={"object"} qualifierMessage={undefined} schema={{"type":"object","nullable":true}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>attributes</strong><span className={"openapi-schema__name"}> object[]</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"name"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"age"}}></SchemaItem><SchemaItem collapsible={false} name={"value"} required={false} schemaName={""} qualifierMessage={undefined} schema={{"example":39,"nullable":true}}></SchemaItem><SchemaItem collapsible={false} name={"setAt"} required={true} schemaName={"int64"} qualifierMessage={undefined} schema={{"type":"integer","format":"int64","example":1609244179528}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem></ul></details></TabItem></MimeTabs><div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+
+Success
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"ok"} required={true} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean"}}></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>warnings</strong><span className={"openapi-schema__name"}> object[]</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"batchIndex"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"eventIndex"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"subject"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem><SchemaItem collapsible={false} name={"message"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>errors</strong><span className={"openapi-schema__name"}> object[]</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"batchIndex"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"eventIndex"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"subject"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem><SchemaItem collapsible={false} name={"message"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"ok\": true,\n  \"warnings\": [\n    {\n      \"batchIndex\": 0,\n      \"eventIndex\": 0,\n      \"subject\": \"string\",\n      \"message\": \"string\"\n    }\n  ],\n  \"errors\": [\n    {\n      \"batchIndex\": 0,\n      \"eventIndex\": 0,\n      \"subject\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"400"} value={"400"}><div>
+
+Bad request
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"ok"} required={true} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean"}}></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>warnings</strong><span className={"openapi-schema__name"}> object[]</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"batchIndex"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"eventIndex"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"subject"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem><SchemaItem collapsible={false} name={"message"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>errors</strong><span className={"openapi-schema__name"}> object[]</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"batchIndex"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"eventIndex"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"subject"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem><SchemaItem collapsible={false} name={"message"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"ok\": true,\n  \"warnings\": [\n    {\n      \"batchIndex\": 0,\n      \"eventIndex\": 0,\n      \"subject\": \"string\",\n      \"message\": \"string\"\n    }\n  ],\n  \"errors\": [\n    {\n      \"batchIndex\": 0,\n      \"eventIndex\": 0,\n      \"subject\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"401"} value={"401"}><div>
+
+Unauthorized
+
+</div><div></div></TabItem><TabItem label={"default"} value={"default"}><div>
+
+Unexpected error
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={true} schemaName={"int64"} qualifierMessage={undefined} schema={{"type":"integer","format":"int64"}}></SchemaItem><SchemaItem collapsible={false} name={"message"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": 0,\n  \"message\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      

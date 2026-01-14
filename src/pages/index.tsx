@@ -1,11 +1,8 @@
+import { Redirect } from "@docusaurus/router";
 import React, { FC } from "react";
 
-
 const Home: FC<{}> = () => {
-  React.useEffect(() => {
-    window.location.href = '/docs/get-started';
-  }, []);
-  return null;
+  return <Redirect to="/docs/get-started" />;
 };
 
 export default Home;
