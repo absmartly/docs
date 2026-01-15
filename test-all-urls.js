@@ -36,7 +36,7 @@ const BASE_URL = args.find(arg => !arg.startsWith('--')) || 'http://localhost:30
 const DOCS_DIR = path.join(__dirname, 'docs');
 
 // Throttling configuration to avoid rate limiting
-const THROTTLE_MS = 200; // 200ms delay between requests (5 requests/second)
+const THROTTLE_MS = 50; // 50ms delay between requests (20 requests/second)
 
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
