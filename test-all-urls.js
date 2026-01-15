@@ -261,8 +261,9 @@ async function checkRedirect(page, fromPath, expectedToPath) {
   const fullFromUrl = `${BASE_URL}${fromPath}`;
 
   try {
-    await page.goto(fullFromUrl, {
-      waitUntil: 'networkidle',
+    // Navigate and follow all redirects
+    const response = await page.goto(fullFromUrl, {
+      waitUntil: 'domcontentloaded',
       timeout: 15000
     });
 
@@ -272,9 +273,11 @@ async function checkRedirect(page, fromPath, expectedToPath) {
     const finalUrl = page.url();
     const finalPath = finalUrl.replace(BASE_URL, '');
 
+    // Normalize for comparison (case-insensitive)
     const normalizedFinal = normalizeUrl(finalPath);
     const normalizedExpected = normalizeUrl(expectedToPath);
 
+    // Case-insensitive comparison (Netlify may lowercase URLs)
     const match = normalizedFinal === normalizedExpected;
 
     return {
@@ -282,7 +285,8 @@ async function checkRedirect(page, fromPath, expectedToPath) {
       match,
       fromPath,
       expectedPath: expectedToPath,
-      finalPath
+      finalPath,
+      statusCode: response.status()
     };
   } catch (error) {
     return {
