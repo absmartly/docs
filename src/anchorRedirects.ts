@@ -66,7 +66,7 @@ if (typeof window !== 'undefined') {
   // Run on initial load
   handleAnchorRedirect();
 
-  // Also run after client-side navigation (for SPAs like Docusaurus)
+  // Also run after client-side navigation
   if (window.addEventListener) {
     window.addEventListener('load', handleAnchorRedirect);
     window.addEventListener('hashchange', handleAnchorRedirect);
