@@ -7,9 +7,9 @@
 # Generated files
 .docusaurus
 .cache-loader
-/docs/SDK-API/*.mdx
+/docs/APIs-and-SDKs/SDK-API*.mdx
 /docs/Web-Console-API/*.mdx
-/docs/SDK-API/*.js
+/docs/APIs-and-SDKs/SDK-API*.js
 /docs/Web-Console-API/*.js
 
 # Misc
@@ -24,3 +24,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .idea
+.claude/tasks/
+.claude/audits/
+openapi_console_bk/

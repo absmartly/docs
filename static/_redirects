@@ -1,0 +1,46 @@
+# Netlify Redirects - Server-side 302 redirects for URL structure changes (temporary for testing)
+# Format: from to [status-code]
+# NOTE: Change to 301 (permanent) once verified all redirects work correctly
+# Anchor redirects are handled client-side via JavaScript
+
+# Base path redirects (browser should preserve matching anchors)
+# Note: Adding trailing slashes to match Docusaurus URL normalization
+
+# SDK Documentation moves (docs/SDK-Documentation/* → docs/APIs-and-SDKs/SDK-Documentation/*)
+/docs/SDK-Documentation/Advanced/code-as-a-variant-variable /docs/APIs-and-SDKs/SDK-Documentation/Advanced/code-as-a-variant-variable/ 302
+/docs/SDK-Documentation/Advanced/context-attributes /docs/APIs-and-SDKs/SDK-Documentation/Advanced/context-attributes/ 302
+/docs/SDK-Documentation/Advanced/custom-assignments /docs/APIs-and-SDKs/SDK-Documentation/Advanced/custom-assignments/ 302
+/docs/SDK-Documentation/Advanced/finalize /docs/APIs-and-SDKs/SDK-Documentation/Advanced/finalize/ 302
+/docs/SDK-Documentation/Advanced/publish /docs/APIs-and-SDKs/SDK-Documentation/Advanced/publish/ 302
+/docs/SDK-Documentation/Advanced/tracking-goals /docs/APIs-and-SDKs/SDK-Documentation/Advanced/tracking-goals/ 302
+/docs/SDK-Documentation/Advanced/using-custom-fields-in-your-code /docs/APIs-and-SDKs/SDK-Documentation/Advanced/using-custom-fields-in-your-code/ 302
+/docs/SDK-Documentation/basic-usage /docs/APIs-and-SDKs/SDK-Documentation/basic-usage/ 302
+/docs/SDK-Documentation/getting-started /docs/APIs-and-SDKs/SDK-Documentation/getting-started/ 302
+/docs/SDK-Documentation /docs/APIs-and-SDKs/SDK-Documentation/ 302
+
+# Examples moves (docs/Examples/* → docs/APIs-and-SDKs/Web-Console-API/Examples/*)
+/docs/Examples/Slack-Integration /docs/APIs-and-SDKs/Web-Console-API/Examples/Slack-Integration/ 302
+
+# Web Console - Configuration
+/docs/web-console-docs/settings /docs/web-console-docs/Configuration/settings/ 302
+
+# Web Console - Users, Teams & Permissions
+/docs/web-console-docs/creating-and-managing-teams /docs/web-console-docs/Users-teams-Permissions/Teams/ 302
+/docs/web-console-docs/ownership-and-permissions /docs/web-console-docs/Users-teams-Permissions/ownership-and-permissions/ 302
+
+# Web Console - Experiments
+/docs/web-console-docs/Aborting-experiments /docs/web-console-docs/experiments/Aborting-experiments/ 302
+/docs/web-console-docs/Experiment-health-checks /docs/web-console-docs/experiments/Experiment-health-checks/ 302
+/docs/web-console-docs/Experiment-reports /docs/web-console-docs/experiments/Experiment-reports/ 302
+/docs/web-console-docs/Interpreting-metrics-in-experiment-results /docs/web-console-docs/experiments/Interpreting-metrics-in-experiment-results/ 302
+/docs/web-console-docs/creating-an-experiment /docs/web-console-docs/experiments/creating-an-experiment/ 302
+/docs/web-console-docs/setting-up-a-fixed-horizon-experiment /docs/web-console-docs/experiments/setting-up-a-fixed-horizon-experiment/ 302
+/docs/web-console-docs/setting-up-a-gst-experiment /docs/web-console-docs/experiments/setting-up-a-gst-experiment/ 302
+/docs/web-console-docs/templates /docs/web-console-docs/experiments/templates/ 302
+
+# Web Console - Feature Flags
+/docs/web-console-docs/creating-a-feature /docs/web-console-docs/feature-flags/creating-a-feature/ 302
+
+# Wildcards and special cases
+/docs/web-console-docs/understanding-experimentation-metrics/* /docs/web-console-docs/goals-and-metrics/metrics/overview/ 302
+/docs/web-console-docs/type-of-analysis /docs/web-console-docs/experiments/overview/#analysis-methods 302

@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "The ABsmartly Docs",
   tagline:
-    "Booking.com and Netflix's experimentation culture without the big investment.",
+    "Booking.com experimentation culture without the big investment.",
   url: "https://docs.absmartly.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -41,6 +41,9 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
+
+  // Client modules for anchor redirects
+  clientModules: [require.resolve("./src/anchorRedirects.ts")],
 
   presets: [
     [
@@ -85,7 +88,7 @@ const config = {
         config: {
           collector: {
             specPath: "api-spec.yaml", // Path to designated spec file
-            outputDir: "docs/SDK-API", // Output directory for generated .mdx docs
+            outputDir: "docs/APIs-and-SDKs/SDK-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,
@@ -93,7 +96,7 @@ const config = {
           },
           nodeapi: {
             specPath: "nodeapi-spec.yaml",
-            outputDir: "docs/Web-Console-API", // Output directory for generated .mdx docs
+            outputDir: "docs/APIs-and-SDKs/Web-Console-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,
@@ -126,7 +129,7 @@ const config = {
       navbar: {
         title: "ABsmartly Docs",
         logo: {
-          alt: "The A B Smartly logo",
+          alt: "The ABsmartly logo",
           src: "img/logo.svg",
           style: {
             width: "3rem",
@@ -134,24 +137,14 @@ const config = {
         },
         items: [
           {
-            to: "docs/web-console-docs/tutorial",
+            to: "docs/web-console-docs/overview",
             position: "left",
-            label: "Web Console Tutorial",
+            label: "Product Documentation",
           },
           {
-            to: "docs/SDK-documentation",
+            to: "docs/APIs-and-SDKs/overview",
             position: "left",
-            label: "SDK Docs",
-          },
-          {
-            to: "docs/SDK-API/absmartly-collector-api",
-            position: "left",
-            label: "SDK API",
-          },
-          {
-            to: "docs/Web-Console-API/absmartly-web-console-api",
-            position: "left",
-            label: "Web Console API",
+            label: "APIs & SDKs",
           },
           {
             to: "https://absmartly.com/blog",
@@ -172,12 +165,16 @@ const config = {
             title: "Documentation",
             items: [
               {
+                label: "Product Docs",
+                to: "/docs/get-started",
+              },
+              {
                 label: "SDK Docs",
-                to: "/docs/SDK-Documentation",
+                to: "/docs/APIs-and-SDKs/SDK-Documentation",
               },
               {
                 label: "API Docs",
-                to: "/docs/SDK-API/absmartly-collector-api",
+                to: "/docs/APIs-and-SDKs/SDK-API/absmartly-collector-api",
               },
             ],
           },
@@ -202,10 +199,6 @@ const config = {
             title: "Social Media",
             items: [
               {
-                label: "Twitter",
-                href: "https://twitter.com/absmartly",
-              },
-              {
                 label: "LinkedIn",
                 href: "https://www.linkedin.com/company/absmartly",
               },
@@ -215,7 +208,7 @@ const config = {
         copyright: `&copy; Copyright ${new Date().getFullYear()} ABsmartly B.V.`,
         logo: {
           src: "img/logo.svg",
-          alt: "The A B Smartly Logo",
+          alt: "The ABsmartly Logo",
           style: { width: "3rem" },
         },
       },

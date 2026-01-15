@@ -1,0 +1,124 @@
+---
+sidebar_position: 4
+---
+
+# Roles
+
+Roles define what a user can access and modify inside ABsmartly.  
+They are a key part of the ownership and governance model, making sure that teams can work independently while maintaining control and safety across the organisation.
+
+ABsmartly supports two types of roles:
+
+1. **Global roles** for managing global settings permissions.
+2. **Team-based roles** for managing **Experiment Assets**.
+
+:::info
+In ABsmartly Experiment Assets are assets created by teams on the day to day basis as part of their experimentation program.
+Those Experiment Assets include **Experiments**, **Feature Flag**, **Metrics**, **Goals** and **Templates**.
+Access to those Assets can be defined and granted at the global or the team level.
+:::
+
+---
+
+## Global roles
+
+Global roles, are roles granted to a user at the company level.
+They provide users with :
+
+- Access to the platform.
+- Ability to manage and customise the platform (create new Units, Applications, Environment).
+- Advanced capabilities (manage API Keys, manage Users & Teams, etc).
+- Global Access to Experiment Assets.
+
+:::info
+While  possible, it is not recommended to assign global read/write access to Experiment Assets like 
+**Experiments**, **Feature Flag**, **Metrics**, **Goals** and **Templates**.
+It is easier and cleaner to set up proper governance when ownership and permissions of Experiment Assets is defined at the team level.
+:::
+
+### Built-in vs Custom roles
+
+ABsmartly comes with 2 global built-in roles `Base User` and `FullAdmin` which cover most usecases but 
+custom roles can be created to address specific needs or organisational structure.
+
+#### The Base User role
+
+The `Base User` role grants users basic access to the platform. Those users can access the platform and have read-only access to all platform settings.
+By default, this role does not provide any permissions to view or edit Experiment Assets like **Experiments**, **Feature Flag**, **Metrics**, **Goals** and **Templates**.
+Access to those Experiment Assets will be granted to users as part of their team membership.
+
+#### The FullAdmin role
+
+The `FullAdmin` role provides read-write access to everything on the platform, including all Experiment Assets.
+This role should only be granted to the person(s) managing the platform.
+
+#### Custom roles
+
+While the 2 roles mentioned above cover most usecases, your organisation might have specific needs. 
+In this case custom roles can be created and assigned to certain users as needed.
+
+For example, custom roles could be created for allowing some users to create and manage [Units](../configuration/units), 
+[Applications](../configuration/applications), API Keys, etc which otherwise can only be managed by the `FullAdmin`.
+
+### Assigning Global Roles
+
+`FullAdmin` users and other users with custom user management permissions can manage which user has which role at the global level.
+This can be done directly by visiting the User's profile or by editing the user in the members' list of the Global Team (the top level team in your team structure).
+
+---
+
+## Team-based roles
+
+Team-based roles define how a user can interact with Experiment Assets in that team scope. 
+
+:::info
+A team scope includes all its child-teams' scopes. This means that if a user can view experiment a certain team, 
+then this user can also view all experiments created in child teams of that team.
+:::
+
+These roles are the foundation of the ownership model and are designed to make experimentation scalable across multiple product teams.
+
+Team-based roles grant permissions such as:
+- creating experiments or metrics within that team or any child-team.
+- starting and stopping experiments.
+- viewing team-specific experiments and dashboards.
+
+Users can belong to multiple teams, and permissions are inherited based on the orgamnisation structure.
+
+This allows organisations to model their structure accurately, for example:
+- Product Team A  
+- Growth Team  
+- Reliability or Platform Team  
+- Country or domain-based teams  
+
+Each team controls its assets, but visibility and editing rights can be extended when collaboration is needed.
+
+### Built-in Team roles
+
+#### The Team Viewer role
+
+A user with the `Team Viewer` can view and comment on, any Experiment Assets in that team scope.
+
+#### The Team Contributor role
+
+A user with the `Team Contributor` role can view and comment on, create and manage, any Experiment Assets in that team scope.
+
+:::caution
+Unless it was disabled, users with the `Team Contributor` role can start/stop/full-on all experiments in that team's scope.
+:::
+
+#### The Team Admin role
+
+Same as `Team Contributor` but the `Team Admin` can also manage the users in that team.
+
+### Assigning Team roles
+
+Global `FullAdmin` or users with `Team Admin` on that team, can invite users to a team and grant them one of the team role.
+
+---
+
+## Ownership and Permissions model for Experiment Assets
+
+Read our [The Owership Model](./ownership-and-permissions) for a more detailed explanation on how to manage ownership and permissions for Experiment Assets.
+
+

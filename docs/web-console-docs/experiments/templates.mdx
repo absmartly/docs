@@ -1,0 +1,81 @@
+---
+sidebar_position: 8
+---
+
+import Image from "../../../src/components/Image";
+
+# Experiment Templates
+
+## Overview
+**Templates** are designed to streamline the process of creating experiments and feature flags. By using templates, you can quickly set up experiments with pre-configured settings, avoiding the need to start from scratch each time. This not only speeds up the process but also ensures consistency and quality across all experiments and feature flags.
+
+## Benefits of using templates
+- **Speed**: Create experiments and feature flags faster by using pre-configured and approved settings.
+- **Ease of Use**: Simplify the process by eliminating the need for all users to understand the more technical aspects of the experiment setup.
+- **Consistency**: Ensure all experiments and feature flags follow a standardized setup, improving overall quality and alignment.
+
+## Permissions
+
+### Permissions for creating and managing templates
+Permissions to create, edit, and archive templates can be granted to certain roles. To grant permissions to create and manage templates:
+- Navigate to **Settings > Roles** and edit the role you want to grant the permissions to.
+- In the list of permissions, open **Template** and select the actions you want the role to be able to perform.
+
+### Creating experiments or feature flags from scratch or from templates
+Roles can be granted the ability to create experiments or feature flags either from scratch or from templates:
+- Navigate to **Settings > Roles** and edit the role you want to grant the permissions to.
+- In the list of permissions, open **Experiment** (note that experiment permissions also apply to feature flags) and select **Create** if you want the role to be able to create experiments or feature flags from scratch and from templates, or choose **Create from template** (and make sure **Create** is not selected) to allow this particular role to only create new experiments or feature flags from a template.
+
+## Getting started with templates
+
+### Creating a new experiment template
+If your role has the relevant permission, you should have a **Templates** entry in the menu.
+- Click on the **Templates** menu item.
+- Click on **+ Experiment template**.
+- Fill in the pre-configured values: Go over each page of the experiment template form and set up the pre-configured values for the experiments you want to create from this template. Note that certain fields, like the experiment name, are not editable in the template.
+- **Save Template**: Click the **Save Template** button and give the template a name and a description.
+
+### Creating a new feature flag template
+If your role has the relevant permission, you should have a **Templates** entry in the menu.
+- Click on the **Templates** menu item.
+- Click on **+ Features template**.
+- Follow the steps described above for creating an experiment template.
+
+## Managing templates
+
+### Editing or archiving a template
+Note that only roles with the relevant permissions can manage templates.
+- **View Templates**: In the menu bar, click on the **Templates** menu item and on **All**.
+- **Edit/Archive a Template**: Choose the template you want to manage and click on **Edit** or **Archive** depending on the action you want to perform.
+- **Rename a Template**: Follow the steps above to edit a template, then click on **Save Template**. You can then choose a new name for your template.
+
+## Using a template to create a new experiment
+- In the menu, click on **Experiments**.
+- Click on **+ Create from template**.
+- Choose a template from the list of available templates.
+- **Customize as Needed**: Although the template provides pre-configured settings, you can customize any specific details to fit the current experiment.
+
+## Using a template to create a new feature flag
+- In the menu, click on **Features**.
+- Click on **+ Create from template**.
+- Choose a template from the list of available templates.
+- **Customize as Needed**: Although the template provides pre-configured settings, you can customize any specific details to fit the current feature flag.
+
+## Locking fields in templates
+Template owners have the possibility to lock some fields so they are not editable when the template is used to create an experiment or a feature.
+For example if you want all experiments using a template to use a 90% confidence level
+- When editing the template, navigate to Step 5
+- Set the confidence level to 90%
+- Click on the small lock icon next to the label
+
+<Image img="experiment-create/locking-confidence-level.png" alt="Locking the confidence level at 90%" />
+
+The field is no longer editable and all children experiments will have a pre-set 90% confidence level.
+
+## FAQs
+
+### What happens if I need to change the settings of an experiment created from a template?
+You can customize any specific settings of the experiment created from a template. The template provides a starting point, but all settings are adjustable to fit your current needs.
+
+### What happens if a template changes after it is used in an experiment?
+Changes will only apply to experiments which have not yet been started (ie: draft ). Running/Stopped/Fullon experiments will not be impacted by the changes to their parent template.  

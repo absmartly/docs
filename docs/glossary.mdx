@@ -1,0 +1,755 @@
+---
+sidebar_position: 10
+---
+
+# Glossary
+
+This glossary explains the key concepts used throughout ABsmartly and in product experimentation more broadly.  
+It is designed as a quick reference for anyone designing, running or analysing experiments.
+
+---
+
+## A
+
+### A/A experiment  
+A special type of A/B experiment where users are randomly split between two *identical* variants. 
+The goal is not to test a product change, but to validate the experimentation setup itself.  
+
+A/A experiments help validate tracking and detect issues such as sample ratio mismatch (SRM), tracking bugs or unexpected bias in randomisation before you start testing real changes.
+
+**Example:** Splitting traffic 50/50 between two identical versions of the homepage to verify that traffic allocation, event tracking and metrics behave as expected.
+
+### A/B experiment  
+A controlled experiment that compares a baseline experience (control, variant A) to a single alternative (treatment, variant B) to estimate the impact of a change.  
+This is the most common type of experiment setup and the default when creating a new experiment using ABsmartly.
+
+A/B experiments are the core building block of product experimentation and allow teams to quantify how a change affects key metrics.
+
+**Example:** Testing a new “Buy now” button design (B) against the current design (A) and measuring the change in purchase conversion rate.
+
+### A/B/n experiment  
+A special type of A/B experiment that compares a control to *multiple* treatments at the same time (A vs B vs C, etc.). 
+A/B/n experiments are also sometimes referred to as multi-variant. Not to be confused with [Multivariate Experiment](#multivariate-experiment).
+
+A/B/n experiments speed up exploration when several ideas are available, but they increase the number of comparisons and therefore require more traffic.
+
+**Example:** Testing three alternative product page layouts (B, C, D) against the current layout (A) to find the best-performing design.
+
+### Audience targeting  
+The practice of restricting an experiment to a specific subset of visitors based on attributes, behaviour or context.  
+
+Targeting ensures that experiments are run on the right population (for example, new users only), but aggressive targeting can reduce sample size and affect generalisability.
+
+**Example:** Running an experiment only for traffic from a specific country or only for logged-in customers.
+
+---
+
+## B
+
+### Baseline
+The baseline (or baseline value) is the current performance of your metric, usually measured in AA experiment or a previous AB test.
+
+It represents the starting point against which you compare your Treatment.
+
+### Binomial  
+A statistical model describing outcomes that have exactly two discrete values such as 0 / 1, true / false, success / failure or convert / not convert.  
+
+Many core metrics in experimentation, like conversion rate, follow a binomial process and use binomial-based methods for confidence intervals and tests.  
+
+**Example:** Whether each visitor completed checkout (yes or no) in a cart conversion experiment.
+
+### Behavioral metrics  
+A metric that captures what users *do* in the product rather than what the business earns from them.  
+
+Behavioural metrics such as clicks, scroll depth or page views are often more sensitive and can explain *why* a [business metric](#business-metrics) moves. 
+They can also help identify potential [false positive](#false-positive) when the effect on the user behaviour does not match the observed effect on the [primary metric](#primary-metric).
+ABsmartly recommends using behavioural metrics as [secondary metrics](#secondary-metrics) to help support the decision and reduce the risk of false positive on the primary metric.
+
+**Example:** Click-through rate on a recommendation widget, or the number of search queries per user.
+
+### Business metrics
+A metric directly tied to business outcomes such as revenue, profit, retention or subscription renewal. 
+Business metrics connect experimentation to company goals, but they can be noisier and slower to respond than behavioural metrics.
+
+ABsmartly recommends, when possible, using a business metric as the [primary metric](#primary-metric) when setting up experiments.
+
+**Example:** Revenue per user, paid subscription rate, or 90-day retention.
+
+---
+
+## C
+
+### Conversion rate  
+The proportion of visitors who complete a defined goal out of all eligible visitors.  
+
+Conversion rate is one of the most common primary metric, and small changes in conversion can have large business impact. 
+
+**Example:** 4.8 percent of visitors who saw the checkout page completed a purchase.
+
+### Confidence interval  
+A range of values that represents where the true effect size is likely to lie, given the data and the chosen confidence level.  
+In experimentation, it is most often used to estimate the range in which the true difference between treatment and control lies. 
+
+Confidence intervals convey both the size and the uncertainty of an effect, which is more informative than a p-value alone. 
+Confidence intervals help assess both statistical significance (does the CI exclude zero?) and practical significance (is the effect large enough to matter?).
+
+**Example:** If a test result shows a +2.3% lift with a 95% confidence interval of [+0.5%, +4.1%], 
+it means that if you were to repeat the same experiment 100 times, the true effect would lie within the CI in about 95 of those.
+
+You could say “We are 95% confident that the [true effect](#true-effect) of the treatment is between +0.5% and +4.1%.”
+
+### Confirmation bias  
+The tendency to focus on data that supports pre-existing beliefs and ignore or downplay the evidence. 
+
+Confirmation bias can lead teams to cherry-pick metrics or time windows that “prove” a desired outcome. 
+To avoid such bias, ABsmartly recommends pre-registering the [decision criteria](#decision-criteria) before the experiment runs. 
+
+**Example:** Highlighting only secondary metrics that moved in the expected direction and ignoring a neutral or negative primary metric.
+
+### Confidence level  
+The probability that the [confidence interval](#confidence-interval) procedure will capture the true value, across many hypothetical repetitions of the experiment.
+
+Common choices such as 90, 95 percent or 99 percent define how strict you are about uncertainty and directly relate to the [significance level](#significance-level). 
+A higher confidence level reduces the risk of [false positive](#false-positive) but requires more data (wider intervals).
+
+### Continuous metric  
+A numeric metric that can take many possible values on a range, not just discrete categories. 
+
+Continuous metrics such as revenue or session duration often carry richer information but can be skewed and require outlier handling.  
+
+**Example:** Average order value, time on page, or number of items in a basket.
+
+### Continuous learning  
+A way of working where teams regularly run experiments, use insights to refine their hypotheses and feed results back into discovery and design.  
+
+Continuous learning turns experimentation into a long-term advantage instead of one-off tests.  
+
+**Example:** Iteratively testing onboarding flows, using each result to inform the next design.
+
+### Continuous delivery  
+A software practice that keeps code in a releasable state so that changes can be deployed frequently and safely.  
+
+Continuous delivery and experimentation complement each other: experiments de-risk changes, and frequent releases make it easier to act on experiment outcomes.  
+
+**Example:** Automatically deploying small, tested increments behind feature flags several times per day.
+
+### CUPED (Controlled Experiments Using Pre-Experiment Data)  
+A variance reduction technique that adjusts experiment metrics using correlated pre-experiment data as a covariate.  
+
+CUPED can significantly improve sensitivity so experiments reach conclusions faster or detect smaller effects using the same traffic. 
+
+**Example:** Using each user’s historical spend as a baseline when analysing purchase revenue during the test.
+
+---
+
+## D
+
+### Decision criteria
+
+The predefined rules or thresholds used to determine the outcome of an experiment—whether to ship, iterate, or discard a treatment based on its impact on key metrics.
+
+ABsmartly recommends pre-registering decisions criteria before the start of the experiment.
+
+**Example:** “Ship if we see the expected impact on the primary metric and secondary metrics and no guardrail metrics regress.”
+
+---
+
+## E
+
+### Effect
+
+See [Observed effect](#observed-effect)
+
+
+### Effect size
+
+A standardized measure of the magnitude of the effect, often expressed in absolute or relative terms. 
+It helps quantify how big the effect is, independent of sample size.
+
+Effect size is essential for determining whether a result is not just statistically significant, but also practically meaningful. 
+It's also used in power calculations when designing experiments.
+
+**Example:** If the treatment increases conversions from 5.0% to 5.5%, that’s a relative effect size of +10% (0.5 / 5.0). 
+
+### Efficacy boundary  
+A statistical threshold used in [Group Sequential Testing](#group-sequential-testing) that, if crossed during an interim analysis, 
+allows the experiment to **stop early for success** — indicating that the treatment effect is large enough to be declared statistically significant before the full sample is collected.
+
+Efficacy boundaries improve agility by enabling early decisions, saving time and resources when strong evidence emerges. 
+However, they must be pre-defined and corrected to control the overall Type I error (false positive rate) across multiple looks at the data.
+
+### Experiment interaction  
+A situation where the effect of one experiment depends on whether another experiment is also running for the same users.  
+While most experiment interactions do not have an impact on the outcome of the experiments, 
+some strong interactions can distort results and make it hard to attribute observed effects to a single change.  
+
+ABsmartly will alert users when interaction between 2 running experiments are detected.
+
+**Example:** A new search ranking algorithm combined with a new layout that changes click patterns in unexpected ways.
+
+### Experimentation power  
+The probability that an experiment will correctly detect a true effect when the treatment actually has a real impact.
+
+Power reflects the experiment's ability to avoid [false negatives](#false-negative) (Type II errors). 
+A common industry standard is 80% power, meaning there's a 20% chance the test will miss a real effect. 
+
+Low-powered tests risk overlooking meaningful changes or underestimating effect sizes which leads to unreliable decisions.
+
+ABsmartly considers an experiment to be completed only once it achieved sufficient power (its [sample size](#sample-size) if large enough). 
+
+**Example:** If you design an A/B test with 80% power to detect a 2% lift in conversions, you have an 80% chance of seeing a statistically significant result if the treatment truly improves conversions by 2% or more.
+
+### Experiment replication  
+Running the same experiment again to confirm that a previous result was not due to chance. 
+Replication increases confidence that the observed effect is real and not a fluke caused by noise, novelty effects, or local conditions.
+
+Replication strengthens trust in results, especially for experiments with borderline significance, surprising outcomes, or high business impact. 
+It also helps filter out false positives, which are common when the overall success rate is low.
+
+You might skip replication for low-risk UI changes, but re-running a test is advisable when the result will drive a strategic roadmap shift or if the experiment is highly visible across the organization.
+
+### Exploratory vs confirmatory experiments  
+Exploratory experiments are used to search for patterns or promising directions; confirmatory experiments are designed to rigorously test a specific hypothesis.  
+Mixing the two modes can lead to inflated false positives; exploratory insights should ideally be confirmed with a follow-up confirmatory test.  
+
+**Example:** Trying several onboarding variants to see what seems promising (exploratory) then running a focused A/B test on the chosen design (confirmatory).
+
+---
+
+## F
+
+### False discovery
+A false discovery occurs when an experiment shows a statistically significant result, 
+but there is no real effect — meaning the “win” is actually due to random noise, not the treatment.
+
+**False discoveries are a normal part of experimentation**. When you run many A/B tests with a given significance level — some “wins” will occur by chance. 
+Accepting this is part of working in a probabilistic system.
+
+However, blindly acting on false discoveries can waste resources, mislead strategy, or harm user experience. 
+That's why understanding — and managing — the risk of false discoveries is essential.
+
+A few things to consider to reduce the risks of False Discoveries
+
+- Ground hypotheses in user research, behaviour, prior data, or product theory. Avoid “spaghetti testing” — randomly trying ideas just to see what sticks.
+- Retest or replicate high-impact or surprising results before launching. This adds confidence and filters out false positives.
+- Use falsifiable hypotheses and define what success and failure look like before running the experiment.
+
+**Example:**  You run 100 experiments with a significance level of 0.05. Even if none of the treatments actually work, about 5 will show false “wins” by chance. 
+These are false discoveries — not because of bad math, but because that’s how probability works.
+
+### False discovery rate (FDR)  
+The proportion of all statistically significant results that are actually false positives across a group of experiments.
+
+FDR is a portfolio-level metric: it tells you how many of your “wins” are likely to be wrong. 
+This matters when you run many experiments, especially if you don’t adjust for multiple comparisons or if your overall success rate is low. 
+
+See also [False positive risk](#false-positive-risk)
+
+**Example:** If your team ran 500 A/B tests and 100 were statistically significant, but only 60 of those have an actual true effects, then your False Discovery Rate is 40% — meaning 40 out of 100 wins are likely false.
+
+### False negative  
+Failing to detect a real effect when it exists; equivalent to a Type II error.  
+False negatives cause missed opportunities where genuinely beneficial changes are discarded.  
+
+**Example:** Abandoning a feature improvement that would have increased conversion by 1 percent because the test was underpowered.
+
+### False positive  
+Concluding that an effect exists when, in reality, there is none; equivalent to a Type I error.  
+False positives lead to rolling out changes that do not help and may even hurt the business.  
+
+**Example:** Launching a redesign because the experiment happened to show a spurious uplift.
+
+### False positive risk
+The probability that a statistically significant result is actually a false positive — in other words, the chance that the null hypothesis is still true, despite rejecting it.
+
+This is a per-result interpretation of significance, helping you assess whether an individual “win” is trustworthy. 
+False Positive Risk depends not just on the p-value or alpha level, but also on power and the prior probability that the treatment is effective (i.e. the base success rate in your organization).
+
+See also [False discovery rate](#false-discovery-rate-fdr)
+
+**Example:**
+If your team runs an experiment with α = 0.05 and the prior success rate is 10%, then a significant result with p < 0.05 could still have a 22%–38% chance of being false — much higher than the 5% most people assume.
+
+### Feature flag  
+A control mechanism that lets you turn a feature on or off, or vary it across users, without redeploying code.  
+Feature flags make it easier to run experiments, carry out gradual rollouts and quickly roll back problematic changes.  
+
+**Example:** Enabling a new checkout flow only for 10 percent of traffic via a flag while monitoring guardrail metrics.
+
+### Fishing  
+Searching through many metrics, segments or time windows without predefined hypotheses until something appears significant.  
+Fishing inflates the chance of false positives and can produce misleading “insights” that do not replicate.  
+
+To prevent fishing, it is recommended to pre-register decision criteria before the experiment starts.
+
+**Example:** Testing dozens of segment combinations after the fact and reporting only the one combination that shows a significant effect.
+
+### Fixed horizon testing  
+A testing approach where sample size or duration is specified in advance and data is formally analysed only once, at the end.  
+Fixed horizon methods are conceptually simple but are not robust to unplanned peeking or early stopping. 
+
+See also [Group Sequential Testing](#group-sequential-testing).
+
+**Example:** Committing to run an experiment for exactly two weeks and making a decision only after both weeks have completed.
+
+### Fully sequential testing (mSPRT)  
+A testing framework that allows continuous monitoring and stopping at any time while maintaining valid error guarantees, often based on sequential probability ratio tests.  
+Fully sequential methods offer maximum flexibility in when to stop, at the cost of experimentation power and more complex design and interpretation. 
+
+See also [Group Sequential Testing](#group-sequential-testing).
+
+### Futility boundary  
+A statistical threshold used [Group Sequential Testing](#group-sequential-testing) that, if crossed during an interim analysis,
+allows the experiment to stop early for lack of effect — indicating that the treatment is unlikely to produce a meaningful or statistically significant improvement, 
+even if the test continues to full sample size.
+
+Futility boundaries improve efficiency by preventing wasted time and traffic on experiments that show little promise.
+They help teams focus on higher-impact ideas, but must be pre-defined and adjusted to avoid inflating the Type II error (false negatives) across multiple analyses.
+
+### Futility type  
+The rule or criterion used to define what constitutes “futility” during interim analyses in [Group Sequential Testing](#group-sequential-testing). 
+It determines whether an experiment should stop early because it is unlikely to lead to a statistically significant result or if it should continue running.
+
+There are two common futility types:
+
+**Non-binding futility**: You may stop the test if the boundary is crossed, but you’re not required to. It doesn’t affect the final significance level if you continue.
+
+**Binding futility**: If the futility boundary is crossed, the test must stop. Ignoring it would invalidate the final p-value, potentially inflating Type I error.
+
+Choosing a futility type affects both statistical validity and decision flexibility. 
+Non-binding futility provides optionality for business judgment, while binding futility enforces stricter control over error rates.
+
+By default, GST experiment in ABsmartly uses a binding futility type but this can be changed during the setup.
+
+**Example:**  At the halfway point of an A/B test, the test crosses the futility boundary, 
+but the team decides to continue because external factors suggest the impact may emerge later — a valid choice under the non-binding rule.
+
+---
+
+## G
+
+### Group sequential testing  
+A sequential approach where you predefine interim analyses (checkpoints) at which you are allowed to analyse data and possibly stop early.  
+Group sequential designs balance flexibility with simplicity and are well suited to practical experimentation where a few well-timed looks are enough. 
+
+Group Sequential Testing is the default method when creating new experiment. 
+It leads to making decisions up to 80% faster than with a more traditional [Fixed Horizon Experiment](#fixed-horizon-testing).
+
+Do you want to know more about Group sequential testing? Read our [dedicated GST article](https://absmartly.com/gst)
+
+### Guardrail metrics  
+Metrics monitored to ensure experiments stay within acceptable safety or performance constraints on some key KPIs, independent of the impact observed on the primary or secondary metrics.
+Guardrails protect user experience and business health while teams try bold ideas.  
+
+The best practice is for all experimenting teams within a product area to agree on a set of guardrail metrics to monitor for all experiments. 
+That way all decisions are made with the same level of confidence on the potential impact on some key KPIs.
+
+**Example:** Monitoring error rate and page load time while testing a new recommendation algorithm.
+
+---
+
+## H
+
+### Hold-out group  
+A subset of visitors deliberately excluded from a feature rollout or an experiment and kept on the old experience for comparison.  
+Hold-outs help measure long-term or background effects, and can act as a control for rolling experiments or feature flags.  
+
+**Example:** Keeping 5 percent of visitors on the previous pricing model to track long-term revenue impact.
+
+
+### Hypothesis
+
+A specific, testable prediction about the outcome of an experiment usually describing how a change (treatment) is expected to affect a key metric.
+
+A well-formed hypothesis helps ensure that tests are intentional and interpretable, not just random trial-and-error ("spaghetti testing"). 
+It provides a clear basis for decision-making, learning, and iteration.
+
+**Example:** “Reducing the number of form fields on the checkout page will increase conversion rate by at least 2%.”
+
+A good hypothesis is falsifiable (can be proven wrong), linked to user behavior or product theory, and often includes an expected direction and magnitude of effect.
+
+
+### Hypothesis testing
+A statistical framework used to evaluate whether observed differences in an experiment are likely due to chance or reflect a real effect.
+
+Hypothesis testing helps teams make data-driven decisions by providing a structured way to accept or reject the null hypothesis. 
+It's the foundation for calculating p-values, confidence intervals, and determining statistical significance.
+
+**Example:** In an A/B test comparing two landing pages, hypothesis testing is used to assess whether the observed +3.2% lift in conversion rate is statistically significant, 
+or just a result of random variation.
+
+---
+
+## I
+
+### Impact estimate  
+An estimate of the observed performance of a treatment variant compared to the control, 
+typically calculated as a relative increase or decrease in the metric.
+
+The relative impact tells you how much better or worse the treatment performed relative to the baseline. 
+
+### Interaction effect  
+A situation where the combined effect of two variables differs from the sum of their individual effects.  
+Interaction effects can explain why a change works well in one context but not another.  
+
+ABsmartly automatically warn experimenters of possible interactions between 2 or more experiments. 
+
+**Example:** A new layout increases conversion for mobile users but decreases it for desktop users, altering the overall result.
+
+### Lower bound estimate  
+The lower end of a confidence interval, often used as a conservative estimate of effect size.  
+Reporting lower bounds can give decision makers a “worst plausible improvement” and reduce over-optimism.  
+
+**Example:** A lift of 5% with a 95 percent interval from 1% to 9% has a 1% lower bound.
+
+---
+
+## M
+
+### MDE (Minimum detectable effect)  
+The smallest effect size that an experiment is designed to detect with the chosen power and significance level.  
+MDE connects business expectations with statistical design; too small and tests become expensive, too large and you miss meaningful improvements.   
+
+**Example:** Planning a test to detect at least a 2% relative increase in checkout conversion.
+
+### Mean  
+The arithmetic average of a set of values.  
+Many metrics are reported as means, such as revenue per user, and assumptions about distributions often centre on the mean.  
+
+**Example:** Total revenue of 10,000 across 200 users gives a mean of 50 per user.
+
+### Metric sensitivity 
+It refers to how responsive a metric is to real changes in user behavior and how easy it is to detect those changes statistically.
+
+A sensitive metric will show a statistically significant effect even for small real improvements.
+An insensitive metric will require large changes (or large sample sizes) to detect a significant effect.
+
+Metric sensitivity = how likely a metric is to detect true effects.
+
+It depends on:
+- [Effect size](#effect-size) — how much the treatment actually impacts the metric
+- [Variance](#variance) — how noisy or stable the metric is
+- [Sample size](#sample-size) — how much data you collect
+- [Baseline value](#baseline) — some metrics behave differently at different scales
+
+### Metric variance  
+Metric variance refers to the amount of variability or spread in the values of a metric across visitors. 
+In A/B testing, high variance means the metric fluctuates widely from visitor to visitor, while low variance means it remains relatively stable.
+
+High variance makes it harder to detect real effects, requiring larger sample sizes or longer test durations to reach statistical significance. 
+Low variance metrics are generally more sensitive and more efficient for testing.
+
+High variance issues can be mitigated using techniques like [CUPED](#cuped-controlled-experiments-using-pre-experiment-data) or by managing [outliers](#outliers).
+
+**Example:** 
+High variance metric:
+Revenue per user — some users spend a lot, most spend nothing. This distribution is heavily skewed, leading to large variance.
+
+Low variance metric:
+Click-through rate (CTR) on a button — most users either click or don’t, and the values are bounded (0 or 1), resulting in low variance.
+
+
+### Multivariate experiment
+An experiment that tests multiple elements of a page or experience at the same time by combining different versions of each element into many variant combinations. 
+Instead of only comparing A vs B, a multivariate test evaluates how several changes and their interactions affect the outcome.
+Not to be confused with [Multi-variant experiment](#multi-variant-experiment).
+ 
+Multivariate experiments help you understand not just *whether* a change works, but *which combination* of changes works best. 
+They are useful when you want to optimise several components together, such as headline, image and call to action. 
+However, they require significantly more traffic than a simple A/B test, because traffic must be spread across many variant combinations and the analysis is more complex.
+For this reason Multivariate experiments are not supported in ABsmartly.
+
+**Example:**  
+You want to optimise a landing page with the following:  
+- 2 different headlines (H1, H2)  
+- 3 different hero images (I1, I2, I3)  
+- 2 different call-to-action buttons (C1, C2)  
+
+A multivariate experiment would test all 2 × 3 × 2 = 12 combinations (for example H1–I2–C1, H2–I3–C2, and so on) and estimate which combination yields the highest conversion rate, as well as whether certain headlines work better only with specific images or buttons.
+
+### Multi-variant experiment
+See [A/B/n experiment](#abn-experiment).
+Not to be confused with [Multivariate experiment](#multivariate-experiment).
+
+
+---
+
+## N
+
+### Null hypothesis  
+A formal assumption in statistical testing that there is no true effect or difference between the treatment and control groups. 
+It represents the default position that any observed difference is due to random chance.
+
+The null hypothesis is the foundation of significance testing. 
+In A/B testing, you aim to collect enough evidence to reject the null hypothesis and conclude that the treatment likely has a real effect. 
+If you fail to reject it, you assume the data is consistent with no meaningful difference.
+
+**Example:** 
+You run an A/B test on a checkout button.
+
+Null hypothesis (H₀): The new button (Variant B) has the same conversion rate as the original (Variant A).
+
+If your p-value is below your chosen threshold (e.g. α = 0.05), you reject H₀ and infer that Variant B likely has an effect.
+
+**Important Notes:**
+- Rejecting the null does not prove the treatment is better — only that the observed data is unlikely if there were no effect.
+- Failing to reject H₀ does not prove the variants are the same — just that there's not enough evidence to conclude a difference.
+
+---
+
+## O
+
+### Observed effect  
+The measured difference between treatment and control groups in an experiment. It represents the impact of the change being tested.
+The observed effect is the best point estimate available from the data, but it is subject to sampling variability.  
+
+**Example:** Treatment shows a 5.1 percent conversion rate, control 4.8 percent, so the observed effect is 0.3 percentage points.
+
+### One-tailed analysis  
+A statistical test that checks for an effect in only one direction. Either whether the treatment is better than the control, or worse than, but not both. 
+It does not test for two-way differences.
+
+One-tailed tests offer greater statistical power than [two-tailed](#two-tailed-analysis) tests, meaning they can detect effects with smaller sample sizes but only when you care about a change in one direction.
+
+When it's appropriate:
+One-tailed analysis makes sense if:
+- You're only interested in detecting improvement
+- You would make the same decision (ie not ship) if the result is neutral or negative.
+
+This applies in “ship vs. no-ship” scenarios, where you only want to ship if the variant is better, and don't need to detect harm because you wouldn’t ship it anyway.
+
+**Example:** You test a new pricing design. If it improves revenue, you’ll ship it. If it’s flat or worse, you won’t — so a one-tailed test for improvement is appropriate.
+
+### Operational metric  
+A metric that reflects system health or performance rather than direct user or business outcomes.  
+While some experiments might be targeting them, operational metrics often act as guardrails and basic safety checks during experiments.  
+
+ABsmartly recommends using some key operational metrics as guardrail metrics to ensure the experimentation program does not hurt those key KPIs.
+
+**Example:** Error rate, latency, CPU utilisation or cache hit rate.
+
+### Outliers
+Outliers are data points that are significantly higher or lower than the rest of the data. 
+In experimentation, they often represent extreme user behavior (e.g., unusually large purchases or anomalous session lengths) and can disproportionately affect averages and [variances](#metric-variance).
+
+Outliers can inflate variance, distort means, and reduce test sensitivity, especially for metrics like revenue or engagement that are naturally skewed. 
+Even a few extreme values can lead to misleading results, particularly in small or medium-sized experiments.
+
+**Example:** In a test measuring revenue per user, most users spend $0–$50, but one user spends $5,000. 
+This outlier can shift the average upward, making the treatment look better than it really is.
+
+**Risks associated with outliers:**
+- Loss of signal: Outliers are real users. Trimming them can hide important effects or exclude some key user segment.
+- Lack of transparency: Unclear or inconsistent handling of outliers can erode trust in experimentation results.
+
+---
+
+## P
+
+### Peeking  
+Peeking refers to looking at experiment results before the test is completed, especially to check for statistical significance and 
+making decisions based on those early results without proper statistical adjustments.
+
+Peeking inflates the [false positive rate](##false-discovery-rate-fdr), making it more likely that you'll incorrectly conclude a treatment is effective when it’s not. 
+This happens because repeatedly checking increases the chance that random noise appears significant at least once.
+
+**Example**:
+You run an A/B test designed for 100,000 users, but check results every day. 
+On day 6, with only 40% of the data collected, you decide to stop early and ship because you see some promising results. 
+This is peeking and you may be acting on a false discovery.
+
+### Power level
+
+See [Experimentation power](#experimentation-power).
+
+### Power calculation  
+The process of choosing sample size, MDE, significance level and power so that an experiment is appropriately designed.  
+Good power calculations align statistical design with practical constraints like traffic, time and business priorities. 
+
+Properly powering an experiment is a requirement for making good reliable data-informed decisions.
+
+The ABsmartly's built-in power calculator makes it easy to design your experiment correctly.
+
+**Example:** Deciding that you need 50000 visitors per variant to detect a 1% increase with 80 percent power at a 5 percent significance level.
+
+### Pre-selection bias  
+Bias introduced when the users who enter a study are not representative of the broader population or when assignment is not properly random.  
+Pre-selection bias can make experiment results look better or worse than they will be in real-world rollout.  
+
+**Example:** Testing a new feature only on highly engaged users and then rolling it out to everyone.
+
+### Primary metric  
+The main metrics used to judge success or failure of an experiment.  
+Primary metrics should be chosen carefully in advance to reflect the experiment’s objective; they drive decisions.  
+
+When creating an experiment in ABsmartly, users must choose a single primary metric. This will be the main decision making metric.
+It is usually good practice to choose a business metric as the primary metric.
+
+**Example:** Checkout conversion rate for an experiment on the payment page.
+
+### Product experimentation  
+The use of controlled experiments to evaluate product changes and make product decisions grounded in evidence.  
+Product experimentation turns hypotheses about user behaviour into measurable tests and supports continuous improvement.  
+
+**Example:** Testing new onboarding journeys, pricing presentations or recommendations.
+
+### Product operating model  
+A framework that describes how product teams discover opportunities, deliver solutions and use experimentation and data as part of their regular workflow.  
+A coherent operating model ensures experimentation is not a one-off activity but a core part of how the organisation builds products.  
+
+### P-value  
+The probability of observing data at least as extreme as what you saw, assuming the null hypothesis is true.  
+P-values are widely used but easily misinterpreted; they are not the probability that the null is true.   
+
+**Example:** A p-value of 0.03 indicates that, if there were no true effect, you would see a result this extreme or more in about 3 percent of repeated tests.
+
+### P-hacking  
+Manipulating analysis choices, data cuts or stopping rules until a desired level of significance is achieved.  
+P-hacking severely inflates false positives and creates misleading “evidence”.  
+
+**Example:** Trying different subsets of users and time windows until one yields p < 0.05, then reporting only that result.
+
+---
+
+## S
+
+### Sample size  
+The number of visitors included in an experiment.  
+Sample size, together with [variance](#variance) and [effect size](#effect-size), determines [power](##experimentation-power) and the time needed to reach a conclusion.  
+
+### Secondary metrics  
+Additional metrics tracked in an experiment to understand side effects or support interpretation of the primary metric.  
+Secondary metrics reveal trade-offs and help explain why a primary metric changed. Secondary metrics can also be used to reduce the risk of false positive on the primary metric
+
+**Example:** Monitoring average order value and gross conversions while the primary metric is net conversion rate.
+
+### Significance level (alpha)  
+The maximum acceptable probability of a [Type I error](#type-1-error) that you are willing to tolerate in a single hypothesis test.  
+It determines the threshold at which you consider a result statistically significant.  
+
+**Example:** If you set α = 0.05, and your p-value is below 0.05, you declare the test result statistically significant — i.e., there's enough evidence to reject the null hypothesis.
+
+### Spillover effect  
+When the impact of a change spills over from users in one variant to users in another, breaking the independence assumption.  
+Spillover can bias results and is especially relevant for social features, shared environments or marketplaces.  
+
+**Example:** Discounts shown only to the treatment group affecting reference prices for control users.
+
+### SRM (sample ratio mismatch)  
+A discrepancy between the expected allocation of users across variants and what is actually observed.  
+SRM is a strong signal that something is wrong with the implementation of the test. 
+Experiment results should not be trusted until the cause is understood. 
+
+ABsmartly automatically checks for SRM and reports any issue to the experimenters.
+
+**Example:** Configuring a 50/50 split but observing 60 percent of traffic in control and 40 percent in treatment.
+
+### Standard deviation  
+A measure of how spread out or variable your data is. It tells you, on average, how far each data point is from the mean (average).
+Standard deviation is central to many formulas for [confidence intervals](#confidnce-interval), [z-scores](#z-score) and sample size calculations.  
+
+- If your data points are close to the mean, the standard deviation is small.
+- If your data points are widely spread out, the standard deviation is large.
+
+**Example:**
+Imagine two sets of A/B test results for daily revenue (in dollars):
+Group A: [100, 102, 98, 101, 99]
+Mean = 100, Standard deviation ≈ 1.58 → very stable
+
+Group B: [80, 120, 70, 130, 100]
+Mean = 100, Standard deviation ≈ 23.45 → much more variation
+
+Same mean, very different variability!
+
+### Statistical power  
+The probability that a test will detect a true effect of the planned size or larger.  
+High power means you are less likely to miss real improvements; very low power leads to many inconclusive or misleading tests.  
+
+In AB testing, power is typically set to 80% meaning that 8 out of 10 times, the test will detect the planned effect.
+
+### Statistical significance (threshold)  
+A label applied when results meet the predefined significance criterion, usually p < alpha.  
+Statistical significance indicates that the observed effect is unlikely to be due to chance alone under the null model, but it does not guarantee practical importance and says nothing about the size of the effect.  
+
+**Example:** A 3 percent lift in conversion with p = 0.01 at alpha = 0.05 is statistically significant.
+
+---
+
+## T
+
+### True effect
+The true effect is the actual impact a treatment (e.g., new feature, UI change, algorithm tweak) has on a metric in the entire population, not just in your sample.
+We never know the true effect. We can only estimate it.
+
+The true effect is what you would observe if you ran the experiment on every user forever, under ideal conditions, with perfect measurement.
+
+But since we can't do that, we:
+- Run the test on a sample of the population, and
+- Use statistics to estimate the true effect.
+
+**Example:** 
+You run an A/B test and observe that Treatment increased conversion rate by +1.2%, with a p-value of 0.03.
+That +1.2% is your [observed effect](#observed-effect).
+
+But the true effect might be different, it could be +0.5% or +1.7%.
+
+The [confidence interval](#confidence-interval) tells you the range where the true effect likely lies (e.g., [0.2%, 2.2%]).
+
+An experiment gives you a statistical estimate (with uncertainty) of that true effect.
+
+### Two-tailed analysis  
+A statistical test that checks for an effect in either direction whether the treatment is better or worse than the control. 
+It evaluates for any significant difference in both direction, not just improvement.
+
+Two-tailed tests are more conservative than [one-tailed](#one-tailed-analysis) tests: they require stronger evidence to detect an effect, 
+but they protect against surprises in both directions.
+
+A Two-tailed analysis makes sense if:
+- You care about any meaningful change, positive or negative
+- You want to detect both improvements and regressions
+- A negative result would cause a different decision (e.g. rollback, investigation)
+
+This applies in scenarios where risk of harm matters, or where learning about both upside and downside is important.
+
+Example: You test a new signup flow. If it improves conversion, you’ll ship. 
+But if it hurts conversion, you want to detect that too so you use a two-tailed test.
+
+### Twyman’s law  
+A heuristic that states “the more surprising a result looks, the more likely it is to be wrong or misleading”.  
+Twyman’s law reminds teams to double-check interesting or extreme results for errors, bias or artefacts.  
+
+**Example:** Discovering a 50 percent uplift from a minor colour change should trigger strong suspicion and careful validation.
+
+### Type I error  
+Incorrectly rejecting the null hypothesis when it is actually true; also called a [false positive](#false-positive).  
+Type I errors lead to rolling out ineffective changes based on spurious results.  
+
+### Type II error  
+Failing to reject the null hypothesis when it is false; also called a [false negative](#false-negative).  
+Type II errors cause teams to miss out on beneficial changes that would have helped users or the business.  
+
+---
+
+## V
+
+### Variance  
+A measure of spread that averages the squared distance between each value and the mean.  
+Variance is the foundation for [standard deviation](#standard-deviation) and influences sample size and sensitivity.  
+
+**Example:** A metric with low variance has values clustered tightly around the mean; high variance means values are more scattered.
+
+### Variance reduction  
+Any method that reduces the variance of metric estimates without changing their meaning, such as using pre-experiment covariates or better metric definitions.  
+Lower variance improves power and reduces how long experiments need to run.   
+
+**Example:** Applying CUPED to revenue per user so that differences between variants become clearer with the same traffic.
+
+---
+
+## Z
+
+### Z-score  
+A standardised value expressing how many standard deviations a data point or effect is away from the mean or from zero.  
+Z-scores provide a common scale for test statistics and link directly to p-values in many tests.  
+
+**Example:** A z-score of 2 corresponds to an effect about two standard deviations above zero, which roughly maps to p ≈ 0.045 in a two-tailed test.

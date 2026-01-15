@@ -1,0 +1,268 @@
+---
+sidebar_position: 1
+---
+
+# Overview
+
+## Experimentation Metrics
+
+Metrics are aggregations or computations derived from [goals](../goals/overview). 
+They transform raw event data into interpretable measures that quantify the effect of an experiment. 
+
+Metrics summarize performance over a group of experiment visitors — for example, `conversion rate`, `Average revenue per visitor`, or `click-through rate`. 
+
+Metrics can represent direct business outcomes, engagement signals, or technical performance indicators, 
+and are often grouped into [categories](categories) such as `conversion`, `engagement`, `retention`, or `revenue`.
+
+## Understanding Experimentation Metrics 
+
+Experimentation metrics can be described using many attributes, often combining those attributes together.
+In this page we try to explain the most important attributes and what they mean in the context of experimentation.
+
+### Role
+In ABsmartly and many other experimentation platforms, metrics are often described as **primary**, **secondary**, **guardrail**, **exploratory**, those
+attributes describe the role that the metric plays in the experiment.
+
+#### Primary metric
+In an experiment the **Primary** metric is the single most important measure used to determine whether the tested change achieves its desired outcome and whether or not the hypothesis is validated or rejected. 
+It reflects the experiment's primary objective and directly aligns with the business’s strategic goals.
+The primary metric is the metric used to inform the experiment design regarding defining the minimum detectable effect (MDE) and the sample size (to ensure sufficient power to detect a meaningful change).
+
+Examples: 
+- `revenue_per_visitor`
+- `conversion_rate`
+- `retention_rate`
+
+#### Secondary metrics
+**Secondary** metrics, while not the main decision-making criteria, play a big role in ensuring a comprehensive understanding of the experiment’s impact.
+They provide additional context and insights beyond the primary metric and can help detect unintended side effects.
+
+Examples: 
+- `items_added_to_cart`
+- `product_page_view`
+- `banner_interaction`
+
+#### Guardrail metrics
+**Guardrail** metrics are safeguards used to monitor and ensure the health, stability, and overall integrity of the system during an experiment. 
+They do not measure the success of the primary business objectives but are critical for detecting unintended negative impacts on the business, user experience and/or operational performance.
+Guardrail metrics act as early warning systems, identifying potential risks such as degraded performance, increased errors, or adverse user behavior before they escalate into larger problems.
+
+Examples: 
+- `errors`
+- `app_crashes`
+- `page_load_time`
+- `support_tickets`
+
+#### Exploratory metrics
+In ABsmartly, **exploratory** metrics refers to metrics of interest not used in decision-making. 
+Exploratory metrics are often used in post-analysis and are a great source of insights on top of which new hypotheses can be built. Exploratory metrics should not be used to evaluate the experiment.
+
+### Purpose
+A metrics can be described as a **business** metric, a **behavioural** metric or an **operational** metrics.
+Those attributes describe the purpose of the metric, what it is measuring.=
+
+#### Business 
+In experimentation, **business** metrics refers to metrics measuring the impact of a change on a business KPI. Business metrics are often used as primary and/or guardrail metrics. 
+
+Examples: 
+- `revenue_per_visitor`
+- `conversion_rate`
+- `retention_rate`
+- `calls_to_customer_support`
+
+#### Behavioural 
+**Behavioural** metrics are metrics measuring the impact of a change on the visitor's behaviour. Behavioural metrics are usually measuring the direct impact of a change and as such have high sensitivity. Behavioural metrics are often used as secondary metrics.
+
+Examples: 
+- `items_added_to_wishlist`
+- `clicks_on_banner`
+- `product_page_views`
+
+#### Operational 
+**Operational** metrics, also known as technical metrics, measure the impact of a change on system performance. Operational metrics can be used as guardrail metrics but also possibly as primary or secondary metrics depending on the goal of the experiment.
+
+Examples: 
+- `page_load_time`
+- `app_crashes`
+- `error_rate`
+
+### Data structure
+All metrics are either **binomial** or **continuous**, this is a reference to how the underlying data is structured and measured.
+
+#### Binomial
+**Binomial** metrics represent a binary outcome for each visitor in the experiment, where each instance falls into one of two categories (e.g., success/failure, yes/no, 0/1).
+They are typically represented as a percentage (ie: 10% conversion rate), binomial metrics follow a normal distribution. Binomial metrics are easier to interpret and communicate.
+
+Examples:
+- `conversion_rate`
+- `click_through_rate` (ie: the percentage of users clicking on a link)
+- `churn_rate`
+- `email_open_rate`
+
+#### Continuous
+**Continuous** metrics on the other hand can take on a wide range of values (either measured or counted). Continuous metrics often represent quantities or durations. Their underlying distribution varies depending on the data. Continuous metrics are more sensitive (they capture a wider range of data) and offer more insights but they can be heavily influenced by outliers and are harder to interpret. 
+
+Examples: 
+- `time_on_page`
+- `time_to_first_booking`
+- `number_of_items_in_cart`
+- `revenue_per_visitor`
+
+### Time horizon
+Another aspect of experimentation metrics is their time horizon, typically metrics can be referred to as **short-term** or **long-term**.
+
+#### Short-term
+**Short-term** metrics refer to metrics that measure immediate or near-term outcomes, typically during or shortly after the experiment.
+They can typically be measured accurately in the experiment’s runtime and provide quick feedback on the effects of changes.
+
+Examples: 
+- `real_time_conversion_rate` (during the test)
+- `time_spent_on_page`
+- `click_through_rate`
+
+#### Long-term
+On the other hand, **long-term** metrics measure delayed outcomes which make it hard to measure during the runtime of an experiment.
+Typically long-term metrics represent the strategic goals and align with the desired business outcomes. Using such a metric for decision making requires adapting the experiment design so it captures this long term impact.
+
+Examples: 
+- `true_conversion_rate` (after cancellation and returns have been processed)
+- `customer_lifetime_value`
+- `long_term_revenue` 
+- `retention_rate` (over 6 months or more)
+
+### Functionality
+Finally metrics can also be described by how they operate in the context of the experiment. 
+
+#### Proxy
+**Proxy** metrics are indirect measures used to evaluate an outcome that cannot be measured directly (see for the example of long-term metrics above). In experimentation proxy metrics can be used as a replacement for the actual desired goal. There should be a strong correlation between the proxy and the actual goal and this should be validated frequently. 
+
+Examples: 
+- `time_on_site` as a proxy for engagement
+- `click_on_buy_button` as a proxy for conversion
+
+#### Composite
+**Composite** metrics combine multiple individual metrics into one measure to capture a nuanced view of success. They are often used strategically but can dilute sensitivity.
+Examples:
+- `Overall Evaluation Criterion` (OEC) as a weighted combinations of metrics like engagement, revenue, and satisfaction
+
+
+## Metric Versioning
+
+Metrics are **version-controlled** to ensure that your experiment results remain stable, interpretable, and historically accurate. 
+When a metric definition changes, its meaning changes and that can impact how past and ongoing experiments would be understood. 
+To prevent this, changes to certain fields require a new version of the metric to be created.
+
+Versioning ensures that:
+
+- Historical results remain trustworthy: 
+Experiments that used an older version of the metric will always continue to use that exact definition, so their numbers do not change retroactively.
+- Metric definitions are transparent and reproducible: 
+You can always refer back to earlier versions and understand exactly how a metric was constructed at any point in time.
+- Teams can evolve metrics safely: 
+You can improve outlier handling, adjust filters, or refine properties without affecting other teams or ongoing experiments.
+- Experiments remain comparable over time: 
+Versioning prevents silent drift in metric definitions that would otherwise make comparisons unreliable.
+
+Versioning gives you confidence that when you modify a metric, you are not rewriting the past, and your experiment results remain consistent and dependable.
+
+:::note
+While past and current experiments can make use of an older version of a metric, only the currently **active** version of a metric can be added to new experiments.
+:::
+
+Each metric contains configuration fields that play different roles in versioning. 
+To balance flexibility with historical accuracy, fields fall into three categories:
+
+### Editable and shared across all versions
+
+These fields belong to the metric itself, not to a specific version.
+If you edit them, the change applies to every version of the metric.
+
+- `Name`. To ensure consistency and discoverability, the name of a metric needs to be the same across all versions of a metric.
+- `Owner`. To better enforce ownership and governance, metric's owners must own the entire history of a metric including all its past versions.
+
+### Editable and version-specific fields
+
+These fields define the behaviour of a certain version of a metric.
+Editing them only modifies the current version, and does not impact older versions.
+
+- All fields in the `Metrics Detail` section.
+- All fields in the `Metadata` section.
+
+These fields allow you to enrish the metric's version without altering the meaning of historical results.
+
+### Non-editable, version-specific fields
+
+These fields define the core logic of the metric: how values are extracted, filtered, capped, or related to other goals. 
+Those fields are **immutable** and tied to a certain version of the metric.
+
+A new version of the metric must be created to be able to change those fields.
+
+Locked fields include:
+- All fields in the `Goal` section.
+- All fields in the `Format, Scale & Precision` section.
+- All fields in the `Metric threshold alert` section.
+
+Locking these fields ensures that metrics remain stable and reproducible over time, and that historical experiment results never change unexpectedly.
+
+## Ownership & permissions
+
+`Metrics` are Managed-Assets and, as such, follow a specific [ownership model](/docs/web-console-docs/users-teams-permissions/ownership-and-permissions).
+
+### Ownership
+
+A metric can be owned by 1 or more teams and, if the feature was enable for your organisation, individual users.
+
+:::info
+Team ownership is generally a better fit for governance because it creates stability, resilience, and accountability at the right level.
+
+A team persists even when individuals change roles, leave, or shift priorities, so the metric keeps a reliable steward over time. 
+Expertise is usually distributed across a group rather than held by one person, which reduces risks from single-point knowledge and avoids bottlenecks. 
+Team ownership is better suited to review changes, ensure consistency, and maintain quality.
+:::
+
+### Permissions
+
+The following permissions exist when managing and working with `metrics`.
+
+| Permission | Description |
+|-------------------------|----------------------------|
+| **Admin metrics** | Grants full administrative control over metrics, including managing permissions, visibility, and configuration settings for all metrics within the workspace or team. |
+| **Archive a metric** | Allows archiving a metric that is no longer in use, archign a metric archive **all the versions** of that metric. |
+| **Create a metric** | Enables the creation of new metrics. |
+| **Edit a metric** | Allows modification of existing metric definitions and for the creation of new versions of that metric. |
+| **Get a metric** | Permits viewing the details of a specific metric, including its configuration and usage across experiments. |
+| **List metrics** | Grants access to view the list of all available metrics within the workspace or team. |
+| **Unarchive a metric** | Allows restoring a previously archived metric |
+
+
+#### Global access
+
+Permission to create and manage `metrics` can be granted to the relevant users through their [role](../../configuration/settings#roles) at the platform level.
+
+:::info
+It is not recommended to provide access to `metrics` to non platform admin users at the platform level. 
+:::
+
+#### built-in team level roles
+
+Permission to create and manage `metrics` can be provided to the relevant users at the team level by granting them the correct role in that team.
+
+| Permission | Description |
+|-------------------------|--------------|
+| **Team Admin** | Grants full control over metrics owned by that team. |
+| **Team Contributor** | Grant ability to create and to manage metrics in the team scope. |
+| **Team Viewer** | Grant ability to view and list metrics owned by the team. |
+
+:::info
+Team roles are inherited, so if a user is a `Team Contributor` in a team, then this user would also be a `Team Contributor` in all child teams.
+:::
+
+### Sharing metrics
+
+While `metrics` are owned by teams, they can be shared with other teams and individual across the organisation.
+
+| Permission | Description |
+|-------------|--------------|
+| **can_view** | Grants this user or team the ability to view and make use of this metric in their experiments.   |
+| **can_edit** | Grants this user or team the ability to edit to this metric. |
+

@@ -1,0 +1,118 @@
+import Image from '../../../src/components/Image';
+
+# SAML SSO - Okta
+
+The ABsmartly Web Console supports SAML SSO with Okta. This guide will walk you through the steps to get it set up!
+
+## Configuring Okta
+
+In Okta, login as an administrator and ensure that you are in the Classic UI.
+
+Once there, expand the Application menu on the left and click on Applications. Once there,
+click the Create App Integration button.
+
+<Image
+   img="okta/applications.png"
+   alt="Okta Applications page with a Create App Integration button"
+   maxWidth={800}
+/>
+
+### Create a SAML Application
+
+Choose **SAML 2.0** as the Sign on method and click `Next`.
+
+<Image
+    img="okta/create_new_saml_application.png"
+    alt="Okta Create New SAML Application dialog"
+    maxWidth={800}
+/>
+
+Provide an **App name** and click `Next`.
+
+:::info App Image
+For an **App Image**, feel free to download our logo here:
+https://docs.absmartly.com/img/logo.png
+
+<Image
+    img="logo.png"
+    alt="The ABsmartly logo"
+    maxWidth={100}
+    centered={false}
+/>
+
+It can be added to the Okta integration by clicking on the **Upload Logo** button and selecting the downloaded image.
+
+<Image
+    img="okta/upload_logo.png"
+    alt="Okta Upload Logo button"
+    maxWidth={400}
+    centered={false}
+/>
+:::
+
+<Image
+    img="okta/create_saml_integration_1.png"
+    alt="Okta Create SAML Integration step 1"
+    maxWidth={800}
+/>
+
+In the SAML Settings section, paste your provided SSO url into the **Single sign on URL** field and set the
+**Audience URI (SP Entity ID)** field to `absmartly`. The **Name ID format** should be set to `EmailAddress`,
+the **Application username** should be set to `Email` and **Update application username on**
+should be set to `Create and update`.
+
+:::info
+Your SSO url will be provided by ABsmartly, but it usually takes the form of:
+```
+https://<your-assigned-subdomain>.absmartly.com/auth/saml/okta/callback
+```
+:::
+
+In the Attribute Statements section, click `Add Another` and add the following attributes:
+- `firstName` - `Basic` with a value of `user.firstName`
+- `lastName` - `Basic` with a value of `user.lastName`
+- `department` - `Basic` with a value of `user.department`
+
+We use these attributes to set up each user's name and department in ABsmartly. Click the `Next` button.
+
+<Image
+    img="okta/create_saml_integration_2.png"
+    alt="Okta Create SAML Integration step 2"
+    maxWidth={800}
+/>
+
+Finally, choose `I'm an Okta customer adding an internal app` and click `Finish`.
+
+<Image
+    img="okta/create_saml_integration_3.png"
+    alt="Okta Create SAML Integration step 3"
+    maxWidth={800}
+/>
+
+### Add Users to your SSO Integration
+
+After the previous step, you will be redirected to the `Sign on` tab of your newly created SAML application. Click on
+the `Assignments` tab to start defining who can sign in with Okta. Click on `Assign` and either `Assign to People` or
+`Assign to Groups` depending on your needs.
+
+<Image
+    img="okta/assignments.png"
+    alt="Okta Assignments tab"
+    maxWidth={800}
+/>
+
+## Sending Us The Integration Metadata
+
+Once you have completed the previous steps, you will need to send us the integration metadata. To do this, click on the
+`Sign on` tab of your newly created SAML application and scroll down to the SAML Signing Certificates section.
+
+Click the actions button next to your most recently created Signing Certificate and select `Download Certificate`.
+
+<Image
+    img="okta/view_idp_metadata.png"
+    alt="Okta Download IdP metadata"
+    maxWidth={800}
+/>
+
+After downloading the metadata, send it to us via email or Slack and your employees will be able to sign in
+to ABsmartly using Okta!

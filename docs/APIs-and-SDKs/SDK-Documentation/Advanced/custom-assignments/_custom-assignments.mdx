@@ -1,0 +1,249 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsCustomAssignment from "!!raw-loader!./js/customAssignment.js";
+import JsCustomAssignments from "!!raw-loader!./js/customAssignments.js";
+
+import PythonCustomAssignment from "!!raw-loader!./python/customAssignment.py";
+import PythonCustomAssignments from "!!raw-loader!./python/customAssignments.py";
+
+import ReactCustomAssignment from "!!raw-loader!./react/customAssignment.js";
+import ReactCustomAssignments from "!!raw-loader!./react/customAssignments.js";
+
+import SwiftCustomAssignment from "!!raw-loader!./swift/customAssignment.swift";
+import SwiftCustomAssignments from "!!raw-loader!./swift/customAssignments.swift";
+
+import VueCustomAssignment from "!!raw-loader!./vue/customAssignment.js";
+import VueCustomAssignments from "!!raw-loader!./vue/customAssignments.js";
+
+import JavaCustomAssignment from "!!raw-loader!./java/customAssignment.java";
+import JavaCustomAssignments from "!!raw-loader!./java/customAssignments.java";
+
+import GoCustomAssignment from "!!raw-loader!./go/customAssignment.go";
+import GoCustomAssignments from "!!raw-loader!./go/customAssignments.go";
+
+import DotNetCustomAssignment from "!!raw-loader!./dotnet/customAssignment.cs";
+import DotNetCustomAssignments from "!!raw-loader!./dotnet/customAssignments.cs";
+
+import PHPCustomAssignment from "!!raw-loader!./php/customAssignment.php";
+import PHPCustomAssignments from "!!raw-loader!./php/customAssignments.php";
+
+import RubyCustomAssignment from "!!raw-loader!./ruby/customAssignment.rb";
+import RubyCustomAssignments from "!!raw-loader!./ruby/customAssignments.rb";
+
+import FlutterCustomAssignment from "!!raw-loader!./flutter/customAssignment.dart";
+import FlutterCustomAssignments from "!!raw-loader!./flutter/customAssignments.dart";
+
+:::warning Warning
+Events with custom assignments are **counted as eligible events** by the ABsmartly 
+statistics engines. If you are using these methods for development purposes
+(to force a particular variant for yourself or somebody else on the team) it is
+likely that you need the 
+[`context.override` methods](/docs/APIs-and-SDKs/SDK-Documentation/basic-usage#overriding-treatment-variants) 
+instead.
+:::
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `context.customAssignment()`
+method.
+
+<CodeBlock language="js">{JsCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `customAssignments` method.
+
+<CodeBlock language="js">{JsCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+Sometimes it may be necessary to override the automatic selection of a
+variant. For example, if you wish to have your variant chosen based on
+data from an API call. This can be accomplished using the
+`set_custom_assignment()` method.
+
+<CodeBlock language="py">{PythonCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different
+custom assignments for each one, you can do so using the
+`set_custom_assignments()` method.
+
+<CodeBlock language="py">{PythonCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `context.customAssignment()`
+method.
+
+<CodeBlock language="jsx">{ReactCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `customAssignments` method.
+
+<CodeBlock language="jsx">{ReactCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `context.setCustomAssignment()`
+method.
+
+<CodeBlock language="swift">{SwiftCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `setCustomAssignments` method.
+
+<CodeBlock language="swift">{SwiftCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `customAssignment()`
+method.
+
+<CodeBlock language="js">{VueCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `customAssignments()` method.
+
+<CodeBlock language="js">{VueCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `customAssignment()`
+method.
+
+<CodeBlock language="js">{VueCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `customAssignments()` method.
+
+<CodeBlock language="js">{VueCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `setCustomAssignment()`
+method.
+
+<CodeBlock language="java">{JavaCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `setCustomAssignments()` method.
+
+<CodeBlock language="java">{JavaCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `SetCustomAssignment()`
+method.
+
+<CodeBlock language="go">{GoCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `SetCustomAssignments()` method.
+
+<CodeBlock language="go">{GoCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `SetCustomAssignment()`
+method.
+
+<CodeBlock language="csharp">{DotNetCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `SetCustomAssignments()` method.
+
+<CodeBlock language="csharp">{DotNetCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+Sometimes it may be necessary to override the automatic selection of a variant.
+For example, if you wish to have your variant chosen based on data from an
+API call. This can be accomplished using the `Context->setCustomAssignment()`
+method.
+
+<CodeBlock language="php">{PHPCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the
+`Context->setCustomAssignments()` method.
+
+<CodeBlock language="php">{PHPCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+Sometimes it may be necessary to override the automatic selection of a
+variant. For example, if you wish to have your variant chosen based on data
+from an API call. This can be accomplished using the `set_custom_assignment()`
+method.
+
+<CodeBlock language="ruby">{RubyCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `set_custom_assignments()`
+method.
+
+<CodeBlock language="ruby">{RubyCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+Sometimes it may be necessary to override the automatic selection of a
+variant. For example, if you wish to have your variant chosen based on data
+from an API call. This can be accomplished using the `setCustomAssignment()`
+method.
+
+<CodeBlock language="dart">{FlutterCustomAssignment}</CodeBlock>
+
+If you are running multiple experiments and need to choose different custom
+assignments for each one, you can do so using the `setCustomAssignments()`
+method.
+
+<CodeBlock language="dart">{FlutterCustomAssignments}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
+
+:::info
+These methods can be called before or after the context is ready.
+:::

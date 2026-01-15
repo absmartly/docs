@@ -1,0 +1,50 @@
+---
+id: experiment-get
+title: "Get Experiment Data"
+description: "A GET request for obtaining data on all running experiments."
+sidebar_label: "Get Experiment Data"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVktv20YQ/iuDObUArUea9MBT1dgwXB9qRHZawDaCETkSN1nuMrtL2arA/14MSYuUpdiGYsAnUbvz+Gb2m8caAy08xtfI9wU7lbMJeBuhLdhRUNacpRj37k45YIQp+8SpQu4xxgmcnlyC4+8l+wBz68DOAimjzAJSCgTWAGkNrjT1WWfNDzDCghzlHNgJjDUayhlj/PdoshAsESrxkTGl7DBCcaMcpxgHV/JjKJcZw5Vn1yiDncPKlg6mx+fiie8pL7RYp5nPyQW9OvqLlnQ0PT6H5XgwGowxQp9knBPGawyrQoR9cMossKqiHroTs1TOmvwwjNxpgzJwl6kkE6hAjjd5qqH3kwWXGXuGhAzMGOa2NCmQSSFxTIFTsVTrTP5so4N/eAYfrfFWM3gOQZmF385EykvWtmjjeFnsk6LQKqnpcUDs1Gm/cex3d3eHxHz0mZ3/+diXjZUXJgCs2QI/2gNcmcCLGsncupxCc/T7e6yqW0HnC2s8e9F4NxrJzzbCaZkk7D1GmFgThBHxGnuQh1+9yK13PdvZV07CVgqu0X6rAW9CkL5SOOksQTUo+pedMXKOVpLcwLl/zolKMWpeqVZwD6z0hVYiGxzN5yqZtn+X5BTtxaLSvZncJHz87req9bRDlT6p+L74MiNj2H1JrLYOqz6wJ12MqgfczyfDlPls+6lTW840i7uNwevR4EM0Gny4rR4l4tXsR2OxvcnqgY9YZ3XnRZ7PdZDir1tXVXN2rhb7FEypNQn2ti47A+sbrB/pBuMbdJzeYCV1j0GF+v5kQ9DPTYhY7b/+0bn/1FadCFQRvh+Nd+vuylAZMuvUf5xKJCnPqdRhn6BUTCL9jp2z7rUqNbGp1E/O3tNiz0vU9y/pM52Nfe20y08NvmpSknPIrGwZi3q3KChkGOOwt49E6NktHxaE0mlpuiEUPh4OPZl0Zu8Hm4k+UHa4HKN0PM9J6VRY1WqTQp2zfN72r6aSnybIB4GOws1B1BsCF2dHzdFTjV+CUmZua1NtxN1Y+mi15iRYB5OLM+lI7TCJURaQ0e52ZeDvgs3k4gymBSdq/jA/QkYBGtkZewgZww+8yPBUXr5AechJGb2C0nMKdxkbKL0MnE5XGSDQZBYlLbh1Y9mDsQFWHCCjJQOBL4vCOuFiu14JFSkJXeliDboRk7rNSekmr390z5XYXHijVcJSJp3yhbOFUxzIrWryFNaHnExP4pQDdKUGxxTocfrWXYH87J7asiLwfRgWmpQR2DUZ1y1pHy/RmfVBTtfrGXm+crqq5Ph7ya4mYts46850LX20JZTQNVVeLlKM56T942WiH9Yvn1r2/QpPr797A/gmlO9t20vSpUihbD8Hg3jr/fbJULdX99cJ+K2X2qffdmtff/2AD9pkX4q4t21vIW9EJ0nCRf8Zd4agdPvNiDk9ucSq+h/MJSsy
+sidebar_class_name: "get api-method"
+info_path: docs/SDK-API/absmartly-collector-api
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Get Experiment Data</h1>
+
+<MethodEndpoint method={"get"} path={"/experiment"}></MethodEndpoint>
+
+
+
+A GET request for obtaining data on all running experiments.
+
+## Request
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Header Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"X-Agent","in":"header","required":true,"description":"The User-Agent of your SDK.","example":"absmartly-Java-SDK v1.0.1","schema":{"type":"string"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"X-Environment","in":"header","required":true,"description":"The environment in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.","example":"development","schema":{"type":"string"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"X-Application","in":"header","required":true,"description":"The application in which you are running your experiments. These can be found and created in your ABsmartly Web Console settings.","example":"www","schema":{"type":"string"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"X-Application-Version","in":"header","required":true,"description":"The application version which you are running your experiments on.","example":0,"schema":{"type":"integer","format":"int64"}}}></ParamsItem></ul></div></details><div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+
+Success
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>experiments</strong><span className={"openapi-schema__name"}> object[]</span><span className={"openapi-schema__divider"}></span><span className={"openapi-schema__required"}>required</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"id"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer","example":123}}></SchemaItem><SchemaItem collapsible={false} name={"name"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"exp_banner_color"}}></SchemaItem><SchemaItem collapsible={false} name={"iteration"} required={true} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer","example":0}}></SchemaItem><SchemaItem collapsible={false} name={"split"} required={true} schemaName={"double[]"} qualifierMessage={undefined} schema={{"type":"array","items":{"type":"number","format":"double"},"example":[0.5,0.5]}}></SchemaItem><SchemaItem collapsible={false} name={"trafficSplit"} required={true} schemaName={"double[]"} qualifierMessage={undefined} schema={{"type":"array","items":{"type":"number","format":"double"},"example":[0,1]}}></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>variants</strong><span className={"openapi-schema__name"}> object[]</span><span className={"openapi-schema__divider"}></span><span className={"openapi-schema__required"}>required</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"name"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"treatment"}}></SchemaItem><SchemaItem collapsible={false} name={"config"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","nullable":true,"example":"{\"color\":\"red\"}"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"experiments\": [\n    {\n      \"id\": 123,\n      \"name\": \"exp_banner_color\",\n      \"iteration\": 0,\n      \"split\": [\n        0.5,\n        0.5\n      ],\n      \"trafficSplit\": [\n        0,\n        1\n      ],\n      \"variants\": [\n        {\n          \"name\": \"treatment\",\n          \"config\": \"{\\\"color\\\":\\\"red\\\"}\"\n        }\n      ]\n    }\n  ]\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"401"} value={"401"}><div>
+
+Unauthorized
+
+</div><div></div></TabItem><TabItem label={"default"} value={"default"}><div>
+
+Unexpected error
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={true} schemaName={"int64"} qualifierMessage={undefined} schema={{"type":"integer","format":"int64"}}></SchemaItem><SchemaItem collapsible={false} name={"message"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": 0,\n  \"message\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      

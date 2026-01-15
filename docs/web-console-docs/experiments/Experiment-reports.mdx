@@ -1,0 +1,186 @@
+---
+sidebar_position: 12
+---
+
+import Image from "../../../src/components/Image";
+
+# Experiment Reports
+
+## General settings & filters 
+
+The settings and filter described below apply to all reports.
+
+### Dates & filters 
+
+<Image img="experiment-report/general-settings-and-filters.png" alt="General Report Settings and Filters" maxWidth="60rem" />
+
+### Reporting period
+At the top of the report users can select the period over which they want to report. By default the reporting period is set to the last 30 days.
+
+### Filters
+Users can select to report on a subset of experiments based on the following available Filters `Owners`, `Applications`, `Unit types`, `Primary metric`, `Teams` and `Tags`.
+
+By default no filters is selected so the report includes all experiments.
+
+## Report settings 
+
+<Image img="experiment-report/velocity-settings.png" alt="Velocity Report Settings" maxWidth="30rem" />
+
+### Unique experiments vs All iterations
+The `Unique experiments` switch allows to toggle between reporting on **unique experiments** and reporting on **all iterations**.
+
+When the toggle is `off` (default), the reporting is done at the **iterations** level which means reporting on every single experiment iterations.
+
+When the toggle is `on`, the reporting is done at the **unique experiments** level which means reporting on unique experiment names.
+
+For example, if an experiment named `Test new check-out flow` was started, then aborted after a few minutes because of an issue then restarted once the issue was fixed.
+When reporting on **iterations**, this experiment would be counted twice for `started` while reporting on **unique experiments** it would only appear once. 
+
+The last instance would be used for the aggregation on the graph.
+
+### Sharing
+It is possible to generate a shared link of an exact view of the report by clicking on the share button on the right side of the report.
+
+### Aggregation type
+By default, and when relevant, the data shown on the reports will be aggregated `per week` but it is also possible to aggregate `per month` or `per year`. 
+Choosing the right aggregation depends mainly on the length or the reporting period and how you wish to visualise the data.
+Changing the aggregation period does not impact the data shown.
+
+
+## Experiment Velocity Report
+
+The `Experiment velocity` report provides an overview of the experimentation program.
+It highlights how many experiments were started, running, completed and not completed in the reporting period.
+This report can be used to understand how the experimentation program is growing in terms of experiments started.
+More importantly it shows how many experiments were successfully completed (vs aborted or early full on).
+Only completed experiments can provide the evidence for making reliable and data-informed decisions.
+
+### Permissions
+
+Access to the velocity report requires the permission `Experiment reports` > `View velocity`. 
+If you wish to access the report but do not have permissions please reach out to your platform admin so they can grant you access.
+
+### Experiment started
+
+<Image img="experiment-report/experiments-started.png" alt="Experiments started report" maxWidth="30rem" />
+
+This widget provides a view on how many new experiments were started in the reporting period. 
+If the same experiment is restarted several times in the reporting period it would appear several times if reporting on `Iterations` or once if reporting on unique experiment name.
+
+### Experiment running
+
+<Image img="experiment-report/experiments-running.png" alt="Experiments running report" maxWidth="30rem" />
+
+This widget reports on experiments which were running (in progress and collecting data) for any duration in the reporting period.
+Even if an experiment was running only for a few seconds it would appear on the report.
+
+### Experiment completed
+
+<Image img="experiment-report/experiments-completed.png" alt="Experiments completed report" maxWidth="30rem" />
+
+This report highlights the number of experiment which were successfully completed in the reporting period. 
+In the case of a [Fixed Horizon Experiment](overview#analysis-methods), it is deemed completed once it reaches its expected sample size or planned duration.
+For a [Group Sequential Test](overview#analysis-methods), an experiment is completed once it crosses one of the test boundaries (efficiency or futility).
+
+The report also visualises the outcome of the statistical test on the primary metric at the moment the experiment was completed. 
+The experiment will be shown in `green` if its **primary metric was significant in the expected direction** at the time the experiment was completed.
+The experiment would be shown in `grey` if its **primary metric was insignificant** when the experiment was completed.
+In the case of a Fixed Horizon experiment, it can also be shown in `red` if its **primary metric was significant in the opposite direction** (causing harm).
+
+:::info
+Experimentation is about generating evidence to make better decisions. All `completed experiments`, independently of their statistical outcome, 
+provide valuable evidence and insights on which to base decisions, and in that sense they should all be seen as success. 
+Knowing that something does not have the expected impact on customer behaviour can be as important and insightful as validating that something else does.
+:::
+
+### Experiment not completed
+
+<Image img="experiment-report/experiments-aborted.png" alt="Experiments not completed report" maxWidth="30rem" />
+
+`Experiment not completed` shows experiments which were **stopped** or put **full on** before they were completed. 
+
+In the case of **early stopped experiments** (also known as aborted experiments), the decisions to abort can happen because of bugs in the implementation, 
+early worrying negative signals, strategic reasons or for any other reason. 
+Depending on the reason for early stopping, aborted experiments are typically restarted once the underlying issue is fixed. 
+Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
+
+While aborting experiments is common and part of the process, **early full on**, should be rare as they indicate that changes were pushed without supporting evidence.
+This can sometimes happen for strategic or legal reasons but because the experiment did not complete, it does not provide the reliable evidence needed to support or discard the underlying hypothesis.
+
+
+### Experiment completion rate
+
+<Image img="experiment-report/experiments-completion-rate.png" alt="Experiments completion rate report" maxWidth="30rem" />
+
+This report shows the ratio of non-running experiments (completed + early full on + aborted) which were completed in the reporting period. 
+This provides a good overview of the quality of the experimentation program and decisons which are based on those experiments.
+
+## Decisions overview
+
+The `Decisions overview` report provides an overview of decisions made by experimenters as a result of their experiments. 
+Possible decisions types included in the report are `Full on` where a tested change is fully rolled out with or without full supporting evidence; 
+`Keep current` where the tested change is not rolled out, and the existing experience remains; 
+and `Abort` where it was decided to stop the experiment before it could provide reliable evidence.
+
+### Permissions
+
+Access to the decisions report requires the permission `Experiment reports` > `View decisions`. 
+If you wish to access the report but do not have permissions please reach out to your platform admin so they can grant you access.
+
+
+### Full on
+
+<Image img="experiment-report/decision-full-on.png" alt="Full on decisions report" maxWidth="30rem" />
+
+This widget provides a view on how many `Full on` decisions were made in the reporting period. A Full on decisions means that the tested change was 
+fully rolled out. `Full on` decisions are typically made when an experiments is completed and the evidence supports the decision (ie: the primary metrics shows an increase in the expected direction, no red flag, no health checks violation, etc).
+It is nonetheless possible for `Full on` decisions to not be fully supported by evidences (ie: experiment not completed, primary metric not significant, etc).
+
+`Full on` decisions are shown in blue if they are supported by evidence and in grey is they are not fully supported by evidence.
+Currently a `Full on` decision is shown as supported by evidence **if and only if the experiment was completed and the primary metric is significant in the expected direction**.
+
+:::caution
+The supported by evidence validation does not currently include checks on the secondary and guardrail metrics nor on the experiment [health checks](experiment-health-checks).
+:::
+
+
+### Keep current
+
+<Image img="experiment-report/decision-keep-current.png" alt="Keep current decisions report" maxWidth="30rem" />
+
+This widget provides a view on how many `Keep current` decisions were made in the reporting period. 
+Keep current means that the change was not rolled out and that the current experience (Base) remains. 
+`Keep current` decisions means that the experiment was completed but it was decided not to roll it out. 
+This typically happens when the evidence does not support the hypothesis.
+
+### Abort
+
+<Image img="experiment-report/decision-abort.png" alt="Abort decisions report" maxWidth="30rem" />
+
+This widget provides a view on how many `Abort` decisions were made in the reporting period. 
+Aborting means stopping an experiment before it is completed. Aborting can happen when a bug is found or 
+when early negative signals indicate a possible degradation in certain key metrics but it could also be a strategic choice to stop early.
+Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
+Like with `Keep current` decisions, `Abort` decisons means that the current experience remains but unlike `Keep current` decisions it does not say anything about the hypothesis being tested or not.
+
+## Decisions history
+
+The `Decisions history` provides a timeline of decisions overtime.  
+Possible decisions types included in the report are `Full on` where a tested change is fully rolled out with or without full supporting evidence; 
+`Keep current` where the tested change is not rolled out, and the existing experience remains; 
+and `Abort` where it was decided to stop the experiment before it could provide reliable evidence.
+
+This report can be used to browse through past decisions to understand the reasoning behind each of them.
+
+### Permissions
+
+Access to the decisions report requires the permission `Experiment reports` > `View decisions`. 
+If you wish to access the report but do not have permissions please reach out to your platform admin so they can grant you access.
+
+### Filter
+
+The `Decision type` filter allows to select the type of decisions to show on the timeline.
+
+### Decision card
+
+Each decision card provides an overview of the past decisions, highlighting the hypothesis, the rational behind the decision and the key metrics supporting the decision. 

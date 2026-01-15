@@ -1,0 +1,63 @@
+---
+sidebar_position: 3
+---
+
+# Visitors Identity
+
+## What is it?
+
+The Visitors Identity is used to uniquely identify and track visitors over time and across your products.
+There are 2 parts to it, the unique identifiers and the attributes.
+
+The Visitors Identify is used by the SDKs to create and enrich the experimentation context from which exposure and goals events can be triggered.
+
+## Visitors Identifiers
+
+The ABsmartly context needs to be initialised with your visitors' identifier(s). 
+Those identifiers are used to uniquely identify visitors in experiments through exposure events and 
+to link them to the goals events they are triggering as they use your products.
+What identifiers exist depends on where the experiment is running and what you know about the visitor at that moment.
+
+Those tracking identifiers (also know as Units) need to be pre-registered on the ABsmartly platform, see [Units](../configuration/units) for more details.
+
+Below is an example on how the ABsmartly context can be initialised with 3 different unit types.
+
+```javascript
+const request = {
+  units: {
+    user_id: "1234",
+    anonymous_id: "c6bf86d8c5d81372b8c4ab641551bde6d8",
+    deviceId: "345",
+  },
+};
+
+const context = sdk.createContext(request);
+```
+
+:::info
+Not all identifiers are equal, some, like `user_id`, allow for tracking visitors across sessions and even platforms. 
+Others like `anonymous_id` are much more transient. This means that the same physical person could potentially have several `anonymous_id` (and as a result see a different variant of your experiment).
+This is the case for example when they use several devices or if they clear their cookies between different sessions.
+While an `anonymous_id` identifier is likey always available, the `user_id` might only be available in parts of the applications where the visitor is logged in.
+:::
+
+
+
+## Visitors Attributes
+
+Visitors Attributes are used to enrich the ABsmartly context with any information you might have about this visitor,
+for example `language`, `country`, `device`, `power_user`, etc.
+Those attributes can then be used for creating targeting audiences (i.e. An experiment targeting only power users) or
+ for segmenting data on your results page (i.e. Explore experiment results per device type).
+
+```javascript
+context.attribute("user_agent", navigator.userAgent);
+
+context.attributes({
+  power_user: user.isPowerUser ? "yes" : "no",
+  user_agent: navigator.userAgent,
+  country: headers["HTTP_CF_IPCOUNTRY"],
+  language: headers["Accept-Language"],
+  channel: query_params.utm_medium,
+});
+```

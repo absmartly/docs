@@ -1,0 +1,42 @@
+---
+id: metric-tags-list
+title: "Metric Tags LIST"
+description: "**Required Permissions**: `Metric List` or `Metric Admin`"
+sidebar_label: "Metric Tags LIST"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVUtz2zYQ/isYHFVGsjvTC09VO502TVJ7KmV6sFR5Sa5IxCCAAEvHjIb/vbMEZVEPp56WF5LA7re73752ssCQe+VIWSNTOZn8iZ8b5bEQt+hrFYKyJkwmqbj/gORVLt6rQPfC+ueDeVErcy8T6cBDjYQ+yPRuJw3UKFMZrCeZSMXonxv0rUxObC4rFDb7hDmJB2wFWcE6gioUHkOjKYisncpEhrzCGmS6k9S6Hpu8MqVMJD5B7TQf9Va7Ljmyv4GQn/pwBpZZqxHMGI18g2MsByX+K44yhCX6Mc71GEQR1uG/oPzQdetEegzOmoCBhb+/uuLXMZ9z8fvi5g9xEynNrSFQRplSgBHgPbTCbgVoLeo+gUEQlIH5ZVE0xIjgnFY5MOLsU2DY3bmPMWmceW8delLRqRjgeShdEgm8FGStjKqbmqlKJFkCfRkgurxhj0cCfVRM6YnllxwsLoMTlN8uLm0jJelvCEXUyT0CYbEBuqS6tb7mG1kA4RtSXJsHnazdNAH95iV/GleMsE2jNWT7skxeaWuPcWzrBaxn20yGoj7m2OVLKGU3PH0WKlvIVJbYswtUyVTOxslJZED/uJ8FjdcylRWRC+lsFsAUmX2aQhZq8KTbaW7r2eO15PoOmDdeUdvrfQzo5069Q/5dj68XXIwxnWOhQ0nEg6HNqpiv08kzF6wr5rdvxTtsxdbGb2iosl597XM9FZPJhyaQyFAo00+lyLRYyblTb1ixtY2P9IJTmwdsV3Iykcm+4+djvH2z88XfA8BqFVarxXc978psbR/HwP/8p4Ek8Rdm4mdrgtXIbspEMr8xkuvp1fTqPD4jbhwajmnhMFfboaUFVUAiymYY+qAOdlicqfhi/QOPjS+Kqj5EgU8OvarRUBDO29JDXQOpHLRu9wME8litQ+hsunEuLgGsQemYnB+Pks+VqlWOJuBI+dZb5xUS+LanxtlANZiRxLCCllAG8f7tYnnKwO4w0/7XahuKivCJZk6DMn1r+X5Ixeq/OxpN60RWNhAf73YZBPzoddfxcRz4XNuFCtyChUy3oAN+w/NXL8iLbj5wX+zX8CPohkUkL6QzDw6iw8Z8jfiwFF8jul99B9k1/3gVZ9Hdukv2rcoMRaV5nqMb+362mxjleST9+stSdt0/GH8Fog==
+sidebar_class_name: "get api-method"
+info_path: docs/APIs-and-SDKs/Web-Console-API/absmartly-web-console-api
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Metric Tags LIST</h1>
+
+<MethodEndpoint method={"get"} path={"/metric_tags"}></MethodEndpoint>
+
+
+
+**Required Permissions**: `Metric List` or `Metric Admin`
+
+## Request
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Query Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"sort","in":"query","description":"The object key to sort the results by.","schema":{"type":"string","example":"name"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"sort_asc","in":"query","schema":{"type":"boolean","example":true}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"page","in":"query","schema":{"type":"integer","example":1}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"items","in":"query","schema":{"type":"integer","example":5}}}></ParamsItem></ul></div></details><div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+
+A JSON Object containing an array of all metrics tags.
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"items"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"page"} required={false} schemaName={"integer"} qualifierMessage={"**Possible values:** `>= 1`"} schema={{"type":"integer","minimum":1}}></SchemaItem><SchemaItem collapsible={false} name={"total"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>metric_tags</strong><span className={"openapi-schema__name"}> object[]</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"id"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"tag"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"location:Header"}}></SchemaItem><SchemaItem collapsible={false} name={"created_at"} required={false} schemaName={"date-time"} qualifierMessage={undefined} schema={{"type":"string","format":"date-time"}}></SchemaItem><SchemaItem collapsible={false} name={"created_by_user_id"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"updated_at"} required={false} schemaName={"date-time"} qualifierMessage={undefined} schema={{"nullable":true,"type":"string","format":"date-time"}}></SchemaItem><SchemaItem collapsible={false} name={"updated_by_user_id"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"nullable":true,"type":"integer"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"items\": 0,\n  \"page\": 0,\n  \"total\": 0,\n  \"metric_tags\": [\n    {\n      \"id\": 0,\n      \"tag\": \"location:Header\",\n      \"created_at\": \"2026-01-14T09:35:17.631Z\",\n      \"created_by_user_id\": 0,\n      \"updated_at\": \"2026-01-14T09:35:17.631Z\",\n      \"updated_by_user_id\": 0\n    }\n  ]\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      
