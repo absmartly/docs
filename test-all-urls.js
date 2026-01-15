@@ -19,8 +19,9 @@
  * 2. Converts them to URL paths
  * 3. Tests that each page loads successfully (200 OK)
  * 4. Tests ALL old→new redirects work correctly
+ * 5. Throttles requests (200ms delay) to avoid rate limiting
  *
- * Last Updated: 2026-01-14 (commits 45eeaf3, 666c96c, 9e122f8, 99e1733)
+ * Last Updated: 2026-01-15 (commits 45eeaf3, 666c96c, 9e122f8, 99e1733, 7961134)
  * Total Redirects: 25 server-side + 9 anchor transforms + anchor preservation tests = 48 total
  */
 
@@ -33,6 +34,13 @@ const args = process.argv.slice(2);
 const onlyFailed = args.includes('--only-failed') || args.includes('--failed-only');
 const BASE_URL = args.find(arg => !arg.startsWith('--')) || 'http://localhost:3000';
 const DOCS_DIR = path.join(__dirname, 'docs');
+
+// Throttling configuration to avoid rate limiting
+const THROTTLE_MS = 200; // 200ms delay between requests (5 requests/second)
+
+async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 // Previously failed pages from last run (HTTP 403)
 const PREVIOUSLY_FAILED_PAGES = [
@@ -335,7 +343,8 @@ async function testAllUrls() {
   let pagesFailed = 0;
   const failedPages = [];
 
-  for (const urlPath of pageUrls) {
+  for (let i = 0; i < pageUrls.length; i++) {
+    const urlPath = pageUrls[i];
     const result = await checkPageLoads(page, urlPath);
 
     if (result.success) {
@@ -345,12 +354,17 @@ async function testAllUrls() {
       pagesFailed++;
       failedPages.push(result);
       process.stdout.write('❌');
+      // Show failed page immediately
+      console.log(` ${urlPath} (${result.error})`);
     }
 
     // New line every 50 tests for readability
     if ((pagesOk + pagesFailed) % 50 === 0) {
       process.stdout.write(` [${pagesOk + pagesFailed}/${pageUrls.length}]\n`);
     }
+
+    // Throttle to avoid rate limiting
+    await sleep(THROTTLE_MS);
   }
 
   console.log(`\n[${pagesOk + pagesFailed}/${pageUrls.length}]\n`);
@@ -382,6 +396,9 @@ async function testAllUrls() {
   const redirectsByType = {};
 
   for (const redirectTest of ALL_REDIRECT_TESTS) {
+    // Show which redirect we're testing
+    console.log(`Testing: ${redirectTest.from} → ${redirectTest.to}`);
+
     const result = await checkRedirect(page, redirectTest.from, redirectTest.to);
     result.type = redirectTest.type;
 
@@ -392,20 +409,22 @@ async function testAllUrls() {
     if (result.match) {
       redirectsOk++;
       redirectsByType[redirectTest.type].passed++;
-      process.stdout.write('✅');
+      console.log('  ✅ PASS\n');
     } else {
       redirectsFailed++;
       redirectsByType[redirectTest.type].failed++;
       failedRedirects.push(result);
-      process.stdout.write('❌');
+      console.log(`  ❌ FAIL - Got: ${result.finalPath || 'error'}`);
+      if (result.error) {
+        console.log(`  Error: ${result.error}`);
+      }
+      console.log('');
     }
 
     redirectsByType[redirectTest.type].tests.push(result);
 
-    // New line every 25 tests
-    if ((redirectsOk + redirectsFailed) % 25 === 0) {
-      process.stdout.write(` [${redirectsOk + redirectsFailed}/${ALL_REDIRECT_TESTS.length}]\n`);
-    }
+    // Throttle to avoid rate limiting
+    await sleep(THROTTLE_MS);
   }
 
   console.log(`\n[${redirectsOk + redirectsFailed}/${ALL_REDIRECT_TESTS.length}]\n`);
