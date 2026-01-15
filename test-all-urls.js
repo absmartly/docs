@@ -374,9 +374,8 @@ async function testAllUrls() {
   console.log(`\n[${pagesOk + pagesFailed}/${pageUrls.length}]\n`);
   console.log(`Pages tested: ${pageUrls.length}`);
   console.log(`✅ Passed: ${pagesOk}`);
-  console.log(`❌ Failed: ${pagesFailed}`);
-
   if (pagesFailed > 0) {
+    console.log(`❌ Failed: ${pagesFailed}`);
     console.log('');
     console.log('❌ Failed pages:');
     failedPages.forEach(p => {
@@ -400,9 +399,6 @@ async function testAllUrls() {
   const redirectsByType = {};
 
   for (const redirectTest of ALL_REDIRECT_TESTS) {
-    // Show which redirect we're testing
-    console.log(`Testing: ${redirectTest.from} → ${redirectTest.to}`);
-
     const result = await checkRedirect(page, redirectTest.from, redirectTest.to);
     result.type = redirectTest.type;
 
@@ -413,16 +409,16 @@ async function testAllUrls() {
     if (result.match) {
       redirectsOk++;
       redirectsByType[redirectTest.type].passed++;
-      console.log('  ✅ PASS\n');
+      console.log(`✅ ${redirectTest.from} → ${redirectTest.to}`);
     } else {
       redirectsFailed++;
       redirectsByType[redirectTest.type].failed++;
       failedRedirects.push(result);
-      console.log(`  ❌ FAIL - Got: ${result.finalPath || 'error'}`);
+      console.log(`❌ ${redirectTest.from} → ${redirectTest.to}`);
+      console.log(`   Expected: ${redirectTest.to}, Got: ${result.finalPath || 'error'}`);
       if (result.error) {
-        console.log(`  Error: ${result.error}`);
+        console.log(`   Error: ${result.error}`);
       }
-      console.log('');
     }
 
     redirectsByType[redirectTest.type].tests.push(result);
@@ -434,9 +430,8 @@ async function testAllUrls() {
   console.log(`\n[${redirectsOk + redirectsFailed}/${ALL_REDIRECT_TESTS.length}]\n`);
   console.log(`Redirects tested: ${ALL_REDIRECT_TESTS.length}`);
   console.log(`✅ Passed: ${redirectsOk}`);
-  console.log(`❌ Failed: ${redirectsFailed}`);
-
   if (redirectsFailed > 0) {
+    console.log(`❌ Failed: ${redirectsFailed}`);
     console.log('');
     console.log('❌ Failed redirects:');
     failedRedirects.forEach(r => {
@@ -455,7 +450,8 @@ async function testAllUrls() {
     if (stats.passed + stats.failed === 0) continue;
     const total = stats.passed + stats.failed;
     const status = stats.failed === 0 ? '✅' : '❌';
-    console.log(`  ${status} ${type}: ${stats.passed}/${total} passed`);
+    const failedText = stats.failed > 0 ? `, ${stats.failed} failed` : '';
+    console.log(`  ${status} ${type}: ${stats.passed}/${total} passed${failedText}`);
   }
 
   await browser.close();
@@ -468,15 +464,21 @@ async function testAllUrls() {
   console.log('');
   console.log(`Total documentation pages: ${pageUrls.length}`);
   console.log(`  ✅ Working: ${pagesOk}`);
-  console.log(`  ❌ Broken: ${pagesFailed}`);
+  if (pagesFailed > 0) {
+    console.log(`  ❌ Broken: ${pagesFailed}`);
+  }
   console.log('');
   console.log(`Total redirects: ${ALL_REDIRECT_TESTS.length}`);
   console.log(`  ✅ Working: ${redirectsOk}`);
-  console.log(`  ❌ Broken: ${redirectsFailed}`);
+  if (redirectsFailed > 0) {
+    console.log(`  ❌ Broken: ${redirectsFailed}`);
+  }
   console.log('');
   console.log(`GRAND TOTAL: ${pageUrls.length + ALL_REDIRECT_TESTS.length} URLs tested`);
   console.log(`  ✅ Passed: ${pagesOk + redirectsOk}`);
-  console.log(`  ❌ Failed: ${pagesFailed + redirectsFailed}`);
+  if (pagesFailed + redirectsFailed > 0) {
+    console.log(`  ❌ Failed: ${pagesFailed + redirectsFailed}`);
+  }
   console.log('');
 
   const totalFailed = pagesFailed + redirectsFailed;
