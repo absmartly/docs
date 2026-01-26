@@ -1,8 +1,6 @@
 name: Algolia
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   update_algolia_job:
@@ -13,7 +11,7 @@ jobs:
 
       - name: Get Algolia config
         id: algolia_config
-        run: echo "::set-output name=config::$(cat algolia_config.json | jq -r tostring)"
+        run: echo "config=$(cat algolia_config.json | jq -r tostring)" >> "$GITHUB_OUTPUT"
 
       - name: Push indices to Algolia
         uses: signcl/docsearch-scraper-action@master
