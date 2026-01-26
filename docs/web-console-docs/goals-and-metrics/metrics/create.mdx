@@ -100,8 +100,19 @@ You can choose one of four methods to manage outliers:
 :::caution
 Outlier limits can reduce variance and make metrics more stable, but they also change the underlying data. 
 When used incorrectly, they may hide meaningful effects or introduce bias in experiment results. 
-Always ensure your limits reflect real-world constraints rather than engineering convenience, and avoid tuning them in response to specific experiment outcomes. 
+Always ensure your limits reflect real-world constraints rather than engineering convenience, and avoid tuning them in response to specific experiment outcomes.
 :::
+
+#### How limits are calculated
+
+When using the **Quantile** or **Standard Deviation** methods, the outlier limits (lower and upper bounds) are calculated across **all participants in the experiment combined**, not separately for each variant.
+
+This means:
+- The same thresholds apply uniformly to all variants (control and treatments)
+- The calculation uses the larger combined sample size, resulting in more stable threshold estimates
+- All variants are treated identically, preventing any bias that could arise from variant-specific capping
+
+This approach ensures fair comparisons between variants while benefiting from the statistical power of the full experiment population.
 
 #### Unlimited
 
