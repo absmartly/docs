@@ -6,6 +6,12 @@
 # =============================================================================
 # SDK Documentation (docs/SDK-Documentation/* → docs/APIs-and-SDKs/SDK-Documentation/*)
 # =============================================================================
+# Explicit base path redirects (splats don't match bare paths without trailing slash)
+/docs/SDK-Documentation/Advanced /docs/APIs-and-SDKs/SDK-Documentation/Advanced/ 302
+/docs/SDK-Documentation /docs/APIs-and-SDKs/SDK-Documentation/ 302
+/docs/sdk-documentation/advanced /docs/APIs-and-SDKs/SDK-Documentation/Advanced/ 302
+/docs/sdk-documentation /docs/APIs-and-SDKs/SDK-Documentation/ 302
+
 # Splat patterns handle all subpaths - both PascalCase and lowercase
 /docs/SDK-Documentation/Advanced/* /docs/APIs-and-SDKs/SDK-Documentation/Advanced/:splat 302
 /docs/SDK-Documentation/* /docs/APIs-and-SDKs/SDK-Documentation/:splat 302
@@ -18,6 +24,8 @@
 # =============================================================================
 # Examples (docs/Examples/* → docs/APIs-and-SDKs/Web-Console-API/Examples/*)
 # =============================================================================
+/docs/Examples /docs/APIs-and-SDKs/Web-Console-API/Examples/ 302
+/docs/examples /docs/APIs-and-SDKs/Web-Console-API/Examples/ 302
 /docs/Examples/* /docs/APIs-and-SDKs/Web-Console-API/Examples/:splat 302
 /docs/examples/* /docs/APIs-and-SDKs/Web-Console-API/Examples/:splat 302
 
@@ -39,6 +47,9 @@
 # =============================================================================
 # API paths → APIs-and-SDKs/SDK-API
 # =============================================================================
+/docs/API /docs/APIs-and-SDKs/SDK-API/ 302
+/docs/sdk-api /docs/APIs-and-SDKs/SDK-API/ 302
+/docs/SDK-API /docs/APIs-and-SDKs/SDK-API/ 302
 /docs/API/* /docs/APIs-and-SDKs/SDK-API/:splat 302
 /docs/sdk-api/* /docs/APIs-and-SDKs/SDK-API/:splat 302
 /docs/SDK-API/* /docs/APIs-and-SDKs/SDK-API/:splat 302
@@ -88,6 +99,10 @@
 /docs/web-console-api/list-users /docs/APIs-and-SDKs/Web-Console-API/users-list/ 302
 /docs/web-console-api/list-webhook-events /docs/APIs-and-SDKs/Web-Console-API/webhook-events-list/ 302
 /docs/web-console-api/list-webhooks /docs/APIs-and-SDKs/Web-Console-API/webhooks-list/ 302
+
+# Base path redirects (splats don't match bare paths)
+/docs/web-console-api /docs/APIs-and-SDKs/Web-Console-API/ 302
+/docs/Web-Console-API /docs/APIs-and-SDKs/Web-Console-API/ 302
 
 # General splat rule (catches all other paths that don't need transformation)
 /docs/web-console-api/* /docs/APIs-and-SDKs/Web-Console-API/:splat 302
