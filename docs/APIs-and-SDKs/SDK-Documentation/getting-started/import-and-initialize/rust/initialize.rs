@@ -1,4 +1,4 @@
-use absmartly_sdk::{Absmartly, SDKConfig};
+use absmartly_sdk::{ABsmartly, SDKConfig};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -9,7 +9,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "development",
     );
 
-    let sdk = Absmartly::new(config)?;
+    let sdk = ABsmartly::new(config)?;
 
     Ok(())
 }

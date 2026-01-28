@@ -108,9 +108,9 @@ directly into the Provider component, like so:
 
 ```jsx
 ReactDOM.render(
-  <Absmartly context={context}>
+  <ABsmartly context={context}>
     <App />
-  </Absmartly>,
+  </ABsmartly>,
   document.getElementById("root")
 );
 ```
@@ -409,10 +409,10 @@ final client = Client.create(
   httpClient: DefaultHTTPClient.create(httpClientConfig),
 );
 
-final sdkConfig = AbsmartlyConfig.create()
+final sdkConfig = ABsmartlyConfig.create()
   ..setClient(client);
 
-final sdk = Absmartly(sdkConfig);
+final sdk = ABsmartly(sdkConfig);
 ```
 
 </TabItem>
@@ -453,10 +453,10 @@ final client = Client.create(
   httpClient: DefaultHTTPClient.create(httpClientConfig),
 );
 
-final sdkConfig = AbsmartlyConfig.create()
+final sdkConfig = ABsmartlyConfig.create()
   ..setClient(client);
 
-final sdk = Absmartly(sdkConfig);
+final sdk = ABsmartly(sdkConfig);
 ```
 
 </TabItem>
@@ -492,7 +492,7 @@ let config = SDKConfig::new(
 .with_retries(3)
 .with_agent("my-app/1.0");
 
-let sdk = Absmartly::new(config)?;
+let sdk = ABsmartly::new(config)?;
 ```
 
 </TabItem>
