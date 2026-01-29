@@ -109,13 +109,14 @@ CUPED is less effective for:
 When creating a new metric or a new version of an existing metrics you can enabled CUPED. 
 When CUPED is enabled for your metrics in ABsmartly:
 
-- Pre-experiment data is automatically collected during the defined pre-period
+- Pre-experiment data already collectd is automatically used 
 - The platform calculates optimal θ coefficients for each metric
 - Adjusted metrics are computed alongside raw metrics
 - Statistical significance calculations use the variance-reduced estimates
-
-CUPED runs automatically in the background without requiring changes to your experiment setup or tracking implementation.
+- CUPED runs automatically in the background without requiring changes to your experiment setup or tracking implementation.
+- When corrolation is < 0.1 then ABsmartly does not use the CUPED data
 
 ## Further Reading
 
 - Original CUPED paper: [Deng et al., 2013 - "Improving the Sensitivity of Online Controlled Experiments by Utilizing Pre-Experiment Data"](https://exp-platform.com/Documents/2013-02-CUPED-ImprovingSensitivityOfControlledExperiments.pdf)
+- CUPED at booking.com: [Simon Jackson, 2018, "How Booking.com increases the power of online experiments with CUPED"](https://booking.ai/how-booking-com-increases-the-power-of-online-experiments-with-cuped-995d186fff1d)
