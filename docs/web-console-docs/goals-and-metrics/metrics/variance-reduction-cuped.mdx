@@ -1,0 +1,123 @@
+---
+sidebar_position: 5
+---
+
+# Variance Reduction with CUPED
+
+## What is CUPED?
+
+CUPED (Controlled-experiment Using Pre-Experiment Data) is a variance reduction technique that makes metrics more sensitive by leveraging pre-experiment 
+data about users. It allows you to detect smaller effects with the same sample size, or reach statistical significance faster with fewer users.
+
+In A/B testing, users exhibit natural variability in their behavior before any treatment is applied. 
+Some users inherently spend more, engage more, or convert more than others. 
+This pre-existing variability creates statistical "noise" that makes it harder to detect the true effect of your changes. 
+CUPED reduces this noise by adjusting for users' baseline behavior, effectively isolating the treatment effect.
+
+## How CUPED Works
+
+CUPED uses a covariate—typically the same metric measured during a pre-experiment period—to adjust each user's post-experiment metric value. The adjustment accounts for how each user performed relative to the average before the experiment started.
+
+The core adjustment formula is:
+```
+Adjusted Metric = Raw Metric - θ × (Pre-experiment Metric - Average Pre-experiment Metric)
+```
+
+Where:
+- **Raw Metric**: The user's observed value during the experiment
+- **Pre-experiment Metric**: The same metric measured before the experiment
+- **θ (theta)**: An optimal coefficient chosen to maximize variance reduction (typically the correlation between pre and post metrics)
+
+The adjusted values maintain the same average (mean) as the raw values but have reduced variance, making treatment effects easier to detect.
+
+## When CUPED is Most Effective
+
+CUPED provides the greatest benefit when:
+
+1. **High correlation between pre and post metrics** (correlation ≥ 0.3)
+   - Revenue metrics typically show correlation of 0.5-0.7
+   - Engagement metrics often show correlation of 0.4-0.6
+   - Conversion metrics may show lower but still useful correlation
+
+2. **Sufficient pre-experiment data is available**
+   - Minimum: 7-14 days of historical data
+   - Recommended: 2-4 weeks for stable baseline estimates
+   - The pre-period should reflect normal user behavior
+   - In ABsmartly you can choose between, 1, 2, 3 or 4 weeks with 2 weeks being the default
+
+3. **Metrics with high natural variance**
+   - Revenue per user (some users spend much more than others)
+   - Session counts (power users vs. casual users)
+   - Time-based engagement metrics
+
+## Practical Examples
+
+### Example 1: Revenue Optimization
+
+You are testing a new checkout flow where the primary metric is `revenue per user`.
+
+**Without CUPED:**
+- User A: Spent $100/month historically → Spends $110 during test
+- User B: Spent $20/month historically → Spends $25 during test
+- Both show increases, but is it the treatment or natural variance?
+
+**With CUPED:**
+The algorithm adjusts for their baseline spending patterns. 
+If both users increased proportionally beyond their historical baseline, CUPED isolates this treatment effect from their pre-existing spending behavior, 
+giving you higher confidence the change drove the increase.
+
+**Result:** You might detect the effect 30-40% faster or with 30-40% fewer users.
+
+### Example 2: Engagement Metrics
+
+Testing a new feed algorithm where your metric is `sessions per week`.
+
+**Without CUPED:**
+- High natural variance between power users (10+ sessions/week) and casual users (2 sessions/week)
+- Treatment effects are masked by this user heterogeneity
+- Requires 100,000 users to reach significance
+
+**With CUPED:**
+- Algorithm adjusts for each user's historical session frequency
+- Can detect the same effect with ~65,000 users
+- Or detect a smaller 2% improvement that would have been undetectable before
+
+### Metric Compatibility
+
+CUPED works best with:
+- **Continuous metrics**: Revenue, time spent, count metrics
+
+CUPED is less effective for:
+- Metrics without meaningful pre-experiment analogs
+- Completely novel user behaviors introduced by the treatment
+- Metrics where pre/post correlation is very low
+
+### Statistical Validity
+
+- **Bias-free**: CUPED does not bias your estimates—it only reduces variance
+- **Conservative**: If pre-experiment data doesn't correlate, CUPED simply doesn't apply adjustment
+
+## Benefits of using CUPED
+
+1. **Faster decisions**: Reduce time to statistical significance by 30-50% on average
+2. **Cost efficiency**: Achieve the same statistical power with fewer users
+3. **Detect smaller effects**: Find wins that would otherwise remain hidden in the noise
+4. **No downside**: CUPED is conservative, when it doesn't help, it doesn't hurt
+
+## CUPED and ABsmartly
+
+When creating a new metric or a new version of an existing metrics you can enabled CUPED. 
+When CUPED is enabled for your metrics in ABsmartly:
+
+- Pre-experiment data is automatically collected during the defined pre-period
+- The platform calculates optimal θ coefficients for each metric
+- Adjusted metrics are computed alongside raw metrics
+- Statistical significance calculations use the variance-reduced estimates
+
+CUPED runs automatically in the background without requiring changes to your experiment setup or tracking implementation.
+
+## Further Reading
+
+- Original CUPED paper: [Deng et al., 2013 - "Improving the Sensitivity of Online Controlled Experiments by Utilizing Pre-Experiment Data"](https://exp-platform.com/Documents/2013-02-CUPED-ImprovingSensitivityOfControlledExperiments.pdf)
+- [Understanding Statistical Power in A/B Testing](/docs/web-console-docs/experiments/statistical-power)
+- [Choosing the Right Metrics](/docs/web-console-docs/goals-and-metrics/metrics/categories)

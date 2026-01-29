@@ -114,6 +114,10 @@ This method filters values based on chosen quantiles.
 You define a lower quantile and an upper quantile (for example, 0.05 and 0.95). 
 Values below the lower quantile or above the upper quantile are capped to the limit.
 
+:::info
+Ouliers capping is done using the full experiment population so all variants have the same capping limits.
+:::
+
 How it behaves with the sample purchase event:
 ```
 If you set:
@@ -141,6 +145,10 @@ The limits are calculated as:
 ```
 
 Any value outside these limits is capped to the value of the boundary.
+
+:::info
+Ouliers capping is done using the full experiment population so all variants have the same capping limits.
+:::
 
 Example with the sample purchase event:
 Suppose across all purchases:
@@ -328,6 +336,12 @@ There are five options:
 | Maximum          | The maximum value of all foreign goal achievements will be used to update the value of the current goal. |
 
 Replacement relations allow the metric to reflect up-to-date values when items are swapped or reissued.
+
+
+## Variance reduction
+
+If applicable you can enable [CUPED](variance-reduction-cuped) for this metric to help reduce variance. 
+Enable [CUPED](variance-reduction-cuped) for this metric by checking the checkbox and choose a lookback period which matches the user behaviour.
 
 ## Format, scale and precisions
 
