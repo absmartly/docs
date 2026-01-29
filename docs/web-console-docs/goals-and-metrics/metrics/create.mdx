@@ -90,6 +90,11 @@ That timestamp is the reference point for all time-based filters.
 A time filter lets you include only the goal events that happen within a defined window after that first exposure. 
 This ensures your metric measures behavior in a controlled, meaningful period (for example, `purchases within the first hour` or `engagement in the first 7 days`).
 
+:::caution
+If your metric uses [CUPED](variance-reduction-cuped), the lookback window must incorporate the time filter.
+For example if your metric measure `conversions achieved 2 weeks after exposure` then the CUPED lookback window must be at least 2 weeks.
+:::
+
 ### Outliers
 
 Outlier limits help control the influence of extreme metric values. 
