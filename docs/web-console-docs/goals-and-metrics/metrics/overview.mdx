@@ -150,7 +150,7 @@ Examples:
 
 Metrics are **version-controlled** to ensure that your experiment results remain stable, interpretable, and historically accurate. 
 When a metric definition changes, its meaning changes and that can impact how past and ongoing experiments would be understood. 
-To prevent this, changes to certain fields require a new version of the metric to be created.
+To prevent this, changes to certain fields of an `active` metric require a new version of the metric to be created.
 
 Versioning ensures that:
 
@@ -203,6 +203,19 @@ Locked fields include:
 - All fields in the `Metric threshold alert` section.
 
 Locking these fields ensures that metrics remain stable and reproducible over time, and that historical experiment results never change unexpectedly.
+
+## Metric lifecycle
+
+When a new metric, or a new version of a metric, is created, it is automatically created as a `draft`. 
+`Draft` metrics cannot be added to experiments and first need to be made active to be discoverable by experimeters.
+
+While `draft` metrics can be edited at will, editing an `Active` metric is limited and will often require a new version of the metric to be created.
+
+A metric can be made active by clicking on the `Make Active` button on the metric's dashboard.
+
+:::info
+Metric builder can easily find all their draft metrics by selecting `draft` in the `Status` filter of the Metrics Catalog.
+:::
 
 ## Ownership & permissions
 
