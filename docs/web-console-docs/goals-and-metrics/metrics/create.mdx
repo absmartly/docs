@@ -92,7 +92,7 @@ This ensures your metric measures behavior in a controlled, meaningful period (f
 
 :::caution
 If your metric uses [CUPED](variance-reduction-cuped), the lookback window must incorporate the time filter.
-For example if your metric measure `conversions achieved 2 weeks after exposure` then the CUPED lookback window must be at least 2 weeks.
+For example, if your metric measure `conversions achieved 2 weeks after exposure` then the CUPED lookback window must be at least 2 weeks.
 :::
 
 ### Outliers
@@ -120,7 +120,7 @@ You define a lower quantile and an upper quantile (for example, 0.05 and 0.95).
 Values below the lower quantile or above the upper quantile are capped to the limit.
 
 :::info
-Ouliers capping is done using the full experiment population so all variants have the same capping limits.
+Ouliers capping is done using the full experiment population, so all variants have the same capping limits.
 :::
 
 How it behaves with the sample purchase event:
@@ -345,7 +345,7 @@ Replacement relations allow the metric to reflect up-to-date values when items a
 
 ## Variance reduction
 
-If applicable you can enable [CUPED](variance-reduction-cuped) for this metric to help reduce variance. 
+If applicable, you can enable [CUPED](variance-reduction-cuped) for this metric to help reduce variance. 
 Enable [CUPED](variance-reduction-cuped) for this metric by checking the checkbox and choose a lookback period which matches the user behaviour.
 
 ## Format, scale and precisions

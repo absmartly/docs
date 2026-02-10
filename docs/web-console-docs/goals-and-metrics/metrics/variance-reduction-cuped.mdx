@@ -26,7 +26,7 @@ Adjusted Metric = Raw Metric - θ × (Pre-experiment Metric - Average Pre-experi
 Where:
 - **Raw Metric**: The user's observed value during the experiment
 - **Pre-experiment Metric**: The same metric measured before the experiment
-- **θ (theta)**: An optimal coefficient chosen to maximize variance reduction (typically the correlation between pre and post metrics)
+- **θ (theta)**: An optimal coefficient estimated from pre-/post-experiment data (often Cov(pre, post) / Var(pre))
 
 The adjusted values maintain the same average (mean) as the raw values but have reduced variance, making treatment effects easier to detect.
 
@@ -43,7 +43,7 @@ CUPED provides the greatest benefit when:
    - Minimum: 7-14 days of historical data
    - Recommended: 2-4 weeks for stable baseline estimates
    - The pre-period should reflect normal user behavior
-   - In ABsmartly you can choose between, 1, 2, 3 or 4 weeks with 2 weeks being the default
+   - In ABsmartly, you can choose between, 1, 2, 3 or 4 weeks with 2 weeks being the default
 
 3. **Metrics with high natural variance**
    - Revenue per user (some users spend much more than others)
@@ -90,7 +90,7 @@ CUPED works best with:
 CUPED is less effective for:
 - Metrics without meaningful pre-experiment analogs
 - Completely novel user behaviors introduced by the treatment
-- Metrics where pre/post correlation is very low
+- Metrics where pre- and post-experiment correlation is very low
 
 ### Statistical Validity
 
@@ -102,19 +102,19 @@ CUPED is less effective for:
 1. **Faster decisions**: Reduce time to statistical significance by 30-50% on average
 2. **Cost efficiency**: Achieve the same statistical power with fewer users
 3. **Detect smaller effects**: Find wins that would otherwise remain hidden in the noise
-4. **No downside**: CUPED is conservative, when it doesn't help, it doesn't hurt
+4. **Typically no downside**: CUPED is conservative; when correlation is weak, it usually offers little benefit but remains unbiased
 
 ## CUPED and ABsmartly
 
-When creating a new metric or a new version of an existing metrics you can enabled CUPED. 
+When creating a new metric or a new version of an existing metrics, you can enabled CUPED. 
 When CUPED is enabled for your metrics in ABsmartly:
 
-- Pre-experiment data already collectd is automatically used 
+- Pre-experiment data already collected is automatically used 
 - The platform calculates optimal θ coefficients for each metric
 - Adjusted metrics are computed alongside raw metrics
 - Statistical significance calculations use the variance-reduced estimates
-- CUPED runs automatically in the background without requiring changes to your experiment setup or tracking implementation.
-- When correlation is < 0.1 or when the variance is bigger then ABsmartly uses the raw data
+- CUPED runs automatically in the background without requiring changes to your experiment setup or tracking implementation
+- When correlation is < 0.1, or when variance is greater than the threshold, ABsmartly uses the raw data
 
 ## Further Reading
 
