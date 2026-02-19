@@ -70,18 +70,19 @@ Example using the example above
 
 ### Understanding the GST data
 
-In case of GST experiment, the metric table, for the primary metric, shown on the experiment overview has a GST toggle which 
-allows to toggle between the GST data (the one used for decision-making), and the none GST data which can be used for debugging purpose. 
+In case of GST a experiment, the metric table for the primary metric, shown on the experiment overview has a GST toggle which 
+allows you to toggle between the GST data (the one used for decision-making), and the non-GST data which can be used for debugging purposes.
 
-The metrics table, for GST experiments, provides the following key data points for each variant **at the last interim analysis**:
+The primary metric table, for GST experiments, provides the following key data points for each variant **at the last interim analysis**:
 
-- **Mean**: The GST adjusted average performance of the metric for the variant.
+- **Mean**: The GST-adjusted average performance of the metric for the variant.
 - **Observed Mean**: The actual observed average performance of the metric during the experiment.
 - **Impact**: The percentage change in the metric compared to the baseline. This is a GST adjusted value. In this example +1.74% with a confidence interval going from -1.88% to +5.49%.
 - **Z-Score**: A statistical measure that represents how many standard deviations the result is from the null hypothesis (no effect). Positive Z-scores indicate an improvement, while negative Z-scores suggest a decline.
 - **P-Value**: The probability that the observed result occurred by chance if the null hypothesis is true. Lower P-values (e.g., below 0.05) indicate statistical significance.
 
-These data points provide a summary of the ongoing analysis for the selected variant at the last analysis, helping to evaluate its performance relative to the baseline.
+These data points provide a summary of the ongoing analysis for the selected variant at the last interim analysis, 
+helping to evaluate its performance relative to the baseline.
 
 ---
 
