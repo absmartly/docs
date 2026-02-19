@@ -68,9 +68,12 @@ Example using the example above
 
 <Image img="experiment-results/gst-efficacy-boundary-crossed.png" alt="Experiment crossing the efficacy boundary in ABsmartly" maxWidth="45rem" />
 
-### Understanding the Metrics Table
+### Understanding the GST data
 
-The metrics table provides the following key data points for each variant at the last interim analysis:
+In case of GST experiment, the metric table, for the primary metric, shown on the experiment overview has a GST toggle which 
+allows to toggle between the GST data (the one used for decision-making), and the none GST data which can be used for debugging purpose. 
+
+The metrics table, for GST experiments, provides the following key data points for each variant **at the last interim analysis**:
 
 - **Mean**: The GST adjusted average performance of the metric for the variant.
 - **Observed Mean**: The actual observed average performance of the metric during the experiment.
@@ -84,14 +87,14 @@ These data points provide a summary of the ongoing analysis for the selected var
 
 ### Understanding the Group Sequential Graph
 
-<Image img="experiment-results/gst-efficacy-boundary-crossed.png" alt="Experiment crossing the efficacy boundary in ABsmartly" maxWidth="45rem" />
+<Image img="experiment-results/gst-futility-boundary-crossed.png" alt="Experiment crossing the futility boundary in ABsmartly" maxWidth="45rem" />
 
 Group Sequential Testing, makes it easy to visually interpret results. The graph displays the evolution of statistical evidence over time, allowing decisions to be made at predefined checkpoints during the experiment. It includes the following elements:
 
 - **X-Axis (Time)**: Represents the progress of the experiment in time, with dates marking each past and future interim analyses.
 - **Y-Axis (Standard Deviations, Z-Scale)**: Represents the Z-Score, showing how far the observed result is from the null hypothesis.
 - **Z-Score Trajectory (Orange line)**: The path of the observed Z-Score over time. It starts at 0 and moves based on accumulating data.
-- **Efficiency Boundary (Green Region)**: The upper boundary. If the Z-Score trajectory crosses this boundary, the variant shows a statistically significant improvement, and the experiment can be stopped early for success.
+- **Efficacy Boundary (Green Region)**: The upper boundary. If the Z-Score trajectory crosses this boundary, the variant shows a statistically significant improvement, and the experiment can be stopped early for success.
 - **Futility Boundary (Gray Region)**: The lower boundary. If the Z-Score trajectory crosses this boundary, the variant is deemed unlikely to show meaningful improvement, and the experiment can be stopped early for futility. 
 - **Fixed Horizon (Vertical Dotted Line)**: Represents the moment in time where the equivalent Fixed Horizon test would have been completed. All interim analyses before that dotted line are opportunities to make an early decision.
 
