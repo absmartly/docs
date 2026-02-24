@@ -74,6 +74,59 @@ import FlutterExtraUnits from "!!raw-loader!./flutter/extraUnits.dart"
 import FlutterRefresh from "!!raw-loader!./flutter/refreshWithFreshData.dart"
 import FlutterRefreshManual from "!!raw-loader!./flutter/refreshWithRefresh.dart"
 
+import AngularSync from "!!raw-loader!./angular/sync.ts";
+import AngularAsync from "!!raw-loader!./angular/async.ts";
+import AngularExtraUnits from "!!raw-loader!./angular/extraUnits.ts";
+import AngularRefreshData from "!!raw-loader!./angular/refreshWithFreshData.ts";
+import AngularRefreshMethod from "!!raw-loader!./angular/refreshWithRefreshMethod.ts";
+
+import AndroidSync from "!!raw-loader!./android/sync.kt";
+import AndroidAsync from "!!raw-loader!./android/async.kt";
+import AndroidExtraUnits from "!!raw-loader!./android/extraUnits.kt";
+import AndroidRefreshData from "!!raw-loader!./android/refreshWithFreshData.kt";
+import AndroidRefreshMethod from "!!raw-loader!./android/refreshWithRefreshMethod.kt";
+
+import KotlinSync from "!!raw-loader!./kotlin/sync.kt";
+import KotlinAsync from "!!raw-loader!./kotlin/async.kt";
+import KotlinExtraUnits from "!!raw-loader!./kotlin/extraUnits.kt";
+import KotlinRefreshData from "!!raw-loader!./kotlin/refreshWithFreshData.kt";
+import KotlinRefreshMethod from "!!raw-loader!./kotlin/refreshWithRefreshMethod.kt";
+
+import CppSync from "!!raw-loader!./cpp/sync.cpp";
+import CppAsync from "!!raw-loader!./cpp/async.cpp";
+import CppExtraUnits from "!!raw-loader!./cpp/extraUnits.cpp";
+import CppRefreshData from "!!raw-loader!./cpp/refreshWithFreshData.cpp";
+import CppRefreshMethod from "!!raw-loader!./cpp/refreshWithRefreshMethod.cpp";
+
+import ScalaSync from "!!raw-loader!./scala/sync.scala";
+import ScalaAsync from "!!raw-loader!./scala/async.scala";
+import ScalaExtraUnits from "!!raw-loader!./scala/extraUnits.scala";
+import ScalaRefreshData from "!!raw-loader!./scala/refreshWithFreshData.scala";
+import ScalaRefreshMethod from "!!raw-loader!./scala/refreshWithRefreshMethod.scala";
+
+import ElixirSync from "!!raw-loader!./elixir/sync.ex";
+import ElixirAsync from "!!raw-loader!./elixir/async.ex";
+import ElixirExtraUnits from "!!raw-loader!./elixir/extraUnits.ex";
+import ElixirRefreshData from "!!raw-loader!./elixir/refreshWithFreshData.ex";
+import ElixirRefreshMethod from "!!raw-loader!./elixir/refreshWithRefreshMethod.ex";
+
+import DartSync from "!!raw-loader!./dart/sync.dart";
+import DartAsync from "!!raw-loader!./dart/async.dart";
+import DartExtraUnits from "!!raw-loader!./dart/extraUnits.dart";
+import DartRefreshData from "!!raw-loader!./dart/refreshWithFreshData.dart";
+import DartRefreshMethod from "!!raw-loader!./dart/refreshWithRefreshMethod.dart";
+
+import RustSync from "!!raw-loader!./rust/sync.rs";
+import RustAsync from "!!raw-loader!./rust/async.rs";
+import RustExtraUnits from "!!raw-loader!./rust/extraUnits.rs";
+import RustRefreshData from "!!raw-loader!./rust/refreshWithFreshData.rs";
+import RustRefreshMethod from "!!raw-loader!./rust/refreshWithRefreshMethod.rs";
+
+import LiquidSync from "!!raw-loader!./liquid/sync.rb";
+import LiquidPrefetched from "!!raw-loader!./liquid/prefetchedData.rb";
+import LiquidExtraUnits from "!!raw-loader!./liquid/extraUnits.rb";
+import LiquidRefresh from "!!raw-loader!./liquid/refresh.rb";
+
 In order to start linking your experiments from the Web Console to your
 application, you will need to create a context. When you instantiate a context,
 you should pass all known characteristics of the current user. These
@@ -621,6 +674,222 @@ create a new context instead. The `setUnit()` and
 `setUnits()` methods can be called before the context is ready.
 
 <CodeBlock language="dart">{FlutterExtraUnits}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+
+#### Synchronously
+
+<CodeBlock language="typescript">{AngularSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="typescript">{AngularAsync}</CodeBlock>
+
+#### Setting Extra Units
+
+<CodeBlock language="typescript">{AngularExtraUnits}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+<CodeBlock language="typescript">{AngularRefreshData}</CodeBlock>
+
+#### Refreshing the Context with the refresh method
+
+<CodeBlock language="typescript">{AngularRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="android" label="Android">
+
+#### Synchronously
+
+<CodeBlock language="kotlin">{AndroidSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="kotlin">{AndroidAsync}</CodeBlock>
+
+#### Setting Extra Units
+
+<CodeBlock language="kotlin">{AndroidExtraUnits}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+<CodeBlock language="kotlin">{AndroidRefreshData}</CodeBlock>
+
+#### Refreshing the Context with the refresh method
+
+<CodeBlock language="kotlin">{AndroidRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+#### Synchronously
+
+<CodeBlock language="kotlin">{KotlinSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="kotlin">{KotlinAsync}</CodeBlock>
+
+#### Setting Extra Units
+
+<CodeBlock language="kotlin">{KotlinExtraUnits}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+<CodeBlock language="kotlin">{KotlinRefreshData}</CodeBlock>
+
+#### Refreshing the Context with the refresh method
+
+<CodeBlock language="kotlin">{KotlinRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+
+#### Synchronously
+
+<CodeBlock language="cpp">{CppSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="cpp">{CppAsync}</CodeBlock>
+
+#### Setting Extra Units
+
+<CodeBlock language="cpp">{CppExtraUnits}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+<CodeBlock language="cpp">{CppRefreshData}</CodeBlock>
+
+#### Refreshing the Context with the refresh method
+
+<CodeBlock language="cpp">{CppRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+
+#### Synchronously
+
+<CodeBlock language="scala">{ScalaSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="scala">{ScalaAsync}</CodeBlock>
+
+#### Setting Extra Units
+
+<CodeBlock language="scala">{ScalaExtraUnits}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+<CodeBlock language="scala">{ScalaRefreshData}</CodeBlock>
+
+#### Refreshing the Context with the refresh method
+
+<CodeBlock language="scala">{ScalaRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+
+#### Synchronously
+
+<CodeBlock language="elixir">{ElixirSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="elixir">{ElixirAsync}</CodeBlock>
+
+#### Setting Extra Units
+
+<CodeBlock language="elixir">{ElixirExtraUnits}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+<CodeBlock language="elixir">{ElixirRefreshData}</CodeBlock>
+
+#### Refreshing the Context with the refresh method
+
+<CodeBlock language="elixir">{ElixirRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dart" label="Dart">
+
+#### Synchronously
+
+<CodeBlock language="dart">{DartSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="dart">{DartAsync}</CodeBlock>
+
+#### Setting Extra Units
+
+<CodeBlock language="dart">{DartExtraUnits}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+<CodeBlock language="dart">{DartRefreshData}</CodeBlock>
+
+#### Refreshing the Context with the refresh method
+
+<CodeBlock language="dart">{DartRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+
+#### Synchronously
+
+<CodeBlock language="rust">{RustSync}</CodeBlock>
+
+#### Asynchronously
+
+<CodeBlock language="rust">{RustAsync}</CodeBlock>
+
+#### Setting Extra Units
+
+<CodeBlock language="rust">{RustExtraUnits}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+<CodeBlock language="rust">{RustRefreshData}</CodeBlock>
+
+#### Refreshing the Context with the refresh method
+
+<CodeBlock language="rust">{RustRefreshMethod}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+#### Synchronously
+
+<CodeBlock language="ruby">{LiquidSync}</CodeBlock>
+
+#### With Prefetched Data
+
+<CodeBlock language="ruby">{LiquidPrefetched}</CodeBlock>
+
+#### Setting Extra Units
+
+<CodeBlock language="ruby">{LiquidExtraUnits}</CodeBlock>
+
+#### Refreshing the Context with Fresh Experiment Data
+
+<CodeBlock language="ruby">{LiquidRefresh}</CodeBlock>
+
+#### Refreshing the Context with the refresh method
+
+<CodeBlock language="ruby">{LiquidRefresh}</CodeBlock>
 
 </TabItem>
 

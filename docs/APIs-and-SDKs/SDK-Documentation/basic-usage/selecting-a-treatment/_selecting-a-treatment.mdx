@@ -28,6 +28,17 @@ import RubySelectingATreatment from "!!raw-loader!./ruby/selectingATreatment.rb"
 
 import FlutterSelectingATreatment from "!!raw-loader!./flutter/selectingATreatment.dart";
 
+import AngularTreatment from "!!raw-loader!./angular/selectingATreatment.ts";
+import AndroidTreatment from "!!raw-loader!./android/selectingATreatment.kt";
+import KotlinTreatment from "!!raw-loader!./kotlin/selectingATreatment.kt";
+import CppTreatment from "!!raw-loader!./cpp/selectingATreatment.cpp";
+import ScalaTreatment from "!!raw-loader!./scala/selectingATreatment.scala";
+import ElixirTreatment from "!!raw-loader!./elixir/selectingATreatment.ex";
+import DartTreatment from "!!raw-loader!./dart/selectingATreatment.dart";
+import RustTreatment from "!!raw-loader!./rust/selectingATreatment.rs";
+import LiquidTreatment from "!!raw-loader!./liquid/selectingATreatment.liquid";
+import Vue3Treatment from "!!raw-loader!./vue3/selectingATreatment.js";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -83,13 +94,13 @@ use the `TreatmentFunction` component and the ternary operator, like so:
 
 </TabItem>
 
-<Tabitem value="swift" label="Swift">
+<TabItem value="swift" label="Swift">
 
 <!-- TODO: Add blocking of code before context is ready. -->
 
 <CodeBlock language="swift">{SwiftSelectingATreatment}</CodeBlock>
 
-</Tabitem>
+</TabItem>
 
 <TabItem value="vue" label="Vue2">
 
@@ -213,21 +224,21 @@ will be rendered with the following properties:
 
 </TabItem>
 
-<Tabitem value="java" label="Java">
+<TabItem value="java" label="Java">
 
 <!-- TODO: Add blocking of code before context is ready. -->
 
 <CodeBlock language="java">{JavaSelectingATreatment}</CodeBlock>
 
-</Tabitem>
+</TabItem>
 
-<Tabitem value="go" label="Go">
+<TabItem value="go" label="Go">
 
 <!-- TODO: Add blocking of code before context is ready. -->
 
 <CodeBlock language="go">{GoSelectingATreatment}</CodeBlock>
 
-</Tabitem>
+</TabItem>
 
 <TabItem value="dotnet" label=".NET">
 
@@ -251,6 +262,42 @@ will be rendered with the following properties:
 
 <CodeBlock language="dart">{FlutterSelectingATreatment}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="android" label="Android">
+<CodeBlock language="kotlin">{AndroidTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="dart" label="Dart">
+<CodeBlock language="dart">{DartTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="liquid">{LiquidTreatment}</CodeBlock>
 </TabItem>
 
 </Tabs>

@@ -26,6 +26,17 @@ import RubySetAttributes from "!!raw-loader!./ruby/setAttributes.rb";
 
 import FlutterSetAttributes from "!!raw-loader!./flutter/setAttributes.dart";
 
+import AngularAttributes from "!!raw-loader!./angular/setAttributes.ts";
+import AndroidAttributes from "!!raw-loader!./android/setAttributes.kt";
+import KotlinAttributes from "!!raw-loader!./kotlin/setAttributes.kt";
+import CppAttributes from "!!raw-loader!./cpp/setAttributes.cpp";
+import ScalaAttributes from "!!raw-loader!./scala/setAttributes.scala";
+import ElixirAttributes from "!!raw-loader!./elixir/setAttributes.ex";
+import DartAttributes from "!!raw-loader!./dart/setAttributes.dart";
+import RustAttributes from "!!raw-loader!./rust/setAttributes.rs";
+import LiquidAttributes from "!!raw-loader!./liquid/setAttributes.rb";
+import Vue3Attributes from "!!raw-loader!./vue3/setAttributes.js";
+
 Attributes are used to pass meta-data about the user and/or the request. They
 can be used later in the Web Console to create segments or audiences. They can
 be set using the `attribute()` or `attributes()` methods, before or after the
@@ -87,16 +98,7 @@ component.
 </TabItem>
 
 <TabItem value="vue3" label="Vue3">
-
-Attributes can be set in script.
-
-<CodeBlock language="js">{VueSetAttributesScript}</CodeBlock>
-
-Or directly in templates with the `:attributes` property of the `Treatment`
-component.
-
-<CodeBlock language="html">{VueSetAttributesTemplate}</CodeBlock>
-
+<CodeBlock language="javascript">{Vue3Attributes}</CodeBlock>
 </TabItem>
 
 <TabItem value="java" label="Java">
@@ -133,6 +135,42 @@ component.
 
 <CodeBlock language="dart">{FlutterSetAttributes}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="android" label="Android">
+<CodeBlock language="kotlin">{AndroidAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="dart" label="Dart">
+<CodeBlock language="dart">{DartAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="ruby">{LiquidAttributes}</CodeBlock>
 </TabItem>
 
 </Tabs>

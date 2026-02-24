@@ -1,0 +1,1 @@
+gem 'absmartly-liquid-sdk'
