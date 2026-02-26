@@ -1,0 +1,55 @@
+# February 2026
+
+## Overview
+
+This release delivers on our metrics governance roadmap with the introduction of the **metrics approval workflow**, 
+giving teams greater control over which metrics make it into production experiments. 
+We've also continued to refine the metrics catalog experience and made it faster to set up new experiments with experiment duplication.
+
+---
+
+## Metrics
+
+### Metrics Approval Workflow
+
+Building on the draft and active status introduced last month, metrics now support a formal **approval workflow** before being made active and usable in experiments.
+
+- Metric owners can **submit a metric for review** directly from the metric detail page
+- Designated **approvers** are notified and can review, approve, or reject the submission with optional comments
+- Only approved metrics can be made active and added to experiments
+- The full approval history is visible on the metric, providing a clear audit trail
+
+This gives teams the governance controls needed to maintain a high-quality, trustworthy metric catalog, particularly in larger organizations where multiple teams are contributing metrics.
+
+Before you get started, make sure to read our [documentation](/docs/web-console-docs/goals-and-metrics/metrics/review-and-approve)** .
+
+
+### Metrics Catalog Enhancements
+
+We've made several improvements to the metrics catalog to make it easier to navigate and manage at scale:
+
+- Metrics can now be **filtered by status** (draft, pending approval, active, inactive) giving metric owners a clearer view of what needs attention
+- Metric cards now surface the **owner** and **last modified date** directly in the list view, reducing the need to open individual metrics
+- **Bulk actions** are now available, allowing admins to activate or deactivate multiple metrics at once
+
+---
+
+## Experiments
+
+### Experiment Duplication
+
+You can now **duplicate an existing experiment** with a single action. The duplicate carries over the experiment's configuration, including goals, metrics, targeting rules, and traffic allocation, so you can quickly spin up follow-up or related experiments without starting from scratch.
+
+The duplicated experiment is created in **draft**, giving you the opportunity to review and adjust any settings before it goes live.
+
+---
+
+## Bug Fixes
+
+This release also includes a number of stability and reliability improvements based on feedback from users.
+
+---
+
+## Questions or Feedback?
+
+We're always happy to help, so reach out if you have any questions or want to explore how to make the most of these new capabilities.
