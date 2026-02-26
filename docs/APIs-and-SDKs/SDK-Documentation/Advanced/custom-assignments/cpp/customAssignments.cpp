@@ -4,4 +4,4 @@ std::map<std::string, int> assignments = {
     {"a_third_experiment_name", 2}
 };
 
-context.set_custom_assignments(assignments);
+context->set_custom_assignments(assignments);

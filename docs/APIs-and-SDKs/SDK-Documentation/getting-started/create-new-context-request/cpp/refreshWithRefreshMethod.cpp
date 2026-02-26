@@ -1,4 +1,3 @@
-absmartly::ContextData fresh_data = nlohmann::json::parse(fresh_json_response)
-    .get<absmartly::ContextData>();
+absmartly::ContextData fresh_data = sdk->get_context_data().get();
 
-context.refresh(fresh_data);
+context->refresh(fresh_data);

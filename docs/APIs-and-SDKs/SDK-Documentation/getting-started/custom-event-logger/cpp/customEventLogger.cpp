@@ -22,4 +22,9 @@ public:
 };
 
 auto handler = std::make_shared<CustomEventHandler>();
-absmartly::Context context(config, data, handler);
+
+absmartly::SDKConfig sdk_config;
+sdk_config.client = client;
+sdk_config.context_event_handler = handler;
+
+auto sdk = absmartly::SDK::create(sdk_config);
