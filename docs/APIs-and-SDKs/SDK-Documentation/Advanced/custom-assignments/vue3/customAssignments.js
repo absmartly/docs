@@ -1,6 +1,6 @@
-import { inject } from "vue";
+import { useABSmartly } from "@absmartly/vue3-sdk";
 
-const $absmartly = inject("$absmartly");
+const { context } = useABSmartly();
 
 const assignments = {
   experiment_name: 1,
@@ -8,4 +8,4 @@ const assignments = {
   a_third_experiment_name: 2,
 };
 
-$absmartly.customAssignments(assignments);
+context.value.customAssignments(assignments);

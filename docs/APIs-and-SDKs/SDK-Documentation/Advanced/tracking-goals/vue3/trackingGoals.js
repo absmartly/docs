@@ -1,6 +1,6 @@
-import { inject } from "vue";
+import { useABSmartly } from "@absmartly/vue3-sdk";
 
-const $absmartly = inject("$absmartly");
+const { track } = useABSmartly();
 
 const properties = {
   price: 10000,
@@ -9,4 +9,4 @@ const properties = {
   instance_id: 5350,
 };
 
-$absmartly.track("booking", properties);
+track("booking", properties);

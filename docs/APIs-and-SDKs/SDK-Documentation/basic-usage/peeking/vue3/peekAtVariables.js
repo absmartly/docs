@@ -1,5 +1,5 @@
-import { inject } from "vue";
+import { useABSmartly } from "@absmartly/vue3-sdk";
 
-const $absmartly = inject("$absmartly");
+const { context } = useABSmartly();
 
-const variableValue = $absmartly.peekVariableValue("button.color", "red");
+const variableValue = context.value.peekVariableValue("button.color", "red");

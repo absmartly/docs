@@ -1,7 +1,7 @@
-import { inject } from "vue";
+import { useABSmartly } from "@absmartly/vue3-sdk";
 
-const $absmartly = inject("$absmartly");
+const { context } = useABSmartly();
 
-await $absmartly.finalize().then(() => {
+await context.value.finalize().then(() => {
   window.location = "https://www.absmartly.com";
 });

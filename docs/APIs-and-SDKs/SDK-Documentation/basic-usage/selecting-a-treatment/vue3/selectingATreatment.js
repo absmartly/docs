@@ -1,11 +1,11 @@
-import { inject } from "vue";
+import { useABSmartly } from "@absmartly/vue3-sdk";
 
-const $absmartly = inject("$absmartly");
+const { treatment } = useABSmartly();
 
-const treatment = $absmartly.treatment("exp_test_experiment");
+const treatmentVariant = treatment("exp_test_experiment");
 
-if (treatment === 0) {
+if (treatmentVariant.value === 0) {
   // user is in control group (variant 0)
-} else if (treatment === 1) {
+} else if (treatmentVariant.value === 1) {
   // user is in treatment group (variant 1)
 }

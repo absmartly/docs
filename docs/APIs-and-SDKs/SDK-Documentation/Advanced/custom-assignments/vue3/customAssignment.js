@@ -1,7 +1,7 @@
-import { inject } from "vue";
+import { useABSmartly } from "@absmartly/vue3-sdk";
 
-const $absmartly = inject("$absmartly");
+const { context } = useABSmartly();
 
 const chosenVariant = 1;
 
-$absmartly.customAssignment("experiment_name", chosenVariant);
+context.value.customAssignment("experiment_name", chosenVariant);

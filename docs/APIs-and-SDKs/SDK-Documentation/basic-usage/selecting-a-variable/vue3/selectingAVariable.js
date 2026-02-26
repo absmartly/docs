@@ -1,10 +1,7 @@
-import { inject } from "vue";
+import { useABSmartly } from "@absmartly/vue3-sdk";
 
-const $absmartly = inject("$absmartly");
+const { variableValue } = useABSmartly();
 
 const defaultButtonColorValue = "red";
 
-const buttonColor = $absmartly.variableValue(
-  "button.color",
-  defaultButtonColorValue
-);
+const buttonColor = variableValue("button.color", defaultButtonColorValue);

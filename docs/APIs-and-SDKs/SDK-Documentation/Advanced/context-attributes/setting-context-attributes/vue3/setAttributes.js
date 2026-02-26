@@ -1,9 +1,9 @@
-import { inject } from "vue";
+import { useABSmartly } from "@absmartly/vue3-sdk";
 
-const $absmartly = inject("$absmartly");
+const { context } = useABSmartly();
 
-$absmartly.attribute("user_agent", navigator.userAgent);
+context.value.attribute("user_agent", navigator.userAgent);
 
-$absmartly.attributes({
+context.value.attributes({
   customer_age: "new_customer",
 });
