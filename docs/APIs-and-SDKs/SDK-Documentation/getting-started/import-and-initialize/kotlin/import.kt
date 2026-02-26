@@ -1,14 +1,12 @@
 import com.absmartly.sdk.*
 
-fun main() {
-    val contextData: ContextData = fetchContextData()
+val clientConfig = ClientConfig.create()
+    .setEndpoint("https://your-company.absmartly.io/v1")
+    .setAPIKey(System.getenv("ABSMARTLY_APIKEY"))
+    .setApplication(System.getenv("ABSMARTLY_APPLICATION"))
+    .setEnvironment(System.getenv("ABSMARTLY_ENVIRONMENT"))
 
-    val units = mutableMapOf("session_id" to "5ebf06d8cb5d8137290c4abb64155584fbdb64d8")
-    val options = ContextOptions(publishDelay = -1, refreshPeriod = 0)
+val sdkConfig = ABSmartlyConfig.create()
+    .setClient(Client.create(clientConfig))
 
-    val context = Context(
-        data = contextData,
-        units = units,
-        options = options,
-    )
-}
+val sdk = ABsmartly.create(sdkConfig)

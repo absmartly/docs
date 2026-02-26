@@ -1,2 +1,1 @@
-val freshData: ContextData = fetchFreshContextData()
-context.refresh(freshData)
+context.refresh()
