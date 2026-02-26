@@ -1,0 +1,94 @@
+---
+sidebar_position: 15
+---
+
+import Image from "../../../src/components/Image";
+
+# Environments & Experiment Development Process
+
+## Key Concepts
+
+ABsmartly uses several related but distinct concepts around environments. 
+Understanding the difference between them is essential for configuring experiments correctly.
+
+| Concept | Definition |
+|---|---|
+| **Environment Name** | A named deployment context you create in ABsmartly to match your infrastructure. Examples: `Production`, `Staging`, `Dev`, `QA`. |
+| **Environment Type** | A classification applied to each environment, either `production` or `development`. This determines whether an experiment is active in that environment and ensures data from development environments does not affect production analysis. |
+
+:::info
+**Common source of confusion:** The labels `production` and `development` appear in both Environment Type and Experiment Type, but these are independent settings. For example, your `Staging` environment can be of type `development`, and an experiment set to `development` mode will be active there — even though the environment is named "Staging" and not "Development".
+:::
+
+---
+
+## Environment Types
+
+When you configure environments in ABsmartly, each one is assigned a type: `production` or `development`. A typical setup looks like this:
+
+| Environment Name | Environment Type | Typical use |
+|---|---|---|
+| Production | `production` | Live user traffic |
+| Staging | `development` | Pre-release validation |
+| Dev | `development` | Engineer testing |
+| QA | `development` | Quality assurance |
+
+The reason for this separation is **data integrity**. Traffic and events collected in development environments (internal testers, QA, automated tests) 
+must not contaminate the statistical results of production experiments. 
+By tagging each environment with a type, ABsmartly keeps these data sets cleanly separate.
+
+---
+
+## Experiment Development Process
+
+Experiments can follow a two-phase lifecycle: they can be started in **development** first, then 'promoted' to **production**.
+
+### Phase 1 — Start in Development
+
+When an experiment is started in development mode, it becomes active **only on environments of type `development`** (e.g. Staging, Dev). 
+It will not run on any environment of type `production`.
+
+This phase is useful for:
+- Verifying that event tracking and instrumentation works correctly
+- Confirming variant rendering before going live
+- Allowing QA or internal teams to validate the experience
+
+:::info 
+When an experiment is running in development, it's audience targeting still applies.
+:::
+
+### Phase 2 — Start in Production
+
+Once you're confident the experiment is configured correctly, you start it to production. 
+The experiment is now active on **all environment types** — both `development` and `production`.
+
+Visitors, on all environments, will be evaludated against the targeting conditions and those matching
+those conditions will be randomised into the experiment based on their unique identifier and according to the experiment split (for example 50/50 split between base and variant)
+
+:::info 
+Starting an experiment in production does not disable it in the development environments. 
+The experiment remains active in development environments and continue to work exactly as before.
+:::
+
+---
+
+## End-to-End Example
+
+**Setup:**
+- Environments: `Production` (type: `production`), `Staging` (type: `development`)
+- Experiment Targeting Rules: only users on the checkout page
+- Traffic Allocation: 50% Base / 50% Variant B
+
+**Phase 1 — Experiment started in development:**
+
+| Environment | What happens |
+|---|---|
+| Staging | Experiment is active. All visitors are evaluated against the targeting rules 'only users on the checkout page' and randomised 50/50 into the experiment if they match those rules. |
+| Production | Experiment is not active. No visitors are affected. |
+
+**Phase 2 — Experiment started in production:**
+
+| Environment | What happens |
+|---|---|
+| Staging | Same as before. Those visitors are not incliuded into the experiment. |
+| Production | All visitors are evaluated against the targeting rules 'only users on the checkout page' and randomised 50/50 into the experiment if they match those rules. |
