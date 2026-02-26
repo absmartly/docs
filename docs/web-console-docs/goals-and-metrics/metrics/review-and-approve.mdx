@@ -69,6 +69,7 @@ Platform Admins can approve any metric across the organisation by default, witho
   centered
 />
 
+
 For organisations that prefer a more distributed governance model, approval permissions can be granted at the team level using the built-in **Team Reviewer** role.
 
 A user with the `Team Reviewer` role in a given team can approve metrics owned by that team and, since team roles are inherited, any child teams as well.
@@ -78,3 +79,62 @@ Team Admin can approve any metric in their scope (team + child teams).
 :::
 
 To assign the `Team Reviewer` role to a team member, navigate to the relevant team, click **Add**, select the member, and choose **Team reviewer** from the roles dropdown.
+
+---
+
+## The Review & Approval Workflow
+
+### Requesting a review
+
+<Image
+  img="metrics/request-review.png"
+  alt="Request a metric review"
+  maxWidth="50rem"
+  centered
+/>
+
+Every newly created metric, or new version of an existing metric, starts in **Draft** status. 
+While a metric is in draft, a **Request Review** button is available at the top of the metric page.
+
+Clicking **Request Review** submits the metric for peer review and moves it into a **Pending Review** state. 
+At this point, the metric is ready to be evaluated by an approver.
+
+:::info
+If the Metrics validation policy is set to **Optional**, the **Make active** button remains available on draft metrics. 
+Metric authors can choose to activate a metric without going through the review process.
+:::
+
+### Reviewing a metric
+
+<Image
+  img="metrics/approve-metric.png"
+  alt="Approve a metric"
+  maxWidth="30rem"
+  centered
+/>
+
+Once a metric is in **Pending Review**, a **Review** button becomes available on the metric page, 
+making it accessible to reviewers.
+
+Any user with `Edit` permission on the metric can open the review and leave comments, 
+this allows team members beyond just designated approvers to participate in the quality review process. 
+Metric owners can reply to comments and address any issues raised while the metric remains in draft.
+
+:::info
+Leaving comments and participating in a review is open to any user with edit access to the metric. 
+However, only users with the **Approve** permission can formally approve the metric.
+:::
+
+### Approving a metric
+
+Once the review is complete, the metric can be formally approved. 
+Only users with the **Approve** permission — whether granted globally or through a team role — can approve a metric.
+
+<Image
+  img="metrics/metric-is-reviewed.png"
+  alt="A metric was reviewed"
+  maxWidth="50rem"
+  centered
+/>
+
+Once approved, the metric is ready to be activated and added to experiments.
