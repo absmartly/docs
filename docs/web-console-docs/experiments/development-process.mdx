@@ -17,7 +17,10 @@ Understanding the difference between them is essential for configuring experimen
 | **Environment Type** | A classification applied to each environment, either `production` or `development`. This determines whether an experiment is active in that environment and ensures data from development environments does not affect production analysis. |
 
 :::info
-**Common source of confusion:** The labels `production` and `development` appear in both Environment Type and Experiment Type, but these are independent settings. For example, your `Staging` environment can be of type `development`, and an experiment set to `development` mode will be active there — even though the environment is named "Staging" and not "Development".
+**Common source of confusion:** The labels `production` and `development` appear in both Environment Name and 
+Experiment Type, but these are independent settings. 
+For example, your `Staging` environment can be of type `development`, and an experiment started in `development` mode will be active there 
+— even though the environment is named "Staging" and not "Development".
 :::
 
 ---
@@ -45,7 +48,7 @@ Experiments can follow a two-phase lifecycle: they can be started in **developme
 
 ### Phase 1 — Start in Development
 
-When an experiment is started in development mode, it becomes active **only on environments of type `development`** (e.g. Staging, Dev). 
+When an experiment is started in development mode, it becomes active only on environments of type `development` (e.g. Staging, Dev). 
 It will not run on any environment of type `production`.
 
 This phase is useful for:
