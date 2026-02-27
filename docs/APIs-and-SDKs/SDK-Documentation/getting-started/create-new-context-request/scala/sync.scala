@@ -6,6 +6,8 @@ val units = Map(
   "user_id" -> "123456"
 )
 
-val contextData = sdk.fetchContextData()
+val contextDataFuture = sdk.fetchContextDataAsync()
+
+val contextData = Await.result(contextDataFuture, 5.seconds)
 
 val context = sdk.createContextWith(units, contextData)
