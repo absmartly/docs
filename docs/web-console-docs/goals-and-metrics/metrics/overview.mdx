@@ -217,6 +217,19 @@ A metric can be made active by clicking on the `Make Active` button on the metri
 Metric builder can easily find all their draft metrics by selecting `draft` in the `Status` filter of the Metrics Catalog.
 :::
 
+## Metric Approval
+
+Defining a metric correctly is only part of good metric governance. 
+Before a metric influences an experiment decision, it should be reviewed by someone with the right context to validate it.
+
+ABsmartly supports a **Metrics Approval Workflow** that introduces a structured peer review step into the metric lifecycle. 
+Organisations can configure the workflow to be mandatory, optional, or disabled. 
+
+When set to mandatory, a metric must be reviewed and approved before it can be activated and added to an experiment. 
+Approval permissions can be granted globally to platform-level roles, or scoped to specific teams using the built-in **Team Reviewer** role.
+
+For full details, see [Review and approve a metric](/docs/web-console-docs/goals-and-metrics/metrics/review-and-approve).
+
 ## Ownership & permissions
 
 `Metrics` are Managed-Assets and, as such, follow a specific [ownership model](/docs/web-console-docs/users-teams-permissions/ownership-and-permissions).
