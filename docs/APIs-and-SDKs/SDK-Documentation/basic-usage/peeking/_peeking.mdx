@@ -25,6 +25,27 @@ import RubyPeekAtVariable from "!!raw-loader!./ruby/peekAtVariables.rb";
 import FlutterPeekAtVariant from "!!raw-loader!./flutter/peekAtVariants.dart";
 import FlutterPeekAtVariable from "!!raw-loader!./flutter/peekAtVariables.dart";
 
+import AngularPeekVariants from "!!raw-loader!./angular/peekAtVariants.ts";
+import AngularPeekVariables from "!!raw-loader!./angular/peekAtVariables.ts";
+import AndroidPeekVariants from "!!raw-loader!./android/peekAtVariants.kt";
+import AndroidPeekVariables from "!!raw-loader!./android/peekAtVariables.kt";
+import KotlinPeekVariants from "!!raw-loader!./kotlin/peekAtVariants.kt";
+import KotlinPeekVariables from "!!raw-loader!./kotlin/peekAtVariables.kt";
+import CppPeekVariants from "!!raw-loader!./cpp/peekAtVariants.cpp";
+import CppPeekVariables from "!!raw-loader!./cpp/peekAtVariables.cpp";
+import ScalaPeekVariants from "!!raw-loader!./scala/peekAtVariants.scala";
+import ScalaPeekVariables from "!!raw-loader!./scala/peekAtVariables.scala";
+import ElixirPeekVariants from "!!raw-loader!./elixir/peekAtVariants.ex";
+import ElixirPeekVariables from "!!raw-loader!./elixir/peekAtVariables.ex";
+import DartPeekVariants from "!!raw-loader!./dart/peekAtVariants.dart";
+import DartPeekVariables from "!!raw-loader!./dart/peekAtVariables.dart";
+import RustPeekVariants from "!!raw-loader!./rust/peekAtVariants.rs";
+import RustPeekVariables from "!!raw-loader!./rust/peekAtVariables.rs";
+import LiquidPeekVariants from "!!raw-loader!./liquid/peekAtVariants.liquid";
+import LiquidPeekVariables from "!!raw-loader!./liquid/peekAtVariables.liquid";
+import Vue3PeekVariants from "!!raw-loader!./vue3/peekAtVariants.js";
+import Vue3PeekVariables from "!!raw-loader!./vue3/peekAtVariables.js";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -137,7 +158,7 @@ provides a `peek_treatment()` method for that.
 
 </TabItem>
 
-<TabItem value="flutter" label="Flutter/Dart">
+<TabItem value="flutter" label="Flutter">
 
 Although generally not recommended, it is sometimes necessary to peek at a
 treatment or variable without triggering an exposure. The ABsmartly SDK
@@ -145,6 +166,42 @@ provides a `peekTreatment()` method for that.
 
 <CodeBlock language="dart">{FlutterPeekAtVariant}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="android" label="Android">
+<CodeBlock language="kotlin">{AndroidPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="dart" label="Dart">
+<CodeBlock language="dart">{DartPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="liquid">{LiquidPeekVariants}</CodeBlock>
 </TabItem>
 
 </Tabs>
@@ -219,10 +276,46 @@ provides a `peekTreatment()` method for that.
 
 </TabItem>
 
-<TabItem value="flutter" label="Flutter/Dart">
+<TabItem value="flutter" label="Flutter">
 
 <CodeBlock language="dart">{FlutterPeekAtVariable}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="android" label="Android">
+<CodeBlock language="kotlin">{AndroidPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="dart" label="Dart">
+<CodeBlock language="dart">{DartPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="liquid">{LiquidPeekVariables}</CodeBlock>
 </TabItem>
 
 </Tabs>

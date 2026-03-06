@@ -29,6 +29,14 @@
   --ifm-color-primary-lightest: #fafaff;
 }
 
+.tabs {
+  flex-wrap: wrap;
+}
+
+.tabs__item {
+  flex-shrink: 0;
+}
+
 .button {
   transition-property: transform, box-shadow;
   transition-duration: 0.5s;

@@ -1,5 +1,5 @@
-use \ABSmartly\SDK\SDK;
+use \ABSmartly\SDK\ABsmartly;
 
-$sdk = SDK::createWithDefaults(
-  'https://your-company.absmartly.io/v1', $apiKey, $environment, $application,
+$sdk = ABsmartly::createSimple(
+  'https://your-company.absmartly.io/v1', $apiKey, $application, $environment
 );

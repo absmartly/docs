@@ -19,6 +19,17 @@ import PHPHandleEvent from "!!raw-loader!./php/handleEvent.php";
 import FlutterCustomEventLogger from "!!raw-loader!./flutter/customEventLogger.dart";
 import FlutterUsage from "!!raw-loader!./flutter/usage.dart";
 
+import AngularEventLogger from "!!raw-loader!./angular/customEventLogger.ts";
+import AndroidEventLogger from "!!raw-loader!./android/customEventLogger.kt";
+import KotlinEventLogger from "!!raw-loader!./kotlin/customEventLogger.kt";
+import CppEventLogger from "!!raw-loader!./cpp/customEventLogger.cpp";
+import ScalaEventLogger from "!!raw-loader!./scala/customEventLogger.scala";
+import ElixirEventLogger from "!!raw-loader!./elixir/customEventLogger.ex";
+import DartEventLogger from "!!raw-loader!./dart/customEventLogger.dart";
+import RustEventLogger from "!!raw-loader!./rust/customEventLogger.rs";
+import LiquidEventLogger from "!!raw-loader!./liquid/customEventLogger.rb";
+import Vue3EventLogger from "!!raw-loader!./vue3/customEventLogger.js";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -144,7 +155,7 @@ The ABsmartly SDK can be instantiated with an event logger used for all
 contexts. The example below illustrates this with the implementation of the
 default event logger, used if none is specified.
 
-<CodeBlock language="js">{VueCustomEventLogger}</CodeBlock>
+<CodeBlock language="javascript">{Vue3EventLogger}</CodeBlock>
 
 The event data depends on the type of event. Currently, the SDK logs the following events:
 
@@ -255,7 +266,7 @@ The data parameter depends on the type of event. Currently, the SDK logs the fol
 
 </TabItem>
 
-<TabItem value="flutter" label="Flutter/Dart">
+<TabItem value="flutter" label="Flutter">
 
 The ABsmartly SDK can be instantiated with an event logger used for all contexts. In addition, an event logger can be specified when creating a particular context in the `contextConfig`.
 
@@ -274,6 +285,60 @@ The data parameter depends on the type of event. Currently, the SDK logs the fol
 | `"exposure"` | `Context.treatment()` method succeeds on first exposure | exposure data enqueued for publishing        |
 | `"goal"`     | `Context.track()` method succeeds                       | goal data enqueued for publishing            |
 | `"finalize"` | `Context.finalize()` method succeeds the first time     | undefined                                    |
+
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+
+<CodeBlock language="typescript">{AngularEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="android" label="Android">
+
+<CodeBlock language="kotlin">{AndroidEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+<CodeBlock language="kotlin">{KotlinEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+
+<CodeBlock language="cpp">{CppEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+
+<CodeBlock language="scala">{ScalaEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+
+<CodeBlock language="elixir">{ElixirEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dart" label="Dart">
+
+<CodeBlock language="dart">{DartEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+
+<CodeBlock language="rust">{RustEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+<CodeBlock language="ruby">{LiquidEventLogger}</CodeBlock>
 
 </TabItem>
 

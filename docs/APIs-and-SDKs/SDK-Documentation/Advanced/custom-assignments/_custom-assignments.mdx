@@ -35,6 +35,25 @@ import RubyCustomAssignments from "!!raw-loader!./ruby/customAssignments.rb";
 import FlutterCustomAssignment from "!!raw-loader!./flutter/customAssignment.dart";
 import FlutterCustomAssignments from "!!raw-loader!./flutter/customAssignments.dart";
 
+import AngularAssignment from "!!raw-loader!./angular/customAssignment.ts";
+import AngularAssignments from "!!raw-loader!./angular/customAssignments.ts";
+import AndroidAssignment from "!!raw-loader!./android/customAssignment.kt";
+import AndroidAssignments from "!!raw-loader!./android/customAssignments.kt";
+import KotlinAssignment from "!!raw-loader!./kotlin/customAssignment.kt";
+import KotlinAssignments from "!!raw-loader!./kotlin/customAssignments.kt";
+import CppAssignment from "!!raw-loader!./cpp/customAssignment.cpp";
+import CppAssignments from "!!raw-loader!./cpp/customAssignments.cpp";
+import ScalaAssignment from "!!raw-loader!./scala/customAssignment.scala";
+import ScalaAssignments from "!!raw-loader!./scala/customAssignments.scala";
+import ElixirAssignment from "!!raw-loader!./elixir/customAssignment.ex";
+import ElixirAssignments from "!!raw-loader!./elixir/customAssignments.ex";
+import DartAssignment from "!!raw-loader!./dart/customAssignment.dart";
+import DartAssignments from "!!raw-loader!./dart/customAssignments.dart";
+import RustAssignment from "!!raw-loader!./rust/customAssignment.rs";
+import RustAssignments from "!!raw-loader!./rust/customAssignments.rs";
+import Vue3Assignment from "!!raw-loader!./vue3/customAssignment.js";
+import Vue3Assignments from "!!raw-loader!./vue3/customAssignments.js";
+
 :::warning Warning
 Events with custom assignments are **counted as eligible events** by the ABsmartly 
 statistics engines. If you are using these methods for development purposes
@@ -134,12 +153,12 @@ For example, if you wish to have your variant chosen based on data from an
 API call. This can be accomplished using the `customAssignment()`
 method.
 
-<CodeBlock language="js">{VueCustomAssignment}</CodeBlock>
+<CodeBlock language="javascript">{Vue3Assignment}</CodeBlock>
 
 If you are running multiple experiments and need to choose different custom
 assignments for each one, you can do so using the `customAssignments()` method.
 
-<CodeBlock language="js">{VueCustomAssignments}</CodeBlock>
+<CodeBlock language="javascript">{Vue3Assignments}</CodeBlock>
 
 </TabItem>
 
@@ -225,7 +244,7 @@ method.
 
 </TabItem>
 
-<TabItem value="flutter" label="Flutter/Dart">
+<TabItem value="flutter" label="Flutter">
 
 Sometimes it may be necessary to override the automatic selection of a
 variant. For example, if you wish to have your variant chosen based on data
@@ -240,6 +259,46 @@ method.
 
 <CodeBlock language="dart">{FlutterCustomAssignments}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularAssignment}</CodeBlock>
+<CodeBlock language="typescript">{AngularAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="android" label="Android">
+<CodeBlock language="kotlin">{AndroidAssignment}</CodeBlock>
+<CodeBlock language="kotlin">{AndroidAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinAssignment}</CodeBlock>
+<CodeBlock language="kotlin">{KotlinAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppAssignment}</CodeBlock>
+<CodeBlock language="cpp">{CppAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaAssignment}</CodeBlock>
+<CodeBlock language="scala">{ScalaAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirAssignment}</CodeBlock>
+<CodeBlock language="elixir">{ElixirAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="dart" label="Dart">
+<CodeBlock language="dart">{DartAssignment}</CodeBlock>
+<CodeBlock language="dart">{DartAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustAssignment}</CodeBlock>
+<CodeBlock language="rust">{RustAssignments}</CodeBlock>
 </TabItem>
 
 </Tabs>

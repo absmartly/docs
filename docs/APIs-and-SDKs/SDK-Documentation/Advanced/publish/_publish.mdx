@@ -24,6 +24,17 @@ import RubyPublish from "!!raw-loader!./ruby/publish.rb";
 
 import FlutterPublish from "!!raw-loader!./flutter/publish.dart";
 
+import AngularPublish from "!!raw-loader!./angular/publish.ts";
+import AndroidPublish from "!!raw-loader!./android/publish.kt";
+import KotlinPublish from "!!raw-loader!./kotlin/publish.kt";
+import CppPublish from "!!raw-loader!./cpp/publish.cpp";
+import ScalaPublish from "!!raw-loader!./scala/publish.scala";
+import ElixirPublish from "!!raw-loader!./elixir/publish.ex";
+import DartPublish from "!!raw-loader!./dart/publish.dart";
+import RustPublish from "!!raw-loader!./rust/publish.rs";
+import LiquidPublish from "!!raw-loader!./liquid/publish.rb";
+import Vue3Publish from "!!raw-loader!./vue3/publish.js";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -72,7 +83,7 @@ Sometimes it is necessary to ensure all events have been published to the ABsmar
 
 Sometimes it is necessary to ensure all events have been published to the ABsmartly collector before proceeding. To do this, you can explicitly call the `publish()` method.
 
-<CodeBlock language="js">{VuePublish}</CodeBlock>
+<CodeBlock language="javascript">{Vue3Publish}</CodeBlock>
 
 </TabItem>
 
@@ -121,13 +132,49 @@ methods.
 
 </TabItem>
 
-<TabItem value="flutter" label="Flutter/Dart">
+<TabItem value="flutter" label="Flutter">
 
 Sometimes it is necessary to ensure all events have been published to the ABsmartly collector, before proceeding. You can explicitly call the `publish()`
 method.
 
 <CodeBlock language="dart">{FlutterPublish}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="android" label="Android">
+<CodeBlock language="kotlin">{AndroidPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="dart" label="Dart">
+<CodeBlock language="dart">{DartPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="ruby">{LiquidPublish}</CodeBlock>
 </TabItem>
 
 </Tabs>

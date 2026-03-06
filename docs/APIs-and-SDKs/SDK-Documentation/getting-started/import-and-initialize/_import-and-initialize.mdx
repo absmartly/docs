@@ -31,6 +31,24 @@ import RubyImport from "!!raw-loader!./ruby/import.rb";
 
 import FlutterImport from "!!raw-loader!./flutter/import.dart";
 
+import DartImport from "!!raw-loader!./dart/import.dart";
+
+import RustImport from "!!raw-loader!./rust/initialize.rs";
+
+import LiquidImport from "!!raw-loader!./liquid/initialize.liquid";
+
+import AngularImport from "!!raw-loader!./angular/import.ts";
+
+import AndroidImport from "!!raw-loader!./android/import.kt";
+
+import KotlinImport from "!!raw-loader!./kotlin/import.kt";
+
+import CppImport from "!!raw-loader!./cpp/initialize.cpp";
+
+import ScalaImport from "!!raw-loader!./scala/import.scala";
+
+import ElixirImport from "!!raw-loader!./elixir/import.ex";
+
 Once the SDK is installed, it can be initialized in your project.
 
 :::info
@@ -102,9 +120,9 @@ directly into the Provider component, like so:
 
 ```jsx
 ReactDOM.render(
-  <ABSmartly context={context}>
+  <ABsmartly context={context}>
     <App />
-  </ABSmartly>,
+  </ABsmartly>,
   document.getElementById("root")
 );
 ```
@@ -367,18 +385,267 @@ custom event logger), it can be done as following:
 
 </TabItem>
 
-<TabItem value="flutter" label="Flutter/Dart">
+<TabItem value="dart" label="Dart">
+
+<CodeBlock language="dart">{DartImport}</CodeBlock>
+
+**SDK Options**
+
+| Config                  | Type                              | Required? |   Default   | Description                                                                                                                                                                   |
+| :---------------------- | :-------------------------------- | :-------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint                | `String`                          |  &#9989;  | `null`      | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey                  | `String`                          |  &#9989;  | `null`      | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment             | `String`                          |  &#9989;  | `null`      | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application             | `String`                          |  &#9989;  | `null`      | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries                 | `int`                             | &#10060;  | `5`         | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout                 | `int`                             | &#10060;  | `3000`      | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| contextEventLogger      | `ContextEventLogger`              | &#10060;  | `null`      | A callback interface which runs after SDK events. See [Using a Custom Event Logger](#using-a-custom-event-logger) below                                                       |
+
+**Advanced Configuration**
+
+For advanced use cases where you need custom HTTP clients or data providers, you can still use the manual configuration approach:
+
+```dart
+final clientConfig = ClientConfig()
+  ..setEndpoint("https://your-company.absmartly.io/v1")
+  ..setAPIKey("YOUR-API-KEY")
+  ..setApplication("website")
+  ..setEnvironment("development");
+
+final httpClientConfig = DefaultHTTPClientConfig()
+  ..setMaxRetries(3)
+  ..setConnectTimeout(5000);
+
+final client = Client.create(
+  clientConfig,
+  httpClient: DefaultHTTPClient.create(httpClientConfig),
+);
+
+final sdkConfig = ABsmartlyConfig.create()
+  ..setClient(client);
+
+final sdk = ABsmartly(sdkConfig);
+```
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter">
 
 <CodeBlock language="dart">{FlutterImport}</CodeBlock>
 
 **SDK Options**
 
+| Config                  | Type                              | Required? |   Default   | Description                                                                                                                                                                   |
+| :---------------------- | :-------------------------------- | :-------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint                | `String`                          |  &#9989;  | `null`      | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey                  | `String`                          |  &#9989;  | `null`      | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment             | `String`                          |  &#9989;  | `null`      | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application             | `String`                          |  &#9989;  | `null`      | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries                 | `int`                             | &#10060;  | `5`         | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout                 | `int`                             | &#10060;  | `3000`      | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| contextEventLogger      | `ContextEventLogger`              | &#10060;  | `null`      | A callback interface which runs after SDK events. See [Using a Custom Event Logger](#using-a-custom-event-logger) below                                                       |
+
+**Advanced Configuration**
+
+For advanced use cases where you need custom HTTP clients or data providers, you can still use the manual configuration approach:
+
+```dart
+final clientConfig = ClientConfig()
+  ..setEndpoint("https://your-company.absmartly.io/v1")
+  ..setAPIKey("YOUR-API-KEY")
+  ..setApplication("website")
+  ..setEnvironment("development");
+
+final httpClientConfig = DefaultHTTPClientConfig()
+  ..setMaxRetries(3)
+  ..setConnectTimeout(5000);
+
+final client = Client.create(
+  clientConfig,
+  httpClient: DefaultHTTPClient.create(httpClientConfig),
+);
+
+final sdkConfig = ABsmartlyConfig.create()
+  ..setClient(client);
+
+final sdk = ABsmartly(sdkConfig);
+```
+
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+
+<CodeBlock language="rust">{RustImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `&str` or `String`                   |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| api_key     | `&str` or `String`                   |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `&str` or `String`                   |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `&str` or `String`                   |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `u32`                                | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout_ms  | `u64`                                | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| agent       | `String`                             | &#10060;  |                                `None`                                 | Custom user agent string for HTTP requests.                                                                                                                                   |
+
+**Builder Pattern**
+
+The Rust SDK supports a fluent builder pattern for optional configuration:
+
+```rust
+let config = SDKConfig::new(
+    "https://your-company.absmartly.io/v1",
+    "YOUR-API-KEY",
+    "website",
+    "development",
+)
+.with_timeout(5000)
+.with_retries(3)
+.with_agent("my-app/1.0");
+
+let sdk = ABsmartly::new(config)?;
+```
+
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+<CodeBlock language="liquid">{LiquidImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| units       | `object`                             |  &#9989;  |                                 `{}`                                  | An object containing unit identifiers (e.g., session_id, customer_id) used for experiment assignment.                                                                         |
+
+**Server-Side Rendering**
+
+For Shopify Liquid templates, ABsmartly can be integrated server-side to pre-fetch context data:
+
+```liquid
+{% comment %}
+  Render the ABsmartly initialization snippet
+  This can be used to embed pre-fetched context data
+{% endcomment %}
+{% render 'absmartly-init',
+  session_id: request.cookie.session_id,
+  customer_id: customer.id
+%}
+```
+
+**Using ABsmartly in Templates**
+
+Once initialized, you can use ABsmartly treatments in your Liquid templates:
+
+```liquid
+{% if absmartly.treatment.banner_color == 1 %}
+  <div class="banner banner-red">Special Offer!</div>
+{% else %}
+  <div class="banner banner-blue">Special Offer!</div>
+{% endif %}
+```
+
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+
+<CodeBlock language="typescript">{AngularImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
+| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `string`                             |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `string`                             |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `"production"` or `"development"`    |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `string`                             |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `number`                             | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `number`                             | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| eventLogger | `(context, eventName, data) => void` | &#10060;  | See [Using a Custom Event Logger](#using-a-custom-event-logger) below | A callback function which runs after SDK events.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="android" label="Android">
+
+<CodeBlock language="kotlin">{AndroidImport}</CodeBlock>
+
+**SDK Options**
+
 | Config      | Type                              | Required? |   Default   | Description                                                                                                                                                                   |
 | :---------- | :-------------------------------- | :-------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| endpoint    | `string`                          |  &#9989;  | `undefined` | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
-| apiKey      | `string`                          |  &#9989;  | `undefined` | Your API key which can be found on the Web Console.                                                                                                                           |
-| environment | `"production"` or `"development"` |  &#9989;  | `undefined` | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
-| application | `string`                          |  &#9989;  | `undefined` | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| endpoint    | `String`                          |  &#9989;  | `null`      | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `String`                          |  &#9989;  | `null`      | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `String`                          |  &#9989;  | `null`      | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `String`                          |  &#9989;  | `null`      | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `int`                             | &#10060;  | `5`         | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `int`                             | &#10060;  | `3000`      | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+<CodeBlock language="kotlin">{KotlinImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                              | Required? |   Default   | Description                                                                                                                                                                   |
+| :---------- | :-------------------------------- | :-------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `String`                          |  &#9989;  | `null`      | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `String`                          |  &#9989;  | `null`      | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `String`                          |  &#9989;  | `null`      | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `String`                          |  &#9989;  | `null`      | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+
+<CodeBlock language="cpp">{CppImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                              | Required? |   Default   | Description                                                                                                                                                                   |
+| :---------- | :-------------------------------- | :-------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `std::string`                     |  &#9989;  | `""`        | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| api_key     | `std::string`                     |  &#9989;  | `""`        | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `std::string`                     |  &#9989;  | `""`        | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `std::string`                     |  &#9989;  | `""`        | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+
+<CodeBlock language="scala">{ScalaImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type                              | Required? |   Default   | Description                                                                                                                                                                   |
+| :---------- | :-------------------------------- | :-------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `String`                          |  &#9989;  | `null`      | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `String`                          |  &#9989;  | `null`      | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `String`                          |  &#9989;  | `null`      | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `String`                          |  &#9989;  | `null`      | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+
+<CodeBlock language="elixir">{ElixirImport}</CodeBlock>
+
+**SDK Options**
+
+| Config      | Type      | Required? | Default | Description                                                                                                                                                                   |
+| :---------- | :-------- | :-------: | :-----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `String`  |  &#9989;  |  `nil`  | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| api_key     | `String`  |  &#9989;  |  `nil`  | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `String`  |  &#9989;  |  `nil`  | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `String`  |  &#9989;  |  `nil`  | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `Integer` | &#10060;  |   `5`   | Number of retry attempts for failed HTTP requests                                                                                                                             |
+| timeout     | `Integer` | &#10060;  | `3000`  | Connection timeout in milliseconds                                                                                                                                            |
 
 </TabItem>
 
