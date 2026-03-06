@@ -27,3 +27,4 @@ yarn-error.log*
 .claude/tasks/
 .claude/audits/
 openapi_console_bk/
+.worktrees/
