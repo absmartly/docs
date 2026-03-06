@@ -102,6 +102,14 @@ const config = {
               sidebarCollapsed: false,
             },
           },
+          office: {
+            specPath: "office-api-spec.json",
+            outputDir: "docs/APIs-and-SDKs/Office-API",
+            sidebarOptions: {
+              sidebarCollapsible: false,
+              sidebarCollapsed: false,
+            },
+          },
         },
       },
     ],

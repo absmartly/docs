@@ -1,0 +1,6 @@
+[build]
+  command = "bash scripts/generate-office-api.sh && yarn clean:api && yarn gen:api && yarn build"
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "24"
