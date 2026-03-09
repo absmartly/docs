@@ -30,8 +30,8 @@ to measure whether a new feature reduces or increases support requests.
 6. Under **Actions**, select **Trigger Webhook**.
 7. Configure the webhook:
    - **Request Type**: `POST`
-   - **URL**: Your ABsmartly Collector endpoint followed by `/context`.
-     For example: `https://your-subdomain.absmartly.io/v1/context`
+   - **URL**: Your ABsmartly Collector endpoint followed by `/context/publish`.
+     For example: `https://your-subdomain.absmartly.io/v1/context/publish`
    - **Requires authentication**: Toggle on, and enter your ABsmartly SDK API Key.
    - **Custom Headers** (add each on a separate line):
      ```
@@ -41,15 +41,6 @@ to measure whether a new feature reduces or increases support requests.
      X-Environment: production
      X-Agent: freshdesk-webhook
      ```
-
-<Admonition type="caution">
-Freshdesk automation webhooks support POST requests. Since the ABsmartly Collector API
-expects a PUT request on <code>/context</code>, you may need to use an intermediary
-service (such as a serverless function) to convert the POST to a PUT. Alternatively,
-check with ABsmartly support whether your Collector endpoint accepts POST on
-<code>/context</code>.
-</Admonition>
-
 8. Select **Encoding**: `JSON`.
 9. Select **Advanced** content mode to write a custom JSON body.
 10. Enter the following payload:

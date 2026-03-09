@@ -30,29 +30,12 @@ or lifecycle stage changes — as metrics in your experiments.
 5. In the **Data ops** section, select **Send a webhook**.
 6. Configure the webhook:
    - **Method**: `POST`
-   - **Webhook URL**: Your ABsmartly Collector endpoint followed by `/context`.
-     For example: `https://your-subdomain.absmartly.io/v1/context`
-
-<Admonition type="caution">
-HubSpot workflow webhooks only support POST and GET methods. Since the ABsmartly Collector
-API expects a PUT request on <code>/context</code>, you may need to use an intermediary
-service (such as a serverless function or middleware like Zapier) to convert the POST
-request into a PUT request. Alternatively, you can use the
-<a href="/docs/APIs-and-SDKs/SDK-API/context-publish-batch">batch publish endpoint</a>
-if it accepts POST requests.
-</Admonition>
-
+   - **Webhook URL**: Your ABsmartly Collector endpoint followed by `/context/publish`.
+     For example: `https://your-subdomain.absmartly.io/v1/context/publish`
 7. Under **Authentication**, select **API key**:
    - **API key name**: `X-API-Key`
    - **Location**: `Request header`
    - **Value**: Your ABsmartly SDK API Key
-8. Under **Customize request body**, add the following properties and static values:
-
-| Type | Key | Value |
-| --- | --- | --- |
-| Static value | `publishedAt` | (use a HubSpot timestamp property or current time) |
-| Static value | `units` | See payload below |
-| Static value | `goals` | See payload below |
 
 <Admonition type="info">
 HubSpot's webhook action uses key-value pairs rather than a free-form JSON body.
@@ -61,17 +44,10 @@ For full control over the payload structure, consider using a middleware service
 and forwards it to the ABsmartly Collector API.
 </Admonition>
 
-## Recommended Approach — Using Middleware
+8. Under **Customize request body**, add the following properties and static values to
+   build the ABsmartly payload:
 
-Since HubSpot's webhook action has limitations on request method (no PUT) and payload
-structure, the recommended approach is to use a lightweight middleware:
-
-1. Deploy a serverless function (e.g. AWS Lambda, Google Cloud Function, or Cloudflare Worker)
-   that receives the HubSpot POST request.
-2. Transform the payload into the ABsmartly Collector API format.
-3. Forward it as a PUT request to your ABsmartly Collector endpoint.
-
-Example middleware payload to send to ABsmartly:
+Example payload to send to ABsmartly:
 
 ```json
 {
@@ -96,15 +72,28 @@ Example middleware payload to send to ABsmartly:
 }
 ```
 
-The middleware should include the following headers when forwarding to ABsmartly:
+9. Add the following custom request headers:
 
 | Header | Value |
 | --- | --- |
-| `X-API-Key` | Your ABsmartly SDK API Key |
 | `X-Application` | The application name matching your ABsmartly Web Console (e.g. `www`) |
 | `X-Application-Version` | `0` |
 | `X-Environment` | The environment name matching your ABsmartly Web Console (e.g. `production`) |
 | `X-Agent` | `hubspot-webhook` |
+
+10. Click **Save** and turn the workflow on.
+
+<Admonition type="info">
+The <code>X-Application</code> and <code>X-Environment</code> values must match
+existing entries in your ABsmartly Web Console under <code>Settings &gt; Applications</code>
+and <code>Settings &gt; Environments</code>.
+</Admonition>
+
+<Admonition type="tip">
+Adjust the <code>units</code> type and value to match the unit type you use in your
+ABsmartly experiments. For example, if your experiments use a <code>user_id</code> unit,
+you may need to reference a custom HubSpot property that contains the user ID.
+</Admonition>
 
 ## Step 2 — Create the Goal in ABsmartly
 
