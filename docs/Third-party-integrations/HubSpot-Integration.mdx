@@ -39,8 +39,11 @@ Action</strong> instead, which gives full control over the request body.
 ## Step 2 — Create a Workflow with a Custom Code Action
 
 1. Create a new workflow and choose a type (e.g. **Contact-based** or **Deal-based**).
-2. Set up your **enrollment trigger**. For example, to fire when a new deal is created:
-   - Select **Deal enrollment trigger** > `Deal is created`.
+2. Set up your **enrollment triggers**. You can add multiple triggers within the same
+   object type. For example, for a deal-based workflow:
+   - `Deal is created`
+   - `Deal stage is Closed Won`
+   - `Deal property pipeline is changed`
 3. Click the **+** icon and select **Custom code**.
 4. Set the **Language** to `Node.js 20.x`.
 5. Under **Properties to include in code**, add the HubSpot properties you need.
@@ -49,17 +52,33 @@ Action</strong> instead, which gives full control over the request body.
    - `dealstage`
    - `pipeline`
    - Associated contact `email`
+   - `hs_enrollment_trigger` (contains the trigger that enrolled the record)
 6. Paste the following code:
 
 ```javascript
 const axios = require("axios");
 
+const GOAL_NAMES = {
+  "CREATE-deal": "hubspot_deal_created",
+  "PROP_CHANGE-dealstage-closedwon": "hubspot_deal_won",
+  "PROP_CHANGE-pipeline": "hubspot_deal_pipeline_changed",
+};
+
+function resolveGoalName(trigger) {
+  for (const [key, goalName] of Object.entries(GOAL_NAMES)) {
+    if (trigger.includes(key)) {
+      return goalName;
+    }
+  }
+  return "hubspot_deal_event";
+}
+
 exports.main = async (event) => {
   const email = event.inputFields["email"];
-  const dealName = event.inputFields["dealname"];
-  const dealStage = event.inputFields["dealstage"];
-  const pipeline = event.inputFields["pipeline"];
+  if (!email) return;
 
+  const trigger = event.inputFields["hs_enrollment_trigger"] || "";
+  const goalName = resolveGoalName(trigger);
   const now = Date.now();
 
   await axios.put(
@@ -74,12 +93,12 @@ exports.main = async (event) => {
       ],
       goals: [
         {
-          name: "hubspot_deal_created",
+          name: goalName,
           achievedAt: now,
           properties: {
-            deal_name: dealName,
-            deal_stage: dealStage,
-            pipeline: pipeline,
+            deal_name: event.inputFields["dealname"],
+            deal_stage: event.inputFields["dealstage"],
+            pipeline: event.inputFields["pipeline"],
           },
         },
       ],
@@ -100,6 +119,10 @@ exports.main = async (event) => {
 
 7. Click **Save** and turn the workflow on.
 
+The code uses the `hs_enrollment_trigger` property to determine which trigger enrolled
+the record and maps it to the appropriate ABsmartly goal name. Edit the `GOAL_NAMES`
+mapping to match the triggers you configured in step 2.
+
 <Admonition type="tip">
 Replace <code>your-subdomain</code> with your actual ABsmartly subdomain, and update
 the <code>X-Application</code> and <code>X-Environment</code> header values to match
@@ -113,22 +136,23 @@ ABsmartly experiments. For example, if your experiments use a <code>user_id</cod
 include a custom HubSpot property that stores the user ID and reference it in the code.
 </Admonition>
 
-## Step 3 — Create the Goal in ABsmartly
+## Step 3 — Create the Goals in ABsmartly
 
 1. In the ABsmartly Web Console, go to **Settings > Goals**.
-2. Create a new goal with a name matching the `name` in your code
-   (e.g. `hubspot_deal_created`).
-3. You can now use this goal as a metric in any of your experiments.
+2. Create goals matching each name in the `GOAL_NAMES` mapping
+   (e.g. `hubspot_deal_created`, `hubspot_deal_won`).
+3. You can now use these goals as metrics in any of your experiments.
 
-## Tracking Different CRM Events
+## Tracking Different Object Types
 
-You can create multiple workflows to track different HubSpot events as separate goals.
-Adjust the enrollment trigger, included properties, and goal name accordingly:
+A single workflow can handle multiple triggers within the same HubSpot object type.
+For different object types, create a separate workflow for each:
 
-- **Contact created** — Enroll on `Contact is created`, goal name: `hubspot_contact_created`
-- **Deal won** — Enroll on `Deal stage is Closed Won`, goal name: `hubspot_deal_won`
-- **Form submitted** — Enroll on `Form submission`, goal name: `hubspot_form_submitted`
-- **Lifecycle stage change** — Enroll on `Lifecycle stage is Customer`, goal name: `hubspot_became_customer`
+| Workflow type | Example triggers | Goal names |
+| --- | --- | --- |
+| **Deal-based** | Deal created, Deal stage changed, Deal won | `hubspot_deal_created`, `hubspot_deal_won` |
+| **Contact-based** | Contact created, Lifecycle stage changed, Form submitted | `hubspot_contact_created`, `hubspot_became_customer`, `hubspot_form_submitted` |
+| **Ticket-based** | Ticket created, Ticket status changed | `hubspot_ticket_created`, `hubspot_ticket_closed` |
 
 ## Verifying the Integration
 
