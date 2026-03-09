@@ -1,0 +1,153 @@
+---
+sidebar_position: 4
+---
+
+import Admonition from "@theme/Admonition";
+
+# Zendesk Integration
+
+This guide explains how to send Zendesk support ticket events as goal events to ABsmartly
+using [Zendesk Webhooks](https://support.zendesk.com/hc/en-us/articles/4408839108378-Creating-webhooks-to-interact-with-third-party-systems).
+This allows you to track support ticket creation as a metric in your experiments — for example,
+to measure whether a new feature reduces or increases support requests.
+
+## Prerequisites
+
+1. **ABsmartly account** with access to the Web Console and a valid **SDK API Key**.
+   API Keys can be created under `Settings > API Keys` in the ABsmartly Web Console.
+2. **Zendesk account** with Admin access to create webhooks and triggers.
+3. A **unit type** (e.g. `user_id` or `email`) that is shared between your ABsmartly
+   experiments and your Zendesk tickets so that events can be attributed to the correct user.
+
+## Step 1 — Create a Webhook in Zendesk
+
+1. In Zendesk, go to **Admin Center > Apps and integrations > Webhooks > Webhooks**.
+2. Click **Create webhook**.
+3. Select **Trigger or automation** as the connection method and click **Next**.
+4. Fill in the webhook details:
+   - **Name**: `ABsmartly Goal Event`
+   - **Description**: `Sends ticket events to ABsmartly as goal events`
+   - **Endpoint URL**: Your ABsmartly Collector endpoint followed by `/context`.
+     For example: `https://your-subdomain.absmartly.io/v1/context`
+   - **Request method**: `PUT`
+   - **Request format**: `JSON`
+5. Under **Authentication**, select **API key** and configure it:
+   - **Header name**: `X-API-Key`
+   - **Value**: Your ABsmartly SDK API Key
+6. Add the following **custom headers**:
+
+| Header name | Value |
+| --- | --- |
+| `X-Application` | The application name matching your ABsmartly Web Console (e.g. `www`) |
+| `X-Application-Version` | `0` |
+| `X-Environment` | The environment name matching your ABsmartly Web Console (e.g. `production`) |
+| `X-Agent` | `zendesk-webhook` |
+
+7. Click **Create webhook**.
+
+<Admonition type="info">
+The <code>X-Application</code> and <code>X-Environment</code> values must match
+existing entries in your ABsmartly Web Console under <code>Settings &gt; Applications</code>
+and <code>Settings &gt; Environments</code>.
+</Admonition>
+
+## Step 2 — Create a Trigger to Send the Webhook
+
+1. In Zendesk, go to **Admin Center > Objects and rules > Business rules > Triggers**.
+2. Click **Create trigger**.
+3. Give the trigger a name, for example: `Send ticket to ABsmartly`.
+4. Under **Conditions**, configure when the trigger should fire. For example, to fire
+   on every new ticket:
+   - **Meet ALL of the following conditions**:
+     - `Ticket > Is > Created`
+5. Under **Actions**, select **Notify webhook** and choose the `ABsmartly Goal Event`
+   webhook you created in Step 1.
+6. In the **JSON body** field, enter the following payload:
+
+```json
+{
+  "publishedAt": {{ticket.created_at_with_timestamp}},
+  "units": [
+    {
+      "type": "email",
+      "uid": "{{ticket.requester.email}}"
+    }
+  ],
+  "goals": [
+    {
+      "name": "zendesk_ticket_created",
+      "achievedAt": {{ticket.created_at_with_timestamp}},
+      "properties": {
+        "ticket_id": "{{ticket.id}}",
+        "subject": "{{ticket.title}}",
+        "priority": "{{ticket.priority}}",
+        "channel": "{{ticket.via}}"
+      }
+    }
+  ]
+}
+```
+
+7. Click **Save**.
+
+<Admonition type="tip">
+Adjust the <code>units</code> type and value to match the unit type you use in your
+ABsmartly experiments. For example, if your experiments use a <code>user_id</code> unit,
+you may need to use a custom Zendesk user field that contains the user ID instead of
+the email address.
+</Admonition>
+
+## Step 3 — Create the Goal in ABsmartly
+
+1. In the ABsmartly Web Console, go to **Settings > Goals**.
+2. Create a new goal named `zendesk_ticket_created` (matching the `name` in the webhook payload).
+3. You can now use this goal to create metrics.
+
+## Payload Reference
+
+The webhook payload follows the [ABsmartly Collector API](/docs/APIs-and-SDKs/SDK-API/context-publish)
+`PUT /context` format. Here is a summary of the key fields:
+
+| Field | Description |
+| --- | --- |
+| `publishedAt` | Timestamp (Unix ms) of when the event was sent |
+| `units` | Array of unit objects identifying the user. Each has a `type` and `uid` |
+| `goals` | Array of goal objects. Each has a `name`, `achievedAt` timestamp, and optional `properties` |
+
+### Available Zendesk Placeholders
+
+You can use [Zendesk placeholders](https://support.zendesk.com/hc/en-us/articles/4408886858138-Zendesk-Support-placeholders-reference)
+in the webhook payload to dynamically include ticket data. Some useful ones:
+
+| Placeholder | Description |
+| --- | --- |
+| `{{ticket.id}}` | The ticket ID |
+| `{{ticket.title}}` | The ticket subject |
+| `{{ticket.requester.email}}` | The requester's email address |
+| `{{ticket.requester.name}}` | The requester's name |
+| `{{ticket.priority}}` | The ticket priority |
+| `{{ticket.via}}` | The channel the ticket came from |
+| `{{ticket.created_at_with_timestamp}}` | Ticket creation timestamp |
+
+## Tracking Different Ticket Events
+
+You can create multiple triggers to track different types of ticket events as separate goals.
+For example:
+
+- **Ticket solved** — Create a trigger with the condition `Ticket > Status > Changed to > Solved`
+  and set the goal name to `zendesk_ticket_solved`.
+- **High-priority ticket** — Create a trigger with the condition `Ticket > Priority > Is > Urgent`
+  and set the goal name to `zendesk_urgent_ticket_created`.
+
+## Verifying the Integration
+
+1. Create a test ticket in Zendesk from a user whose identifier (e.g. email) is also
+   being tracked in an ABsmartly experiment.
+2. Check the ABsmartly Web Console under the experiment's goals to verify
+   that the `zendesk_ticket_created` event was received.
+3. You can also check the webhook activity in Zendesk under
+   **Admin Center > Apps and integrations > Webhooks** by clicking on your webhook
+   and viewing the **Activity** tab.
+
+If you have any issues setting up the Zendesk integration, please contact us at
+[support@absmartly.com](mailto:support@absmartly.com).
