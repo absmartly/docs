@@ -166,6 +166,8 @@ For different object types, create a separate workflow for each:
 Custom code actions must complete within <strong>20 seconds</strong> and use a maximum
 of <strong>128 MB</strong> of memory. Failed requests due to rate limiting (429) or
 server errors (5xx) are automatically retried by HubSpot for up to three days.
+If you add a <code>try/catch</code> block, make sure to re-throw the error after
+logging — otherwise HubSpot won't retry the action.
 </Admonition>
 
 If you have any issues setting up the HubSpot integration, please contact us at

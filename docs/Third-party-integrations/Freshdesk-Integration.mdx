@@ -47,7 +47,7 @@ to measure whether a new feature reduces or increases support requests.
 
 ```json
 {
-  "publishedAt": {{ticket.created_at_with_timestamp}},
+  "publishedAt": "{{ticket.created_at_with_timestamp}}",
   "units": [
     {
       "type": "email",
@@ -57,7 +57,7 @@ to measure whether a new feature reduces or increases support requests.
   "goals": [
     {
       "name": "freshdesk_ticket_created",
-      "achievedAt": {{ticket.created_at_with_timestamp}},
+      "achievedAt": "{{ticket.created_at_with_timestamp}}",
       "properties": {
         "ticket_id": "{{ticket.id}}",
         "subject": "{{ticket.subject}}",

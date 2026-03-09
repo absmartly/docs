@@ -52,7 +52,7 @@ Named Credentials store the ABsmartly endpoint and authentication details secure
 
 ```json
 {
-  "publishedAt": {!$Flow.CurrentDateTime},
+  "publishedAt": "{!TEXT($Flow.CurrentDateTime)}",
   "units": [
     {
       "type": "email",
@@ -62,7 +62,7 @@ Named Credentials store the ABsmartly endpoint and authentication details secure
   "goals": [
     {
       "name": "salesforce_case_created",
-      "achievedAt": {!$Flow.CurrentDateTime},
+      "achievedAt": "{!TEXT($Flow.CurrentDateTime)}",
       "properties": {
         "case_id": "{!$Record.CaseNumber}",
         "subject": "{!$Record.Subject}",
