@@ -1,0 +1,142 @@
+---
+sidebar_position: 7
+---
+
+import Admonition from "@theme/Admonition";
+
+# Freshdesk Integration
+
+This guide explains how to send Freshdesk support ticket events as goal events to ABsmartly
+using [Freshdesk Automation Rules](https://support.freshdesk.com/support/solutions/articles/132589-using-webhooks-in-automation-rules).
+This allows you to track support ticket creation as a metric in your experiments — for example,
+to measure whether a new feature reduces or increases support requests.
+
+## Prerequisites
+
+1. **ABsmartly account** with access to the Web Console and a valid **SDK API Key**.
+   API Keys can be created under `Settings > API Keys` in the ABsmartly Web Console.
+2. **Freshdesk account** with Admin access to create automation rules.
+3. A **unit type** (e.g. `user_id` or `email`) that is shared between your ABsmartly
+   experiments and your Freshdesk tickets so that events can be attributed to the correct user.
+
+## Step 1 — Create an Automation Rule with a Webhook
+
+1. In Freshdesk, go to **Admin > Workflows > Automations**.
+2. Select the **Ticket Creation** tab (or **Ticket Updates** if you want to trigger on updates).
+3. Click **New Rule**.
+4. Give the rule a name, for example: `Send ticket to ABsmartly`.
+5. Under **Conditions**, configure when the rule should fire. For example, to fire on
+   every new ticket, you can leave the default conditions or add specific filters.
+6. Under **Actions**, select **Trigger Webhook**.
+7. Configure the webhook:
+   - **Request Type**: `POST`
+   - **URL**: Your ABsmartly Collector endpoint followed by `/context`.
+     For example: `https://your-subdomain.absmartly.io/v1/context`
+   - **Requires authentication**: Toggle on, and enter your ABsmartly SDK API Key.
+   - **Custom Headers** (add each on a separate line):
+     ```
+     X-API-Key: YOUR_ABSMARTLY_API_KEY
+     X-Application: www
+     X-Application-Version: 0
+     X-Environment: production
+     X-Agent: freshdesk-webhook
+     ```
+
+<Admonition type="caution">
+Freshdesk automation webhooks support POST requests. Since the ABsmartly Collector API
+expects a PUT request on <code>/context</code>, you may need to use an intermediary
+service (such as a serverless function) to convert the POST to a PUT. Alternatively,
+check with ABsmartly support whether your Collector endpoint accepts POST on
+<code>/context</code>.
+</Admonition>
+
+8. Select **Encoding**: `JSON`.
+9. Select **Advanced** content mode to write a custom JSON body.
+10. Enter the following payload:
+
+```json
+{
+  "publishedAt": {{ticket.created_at_with_timestamp}},
+  "units": [
+    {
+      "type": "email",
+      "uid": "{{ticket.contact.email}}"
+    }
+  ],
+  "goals": [
+    {
+      "name": "freshdesk_ticket_created",
+      "achievedAt": {{ticket.created_at_with_timestamp}},
+      "properties": {
+        "ticket_id": "{{ticket.id}}",
+        "subject": "{{ticket.subject}}",
+        "priority": "{{ticket.priority}}",
+        "status": "{{ticket.status}}"
+      }
+    }
+  ]
+}
+```
+
+11. Click **Save**.
+
+<Admonition type="info">
+The <code>X-Application</code> and <code>X-Environment</code> values must match
+existing entries in your ABsmartly Web Console under <code>Settings &gt; Applications</code>
+and <code>Settings &gt; Environments</code>.
+</Admonition>
+
+<Admonition type="tip">
+Adjust the <code>units</code> type and value to match the unit type you use in your
+ABsmartly experiments. For example, if your experiments use a <code>user_id</code> unit,
+you may need to use a custom Freshdesk contact field that contains the user ID.
+</Admonition>
+
+## Step 2 — Create the Goal in ABsmartly
+
+1. In the ABsmartly Web Console, go to **Settings > Goals**.
+2. Create a new goal named `freshdesk_ticket_created` (matching the `name` in the webhook payload).
+3. You can now use this goal as a metric in any of your experiments.
+
+## Available Freshdesk Placeholders
+
+You can use Freshdesk placeholders in the webhook payload to dynamically include ticket data.
+Some useful ones:
+
+| Placeholder | Description |
+| --- | --- |
+| `{{ticket.id}}` | The ticket ID |
+| `{{ticket.subject}}` | The ticket subject |
+| `{{ticket.contact.email}}` | The requester's email address |
+| `{{ticket.contact.name}}` | The requester's name |
+| `{{ticket.priority}}` | The ticket priority |
+| `{{ticket.status}}` | The ticket status |
+| `{{ticket.company.name}}` | The associated company name |
+| `{{Triggered event}}` | The name of the event that triggered the rule |
+
+## Tracking Different Ticket Events
+
+You can create multiple automation rules to track different types of events as separate goals:
+
+- **Ticket resolved** — Create a rule under **Ticket Updates** with the condition
+  `Status changes to Resolved`, goal name: `freshdesk_ticket_resolved`.
+- **High-priority ticket** — Add a condition `Priority is Urgent`,
+  goal name: `freshdesk_urgent_ticket_created`.
+- **Ticket assigned to group** — Trigger when a ticket is assigned to a specific group,
+  goal name: `freshdesk_ticket_escalated`.
+
+<Admonition type="info">
+Freshdesk automation webhooks are rate-limited to <strong>1,000 calls per hour</strong>.
+Failed requests are automatically retried every 30 minutes for up to 48 attempts.
+</Admonition>
+
+## Verifying the Integration
+
+1. Create a test ticket in Freshdesk from a contact whose identifier (e.g. email) is also
+   being tracked in an ABsmartly experiment.
+2. Check the ABsmartly Web Console under the experiment's goals to verify
+   that the `freshdesk_ticket_created` event was received.
+3. In Freshdesk, check the automation rule's activity log to confirm the webhook was triggered.
+
+If you have any issues setting up the Freshdesk integration, please contact us at
+[support@absmartly.com](mailto:support@absmartly.com).

@@ -1,0 +1,133 @@
+---
+sidebar_position: 5
+---
+
+import Admonition from "@theme/Admonition";
+
+# HubSpot Integration
+
+This guide explains how to send HubSpot CRM events as goal events to ABsmartly
+using [HubSpot Workflows](https://knowledge.hubspot.com/workflows/how-do-i-use-webhooks-with-hubspot-workflows).
+This allows you to track CRM activities — such as deal creation, contact form submissions,
+or lifecycle stage changes — as metrics in your experiments.
+
+## Prerequisites
+
+1. **ABsmartly account** with access to the Web Console and a valid **SDK API Key**.
+   API Keys can be created under `Settings > API Keys` in the ABsmartly Web Console.
+2. **HubSpot account** with an **Operations Hub Professional** or **Enterprise** subscription
+   (required for the webhook workflow action).
+3. A **unit type** (e.g. `user_id` or `email`) that is shared between your ABsmartly
+   experiments and your HubSpot contacts so that events can be attributed to the correct user.
+
+## Step 1 — Create a Workflow with a Webhook Action
+
+1. In HubSpot, go to **Automation > Workflows**.
+2. Click **Create workflow** and choose a workflow type (e.g. **Contact-based**).
+3. Set up your **enrollment trigger**. For example, to fire when a new deal is created:
+   - Select **Deal enrollment trigger** > `Deal is created`.
+4. Click the **+** icon to add an action.
+5. In the **Data ops** section, select **Send a webhook**.
+6. Configure the webhook:
+   - **Method**: `POST`
+   - **Webhook URL**: Your ABsmartly Collector endpoint followed by `/context`.
+     For example: `https://your-subdomain.absmartly.io/v1/context`
+
+<Admonition type="caution">
+HubSpot workflow webhooks only support POST and GET methods. Since the ABsmartly Collector
+API expects a PUT request on <code>/context</code>, you may need to use an intermediary
+service (such as a serverless function or middleware like Zapier) to convert the POST
+request into a PUT request. Alternatively, you can use the
+<a href="/docs/APIs-and-SDKs/SDK-API/context-publish-batch">batch publish endpoint</a>
+if it accepts POST requests.
+</Admonition>
+
+7. Under **Authentication**, select **API key**:
+   - **API key name**: `X-API-Key`
+   - **Location**: `Request header`
+   - **Value**: Your ABsmartly SDK API Key
+8. Under **Customize request body**, add the following properties and static values:
+
+| Type | Key | Value |
+| --- | --- | --- |
+| Static value | `publishedAt` | (use a HubSpot timestamp property or current time) |
+| Static value | `units` | See payload below |
+| Static value | `goals` | See payload below |
+
+<Admonition type="info">
+HubSpot's webhook action uses key-value pairs rather than a free-form JSON body.
+For full control over the payload structure, consider using a middleware service
+(e.g. a serverless function) that receives the HubSpot webhook, transforms the data,
+and forwards it to the ABsmartly Collector API.
+</Admonition>
+
+## Recommended Approach — Using Middleware
+
+Since HubSpot's webhook action has limitations on request method (no PUT) and payload
+structure, the recommended approach is to use a lightweight middleware:
+
+1. Deploy a serverless function (e.g. AWS Lambda, Google Cloud Function, or Cloudflare Worker)
+   that receives the HubSpot POST request.
+2. Transform the payload into the ABsmartly Collector API format.
+3. Forward it as a PUT request to your ABsmartly Collector endpoint.
+
+Example middleware payload to send to ABsmartly:
+
+```json
+{
+  "publishedAt": 1609244179528,
+  "units": [
+    {
+      "type": "email",
+      "uid": "contact@example.com"
+    }
+  ],
+  "goals": [
+    {
+      "name": "hubspot_deal_created",
+      "achievedAt": 1609244179528,
+      "properties": {
+        "deal_name": "Example Deal",
+        "deal_stage": "appointmentscheduled",
+        "pipeline": "default"
+      }
+    }
+  ]
+}
+```
+
+The middleware should include the following headers when forwarding to ABsmartly:
+
+| Header | Value |
+| --- | --- |
+| `X-API-Key` | Your ABsmartly SDK API Key |
+| `X-Application` | The application name matching your ABsmartly Web Console (e.g. `www`) |
+| `X-Application-Version` | `0` |
+| `X-Environment` | The environment name matching your ABsmartly Web Console (e.g. `production`) |
+| `X-Agent` | `hubspot-webhook` |
+
+## Step 2 — Create the Goal in ABsmartly
+
+1. In the ABsmartly Web Console, go to **Settings > Goals**.
+2. Create a new goal with a name matching the `name` in your webhook payload
+   (e.g. `hubspot_deal_created`).
+3. You can now use this goal as a metric in any of your experiments.
+
+## Tracking Different CRM Events
+
+You can create multiple workflows to track different HubSpot events as separate goals:
+
+- **Contact created** — Enroll on `Contact is created`, goal name: `hubspot_contact_created`
+- **Deal won** — Enroll on `Deal stage is Closed Won`, goal name: `hubspot_deal_won`
+- **Form submitted** — Enroll on `Form submission`, goal name: `hubspot_form_submitted`
+- **Lifecycle stage change** — Enroll on `Lifecycle stage is Customer`, goal name: `hubspot_became_customer`
+
+## Verifying the Integration
+
+1. Trigger a test event in HubSpot (e.g. create a test deal) from a user whose identifier
+   is also being tracked in an ABsmartly experiment.
+2. Check the ABsmartly Web Console under the experiment's goals to verify the event was received.
+3. In HubSpot, check the workflow's **History** tab to confirm the webhook was sent successfully.
+
+If you have any issues setting up the HubSpot integration, please contact us at
+[support@absmartly.com](mailto:support@absmartly.com).
