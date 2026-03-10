@@ -1,0 +1,119 @@
+---
+sidebar_position: 8
+---
+
+import Admonition from "@theme/Admonition";
+
+# Intercom Integration
+
+This guide explains how to send Intercom conversation and ticket events as goal events
+to ABsmartly using [Intercom Series webhooks](https://www.intercom.com/help/en/articles/5222039-sending-webhooks-with-series).
+This allows you to track customer support interactions as metrics in your experiments — for
+example, to measure whether a product change reduces the number of support conversations.
+
+## Prerequisites
+
+1. **ABsmartly account** with access to the Web Console and a valid **SDK API Key**.
+   API Keys can be created under `Settings > API Keys` in the ABsmartly Web Console.
+2. **Intercom account** with a plan that supports Series webhooks.
+3. A **unit type** (e.g. `user_id` or `email`) that is shared between your ABsmartly
+   experiments and your Intercom contacts so that events can be attributed to the correct user.
+
+## Step 1 — Create a Series with a Webhook
+
+1. In Intercom, go to **Outbound > Series**.
+2. Click **New Series** and give it a name, for example: `ABsmartly Goal Events`.
+3. Add a **Starting point** rule that defines when the webhook should fire. For example:
+   - `User started a conversation` or
+   - A filter based on user attributes or events.
+4. Add a **Send webhook** block and connect it to your starting point.
+5. Configure the webhook:
+   - **Method**: `PUT`
+   - **URL**: Your ABsmartly Collector endpoint followed by `/context`.
+     For example: `https://your-subdomain.absmartly.io/v1/context`
+   - **Content-Type**: `JSON`
+6. Add the following **headers**:
+
+| Header | Value |
+| --- | --- |
+| `X-API-Key` | Your ABsmartly SDK API Key |
+| `X-Application` | The application name matching your ABsmartly Web Console (e.g. `www`) |
+| `X-Application-Version` | `0` |
+| `X-Environment` | The environment name matching your ABsmartly Web Console (e.g. `production`) |
+| `X-Agent` | `intercom-webhook` |
+
+7. Configure the **request body** with key-value pairs. Use the **{...}** menu to insert
+   dynamic Intercom attributes. Build the following payload:
+
+```json
+{
+  "publishedAt": "{timestamp_ms}",
+  "units": [
+    {
+      "type": "user_id",
+      "uid": "{user_id}"
+    }
+  ],
+  "goals": [
+    {
+      "name": "intercom_conversation_started",
+      "achievedAt": "{timestamp_ms}",
+      "properties": {
+        "user_email": "{email}",
+        "user_name": "{name}",
+        "company": "{company.name}"
+      }
+    }
+  ]
+}
+```
+
+<Admonition type="tip">
+Use the <code>{"{...}"}</code> attribute picker in the Intercom webhook editor to insert
+dynamic user attributes like <code>user_id</code>, <code>email</code>, and
+<code>company.name</code>. The available attributes depend on the data you track in Intercom.
+</Admonition>
+
+8. Click **Test** to verify the webhook with a sample user before activating.
+9. **Set the Series live**.
+
+<Admonition type="info">
+The <code>X-Application</code> and <code>X-Environment</code> values must match
+existing entries in your ABsmartly Web Console under <code>Settings &gt; Applications</code>
+and <code>Settings &gt; Environments</code>.
+</Admonition>
+
+## Step 2 — Create the Goal in ABsmartly
+
+1. In the ABsmartly Web Console, go to **Settings > Goals**.
+2. Create a new goal named `intercom_conversation_started` (matching the `name` in the webhook payload).
+3. You can now use this goal as a metric in any of your experiments.
+
+## Tracking Different Events
+
+You can create multiple Series to track different Intercom events as separate goals:
+
+- **Conversation rated** — Trigger on conversation rating event,
+  goal name: `intercom_conversation_rated`.
+- **User messaged** — Trigger when a user sends a message,
+  goal name: `intercom_user_messaged`.
+- **Ticket created** — Trigger on ticket creation,
+  goal name: `intercom_ticket_created`.
+
+<Admonition type="info">
+If a webhook fails, Intercom will retry up to <strong>2 additional times</strong>.
+After the third attempt, the webhook is marked as failed. You can monitor webhook
+delivery in the Series statistics once the Series is live.
+</Admonition>
+
+## Verifying the Integration
+
+1. Use the **Test** feature in the Series webhook editor to send a test payload
+   with a real user's data.
+2. Check the ABsmartly Web Console under the experiment's goals to verify
+   that the event was received.
+3. Once the Series is live, monitor the webhook statistics in Intercom
+   to confirm successful deliveries.
+
+If you have any issues setting up the Intercom integration, please contact us at
+[support@absmartly.com](mailto:support@absmartly.com).

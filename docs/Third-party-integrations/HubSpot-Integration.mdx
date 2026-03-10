@@ -1,0 +1,174 @@
+---
+sidebar_position: 5
+---
+
+import Admonition from "@theme/Admonition";
+
+# HubSpot Integration
+
+This guide explains how to send HubSpot CRM events as goal events to ABsmartly
+using [HubSpot Workflows](https://knowledge.hubspot.com/workflows/how-do-i-use-webhooks-with-hubspot-workflows).
+This allows you to track CRM activities — such as deal creation, contact form submissions,
+or lifecycle stage changes — as metrics in your experiments.
+
+## Prerequisites
+
+1. **ABsmartly account** with access to the Web Console and a valid **SDK API Key**.
+   API Keys can be created under `Settings > API Keys` in the ABsmartly Web Console.
+2. **HubSpot account** with an **Operations Hub Professional** or **Enterprise** subscription
+   (required for custom code workflow actions).
+3. A **unit type** (e.g. `user_id` or `email`) that is shared between your ABsmartly
+   experiments and your HubSpot contacts so that events can be attributed to the correct user.
+
+<Admonition type="info">
+HubSpot's built-in <strong>Send a webhook</strong> action only supports flat key-value
+JSON payloads. Because the ABsmartly Collector API requires nested objects
+(<code>units</code>, <code>goals</code>), this guide uses a <strong>Custom Code
+Action</strong> instead, which gives full control over the request body.
+</Admonition>
+
+## Step 1 — Store Your API Key as a Secret
+
+1. In HubSpot, go to **Automation > Workflows**.
+2. Open or create a workflow.
+3. Click the **+** icon to add an action, then select **Custom code**.
+4. In the **Secrets** section, click **Add secret** and create a secret:
+   - **Secret name**: `ABSMARTLY_API_KEY`
+   - **Secret value**: Your ABsmartly SDK API Key
+
+## Step 2 — Create a Workflow with a Custom Code Action
+
+1. Create a new workflow and choose a type (e.g. **Contact-based** or **Deal-based**).
+2. Set up your **enrollment triggers**. You can add multiple triggers within the same
+   object type. For example, for a deal-based workflow:
+   - `Deal is created`
+   - `Deal stage is Closed Won`
+   - `Deal property pipeline is changed`
+3. Click the **+** icon and select **Custom code**.
+4. Set the **Language** to `Node.js 20.x`.
+5. Under **Properties to include in code**, add the HubSpot properties you need.
+   For example, for a deal-based workflow:
+   - `dealname`
+   - `dealstage`
+   - `pipeline`
+   - Associated contact `email`
+   - `hs_enrollment_trigger` (contains the trigger that enrolled the record)
+6. Paste the following code:
+
+```javascript
+const axios = require("axios");
+
+const GOAL_NAMES = {
+  "CREATE-deal": "hubspot_deal_created",
+  "PROP_CHANGE-dealstage-closedwon": "hubspot_deal_won",
+  "PROP_CHANGE-pipeline": "hubspot_deal_pipeline_changed",
+};
+
+function resolveGoalName(trigger) {
+  for (const [key, goalName] of Object.entries(GOAL_NAMES)) {
+    if (trigger.includes(key)) {
+      return goalName;
+    }
+  }
+  return "hubspot_deal_event";
+}
+
+exports.main = async (event) => {
+  const email = event.inputFields["email"];
+  if (!email) return;
+
+  const trigger = event.inputFields["hs_enrollment_trigger"] || "";
+  const goalName = resolveGoalName(trigger);
+  const now = Date.now();
+
+  await axios.put(
+    "https://your-subdomain.absmartly.io/v1/context",
+    {
+      publishedAt: now,
+      units: [
+        {
+          type: "email",
+          uid: email,
+        },
+      ],
+      goals: [
+        {
+          name: goalName,
+          achievedAt: now,
+          properties: {
+            deal_name: event.inputFields["dealname"],
+            deal_stage: event.inputFields["dealstage"],
+            pipeline: event.inputFields["pipeline"],
+          },
+        },
+      ],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": process.env.ABSMARTLY_API_KEY,
+        "X-Application": "www",
+        "X-Application-Version": "0",
+        "X-Environment": "production",
+        "X-Agent": "hubspot-workflow",
+      },
+    }
+  );
+};
+```
+
+7. Click **Save** and turn the workflow on.
+
+The code uses the `hs_enrollment_trigger` property to determine which trigger enrolled
+the record and maps it to the appropriate ABsmartly goal name. Edit the `GOAL_NAMES`
+mapping to match the triggers you configured in step 2.
+
+<Admonition type="tip">
+Replace <code>your-subdomain</code> with your actual ABsmartly subdomain, and update
+the <code>X-Application</code> and <code>X-Environment</code> header values to match
+your ABsmartly Web Console settings under <code>Settings &gt; Applications</code>
+and <code>Settings &gt; Environments</code>.
+</Admonition>
+
+<Admonition type="tip">
+Adjust the <code>units</code> type and value to match the unit type you use in your
+ABsmartly experiments. For example, if your experiments use a <code>user_id</code> unit,
+include a custom HubSpot property that stores the user ID and reference it in the code.
+</Admonition>
+
+## Step 3 — Create the Goals in ABsmartly
+
+1. In the ABsmartly Web Console, go to **Settings > Goals**.
+2. Create goals matching each name in the `GOAL_NAMES` mapping
+   (e.g. `hubspot_deal_created`, `hubspot_deal_won`).
+3. You can now use these goals as metrics in any of your experiments.
+
+## Tracking Different Object Types
+
+A single workflow can handle multiple triggers within the same HubSpot object type.
+For different object types, create a separate workflow for each:
+
+| Workflow type | Example triggers | Goal names |
+| --- | --- | --- |
+| **Deal-based** | Deal created, Deal stage changed, Deal won | `hubspot_deal_created`, `hubspot_deal_won` |
+| **Contact-based** | Contact created, Lifecycle stage changed, Form submitted | `hubspot_contact_created`, `hubspot_became_customer`, `hubspot_form_submitted` |
+| **Ticket-based** | Ticket created, Ticket status changed | `hubspot_ticket_created`, `hubspot_ticket_closed` |
+
+## Verifying the Integration
+
+1. Trigger a test event in HubSpot (e.g. create a test deal) from a user whose identifier
+   is also being tracked in an ABsmartly experiment.
+2. Check the ABsmartly Web Console under the experiment's goals to verify the event was received.
+3. In HubSpot, check the workflow's **History** tab to confirm the custom code action
+   executed successfully.
+
+<Admonition type="info">
+Custom code actions must complete within <strong>20 seconds</strong> and use a maximum
+of <strong>128 MB</strong> of memory. Failed requests due to rate limiting (429) or
+server errors (5xx) are automatically retried by HubSpot for up to three days.
+If you add a <code>try/catch</code> block, make sure to re-throw the error after
+logging — otherwise HubSpot won't retry the action.
+</Admonition>
+
+If you have any issues setting up the HubSpot integration, please contact us at
+[support@absmartly.com](mailto:support@absmartly.com).
