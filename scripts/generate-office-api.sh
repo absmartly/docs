@@ -43,9 +43,9 @@ TSOA_SPEC="src/generated/openapi.json"
 echo "Merging tsoa spec with existing nodeapi spec..."
 echo "  - tsoa spec (takes priority for duplicate paths)"
 echo "  - nodeapi-spec.yaml (fills in remaining endpoints)"
-npx -y @redocly/cli join \
+node "${DOCS_DIR}/scripts/merge-specs.mjs" \
   "$TSOA_SPEC" \
   "${DOCS_DIR}/nodeapi-spec.yaml" \
-  -o "${DOCS_DIR}/office-api-spec.json"
+  "${DOCS_DIR}/office-api-spec.json"
 
 echo "Merged Office API spec generated successfully from $BRANCH"
