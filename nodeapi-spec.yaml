@@ -12,12 +12,12 @@ externalDocs:
   description: Find out more about ABsmartly
   url: "https://www.absmartly.com"
 servers:
-  - url: https://sandbox.absmartly.com/v1
+  - url: https://sandbox.absmartly.com
 security:
   - UserApiKey: []
 
 paths:
-  /experiments:
+  /v1/experiments:
     get:
       summary: Experiments LIST
       description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
@@ -186,7 +186,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Experiment"
 
-  /experiments/{id}:
+  /v1/experiments/{id}:
     get:
       summary: Experiment GET
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
@@ -210,7 +210,7 @@ paths:
                   experiment:
                     $ref: "#/components/schemas/Experiment"
 
-  /experiments/{id}/start:
+  /v1/experiments/{id}/start:
     put:
       summary: Experiment START
       description: "**Required Permissions**: `Experiment Start` or `Experiment Admin`"
@@ -257,7 +257,7 @@ paths:
                   ok:
                     type: boolean
 
-  /experiments/{id}/stop:
+  /v1/experiments/{id}/stop:
     put:
       summary: Experiment STOP
       description: "**Required Permissions**: `Experiment Stop` or `Experiment Admin`"
@@ -304,7 +304,7 @@ paths:
                   ok:
                     type: boolean
 
-  /experiments/{id}/full_on:
+  /v1/experiments/{id}/full_on:
     put:
       summary: Experiment FULL ON
       description: "**Required Permissions**: `Experiment Full On` or `Experiment Admin`"
@@ -351,7 +351,7 @@ paths:
                   ok:
                     type: boolean
 
-  /experiments/{id}/archive:
+  /v1/experiments/{id}/archive:
     put:
       summary: Experiment ARCHIVE
       description: "**Required Permissions**: `Experiment Archive` or `Experiment Admin`"
@@ -404,7 +404,7 @@ paths:
                   ok:
                     type: boolean
 
-  /experiments/{id}/participants/history:
+  /v1/experiments/{id}/participants/history:
     post:
       summary: Experiment Participants History DATA
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
@@ -492,7 +492,7 @@ paths:
                       items:
                         type: number
 
-  /experiments/{id}/metrics/main/history:
+  /v1/experiments/{id}/metrics/main/history:
     post:
       summary: Experiment Main Metrics History DATA
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
@@ -593,7 +593,7 @@ paths:
                       items:
                         type: number
 
-  /experiments/{id}/metrics/main:
+  /v1/experiments/{id}/metrics/main:
     post:
       summary: Experiment Main Metrics DATA
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
@@ -685,7 +685,7 @@ paths:
                       items:
                         type: number
 
-  /experiments/{id}/activity:
+  /v1/experiments/{id}/activity:
     get:
       summary: Experiment Activity GET
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
@@ -760,7 +760,7 @@ paths:
                     items:
                       type: string
 
-  /experiments/{experimentId}/activity/{commentId}/reply:
+  /v1/experiments/{experimentId}/activity/{commentId}/reply:
     post:
       summary: Experiment Comment Reply CREATE
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
@@ -814,7 +814,7 @@ paths:
                     type: array
                     items:
                       type: string
-  /api_keys:
+  /v1/api_keys:
     get:
       summary: API Keys LIST
       description: "**Required Permissions**: `ApiKey List` or `ApiKey Admin`"
@@ -860,7 +860,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/ApiKey"
 
-  /api_keys/{id}:
+  /v1/api_keys/{id}:
     get:
       summary: API Key GET
       description: "**Required Permissions**: `ApiKey Get` or `ApiKey Admin`"
@@ -882,7 +882,7 @@ paths:
                   api_key:
                     $ref: "#/components/schemas/ApiKey"
 
-  /applications:
+  /v1/applications:
     get:
       summary: Applications LIST
       description: "**Required Permissions**: `Application List` or `Application Admin`"
@@ -928,7 +928,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Application"
 
-  /applications/{id}:
+  /v1/applications/{id}:
     get:
       summary: Application GET
       description: "**Required Permissions**: `Application Get` or `Application Admin`"
@@ -950,7 +950,7 @@ paths:
                   application:
                     $ref: "#/components/schemas/Application"
 
-  /cors:
+  /v1/cors:
     get:
       summary: CORS Allowed Origins LIST
       description: "**Required Permissions**: `CorsAllowedOrigin List` or `CorsAllowedOrigin Admin`"
@@ -996,7 +996,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/CORS"
 
-  /cors/{id}:
+  /v1/cors/{id}:
     get:
       summary: CORS Allowed Origin GET
       description: "**Required Permissions**: `CorsAllowedOrigin Get` or `CorsAllowedOrigin Admin`"
@@ -1018,7 +1018,7 @@ paths:
                   cors_allowed_origin:
                     $ref: "#/components/schemas/CORS"
 
-  /environments:
+  /v1/environments:
     get:
       description: "**Required Permissions**: `Environment List` or `Environment Admin`"
       summary: Environments LIST
@@ -1064,7 +1064,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Environment"
 
-  /environments/{id}:
+  /v1/environments/{id}:
     get:
       summary: Environment GET
       description: "**Required Permissions**: `Environment Get` or `Environment Admin`"
@@ -1086,7 +1086,7 @@ paths:
                   environment:
                     $ref: "#/components/schemas/Environment"
 
-  /experiment_annotations:
+  /v1/experiment_annotations:
     get:
       summary: Experiment Annotations LIST
       description: "**Required Permissions**: `Annotation List` or `Annotation Admin`"
@@ -1138,7 +1138,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/ExperimentAnnotation"
 
-  /experiment_annotations/{id}:
+  /v1/experiment_annotations/{id}:
     get:
       summary: Experiment Annotation GET
       description: "**Required Permissions**: `Annotation Get` or `Annotation Admin`"
@@ -1160,7 +1160,7 @@ paths:
                   experiment_annotation:
                     $ref: "#/components/schemas/ExperimentAnnotation"
 
-  /experiment_tags:
+  /v1/experiment_tags:
     get:
       summary: Experiment Tags LIST
       description: "**Required Permissions**: `Experiment List` or `Experiment Admin`"
@@ -1206,7 +1206,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/ExperimentTag"
 
-  /experiment_tags/{id}:
+  /v1/experiment_tags/{id}:
     get:
       summary: Experiment Tag GET
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
@@ -1228,7 +1228,7 @@ paths:
                   experiment_tag:
                     $ref: "#/components/schemas/ExperimentTag"
 
-  /goal_tags:
+  /v1/goal_tags:
     get:
       summary: Goal Tags LIST
       description: "**Required Permissions**: `Goal List` or `Goal Admin`"
@@ -1274,7 +1274,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/GoalTag"
 
-  /goal_tags/{id}:
+  /v1/goal_tags/{id}:
     get:
       summary: Goal Tag GET
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
@@ -1296,7 +1296,7 @@ paths:
                   goal_tag:
                     $ref: "#/components/schemas/GoalTag"
 
-  /goals:
+  /v1/goals:
     get:
       summary: Goals LIST
       description: "**Required Permissions**: `Goal List` or `Goal Admin`"
@@ -1342,7 +1342,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Goal"
 
-  /goals/{id}:
+  /v1/goals/{id}:
     get:
       summary: Goal GET
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
@@ -1364,7 +1364,7 @@ paths:
                   goal:
                     $ref: "#/components/schemas/Goal"
 
-  /metric_tags:
+  /v1/metric_tags:
     get:
       summary: Metric Tags LIST
       description: "**Required Permissions**: `Metric List` or `Metric Admin`"
@@ -1410,7 +1410,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/MetricTag"
 
-  /metric_tags/{id}:
+  /v1/metric_tags/{id}:
     get:
       summary: Metric Tag GET
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
@@ -1432,7 +1432,7 @@ paths:
                   metric_tag:
                     $ref: "#/components/schemas/MetricTag"
 
-  /metrics:
+  /v1/metrics:
     get:
       summary: Metrics LIST
       description: "**Required Permissions**: `Metric List` or `Metric Admin`"
@@ -1496,7 +1496,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Metric"
 
-  /metrics/{id}:
+  /v1/metrics/{id}:
     get:
       summary: Metric GET
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
@@ -1518,7 +1518,7 @@ paths:
                   metric:
                     $ref: "#/components/schemas/Metric"
 
-  /permission_categories:
+  /v1/permission_categories:
     get:
       summary: Permission Categories LIST
       parameters:
@@ -1556,7 +1556,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/PermissionCategories"
 
-  /permissions:
+  /v1/permissions:
     get:
       summary: Permissions LIST
       parameters:
@@ -1594,7 +1594,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Permission"
 
-  /roles:
+  /v1/roles:
     get:
       summary: Roles LIST
       description: "**Required Permissions**: `Role List` or `Role Admin`"
@@ -1640,7 +1640,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Role"
 
-  /roles/{id}:
+  /v1/roles/{id}:
     get:
       summary: Role GET
       description: "**Required Permissions**: `Role Get` or `Role Admin`"
@@ -1662,7 +1662,7 @@ paths:
                   role:
                     $ref: "#/components/schemas/Role"
 
-  /segments:
+  /v1/segments:
     get:
       summary: Segments LIST
       description: "**Required Permissions**: `Segment List` or `Segment Admin`"
@@ -1708,7 +1708,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Segment"
 
-  /segments/{id}:
+  /v1/segments/{id}:
     get:
       summary: Segment GET
       description: "**Required Permissions**: `Segment Get` or `Segment Admin`"
@@ -1730,7 +1730,7 @@ paths:
                   segment:
                     $ref: "#/components/schemas/Segment"
 
-  /teams:
+  /v1/teams:
     get:
       summary: Teams LIST
       description: "**Required Permissions**: `Team List` or `Team Admin`"
@@ -1776,7 +1776,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Team"
 
-  /teams/{id}:
+  /v1/teams/{id}:
     get:
       summary: Team GET
       description: "**Required Permissions**: `Team Get` or `Team Admin`"
@@ -1798,7 +1798,7 @@ paths:
                   team:
                     $ref: "#/components/schemas/Team"
 
-  /unit_types:
+  /v1/unit_types:
     get:
       summary: Units LIST
       description: "**Required Permissions**: `UnitType List` or `UnitType Admin`"
@@ -1844,7 +1844,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/UnitType"
 
-  /unit_types/{id}:
+  /v1/unit_types/{id}:
     get:
       summary: Unit GET
       description: "**Required Permissions**: `UnitType Get` or `UnitType Admin`"
@@ -1866,7 +1866,7 @@ paths:
                   unit_type:
                     $ref: "#/components/schemas/UnitType"
 
-  /users:
+  /v1/users:
     get:
       summary: Users LIST
       description: "**Required Permissions**: `User List` or `User Admin`"
@@ -1912,7 +1912,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/User"
 
-  /users/{id}:
+  /v1/users/{id}:
     get:
       summary: User GET
       description: "**Required Permissions**: `User Get` or `User Admin`"
@@ -1934,7 +1934,7 @@ paths:
                   user:
                     $ref: "#/components/schemas/User"
 
-  /users/{id}/api_keys:
+  /v1/users/{id}/api_keys:
     get:
       summary: User API keys GET
       description: "**Required Permissions**: `User Get` or `User Admin`"
@@ -1965,7 +1965,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/ApiKey"
 
-  /webhook_events:
+  /v1/webhook_events:
     get:
       summary: Webhook Events LIST
       description: "**Required Permissions**: `Webhook List` or `Webhook Admin`"
@@ -2011,7 +2011,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/WebhookEvent"
 
-  /webhooks:
+  /v1/webhooks:
     get:
       summary: Webhooks LIST
       description: "**Required Permissions**: `Webhook List` or `Webhook Admin`"
@@ -2057,7 +2057,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Webhook"
 
-  /webhooks/{id}:
+  /v1/webhooks/{id}:
     get:
       summary: Webhook GET
       description: "**Required Permissions**: `Webhook Get` or `Webhook Admin`"
