@@ -94,17 +94,9 @@ const config = {
               sidebarCollapsed: false,
             },
           },
-          nodeapi: {
-            specPath: "nodeapi-spec.yaml",
-            outputDir: "docs/APIs-and-SDKs/Web-Console-API", // Output directory for generated .mdx docs
-            sidebarOptions: {
-              sidebarCollapsible: false,
-              sidebarCollapsed: false,
-            },
-          },
           office: {
             specPath: "office-api-spec.json",
-            outputDir: "docs/APIs-and-SDKs/Office-API",
+            outputDir: "docs/APIs-and-SDKs/Web-Console-API",
             sidebarOptions: {
               sidebarCollapsible: false,
               sidebarCollapsed: false,

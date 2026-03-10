@@ -38,5 +38,14 @@ cd ../../backend
 npm ci --ignore-scripts
 npx tsoa spec
 
-cp src/generated/openapi.json "${DOCS_DIR}/office-api-spec.json"
-echo "Office API spec generated successfully from $BRANCH"
+TSOA_SPEC="src/generated/openapi.json"
+
+echo "Merging tsoa spec with existing nodeapi spec..."
+echo "  - tsoa spec (takes priority for duplicate paths)"
+echo "  - nodeapi-spec.yaml (fills in remaining endpoints)"
+npx -y @redocly/cli join \
+  "$TSOA_SPEC" \
+  "${DOCS_DIR}/nodeapi-spec.yaml" \
+  -o "${DOCS_DIR}/office-api-spec.json"
+
+echo "Merged Office API spec generated successfully from $BRANCH"
