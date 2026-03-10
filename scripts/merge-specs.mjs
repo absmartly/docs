@@ -23,7 +23,7 @@ const fallback = loadSpec(fallbackPath);
 const merged = {
   openapi: primary.openapi || fallback.openapi,
   info: { ...fallback.info, ...primary.info },
-  servers: primary.servers || fallback.servers,
+  servers: stripTrailingSlashes(primary.servers || fallback.servers),
   security: primary.security || fallback.security,
   tags: mergeTags(primary.tags, fallback.tags),
   paths: { ...fallback.paths, ...primary.paths },
@@ -32,6 +32,11 @@ const merged = {
 
 if (fallback.externalDocs || primary.externalDocs) {
   merged.externalDocs = primary.externalDocs || fallback.externalDocs;
+}
+
+function stripTrailingSlashes(servers) {
+  if (!servers) return servers;
+  return servers.map((s) => ({ ...s, url: s.url.replace(/\/+$/, "") }));
 }
 
 function mergeTags(primaryTags = [], fallbackTags = []) {
