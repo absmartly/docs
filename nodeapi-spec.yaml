@@ -186,12 +186,12 @@ paths:
                 items:
                   $ref: "#/components/schemas/Experiment"
 
-  /experiments/{experimentId}:
+  /experiments/{id}:
     get:
       summary: Experiment GET
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           description: The `id` of the experiment which you want data from.
@@ -210,12 +210,12 @@ paths:
                   experiment:
                     $ref: "#/components/schemas/Experiment"
 
-  /experiments/{experimentId}/start:
+  /experiments/{id}/start:
     put:
       summary: Experiment START
       description: "**Required Permissions**: `Experiment Start` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           description: The `id` of the experiment which you want to start.
@@ -257,12 +257,12 @@ paths:
                   ok:
                     type: boolean
 
-  /experiments/{experimentId}/stop:
+  /experiments/{id}/stop:
     put:
       summary: Experiment STOP
       description: "**Required Permissions**: `Experiment Stop` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           description: The `id` of the experiment which you want to stop.
@@ -304,12 +304,12 @@ paths:
                   ok:
                     type: boolean
 
-  /experiments/{experimentId}/full_on:
+  /experiments/{id}/full_on:
     put:
       summary: Experiment FULL ON
       description: "**Required Permissions**: `Experiment Full On` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           description: The `id` of the experiment which you want to put full on.
@@ -351,12 +351,12 @@ paths:
                   ok:
                     type: boolean
 
-  /experiments/{experimentId}/archive:
+  /experiments/{id}/archive:
     put:
       summary: Experiment ARCHIVE
       description: "**Required Permissions**: `Experiment Archive` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           description: The `id` of the experiment which you want to archive.
@@ -404,12 +404,12 @@ paths:
                   ok:
                     type: boolean
 
-  /experiments/{experimentId}/participants/history:
+  /experiments/{id}/participants/history:
     post:
       summary: Experiment Participants History DATA
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           description: The `id` of the experiment that you want the history of.
@@ -492,12 +492,12 @@ paths:
                       items:
                         type: number
 
-  /experiments/{experimentId}/metrics/main/history:
+  /experiments/{id}/metrics/main/history:
     post:
       summary: Experiment Main Metrics History DATA
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           description: The `id` of the experiment that you want the history of.
@@ -593,12 +593,12 @@ paths:
                       items:
                         type: number
 
-  /experiments/{experimentId}/metrics/main:
+  /experiments/{id}/metrics/main:
     post:
       summary: Experiment Main Metrics DATA
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           description: The `id` of the experiment that you want the main metrics of.
@@ -685,12 +685,12 @@ paths:
                       items:
                         type: number
 
-  /experiments/{experimentId}/activity:
+  /experiments/{id}/activity:
     get:
       summary: Experiment Activity GET
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           schema:
@@ -718,7 +718,7 @@ paths:
       summary: Experiment Comment CREATE
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           schema:
@@ -765,14 +765,14 @@ paths:
       summary: Experiment Comment Reply CREATE
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: experimentId
+        - name: id
           in: path
           required: true
           schema:
             type: integer
             format: int64
             minimum: 1
-        - name: commentId
+        - name: id
           in: path
           required: true
           description: The `id` of the comment where the reply will be created.
@@ -860,12 +860,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/ApiKey"
 
-  /api_keys/{apiKeyId}:
+  /api_keys/{id}:
     get:
       summary: API Key GET
       description: "**Required Permissions**: `ApiKey Get` or `ApiKey Admin`"
       parameters:
-        - name: apiKeyId
+        - name: id
           in: path
           required: true
           schema:
@@ -928,12 +928,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/Application"
 
-  /applications/{applicationId}:
+  /applications/{id}:
     get:
       summary: Application GET
       description: "**Required Permissions**: `Application Get` or `Application Admin`"
       parameters:
-        - name: applicationId
+        - name: id
           in: path
           required: true
           schema:
@@ -996,12 +996,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/CORS"
 
-  /cors/{corsId}:
+  /cors/{id}:
     get:
       summary: CORS Allowed Origin GET
       description: "**Required Permissions**: `CorsAllowedOrigin Get` or `CorsAllowedOrigin Admin`"
       parameters:
-        - name: applicationId
+        - name: id
           in: path
           required: true
           schema:
@@ -1064,12 +1064,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/Environment"
 
-  /environments/{environmentId}:
+  /environments/{id}:
     get:
       summary: Environment GET
       description: "**Required Permissions**: `Environment Get` or `Environment Admin`"
       parameters:
-        - name: environmentId
+        - name: id
           in: path
           required: true
           schema:
@@ -1138,12 +1138,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/ExperimentAnnotation"
 
-  /experiment_annotations/{experimentAnnotationId}:
+  /experiment_annotations/{id}:
     get:
       summary: Experiment Annotation GET
       description: "**Required Permissions**: `Annotation Get` or `Annotation Admin`"
       parameters:
-        - name: experimentAnnotationId
+        - name: id
           in: path
           required: true
           schema:
@@ -1206,12 +1206,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/ExperimentTag"
 
-  /experiment_tags/{experimentTagId}:
+  /experiment_tags/{id}:
     get:
       summary: Experiment Tag GET
       description: "**Required Permissions**: `Experiment Get` or `Experiment Admin`"
       parameters:
-        - name: experimentTagId
+        - name: id
           in: path
           required: true
           schema:
@@ -1274,12 +1274,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/GoalTag"
 
-  /goal_tags/{goalTagId}:
+  /goal_tags/{id}:
     get:
       summary: Goal Tag GET
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
       parameters:
-        - name: goalTagId
+        - name: id
           in: path
           required: true
           schema:
@@ -1342,12 +1342,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/Goal"
 
-  /goals/{goalId}:
+  /goals/{id}:
     get:
       summary: Goal GET
       description: "**Required Permissions**: `Goal Get` or `Goal Admin`"
       parameters:
-        - name: goalId
+        - name: id
           in: path
           required: true
           schema:
@@ -1410,12 +1410,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/MetricTag"
 
-  /metric_tags/{metricTagId}:
+  /metric_tags/{id}:
     get:
       summary: Metric Tag GET
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
       parameters:
-        - name: metricTagId
+        - name: id
           in: path
           required: true
           schema:
@@ -1496,12 +1496,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/Metric"
 
-  /metrics/{metricId}:
+  /metrics/{id}:
     get:
       summary: Metric GET
       description: "**Required Permissions**: `Metric Get` or `Metric Admin`"
       parameters:
-        - name: metricId
+        - name: id
           in: path
           required: true
           schema:
@@ -1640,12 +1640,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/Role"
 
-  /roles/{roleId}:
+  /roles/{id}:
     get:
       summary: Role GET
       description: "**Required Permissions**: `Role Get` or `Role Admin`"
       parameters:
-        - name: roleId
+        - name: id
           in: path
           required: true
           schema:
@@ -1708,12 +1708,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/Segment"
 
-  /segments/{segmentId}:
+  /segments/{id}:
     get:
       summary: Segment GET
       description: "**Required Permissions**: `Segment Get` or `Segment Admin`"
       parameters:
-        - name: segmentId
+        - name: id
           in: path
           required: true
           schema:
@@ -1776,12 +1776,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/Team"
 
-  /teams/{teamId}:
+  /teams/{id}:
     get:
       summary: Team GET
       description: "**Required Permissions**: `Team Get` or `Team Admin`"
       parameters:
-        - name: teamId
+        - name: id
           in: path
           required: true
           schema:
@@ -1844,12 +1844,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/UnitType"
 
-  /unit_types/{unitTypeId}:
+  /unit_types/{id}:
     get:
       summary: Unit GET
       description: "**Required Permissions**: `UnitType Get` or `UnitType Admin`"
       parameters:
-        - name: unitTypeId
+        - name: id
           in: path
           required: true
           schema:
@@ -1912,12 +1912,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/User"
 
-  /users/{userId}:
+  /users/{id}:
     get:
       summary: User GET
       description: "**Required Permissions**: `User Get` or `User Admin`"
       parameters:
-        - name: userId
+        - name: id
           in: path
           required: true
           schema:
@@ -1934,12 +1934,12 @@ paths:
                   user:
                     $ref: "#/components/schemas/User"
 
-  /users/{userId}/api_keys:
+  /users/{id}/api_keys:
     get:
       summary: User API keys GET
       description: "**Required Permissions**: `User Get` or `User Admin`"
       parameters:
-        - name: userId
+        - name: id
           in: path
           required: true
           schema:
@@ -2057,12 +2057,12 @@ paths:
                     items:
                       $ref: "#/components/schemas/Webhook"
 
-  /webhooks/{webhookId}:
+  /webhooks/{id}:
     get:
       summary: Webhook GET
       description: "**Required Permissions**: `Webhook Get` or `Webhook Admin`"
       parameters:
-        - name: webhookId
+        - name: id
           in: path
           required: true
           schema:
