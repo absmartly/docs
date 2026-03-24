@@ -1,0 +1,50 @@
+---
+sidebar_position: 7
+---
+
+import Image from "../../../src/components/Image"
+
+# Events Settings
+
+The Settings tab lets you monitor your event usage quota and configure alerts to stay ahead of consumption limits.
+To access it, select `Events` from the sidebar and click on the **Settings** tab.
+
+<Image
+  img="release-notes/events-settings.png"
+  alt="Events Settings showing usage quota and alerts"
+  maxWidth="50rem"
+  centered
+/>
+
+## Usage Quota
+
+The usage quota section shows your current event consumption against your monthly quota:
+
+- **Events consumed** — The total number of events used in the current billing month, shown as both a count and a percentage of your quota
+- **Quota forecast** — If your current consumption rate is on track to exceed the quota, a warning will be displayed with an estimate of when you will reach the limit
+
+The quota resets automatically at the start of every calendar month.
+
+## Usage Alerts
+
+Usage alerts notify your team when event consumption reaches specific percentage thresholds of your monthly quota.
+This helps you take action before hitting your limit whether that means investigating unexpected spikes or planning for additional capacity.
+Alerts are sent as in-platform notifications so make sure to keep an eye on your notification center and encourage your team to do the same.
+
+### Creating an Alert
+
+1. Set the **threshold percentage** using the input field (e.g. 75% of quota)
+2. Click **Add alert**
+3. Add one or more **recipients** who should be notified when the threshold is reached
+
+### Managing Alerts
+
+Each alert can be:
+
+- **Enabled or disabled** using the toggle switch — disabled alerts are kept but won't trigger notifications
+- **Deleted** using the remove button if no longer needed
+- **Updated** by adding or removing recipients at any time
+
+:::tip
+Set up multiple alerts at different thresholds (e.g. 25%, 50%, 75%, 90%) to get early warnings as consumption increases throughout the month.
+:::
