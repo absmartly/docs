@@ -14,7 +14,7 @@ a brand new **Events Dashboard**, and the introduction of **Warehouse Native** s
 ### Metric Graphs Available Everywhere
 
 Until now, metric graphs were only available in **Explore Metrics**. With this release, you can visualize metric data wherever metrics appear across the platform, including on experiment results.
-Graphs are generated on demand when you click `show visualization` on any metric, so you can quickly explore the data without leaving your current workflow.
+Graphs are generated on demand when you click `show visualisation` on any metric, so you can quickly explore the data without leaving your current workflow.
 
 Five graph types are available:
 
@@ -24,7 +24,7 @@ Five graph types are available:
 - **Metric Value** — Track metric value over time
 - **Distribution Histogram** — Compare variant distributions across bins
 
-Each visualization can be expanded or collapsed individually, giving you full control over what you see without leaving your current workflow.
+Each visualisation can be expanded or collapsed individually, giving you full control over what you see without leaving your current workflow.
 
 <Image maxWidth="40rem" centered img="release-notes/metric-graphs-everywhere.png" alt="Metric graphs available on experiment results" />
 
@@ -71,9 +71,18 @@ and instead always see a specific variant. This is useful for:
 
 > Requires an SDK update.
 
-### Improved Targeting for App Versions
+### Semantic Versioning for Targeting
 
-Targeting conditions for **app version** have been improved, giving you more precise control over which app versions are included in an experiment.
+Targeting conditions now support **semantic versioning**, allowing you to write precise version-based rules using the `major.minor.patch` format. 
+This makes it easy to target or exclude specific app versions in your experiments.
+
+For example, you can now create targeting rules like:
+
+- `app_version >= 3.2.0` — target all users on version 3.2.0 or above
+- `app_version < 4.0.0` — exclude users who have upgraded to the next major version
+- `app_version >= 3.2.0 AND app_version < 4.0.0` — target a specific version range
+
+Version comparisons follow the [semantic versioning](https://semver.org/) standard, so `3.10.0` is correctly treated as greater than `3.9.0`.
 
 > Requires an SDK update.
 
@@ -88,7 +97,7 @@ you can now control what percentage of traffic is exposed to the feature.
 
 ### Exclusion Rules
 
-Just like experiments, feature flags now support **exclusion rules**. See above.
+Just like experiments, feature flags now support **exclusion rules**. See [Exclusion Rules](`#exclusion-rules`) in the Experiments section above.
 
 > Requires an SDK update.
 
@@ -108,8 +117,8 @@ Currently supported warehouses:
 - **Databricks**
 
 Reach out to our team if you want to learn more about Warehouse Native. 
-Currently ABsmartly is either `cloud` or `warehouse native`, but we are working on launching a `hybrid` option that 
-will allow you to use both in parallel. Stay tuned for updates on this.
+Currently, ABsmartly is available in either `cloud` or `warehouse native` deployment modes, 
+but we are working on launching a `hybrid` option that will allow you to use both in parallel. Stay tuned for updates on this.
 
 ---
 
