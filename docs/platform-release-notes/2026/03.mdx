@@ -11,7 +11,8 @@ a brand new **Events Dashboard**, and the introduction of **Warehouse Native** s
 
 ### Metric Graphs Available Everywhere
 
-Until now, metric graphs were only available in **Explore Metrics**. With this release, you can visualize metric data wherever metrics appear across the platform — including on experiment results.
+Until now, metric graphs were only available in **Explore Metrics**. With this release, you can visualize metric data wherever metrics appear across the platform, including on experiment results.
+Graphs are generated on demand when you click `show visualization` on any metric, so you can quickly explore the data without leaving your current workflow.
 
 Five graph types are available:
 
@@ -59,8 +60,8 @@ Configure these limits in your settings page to keep experiments focused and pre
 You can now define **exclusion rules** to specify which visitors or groups of visitors should be excluded from an experiment 
 and instead always see a specific variant. This is useful for:
 
-- **Testing** — force yourself into a variant to verify the experience
-- **Internal users** — ensure employees or beta users always see the new variant without polluting experiment data
+- **QA** — QA can force themselves into a variant to validate the experience
+- **Special users** — ensure `employees`, `beta users`, etc. always see the new variant without polluting experiment data
 
 > Requires an SDK update.
 
@@ -76,16 +77,12 @@ Targeting conditions for **app version** have been improved, giving you more pre
 
 ### Traffic Allocation
 
-Feature flags now support **traffic allocation**. Previously, features were always rolled out to 100% of eligible users — 
+Feature flags now support **traffic allocation**. Previously, features were always rolled out to 100% of eligible users, 
 you can now control what percentage of traffic is exposed to the feature.
 
 ### Exclusion Rules
 
-Just like experiments, feature flags now support **exclusion rules**. Specify which visitors or groups of visitors 
-should be excluded from the feature and always see a specific variant. Ideal for:
-
-- **Testing** — force yourself into a variant to verify the experience
-- **Internal or beta users** — ensure specific groups always see the new variant
+Just like experiments, feature flags now support **exclusion rules**. See above.
 
 > Requires an SDK update.
 
@@ -104,7 +101,9 @@ Currently supported warehouses:
 - **Snowflake**
 - **Databricks**
 
-Reach out to our team if you want to learn more about Warehouse Native and how it fits your data architecture.
+Reach out to our team if you want to learn more about Warehouse Native. 
+Currently ABsmartly is either `cloud` or `warehouse native`, but we are working on launching a `hybrid` option that 
+will allow you to use both in parallel. Stay tuned for updates on this.
 
 ---
 
