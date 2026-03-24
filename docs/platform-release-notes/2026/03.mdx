@@ -1,0 +1,119 @@
+# March 2026
+
+## Overview
+
+This is a new release packed with new capabilities across the platform. Highlights include **metric graphs everywhere**, 
+a brand new **Events Dashboard**, and the introduction of **Warehouse Native** support that lets customers plug ABsmartly directly into their data warehouse.
+
+---
+
+## Metrics
+
+### Metric Graphs Available Everywhere
+
+Until now, metric graphs were only available in **Explore Metrics**. With this release, you can visualize metric data wherever metrics appear across the platform — including on experiment results.
+
+Five graph types are available:
+
+- **Impact** — View relative impact statistics with confidence intervals
+- **Confidence** — Track confidence level and p-values over time
+- **Mean** — Track mean metric value with standard deviation
+- **Metric Value** — Track metric value over time
+- **Distribution Histogram** — Compare variant distributions across bins
+
+Each visualization can be expanded or collapsed individually, giving you full control over what you see without leaving your current workflow.
+
+### Favourite Metrics
+
+You can now **mark metrics as favourites**, making it faster to find and access the metrics you use most often. 
+The search algorithm has been improved to **prioritise your favourites**, so the metrics that matter to you surface first.
+
+### Improved Metric Catalog Search
+
+The metric list now supports additional filtering options to help you navigate large catalogs more efficiently:
+
+- **Search by review state** — quickly filter metrics by their approval status
+- **Filter by metric usage** — see which metrics are used across different categories
+
+---
+
+## Events
+
+### Events Dashboard
+
+A brand new **Events Dashboard** gives you visibility into your event consumption, grouped by **team** or **application**. 
+This makes it easy to understand which events are powering your experimentation program 
+and how consumption is distributed across your organisation.
+
+---
+
+## Experiments
+
+### Metric Limits
+
+You can now **limit the number of secondary, guardrail, and exploratory metrics** allowed per experiment. 
+Configure these limits in your settings page to keep experiments focused and prevent metric overload.
+
+### Exclusion Rules
+
+You can now define **exclusion rules** to specify which visitors or groups of visitors should be excluded from an experiment 
+and instead always see a specific variant. This is useful for:
+
+- **Testing** — force yourself into a variant to verify the experience
+- **Internal users** — ensure employees or beta users always see the new variant without polluting experiment data
+
+> Requires an SDK update.
+
+### Improved Targeting for App Versions
+
+Targeting conditions for **app version** have been improved, giving you more precise control over which app versions are included in an experiment.
+
+> Requires an SDK update.
+
+---
+
+## Feature Flags
+
+### Traffic Allocation
+
+Feature flags now support **traffic allocation**. Previously, features were always rolled out to 100% of eligible users — 
+you can now control what percentage of traffic is exposed to the feature.
+
+### Exclusion Rules
+
+Just like experiments, feature flags now support **exclusion rules**. Specify which visitors or groups of visitors 
+should be excluded from the feature and always see a specific variant. Ideal for:
+
+- **Testing** — force yourself into a variant to verify the experience
+- **Internal or beta users** — ensure specific groups always see the new variant
+
+> Requires an SDK update.
+
+---
+
+## Warehouse Native
+
+ABsmartly now offers a **Warehouse Native** deployment option. Instead of the standard cloud setup, 
+you can plug ABsmartly directly into your existing data warehouse — keeping your experimentation data 
+where the rest of your data already lives.
+
+Currently supported warehouses:
+
+- **BigQuery**
+- **ClickHouse**
+- **Snowflake**
+- **Databricks**
+
+Reach out to our team if you want to learn more about Warehouse Native and how it fits your data architecture.
+
+---
+
+## Bug Fixes
+
+This release also includes a number of stability and reliability improvements based on feedback from users.
+
+---
+
+## Questions or Feedback?
+
+We're always happy to help, so reach out if you have any questions or want to explore how to make the most of these new capabilities.

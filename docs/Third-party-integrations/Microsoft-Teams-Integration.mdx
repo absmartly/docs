@@ -1,0 +1,70 @@
+---
+sidebar_position: 5
+---
+
+import Admonition from "@theme/Admonition";
+
+# Microsoft Teams Integration
+
+This guide explains how to send ABsmartly experiment notifications to a Microsoft Teams channel
+using [Teams Incoming Webhooks](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook).
+This allows your team to receive real-time alerts in Teams when experiment events occur in ABsmartly,
+such as when an experiment starts, stops, or reaches a significant result.
+
+## Prerequisites
+
+1. **ABsmartly account** with access to the Web Console and the **FullAdmin** role, which is required to create Webhooks.
+2. **Microsoft Teams** with the ability to add apps or configure workflows in your target channel.
+
+## Step 1 — Create an Incoming Webhook in Teams
+
+<Admonition type="info">
+Microsoft has deprecated the legacy Office 365 Connectors in favour of the Workflows app
+powered by Power Automate. The steps below use the <strong>Workflows</strong> approach,
+which is the current recommended method.
+</Admonition>
+
+1. In Microsoft Teams, navigate to the channel where you want to receive notifications.
+2. Click the **+** (Add a tab) button or select **Workflows** from the channel menu.
+3. Search for **"Post to a channel when a webhook request is received"** and select it.
+4. Give the workflow a name, for example: `ABsmartly Notifications`.
+5. Click **Next**, then **Add workflow**.
+6. Copy the **webhook URL** that is generated. You will need this in the next step.
+
+## Step 2 — Create a Webhook in ABsmartly
+
+1. In the ABsmartly Web Console, go to **Settings > Webhooks**.
+2. Click **Create Webhook**.
+3. Fill in the webhook details:
+   - **URL**: Paste the Teams webhook URL you copied in Step 1.
+   - **Description**: `Microsoft Teams notifications`
+4. Select which events should trigger the webhook. For example:
+   - Experiment started
+   - Experiment stopped
+   - Experiment reached significance
+5. Click **Save**.
+
+## Step 3 — Verify the Integration
+
+1. Trigger one of the events you subscribed to in Step 2 (for example, start an experiment).
+2. Check your Teams channel to confirm the notification has arrived.
+
+If the message does not appear, check the webhook activity in the ABsmartly Web Console
+under **Settings > Webhooks** by clicking on your webhook and reviewing the delivery log.
+
+<Admonition type="tip">
+You can create multiple webhooks pointing to different Teams channels to route different
+types of notifications. For example, you could send significance alerts to a data analysis
+channel and experiment lifecycle events to a product channel.
+</Admonition>
+
+## Troubleshooting
+
+| Issue | Possible cause | Solution |
+| --- | --- | --- |
+| No messages in Teams | Incorrect webhook URL | Regenerate the workflow URL in Teams and update the ABsmartly webhook |
+| Workflow disabled | Power Automate workflow turned off | Re-enable it in [Power Automate](https://make.powerautomate.com) |
+| Missing events | Events not selected in ABsmartly | Edit the webhook in ABsmartly and enable the required events |
+
+If you have any issues setting up the Microsoft Teams integration, please contact us at
+[support@absmartly.com](mailto:support@absmartly.com).
