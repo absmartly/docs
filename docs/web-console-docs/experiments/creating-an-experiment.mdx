@@ -116,6 +116,47 @@ their data will not be tracked.
 When audience enforced is **off**, it is the responsibility of the experimenter to ensure that only eligible visitors are shown the experiments.
 ABsmartly will only warn you when visitors not matching the audience are exposed to your experiment. In this case you would see an **audience mismatch warning** in your experiment. This option makes it easier to full-on when the experiment is completed as the audience filtering is not part of the experiment set up.
 
+## Exclusion Rules
+
+Exclusion rules let you define which visitors or groups of visitors should be **excluded from the experiment** and instead always see a specific variant.
+
+{/* TODO: Add screenshot once available */}
+
+### When to Use Exclusion Rules
+
+Exclusion rules are useful in two main scenarios:
+
+- **Testing & QA** — Force yourself or your team into a specific variant to verify the experience before or during the experiment, without being counted as a participant.
+- **Internal or beta users** — Ensure that a specific group of users (e.g. internal employees, beta testers) always sees the new variant without polluting the experiment data.
+
+### How It Works
+
+An exclusion rule defines:
+
+1. **Who to exclude** — A set of conditions that identify the visitors to exclude, based on [context attributes](/docs/APIs-and-SDKs/SDK-Documentation/Advanced/context-attributes.mdx) (e.g. `user_type = internal`, `email ends_with @yourcompany.com`).
+2. **Which variant to show** — The variant that excluded visitors will always be assigned to.
+
+Excluded visitors are **not part of the experiment**. They will see the assigned variant but their data will not be tracked or included in the experiment results.
+
+:::info
+You can add multiple exclusion rules to a single experiment. Rules are evaluated in order — a visitor matching any rule will be excluded.
+:::
+
+### Example
+
+To exclude internal users and always show them Variant B:
+
+| Condition | Variant |
+|---|---|
+| `user_type` equals `internal` | Variant B |
+
+This ensures your team can experience the new variant in production while keeping the experiment data clean.
+
+:::caution
+Exclusion rules require an **SDK update**. Make sure your SDKs are up to date before using this feature. 
+See the [SDK documentation](/docs/APIs-and-SDKs/SDK-Documentation/basic-usage) for details.
+:::
+
 ## Metrics
 
 In this section you can define the metrics to use to test your hypothesis and to measure the impact of your experiment.
