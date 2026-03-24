@@ -33,6 +33,22 @@ user-defined attributes in every publish payload:
 | `environment` | The environment from the SDK configuration |
 | `app_version` | The application version, only included if greater than `0` |
 
+:::note
+The `app_version` attribute is derived from the `application` option passed
+during SDK initialization. To set it, pass `application` as an object instead
+of a string:
+
+```javascript
+const sdk = new absmartly.SDK({
+  // ...
+  application: { name: "your-app", version: 3 },
+});
+```
+
+If `application` is passed as a plain string, the version defaults to `0` and
+`app_version` will not be included.
+:::
+
 :::info
 System attributes are disabled by default to avoid adding extra data to the
 payload for existing integrations. You must explicitly opt-in by setting

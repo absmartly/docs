@@ -10,3 +10,6 @@ const sdk = new absmartly.SDK({
   environment: process.env.NODE_ENV,
   application: process.env.APPLICATION_NAME,
 });
+
+// You can also pass application as an object to track the app version:
+// application: { name: "your-app", version: 3 }
