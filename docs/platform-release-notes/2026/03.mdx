@@ -63,33 +63,6 @@ and how consumption is distributed across your organisation.
 You can now **limit the number of secondary, guardrail, and exploratory metrics** allowed per experiment. 
 Configure these limits in your settings page to keep experiments focused and prevent metric overload.
 
-### Exclusion Rules
-
-You can now define **exclusion rules** to specify which visitors or groups of visitors should be excluded from an experiment 
-and instead always see a specific variant. This is useful for:
-
-- **Testing & QA** — force yourself into a variant to verify the experience
-- **Internal or beta users** — ensure specific groups always see the new variant without polluting experiment data
-
-<Image maxWidth="40rem" centered img="release-notes/exclusion-rules.png" alt="Exclusion rules configuration showing rules for internal and beta users" />
-
-> Requires an SDK update.
-
-### Semantic Versioning for Targeting
-
-Targeting conditions now support **semantic versioning**, allowing you to write precise version-based rules using the `major.minor.patch` format. 
-This makes it easy to target or exclude specific app versions in your experiments.
-
-For example, you can now create targeting rules like:
-
-- `app_version >= 3.2.0` — target all users on version 3.2.0 or above
-- `app_version < 4.0.0` — exclude users who have upgraded to the next major version
-- `app_version >= 3.2.0 AND app_version < 4.0.0` — target a specific version range
-
-Version comparisons follow the [semantic versioning](https://semver.org/) standard, so `3.10.0` is correctly treated as greater than `3.9.0`.
-
-> Requires an SDK update.
-
 ---
 
 ## Feature Flags
@@ -98,12 +71,6 @@ Version comparisons follow the [semantic versioning](https://semver.org/) standa
 
 Feature flags now support **traffic allocation**. Previously, features were always rolled out to 100% of eligible users, 
 you can now control what percentage of traffic is exposed to the feature.
-
-### Exclusion Rules
-
-Just like experiments, feature flags now support **exclusion rules**. See [Exclusion Rules](#exclusion-rules) in the Experiments section above.
-
-> Requires an SDK update.
 
 ---
 
@@ -119,6 +86,7 @@ Currently supported warehouses:
 - **ClickHouse**
 - **Snowflake**
 - **Databricks**
+- **Redshift**
 
 Reach out to our team if you want to learn more about Warehouse Native. 
 Currently, ABsmartly is available in either `cloud` or `warehouse native` deployment modes, 
