@@ -3,7 +3,6 @@ sidebar_position: 3
 ---
 
 import Image from "../../../src/components/Image";
-import FutureDate from "../../../src/components/FutureDate";
 
 # Setting up a Group Sequential Experiment
 
@@ -38,7 +37,7 @@ Confidence ensures your findings are robust and minimizes misleading conclusions
 
 :::info
 The confidence reflects the confidence level for a 2-sided analysis. A 2-sided analysis means that we are testing in both direction, looking for superiority and inferiority.
-A 90% confidence in a 2-sided analysis (like we use in Fixed Horizon), means a 5% false positive on each side of the interval (5% of the false positive with be significantly positive and 5% will be significantly negative)
+A 90% confidence in a 2-sided analysis (like we use in Fixed Horizon), means a 5% false positive on each side of the interval (5% of the false positive will be significantly positive and 5% will be significantly negative)
 Our Group Sequential uses a one-sided analysis (it only look for superiority and makes no distinction between negative and inconclusive). 
 For consistency and alignment between analysis types, we still ask for the confidence as if it was a 2-sided analysis but adjust it accordingly to reflect the 1-sided analysis.
 
@@ -125,7 +124,7 @@ This is often important as Monday visitors could react diffently to changes than
 Optionally, it is also possible to specify a minimum interval between each interim analysis (defined in days). Interim analyses will not happen more often than specified.
 While the GST engine will use this parameter in the setup it cannot guarantee that each interim analysis will happen at this precice interval. 
 In practice time between analysis will probably be larger than the specific minimum interval as it is dependant on many factors,
- for example the maximum number of possible analysis (currently 11), MDE, daily visitors counts, metric variance, etc.
+ for example, the maximum number of possible analyses (currently 11), MDE, daily visitors counts, metric variance, etc.
 
 As with the time to first analysis, this can be useful to ensure a good representative sample of visitors at each interim analysis.
 

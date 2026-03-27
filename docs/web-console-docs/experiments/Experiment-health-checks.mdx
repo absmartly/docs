@@ -64,7 +64,8 @@ Ensures that the actual audience for the experiment matches the intended target 
 This check is only performed when [Audience Enforced is turned off](/docs/web-console-docs/experiments/creating-an-experiment#targeting-audience). This serves as a reminder to put the required checks in your code to separate that targeting audience.
 
 **Why is it important?**  
-It means that a non-intended audience is being exposed to your changes.Including the wrong audience can dilute the experiment’s impact and obscure meaningful insights.
+It means that a non-intended audience is being exposed to your changes.
+Including the wrong audience can dilute the experiment’s impact and obscure meaningful insights.
 
 **Example**  
 An experiment targeted at mobile users unintentionally includes desktop users.
@@ -84,7 +85,7 @@ Interactions between experiments can confound results, making it difficult to is
 Two experiments affect the same page element, creating overlapping effects.
 
 **What action should be taken?**  
-Assess the risk of the interaction and both one or both of the experiments to eliminate the interaction.
+Assess the risk of the interaction and abort one or both of the experiments to eliminate the interaction.
 
 
 ### Variables Conflicting
