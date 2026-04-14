@@ -20,24 +20,22 @@ to experiment data.
 
 ## Architecture
 
-```
-ABsmartly                          Google Cloud
-┌──────────┐   POST (webhook)   ┌──────────────────┐
-│ Webhooker │ ────────────────► │  Cloud Function   │
-└──────────┘                    │  (Python)         │
-                                │                   │
-                                │  1. Download ZIP  │
-┌──────────┐   GET /v1/...      │  2. Extract CSVs  │
-│ Exporter  │ ◄──────────────── │  3. Sort by name  │
-│ (API)     │ ────────────────► │  4. Load to BQ    │
-└──────────┘   ZIP file         │                   │
-                                └───────┬──────────┘
-                                        │
-                                        ▼
-                                ┌──────────────────┐
-                                │    BigQuery       │
-                                │    Dataset        │
-                                └──────────────────┘
+```mermaid
+sequenceDiagram
+    participant AB as ABsmartly Webhooker
+    participant CF as Cloud Function (Python)
+    participant API as ABsmartly Exporter API
+    participant BQ as BigQuery
+
+    AB->>CF: POST webhook event
+    Note over CF: Validate payload &<br/>extract download_url
+    CF->>API: GET /v1/experiments/exports/...
+    API-->>CF: ZIP file
+    Note over CF: Extract CSVs from ZIP<br/>Sort by filename<br/>(preserves row order)
+    loop For each CSV (sorted)
+        CF->>BQ: Load CSV rows
+    end
+    CF-->>AB: 200 OK
 ```
 
 ## Prerequisites
@@ -138,8 +136,9 @@ you see out-of-memory errors in Cloud Function logs.
 
 <Admonition type="tip">
 For production use, consider removing <code>--allow-unauthenticated</code> and
-instead validating a shared secret. You can add a custom header to the ABsmartly
-webhook and check it in the function.
+instead validating requests by checking the webhook payload structure and
+source IP, or placing the Cloud Function behind an API gateway with
+authentication.
 </Admonition>
 
 ## Step 4 — Configure the Webhook in ABsmartly
