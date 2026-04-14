@@ -15,6 +15,10 @@ const config = {
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
 
+  markdown: {
+    mermaid: true,
+  },
+
   // Speeding up the build with swc - was 2m34s on M1 Macbook, now 1m29s
   webpack: {
     jsLoader: (isServer) => ({
@@ -107,7 +111,7 @@ const config = {
     ],
   ],
 
-  themes: ["docusaurus-theme-openapi-docs"],
+  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
