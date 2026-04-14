@@ -38,6 +38,8 @@ def handle_webhook(request):
         return ("Bad request: missing download_url in metadata", 400)
 
     experiment_id = payload.get("id")
+    if TABLE_PER_EXPERIMENT and not experiment_id:
+        return ("Bad request: TABLE_PER_EXPERIMENT is enabled but payload has no experiment id", 400)
 
     zip_bytes = download_export(download_url)
     csv_files = extract_and_sort_csvs(zip_bytes)

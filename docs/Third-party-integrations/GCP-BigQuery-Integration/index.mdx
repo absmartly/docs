@@ -92,8 +92,9 @@ the CSV files by name, and loads them into BigQuery in order.
 <Admonition type="info">
 Large exports are split into multiple CSV files (at 5 million rows each). The
 files are named so that sorting alphabetically preserves the original row order.
-The function sorts and loads them sequentially to maintain that order in
-BigQuery.
+The function sorts and loads them sequentially to ensure deterministic ingestion
+order. When querying in BigQuery, use an explicit <code>ORDER BY</code> clause
+to guarantee result ordering.
 </Admonition>
 
 <CodeBlock language="python" title="main.py" showLineNumbers>
