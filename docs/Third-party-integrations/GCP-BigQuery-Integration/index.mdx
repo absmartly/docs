@@ -269,42 +269,101 @@ credentials.
 
 ## Querying Experiment Data
 
-### Single table mode
+The exported data contains **events** — exposures, goals, and attributes — all
+in the same table, distinguished by the `event_type` column. Key columns
+include:
 
-When using a single table, filter by experiment ID to get data for a specific
-experiment:
+| Column | Description |
+| --- | --- |
+| `unit_uid` | The unit identifier (e.g. user ID) |
+| `unit_type` | The unit type (e.g. `user_id`, `anonymous_id`) |
+| `event_type` | `exposure`, `goal`, or `attribute` |
+| `event_at` | Event timestamp |
+| `experiment_id` | The experiment ID (exposure events) |
+| `experiment_name` | The experiment name (exposure events) |
+| `variant` | The assigned variant (exposure events) |
+| `goal_name` | The goal name (goal events) |
+| `properties` | Goal properties as JSON (goal events) |
+
+### Count unique participants per variant
+
+Each unit may have multiple exposure events. To count unique participants,
+deduplicate by `unit_uid` using the **first exposure** (earliest `event_at`):
 
 ```sql
--- Get all data for experiment 42
-SELECT *
-FROM `YOUR_PROJECT_ID.absmartly.experiment_exports`
-WHERE experiment_id = 42;
-
--- Count exposures per variant
 SELECT
   variant,
-  COUNT(*) AS exposures
-FROM `YOUR_PROJECT_ID.absmartly.experiment_exports`
-WHERE experiment_id = 42
+  COUNT(*) AS unique_participants
+FROM (
+  SELECT
+    unit_uid,
+    variant,
+    ROW_NUMBER() OVER (PARTITION BY unit_uid ORDER BY event_at ASC) AS rn
+  FROM `YOUR_PROJECT_ID.absmartly.experiment_exports`
+  WHERE event_type = 'exposure'
+    AND experiment_id = 42
+)
+WHERE rn = 1
 GROUP BY variant
 ORDER BY variant;
 ```
 
-### Per-experiment table mode
+### Conversion rate per variant
 
-When using one table per experiment, each table is named
-`experiment_{id}_exports`:
+To calculate conversion rates, join each unit's first exposure with whether
+they achieved a goal. A unit counts as a converter if they triggered the goal
+**after** their first exposure:
 
 ```sql
--- Get all data for experiment 42
-SELECT *
-FROM `YOUR_PROJECT_ID.absmartly.experiment_42_exports`;
+WITH first_exposures AS (
+  SELECT
+    unit_uid,
+    variant,
+    MIN(event_at) AS first_exposed_at
+  FROM `YOUR_PROJECT_ID.absmartly.experiment_exports`
+  WHERE event_type = 'exposure'
+    AND experiment_id = 42
+  GROUP BY unit_uid, variant
+),
+conversions AS (
+  SELECT DISTINCT
+    g.unit_uid
+  FROM `YOUR_PROJECT_ID.absmartly.experiment_exports` g
+  INNER JOIN first_exposures e ON g.unit_uid = e.unit_uid
+  WHERE g.event_type = 'goal'
+    AND g.goal_name = 'your_goal_name'
+    AND g.event_at >= e.first_exposed_at
+)
+SELECT
+  e.variant,
+  COUNT(*) AS unique_participants,
+  COUNTIF(c.unit_uid IS NOT NULL) AS converters,
+  ROUND(COUNTIF(c.unit_uid IS NOT NULL) / COUNT(*), 4) AS conversion_rate
+FROM first_exposures e
+LEFT JOIN conversions c ON e.unit_uid = c.unit_uid
+GROUP BY e.variant
+ORDER BY e.variant;
+```
 
--- Count exposures per variant
+### Per-experiment table mode
+
+When using `TABLE_PER_EXPERIMENT=true`, replace the table name with the
+experiment-specific table and remove the `experiment_id` filter:
+
+```sql
+-- Unique participants per variant
 SELECT
   variant,
-  COUNT(*) AS exposures
-FROM `YOUR_PROJECT_ID.absmartly.experiment_42_exports`
+  COUNT(*) AS unique_participants
+FROM (
+  SELECT
+    unit_uid,
+    variant,
+    ROW_NUMBER() OVER (PARTITION BY unit_uid ORDER BY event_at ASC) AS rn
+  FROM `YOUR_PROJECT_ID.absmartly.experiment_42_exports`
+  WHERE event_type = 'exposure'
+)
+WHERE rn = 1
 GROUP BY variant
 ORDER BY variant;
 ```
