@@ -1,8 +1,6 @@
-import csv
 import io
 import json
 import os
-import tempfile
 import zipfile
 
 import functions_framework
@@ -10,11 +8,12 @@ import requests
 from google.cloud import bigquery
 
 
-ABSMARTLY_API_URL = os.environ["ABSMARTLY_API_URL"]  # e.g. https://your-subdomain.absmartly.io
+ABSMARTLY_API_URL = os.environ["ABSMARTLY_API_URL"]  # e.g. https://your-subdomain.absmartly.com
 ABSMARTLY_API_KEY = os.environ["ABSMARTLY_API_KEY"]
 BIGQUERY_DATASET = os.environ["BIGQUERY_DATASET"]  # e.g. absmartly
 BIGQUERY_TABLE = os.environ.get("BIGQUERY_TABLE", "experiment_exports")
 TABLE_PER_EXPERIMENT = os.environ.get("TABLE_PER_EXPERIMENT", "false").lower() == "true"
+DOWNLOAD_TIMEOUT = int(os.environ.get("DOWNLOAD_TIMEOUT", "300"))
 
 
 @functions_framework.http
@@ -54,7 +53,11 @@ def handle_webhook(request):
 def download_export(download_url: str) -> bytes:
     """Download the export ZIP file from the ABsmartly API."""
     url = f"{ABSMARTLY_API_URL.rstrip('/')}{download_url}"
-    response = requests.get(url, headers={"Authorization": f"Api-Key {ABSMARTLY_API_KEY}"})
+    response = requests.get(
+        url,
+        headers={"Authorization": f"Api-Key {ABSMARTLY_API_KEY}"},
+        timeout=DOWNLOAD_TIMEOUT,
+    )
     response.raise_for_status()
     return response.content
 

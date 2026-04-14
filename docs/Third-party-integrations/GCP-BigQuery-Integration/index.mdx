@@ -44,7 +44,7 @@ sequenceDiagram
 ## Prerequisites
 
 1. **ABsmartly account** with access to the Web Console and a valid **API Key**.
-   API Keys can be created under `Settings > API Keys` in the ABsmartly Web Console.
+   API Keys can be created under `User Profile > API Keys` in the ABsmartly Web Console.
 2. **Google Cloud project** with billing enabled.
 3. **BigQuery API** and **Cloud Functions API** enabled in your GCP project.
 4. **`gcloud` CLI** installed and authenticated
@@ -117,16 +117,30 @@ gcloud functions deploy absmartly-export-to-bigquery \
   --runtime=python312 \
   --entry-point=handle_webhook \
   --trigger-http \
-  --allow-unauthenticated \
   --memory=512Mi \
   --timeout=540s \
   --set-env-vars="\
-ABSMARTLY_API_URL=https://your-subdomain.absmartly.io,\
-ABSMARTLY_API_KEY=YOUR_API_KEY,\
+ABSMARTLY_API_URL=https://your-subdomain.absmartly.com,\
 BIGQUERY_DATASET=absmartly,\
 BIGQUERY_TABLE=experiment_exports,\
-TABLE_PER_EXPERIMENT=false"
+TABLE_PER_EXPERIMENT=false" \
+  --set-secrets="ABSMARTLY_API_KEY=absmartly-api-key:latest"
 ```
+
+<Admonition type="info">
+The <code>--set-secrets</code> flag references a secret stored in
+<a href="https://cloud.google.com/secret-manager">Google Secret Manager</a>.
+Create the secret first:
+<pre><code>echo -n "YOUR_API_KEY" | gcloud secrets create absmartly-api-key --data-file=-</code></pre>
+This avoids exposing the API key in shell history or CI logs.
+</Admonition>
+
+<Admonition type="tip">
+By default, Cloud Functions require authenticated invocation. If you need the
+function to accept unauthenticated requests (e.g. because ABsmartly cannot
+authenticate to GCP), add <code>--allow-unauthenticated</code> to the deploy
+command.
+</Admonition>
 
 ### Table strategy
 
@@ -150,13 +164,6 @@ The <code>--timeout=540s</code> (9 minutes) allows time for large exports to
 download and load. Adjust based on your typical export sizes. The
 <code>--memory=512Mi</code> should be sufficient for most exports; increase if
 you see out-of-memory errors in Cloud Function logs.
-</Admonition>
-
-<Admonition type="tip">
-For production use, consider removing <code>--allow-unauthenticated</code> and
-instead validating requests by checking the webhook payload structure and
-source IP, or placing the Cloud Function behind an API gateway with
-authentication.
 </Admonition>
 
 ## Step 4 — Configure the Webhook in ABsmartly
@@ -376,7 +383,7 @@ ORDER BY variant;
 | `401 Unauthorized` on download | `ABSMARTLY_API_KEY` is incorrect or missing |
 | `404 Not Found` on download | Export file may have expired — check `ABSMARTLY_API_URL` and the `download_url` |
 | BigQuery permission error | Cloud Function's service account needs **BigQuery Data Editor** role on the dataset |
-| Timeout errors | Increase `--timeout` and `--memory` in the deploy command |
+| Timeout errors | Increase `--timeout` and `--memory` in the deployment command |
 | Rows appear out of order | Ensure CSV files are sorted by name before loading (the provided function does this) |
 
 If you have any issues setting up this integration, please contact us at
