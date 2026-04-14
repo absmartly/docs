@@ -53,5 +53,8 @@
   },
   "engines": {
     "node": ">=16.14"
+  },
+  "resolutions": {
+    "cytoscape": "3.28.1"
   }
 }
