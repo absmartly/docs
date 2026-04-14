@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 9
 ---
 
 import Admonition from "@theme/Admonition";
@@ -13,10 +13,13 @@ This guide shows how to automatically load ABsmartly experiment data exports
 into Google BigQuery using a Cloud Function triggered by the
 **ExperimentDataExportReady** webhook event.
 
-When a data export completes in ABsmartly, a webhook fires with the download
-URL. A Cloud Function receives it, downloads the ZIP file, extracts the CSV
-files, and loads them into BigQuery — giving your data team direct SQL access
-to experiment data.
+When you download experiment event data from an experiment's page in the
+ABsmartly Web Console, the platform generates a ZIP file containing the
+exported data as CSV files. Once the export is ready, the
+**ExperimentDataExportReady** webhook fires with the download URL. A Cloud
+Function receives it, downloads the ZIP, extracts the CSV files, and loads
+them into BigQuery — giving your data team direct SQL access to experiment
+data.
 
 ## Architecture
 
@@ -121,8 +124,23 @@ gcloud functions deploy absmartly-export-to-bigquery \
 ABSMARTLY_API_URL=https://your-subdomain.absmartly.io,\
 ABSMARTLY_API_KEY=YOUR_API_KEY,\
 BIGQUERY_DATASET=absmartly,\
-BIGQUERY_TABLE=experiment_exports"
+BIGQUERY_TABLE=experiment_exports,\
+TABLE_PER_EXPERIMENT=false"
 ```
+
+### Table strategy
+
+The `TABLE_PER_EXPERIMENT` environment variable controls how data is organized
+in BigQuery:
+
+- **`false`** (default) — All exports go into a single table (set by
+  `BIGQUERY_TABLE`, e.g. `experiment_exports`). The experiment ID is included
+  as a column in the data, so you can filter by experiment. This is simpler to
+  manage and query across experiments.
+- **`true`** — Each experiment gets its own table, named
+  `experiment_{id}_exports` (e.g. `experiment_42_exports`). This gives better
+  isolation between experiments and avoids mixing schemas if different
+  experiments export different columns.
 
 After deployment, `gcloud` prints the function's **URL**. Copy it — you'll need
 it in the next step.
@@ -150,9 +168,9 @@ authentication.
    - **Events**: Select **ExperimentDataExportReady**.
 4. Save the webhook.
 
-When an experiment data export completes, ABsmartly will POST the event to your
-Cloud Function, which will automatically download and load the data into
-BigQuery.
+Now, whenever you download experiment event data from an experiment's page and
+the export completes, ABsmartly will POST the event to your Cloud Function,
+which will automatically download and load the data into BigQuery.
 
 ## Webhook Payload Reference
 
@@ -236,7 +254,8 @@ credentials.
 
 ## Verifying the Integration
 
-1. In the ABsmartly Web Console, trigger a data export for an experiment.
+1. In the ABsmartly Web Console, open an experiment and download its event data
+   from the experiment page.
 2. Wait for the export to complete — this fires the
    `ExperimentDataExportReady` webhook.
 3. Check the Cloud Function logs for the download and load output:
@@ -247,6 +266,48 @@ credentials.
    ```sql
    SELECT * FROM `YOUR_PROJECT_ID.absmartly.experiment_exports` LIMIT 10;
    ```
+
+## Querying Experiment Data
+
+### Single table mode
+
+When using a single table, filter by experiment ID to get data for a specific
+experiment:
+
+```sql
+-- Get all data for experiment 42
+SELECT *
+FROM `YOUR_PROJECT_ID.absmartly.experiment_exports`
+WHERE experiment_id = 42;
+
+-- Count exposures per variant
+SELECT
+  variant,
+  COUNT(*) AS exposures
+FROM `YOUR_PROJECT_ID.absmartly.experiment_exports`
+WHERE experiment_id = 42
+GROUP BY variant
+ORDER BY variant;
+```
+
+### Per-experiment table mode
+
+When using one table per experiment, each table is named
+`experiment_{id}_exports`:
+
+```sql
+-- Get all data for experiment 42
+SELECT *
+FROM `YOUR_PROJECT_ID.absmartly.experiment_42_exports`;
+
+-- Count exposures per variant
+SELECT
+  variant,
+  COUNT(*) AS exposures
+FROM `YOUR_PROJECT_ID.absmartly.experiment_42_exports`
+GROUP BY variant
+ORDER BY variant;
+```
 
 ### Troubleshooting
 

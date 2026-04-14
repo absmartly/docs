@@ -4,7 +4,6 @@ import json
 import os
 import tempfile
 import zipfile
-from sorted_containers import SortedList
 
 import functions_framework
 import requests
@@ -14,7 +13,8 @@ from google.cloud import bigquery
 ABSMARTLY_API_URL = os.environ["ABSMARTLY_API_URL"]  # e.g. https://your-subdomain.absmartly.io
 ABSMARTLY_API_KEY = os.environ["ABSMARTLY_API_KEY"]
 BIGQUERY_DATASET = os.environ["BIGQUERY_DATASET"]  # e.g. absmartly
-BIGQUERY_TABLE = os.environ["BIGQUERY_TABLE"]  # e.g. experiment_exports
+BIGQUERY_TABLE = os.environ.get("BIGQUERY_TABLE", "experiment_exports")
+TABLE_PER_EXPERIMENT = os.environ.get("TABLE_PER_EXPERIMENT", "false").lower() == "true"
 
 
 @functions_framework.http
@@ -38,9 +38,11 @@ def handle_webhook(request):
     if not download_url:
         return ("Bad request: missing download_url in metadata", 400)
 
+    experiment_id = payload.get("id")
+
     zip_bytes = download_export(download_url)
     csv_files = extract_and_sort_csvs(zip_bytes)
-    rows_loaded = load_csvs_into_bigquery(csv_files)
+    rows_loaded = load_csvs_into_bigquery(csv_files, experiment_id)
 
     return (json.dumps({
         "status": "ok",
@@ -72,10 +74,16 @@ def extract_and_sort_csvs(zip_bytes: bytes) -> list[tuple[str, bytes]]:
     return csv_files
 
 
-def load_csvs_into_bigquery(csv_files: list[tuple[str, bytes]]) -> int:
+def load_csvs_into_bigquery(csv_files: list[tuple[str, bytes]], experiment_id: int) -> int:
     """Load CSV files into BigQuery in order, return total rows loaded."""
     client = bigquery.Client()
-    table_ref = f"{client.project}.{BIGQUERY_DATASET}.{BIGQUERY_TABLE}"
+
+    if TABLE_PER_EXPERIMENT and experiment_id:
+        table_name = f"experiment_{experiment_id}_exports"
+    else:
+        table_name = BIGQUERY_TABLE
+
+    table_ref = f"{client.project}.{BIGQUERY_DATASET}.{table_name}"
 
     job_config = bigquery.LoadJobConfig(
         source_format=bigquery.SourceFormat.CSV,
