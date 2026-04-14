@@ -259,6 +259,101 @@ read permissions on the bucket. For GCS, grant the
 credentials.
 </Admonition>
 
+## Filtering Exports
+
+You may not want every experiment export to land in BigQuery. The webhook
+payload contains the experiment ID, so the Cloud Function can call the
+ABsmartly Web Console API to fetch experiment details and decide whether to
+proceed based on tags, owners, or teams.
+
+Add this helper function to `main.py`:
+
+```python
+def get_experiment(experiment_id: int) -> dict:
+    """Fetch experiment details from the ABsmartly Web Console API."""
+    url = f"{ABSMARTLY_API_URL.rstrip('/')}/v1/experiments/{experiment_id}"
+    response = requests.get(
+        url,
+        headers={"Authorization": f"Api-Key {ABSMARTLY_API_KEY}"},
+        timeout=DOWNLOAD_TIMEOUT,
+    )
+    response.raise_for_status()
+    return response.json().get("experiment", {})
+```
+
+Then add a filter check in `handle_webhook` before the download:
+
+```python
+    experiment_id = payload.get("id")
+    experiment = get_experiment(experiment_id)
+
+    if not should_export(experiment):
+        return (f"Skipped: experiment {experiment_id} does not match filter", 200)
+
+    zip_bytes = download_export(download_url)
+    # ...
+```
+
+Below are examples of `should_export` functions you can mix and match.
+
+### Filter by experiment tag
+
+Only export experiments tagged with a specific tag (e.g. `bigquery`):
+
+```python
+REQUIRED_TAG = os.environ.get("EXPORT_FILTER_TAG", "bigquery")
+
+def should_export(experiment: dict) -> bool:
+    """Only export if the experiment has the required tag."""
+    tags = {
+        t["experiment_tag"]["tag"]
+        for t in experiment.get("experiment_tags", [])
+    }
+    return REQUIRED_TAG in tags
+```
+
+### Filter by experiment owner
+
+Only export experiments owned by a specific user:
+
+```python
+REQUIRED_OWNER_EMAIL = os.environ.get("EXPORT_FILTER_OWNER", "")
+
+def should_export(experiment: dict) -> bool:
+    """Only export if the experiment is owned by the specified user."""
+    if not REQUIRED_OWNER_EMAIL:
+        return True
+    owner_emails = {
+        o["user"]["email"]
+        for o in experiment.get("owners", [])
+    }
+    return REQUIRED_OWNER_EMAIL in owner_emails
+```
+
+### Filter by team
+
+Only export experiments belonging to a specific team:
+
+```python
+REQUIRED_TEAM = os.environ.get("EXPORT_FILTER_TEAM", "")
+
+def should_export(experiment: dict) -> bool:
+    """Only export if the experiment belongs to the specified team."""
+    if not REQUIRED_TEAM:
+        return True
+    team_names = {
+        t["team"]["name"]
+        for t in experiment.get("teams", [])
+    }
+    return REQUIRED_TEAM in team_names
+```
+
+<Admonition type="tip">
+You can combine multiple filters. Set the environment variables in the deploy
+command (e.g. <code>EXPORT_FILTER_TAG=bigquery</code>) and chain the conditions
+in a single <code>should_export</code> function.
+</Admonition>
+
 ## Verifying the Integration
 
 1. In the ABsmartly Web Console, open an experiment and download its event data
