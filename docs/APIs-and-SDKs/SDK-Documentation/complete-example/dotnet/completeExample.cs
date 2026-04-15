@@ -7,7 +7,7 @@ var serviceProvider = new ServiceCollection()
     .BuildServiceProvider();
 
 var httpClientFactory = serviceProvider
-    .GetService<IHttpClientFactory>();
+    .GetRequiredService<IHttpClientFactory>();
 
 var abSdk = new ABSdk(
     new ABSdkHttpClientFactory(httpClientFactory),

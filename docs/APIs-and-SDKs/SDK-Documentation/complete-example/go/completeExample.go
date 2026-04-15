@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	absmartly "github.com/absmartly/go-sdk"
@@ -30,7 +31,11 @@ func main() {
 	ctx.WaitUntilReady()
 
 	// Check which variant the user is in
-	treatment, _ := ctx.GetTreatment("homepage_banner_experiment")
+	treatment, err := ctx.GetTreatment("homepage_banner_experiment")
+	if err != nil {
+		fmt.Println("Error getting treatment:", err)
+		return
+	}
 
 	if treatment == 1 {
 		// Variant B: show a personalized banner
@@ -41,7 +46,11 @@ func main() {
 	}
 
 	// Use a variable set in the Web Console for more flexibility
-	buttonColor, _ := ctx.GetVariableValue("button.color", "blue")
+	buttonColor, err := ctx.GetVariableValue("button.color", "blue")
+	if err != nil {
+		fmt.Println("Error getting variable:", err)
+		return
+	}
 	setButtonColor(buttonColor)
 
 	// Track when the user completes a key action
