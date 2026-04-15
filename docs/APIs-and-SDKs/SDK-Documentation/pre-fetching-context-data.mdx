@@ -16,11 +16,6 @@ no network request.
 
 This is supported across all ABsmartly SDKs.
 
-:::note Vue2 and Vue3 users
-The Vue SDKs wrap the JavaScript SDK, so you can use `createContextWith()` directly
-from the JS SDK. Use the **Javascript** tab for code examples.
-:::
-
 ## Why pre-fetch?
 
 There are two common reasons to pre-fetch context data:
@@ -79,6 +74,56 @@ const context = sdk.createContextWith(contextOptions, prefetchedData);
 <ABSmartly context={context}>
   <App />
 </ABSmartly>
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+Pass pre-fetched data to the plugin's `data` option to skip the initial network request.
+
+```js
+import absmartly from "@absmartly/vue2-sdk";
+
+Vue.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  data: prefetchedData,
+});
+```
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+Pass pre-fetched data to the plugin's `data` option to skip the initial network request.
+
+```js
+import absmartly from "@absmartly/vue3-sdk";
+
+app.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  data: prefetchedData,
+});
 ```
 
 </TabItem>

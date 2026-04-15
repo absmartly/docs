@@ -20,12 +20,6 @@ situations where you need to take control: flushing events before a page navigat
 closing a context when a user logs out, or refreshing experiment data in a long-running
 process.
 
-:::note Vue2 and Vue3 users
-The Vue SDKs wrap the JavaScript SDK. The context you access via `this.$absmartly` is
-a standard JavaScript SDK context, so all the methods on this page work the same way.
-Use the **Javascript** tab for code examples.
-:::
-
 ## Flushing events with publish
 
 Most SDKs batch events and send them automatically after a short delay. You don't need
@@ -128,6 +122,30 @@ resetContext({
   units: {
     anonymous_id: "new-anonymous-id",
   },
+});
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+```js
+this.$absmartly.unit("db_user_id", "1000013");
+
+this.$absmartly.units({
+  db_user_id: "1000013",
+});
+```
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+```js
+this.$absmartly.unit("db_user_id", "1000013");
+
+this.$absmartly.units({
+  db_user_id: "1000013",
 });
 ```
 
@@ -280,6 +298,56 @@ ctx = sdk.create_context(context_config)
 
 </TabItem>
 
+<TabItem value="vue" label="Vue2">
+
+```js
+import absmartly from "@absmartly/vue2-sdk";
+
+Vue.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  contextOptions: {
+    refreshPeriod: 30000, // 30000 ms = 30 seconds
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+```js
+import absmartly from "@absmartly/vue3-sdk";
+
+app.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  contextOptions: {
+    refreshPeriod: 30000, // 30000 ms = 30 seconds
+  },
+});
+```
+
+</TabItem>
+
 <TabItem value="java" label="Java">
 
 ```java
@@ -398,6 +466,22 @@ ctx.refresh()
 const { context } = useABSmartly();
 
 await context.refresh();
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+```js
+await this.$absmartly.refresh();
+```
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+```js
+await this.$absmartly.refresh();
 ```
 
 </TabItem>
