@@ -25,12 +25,12 @@ process.
 Most SDKs batch events and send them automatically after a short delay. You don't need
 to call `publish()` for typical use cases.
 
-:::warning Node.js users
-The Javascript SDK running in Node.js has auto-publishing **disabled by default**. The
-typical pattern is to create a context at the beginning of each request, use it throughout
-the request to check treatments and track goals, and then call `publish()` or `finalize()`
-at the end before sending the response. This ensures all events are sent and the context
-is cleaned up before the request ends.
+:::warning Node.js, PHP, and Ruby users
+The Javascript SDK running in Node.js, the PHP SDK, and the Ruby SDK do not
+auto-publish events. The typical pattern is to create a context at the beginning of each
+request, use it throughout the request to check treatments and track goals, and then call
+`publish()` or `finalize()` at the end before sending the response. This ensures all
+events are sent and the context is cleaned up before the request ends.
 :::
 
 Even in SDKs with auto-publishing enabled, there are times when you need to make sure
