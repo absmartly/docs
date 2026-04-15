@@ -26,7 +26,7 @@ Most SDKs batch events and send them automatically after a short delay. You don'
 to call `publish()` for typical use cases.
 
 :::warning Node.js users
-The JavaScript SDK running in Node.js has auto-publishing **disabled by default**. The
+The Javascript SDK running in Node.js has auto-publishing **disabled by default**. The
 typical pattern is to create a context at the beginning of each request, use it throughout
 the request to check treatments and track goals, and then call `publish()` or `finalize()`
 at the end before sending the response. This ensures all events are sent and the context
@@ -247,7 +247,7 @@ There are two ways to handle this:
 periodically re-fetch experiment data in the background.
 
 :::info Refresh interval units
-The unit for the refresh interval varies by SDK. JavaScript, Java, Go, PHP, and
+The unit for the refresh interval varies by SDK. Javascript, Java, Go, PHP, and
 Flutter use **milliseconds**. Python, Ruby, and Swift use **seconds**. .NET uses
 `TimeSpan`.
 :::
@@ -549,7 +549,7 @@ context.refresh();
 For most server-side apps where contexts are short-lived (one per request), you don't
 need refreshing at all. It's mainly useful for long-lived client-side contexts.
 
-## HTTP request options (JavaScript SDK)
+## HTTP request options (Javascript SDK)
 
 <details>
 <summary>Per-request timeout</summary>

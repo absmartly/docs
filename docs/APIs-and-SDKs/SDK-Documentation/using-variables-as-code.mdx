@@ -117,7 +117,7 @@ Both `new Function()` and injecting `<script>` tags execute arbitrary code from 
 Web Console. This is equivalent to `eval()`. Before using this pattern:
 
 - **Trust your Web Console administrators.** Anyone who can edit variant variables can
-  execute JavaScript in your users' browsers.
+  execute Javascript in your users' browsers.
 - **Content Security Policy (CSP).** If your site uses a CSP, `new Function()` and
   inline scripts will be blocked unless you explicitly allow `unsafe-eval` and
   `unsafe-inline`. Consider whether weakening your CSP is acceptable.
