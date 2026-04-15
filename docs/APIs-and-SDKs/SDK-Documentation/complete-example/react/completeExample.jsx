@@ -1,4 +1,4 @@
-// This example shows multiple React patterns -- pick the one that fits your component
+// This example shows multiple React patterns - pick the one that fits your component
 import ABSmartly, {
   Treatment,
   TreatmentVariant,

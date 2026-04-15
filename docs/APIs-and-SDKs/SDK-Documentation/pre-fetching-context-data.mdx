@@ -39,7 +39,7 @@ the cached data instead of making a round-trip to the collector each time.
 4. Create new contexts with `createContextWith()`, passing in the stored data
 
 A context created with `createContextWith()` is ready immediately. It has the same
-behaviour as a normal context -- it tracks exposures, records goals, and publishes
+behaviour as a normal context - it tracks exposures, records goals, and publishes
 events. The only difference is that it skips the initial fetch.
 
 <Tabs groupId="language">
@@ -268,7 +268,7 @@ let cachedData = null;
 
 async function refreshCache() {
   const sdk = new absmartly.SDK(sdkOptions);
-  // Any unit works here -- we're fetching experiment definitions, not
+  // Any unit works here - we're fetching experiment definitions, not
   // computing assignments. Each context created with createContextWith()
   // computes its own assignments locally.
   const context = sdk.createContext({ units: { user_id: "cache-warm" } });
