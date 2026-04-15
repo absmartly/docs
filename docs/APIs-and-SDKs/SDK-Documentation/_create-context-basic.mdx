@@ -1,0 +1,209 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+```js
+const context = sdk.createContext({
+  units: {
+    user_id: "user-12345",
+  },
+});
+
+await context.ready();
+```
+
+<details>
+<summary>Using promises instead of async/await</summary>
+
+If you're not in an async context, you can use the promise-based API:
+
+```js
+const context = sdk.createContext({
+  units: {
+    user_id: "user-12345",
+  },
+});
+
+context.ready().then(() => {
+  const variant = context.treatment("experiment_name");
+});
+```
+
+</details>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+```python
+context_config = ContextConfig()
+context_config.units = {"user_id": "user-12345"}
+
+ctx = sdk.create_context(context_config)
+ctx.wait_until_ready()
+```
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+The `<ABSmartly>` Provider already created a context during initialisation. Access it
+in any child component with the `useABSmartly()` hook:
+
+```jsx
+import { useABSmartly } from "@absmartly/react-sdk";
+
+function MyComponent() {
+  const { context } = useABSmartly();
+  // context is ready to use
+}
+```
+
+<details>
+<summary>Using class components</summary>
+
+If your codebase uses class components, the SDK also exports a `withABSmartly`
+higher-order component that provides the context as a prop:
+
+```jsx
+import { withABSmartly } from "@absmartly/react-sdk";
+
+function App({ absmartly }) {
+  const { context } = absmartly;
+
+  return <div>{/* Your app content */}</div>;
+}
+
+export default withABSmartly(App);
+```
+
+</details>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+```swift
+let contextConfig = ContextConfig()
+contextConfig.setUnit(unitType: "user_id", uid: "user-12345")
+
+let context = sdk.createContext(config: contextConfig)
+context.waitUntilReady()
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+The plugin already created a context during initialisation. Access it in any component
+via `this.$absmartly`:
+
+```js
+export default {
+  mounted() {
+    const treatment = this.$absmartly.treatment("experiment_name");
+  },
+};
+```
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+The plugin already created a context during initialisation. Access it in any component
+via `this.$absmartly`:
+
+```js
+export default {
+  mounted() {
+    const treatment = this.$absmartly.treatment("experiment_name");
+  },
+};
+```
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+```java
+final ContextConfig contextConfig = ContextConfig.create()
+    .setUnit("user_id", "user-12345");
+
+final Context context = sdk.createContext(contextConfig)
+    .waitUntilReady();
+```
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+```go
+contextConfig := ContextConfig{
+    Units_: map[string]string{
+        "user_id": "user-12345",
+    },
+}
+
+ctx := sdk.CreateContext(contextConfig)
+ctx.WaitUntilReady()
+```
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+var config = new ContextConfig()
+    .SetUnit("user_id", "user-12345");
+
+var context = await sdk.CreateContextAsync(config);
+```
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+```php
+$contextConfig = new ContextConfig();
+$contextConfig->setUnit('user_id', 'user-12345');
+
+$context = $sdk->createContext($contextConfig);
+```
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+```ruby
+context_config = Absmartly.create_context_config
+context_config.unit("user_id", "user-12345")
+
+context = Absmartly.create_context(context_config)
+```
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+```dart
+final ContextConfig contextConfig = ContextConfig.create()
+    .setUnit("user_id", "user-12345");
+
+final Context? context = sdk.createContext(contextConfig)
+    .waitUntilReady();
+```
+
+</TabItem>
+
+</Tabs>
+
+:::info
+The `user_id` above is just an example. You can use any unit type that you've configured
+in your Web Console under Settings > Units (e.g. `session_id`, `device_id`, `email`).
+Pass all the units you have available for the current user. If you're not sure which
+ones to use, check Settings > Units in the Web Console. You'll see how these connect
+to experiments on the [next page](./running-your-first-experiment).
+:::

@@ -2,25 +2,59 @@
 sidebar_position: 2
 ---
 
-import Install from "./getting-started/install/_install.mdx";
-import ImportAndInitialize from "./getting-started/import-and-initialize/_import-and-initialize.mdx";
-import CreateNewContextRequest from "./getting-started/create-new-context-request/_create-new-context-request.mdx";
-import CustomEventLogger from "./getting-started/custom-event-logger/_custom-event-logger.mdx";
+import Install from "./_shared/install/_install.mdx";
+import InitializeBasic from "./_initialize-basic.mdx";
+import CreateContextBasic from "./_create-context-basic.mdx";
+import CustomEventLogger from "./_shared/custom-event-logger/_custom-event-logger.mdx";
 
 # Getting Started
+
+This page walks you through connecting your application to ABsmartly. By the end,
+you'll have the SDK installed, initialised, and a context ready to use for experiments.
+
+Once you've finished here, the [next page](./running-your-first-experiment) walks through
+a complete experiment: assigning variants, reading variables, and tracking goals. Together,
+these two pages give you everything you need to run your first test.
+
+:::info Prerequisites
+Before you start, make sure you have:
+- An ABsmartly account with your Web Console set up
+- Your **API key** (found in Settings > API Keys in the Web Console)
+- Your **application name** and **environment** configured in the Web Console
+:::
 
 ## Install the SDK
 
 <Install />
 
-## Import and Initialize the SDK
+## Import and Initialise the SDK
 
-<ImportAndInitialize />
+<InitializeBasic />
 
-### Using a Custom Event Logger
+<details>
+<summary>Using a custom event logger</summary>
+
+The SDK fires events internally for things like exposures and goal tracking. By default
+these are handled automatically, but you can plug in a custom event logger if you need to:
+
+- **Debug during development** by printing events to the console
+- **Send events to your own analytics pipeline** alongside ABsmartly's collector
+- **Monitor SDK behaviour in production** for observability
 
 <CustomEventLogger />
 
+</details>
+
 ## Create a New Context Request
 
-<CreateNewContextRequest />
+A context represents a single user's session with ABsmartly. It holds their variant
+assignments and queues up events to send to the collector. You'll need to create one
+before you can check treatments or track goals.
+
+<CreateContextBasic />
+
+## Next steps
+
+Your SDK is installed, initialised, and you have a context ready to go. Head over to
+[Running Your First Experiment](./running-your-first-experiment) to learn how to
+assign variants, use variables, and track goals.

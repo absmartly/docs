@@ -1,0 +1,191 @@
+---
+sidebar_position: 9
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Using Custom Fields in Your Code
+
+Custom fields let you add your own metadata to experiments. You define them in the
+[Platform Settings on the Web Console](/docs/web-console-docs/configuration/settings#platform-settings),
+and they become available to the SDKs at runtime.
+
+This is useful when you need per-experiment configuration that goes beyond what ABsmartly
+provides out of the box. For example, you might want each experiment to specify a "developer
+variant" so your engineering team can easily test specific variants in production without
+affecting experiment data.
+
+:::info
+This feature is currently supported by the following SDKs:
+- Javascript (and React, Vue3 which inherit from it)
+- Java
+- Go
+- .NET
+- Ruby
+- Swift
+
+If your SDK is not listed here (Python, PHP, Flutter, Vue2), custom fields are not yet
+available. You can achieve similar per-experiment configuration by checking the experiment
+name directly in your code and maintaining a lookup table of per-experiment settings.
+:::
+
+## An Example
+
+Let's say you wish to override an experiment's allocation to a specific variant if the
+user is a member of your development team.
+
+### Creating a Custom Field
+
+Check out the [docs on creating a custom field](/docs/web-console-docs/configuration/settings#custom-fields) for more information on
+adding a field to your experiment creation form, but for this example, we'll create a field with
+the following properties:
+- **Name**: `Developers' variant`
+- **Type**: `number`
+- **Help Text**: `The variant to allocate to developers when they are testing the app in production.`
+- **Default Value**: `1`
+- **Field Required**: `true`
+- **Available?**: `true`
+- **Field Key**: `developer_variant`
+- **Section**: `Description`
+
+:::note
+You may wish to [create a custom section](/docs/web-console-docs/configuration/settings#custom-fields) for this field.
+:::
+
+### Using the Custom Field
+
+Now, when creating an experiment, you will see the custom field in the metadata section with a default value of `1`.
+If your experiment has more than one variant, you could change it per experiment to be `2` or `3`, or you could change
+it to `0`, if you wish for developers to only see the control variant.
+
+Now, in your app, you can pull the custom field value from the SDK context and use it to override the
+`context.treatment()` call. Here, we are assuming that the app's `user` object has an `isDeveloper` property.
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+```js
+const context = sdk.createContext({
+  units: { user_id: "user-12345" },
+});
+await context.ready();
+
+const experimentNames = context.experiments();
+for (const experimentName of experimentNames) {
+  const developerVariant = context.customFieldValue(experimentName, "developer_variant");
+
+  if (developerVariant != null && user.isDeveloper) {
+    context.override(experimentName, developerVariant);
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+```java
+Context context = sdk.createContext(contextConfig).waitUntilReady();
+
+String[] experimentNames = context.getExperiments();
+for (String experimentName : experimentNames) {
+    Object developerVariant = context.getCustomFieldValue(experimentName, "developer_variant");
+
+    if (developerVariant != null && user.isDeveloper()) {
+        context.setOverride(experimentName, ((Number) developerVariant).intValue());
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+```go
+ctx := sdk.CreateContext(contextConfig)
+ctx.WaitUntilReady()
+
+experimentNames, _ := ctx.GetExperiments()
+for _, experimentName := range experimentNames {
+    developerVariant := ctx.GetCustomFieldValue(experimentName, "developer_variant")
+
+    if developerVariant != nil && user.IsDeveloper {
+        ctx.SetOverride(experimentName, int(developerVariant.(float64)))
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+var context = await sdk.CreateContextAsync(config);
+
+var experimentNames = context.GetExperiments();
+foreach (var experimentName in experimentNames) {
+    var developerVariant = context.GetCustomFieldValue(experimentName, "developer_variant");
+
+    if (developerVariant != null && user.IsDeveloper) {
+        context.SetOverride(experimentName, Convert.ToInt32(developerVariant));
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+```ruby
+context = sdk.create_context(context_config)
+context.wait_until_ready
+
+context.experiments.each do |experiment_name|
+  developer_variant = context.custom_field_value(experiment_name, "developer_variant")
+
+  if developer_variant && user.developer?
+    context.set_override(experiment_name, developer_variant)
+  end
+end
+```
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+```swift
+let context = sdk.createContext(config: contextConfig)
+context.waitUntilReady()
+
+let experimentNames = context.getExperiments()
+for experimentName in experimentNames {
+    if let developerVariant = context.getCustomFieldValue(
+        experimentName: experimentName, key: "developer_variant") as? Int,
+       user.isDeveloper {
+        context.setOverride(experimentName: experimentName, variant: developerVariant)
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+This code gets the list of experiment names, gets the `developer_variant` custom field value for each experiment, and
+if the current user is a developer, it overrides the experiment allocation to the variant that was set in the Web
+Console. If the user is not a developer, the experiment will run as normal. The `developer_variant` can also be
+edited on the Web Console to change the variant that developers see.
+
+:::caution
+Overriding an experiment allocation will not count the user towards the experiment data.
+To learn more about overrides, have a look at the [overrides documentation](./targeting-and-audiences#overriding-variants-for-development-and-qa).
+:::
+
+## Next steps
+
+- [Targeting Users and Controlling Assignments](./targeting-and-audiences) covers
+  overrides and custom assignments in more detail.
+- [Config API](./config-api) shows another way to use experiment data without
+  branching logic in your code.

@@ -1,0 +1,521 @@
+---
+sidebar_position: 4
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Publish from "./_shared/publish/_publish.mdx";
+import Finalize from "./_shared/finalize/_finalize.mdx";
+
+# Managing the Context Lifecycle
+
+:::tip Skip for now?
+If you're building a single-page app and just getting started, you can skip this page.
+The SDK handles event batching and sending automatically. Come back here when you need
+to control the timing of event delivery or manage long-lived contexts.
+:::
+
+Most of the time the SDK handles event delivery and cleanup automatically. But there are
+situations where you need to take control: flushing events before a page navigation,
+closing a context when a user logs out, or refreshing experiment data in a long-running
+process.
+
+:::note Vue2 and Vue3 users
+The Vue SDKs wrap the JavaScript SDK. The context you access via `this.$absmartly` is
+a standard JavaScript SDK context, so all the methods on this page work the same way.
+Use the **Javascript** tab for code examples.
+:::
+
+## Flushing events with publish
+
+Most SDKs batch events and send them automatically after a short delay. You don't need
+to call `publish()` for typical use cases.
+
+:::warning Node.js users
+The JavaScript SDK running in Node.js has auto-publishing **disabled by default**. The
+typical pattern is to create a context at the beginning of each request, use it throughout
+the request to check treatments and track goals, and then call `publish()` or `finalize()`
+at the end before sending the response. This ensures all events are sent and the context
+is cleaned up before the request ends.
+:::
+
+Even in SDKs with auto-publishing enabled, there are times when you need to make sure
+events are sent right now, before moving on:
+
+- **Before a server sends its response.** In server-side rendering, the context might
+  get garbage collected before the auto-flush fires. Call `publish()` before sending the
+  response to make sure exposure and goal data gets recorded.
+- **Before a page navigation.** In a traditional multi-page app, navigating away can
+  interrupt the SDK's flush cycle. Call `publish()` before `window.location` changes.
+- **Before a critical business event.** If you need confirmation that goal data was
+  recorded before proceeding (e.g., before showing an order confirmation), flush first.
+
+You probably **don't** need `publish()` if:
+
+- You're in a single-page app where the context lives for the whole session
+- You're calling `finalize()` at the end anyway (it flushes automatically)
+- You're just tracking goals in a normal flow and the SDK's auto-flush is fine
+
+<Publish />
+
+## Closing a context with finalize
+
+Finalizing (or closing) a context does two things: it flushes any remaining events
+(like `publish()`), and then it "seals" the context so no more events can be recorded.
+Any `track()` or `publish()` calls after finalize will throw an error. Calls to
+`treatment()` and `variableValue()` still return the correct values (assignments are
+computed locally), but no new exposures will be recorded.
+
+You should finalize a context when:
+
+- **A user logs out.** You no longer know if the current user is the same person. Close
+  the old context and create a new one with an `anonymous_id`.
+- **Your application is shutting down.** Whether it's a server process exiting, a mobile
+  app going to background, or a component unmounting, finalize ensures nothing gets lost.
+- **A server-side request is complete.** Each request should create and finalize its own
+  context so events are flushed promptly.
+
+<Finalize />
+
+## Adding units after context creation
+
+Sometimes you don't have all of a user's identifiers when you first create the context.
+For example, you might create a context with an `anonymous_id` and later learn the
+`user_id` when they log in. You can add units to an existing context without creating
+a new one.
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+```js
+context.unit("db_user_id", "1000013");
+
+context.units({
+  db_user_id: "1000013",
+});
+```
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+```python
+context.set_unit("db_user_id", "1000013")
+
+context.set_units({
+    "db_user_id": "1000013"
+})
+```
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+```jsx
+const { context } = useABSmartly();
+
+context.unit("db_user_id", "1000013");
+```
+
+In React, if the user's identity changes entirely (for example, they log out and a
+different user logs in), use `resetContext()` to replace the context with a fresh one:
+
+```jsx
+const { resetContext } = useABSmartly();
+
+resetContext({
+  units: {
+    anonymous_id: "new-anonymous-id",
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+```swift
+context.setUnit(unitType: "db_user_id", uid: "1000013")
+context.setUnits([
+    "db_user_id": "1000013"
+])
+```
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+```java
+context.setUnit("db_user_id", "1000013");
+
+context.setUnits(Map.of(
+    "db_user_id", "1000013"
+));
+```
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+```go
+context.SetUnit("db_user_id", "1000013")
+
+context.SetUnits(map[string]string{
+    "db_user_id": "1000013",
+})
+```
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+context.SetUnit("db_user_id", "1000013");
+
+context.SetUnits(new Dictionary<string, string>() {
+    { "db_user_id", "1000013" }
+});
+```
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+```php
+$context->setUnit('db_user_id', '1000013');
+```
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+```ruby
+context.set_unit("db_user_id", "1000013")
+```
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+```dart
+context.setUnit("db_user_id", "1000013");
+context.setUnits({
+    "db_user_id": "1000013"
+});
+```
+
+</TabItem>
+
+</Tabs>
+
+:::caution
+You **cannot override** a unit type that has already been set. Setting `user_id` twice
+with different values is a change of identity and will throw an exception. If the user's
+identity changes (for example, they log out), finalize the old context and create a new
+one.
+:::
+
+## Refreshing experiment data
+
+When you create a context, the SDK fetches all running experiments and caches them in
+memory. But if your application runs for a long time (like a Node.js server or a
+single-page app that stays open all day), new experiments started after the context
+was created won't be picked up.
+
+There are two ways to handle this:
+
+**Automatic refresh:** Set a refresh interval when creating the context. The SDK will
+periodically re-fetch experiment data in the background.
+
+:::info Refresh interval units
+The unit for the refresh interval varies by SDK. JavaScript, Java, Go, PHP, and
+Flutter use **milliseconds**. Python, Ruby, and Swift use **seconds**. .NET uses
+`TimeSpan`.
+:::
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+```js
+const context = sdk.createContext(
+  { units: { user_id: "user-12345" } },
+  { refreshPeriod: 30000 } // 30000 ms = 30 seconds
+);
+```
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+```python
+context_config = ContextConfig()
+context_config.units = {"user_id": "user-12345"}
+context_config.refresh_interval = 30  # 30 seconds (Python uses seconds, not milliseconds)
+
+ctx = sdk.create_context(context_config)
+```
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+```jsx
+<ABSmartly
+  sdkOptions={{
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  }}
+  contextOptions={{
+    units: { user_id: "user-12345" },
+    refreshPeriod: 30000, // 30000 ms = 30 seconds
+  }}
+>
+  <App />
+</ABSmartly>
+```
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+```java
+final ContextConfig contextConfig = ContextConfig.create()
+    .setUnit("user_id", "user-12345")
+    .setRefreshInterval(30000); // 30000 ms = 30 seconds
+
+final Context context = sdk.createContext(contextConfig).waitUntilReady();
+```
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+```go
+contextConfig := ContextConfig{
+    Units_: map[string]string{
+        "user_id": "user-12345",
+    },
+    RefreshInterval_: 30000, // 30000 ms = 30 seconds
+}
+
+ctx := sdk.CreateContext(contextConfig)
+ctx.WaitUntilReady()
+```
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+var config = new ContextConfig()
+    .SetUnit("user_id", "user-12345");
+config.RefreshInterval = TimeSpan.FromSeconds(30);
+
+var context = await sdk.CreateContextAsync(config);
+```
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+```php
+$contextConfig = new ContextConfig();
+$contextConfig->setUnit('user_id', 'user-12345');
+$contextConfig->setRefreshInterval(30000); // 30000 ms = 30 seconds
+
+$context = $sdk->createContext($contextConfig);
+```
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+```ruby
+context_config = Absmartly.create_context_config
+context_config.unit("user_id", "user-12345")
+context_config.refresh_interval = 30 # 30 seconds (Ruby uses seconds, not milliseconds)
+
+context = Absmartly.create_context(context_config)
+```
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+```swift
+let contextConfig = ContextConfig()
+contextConfig.setUnit(unitType: "user_id", uid: "user-12345")
+contextConfig.refreshInterval = 30 // 30 seconds (Swift uses seconds, not milliseconds)
+
+let context = sdk.createContext(config: contextConfig)
+```
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+```dart
+final ContextConfig contextConfig = ContextConfig.create()
+    .setUnit("user_id", "user-12345")
+    .setRefreshInterval(30000); // 30000 ms = 30 seconds
+
+final Context? context = sdk.createContext(contextConfig);
+```
+
+</TabItem>
+
+</Tabs>
+
+**Manual refresh:** Call the `refresh()` method when you know experiment data might have
+changed. For example, after deploying a new experiment, or on a periodic schedule you
+control.
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+```js
+await context.refresh();
+```
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+```python
+ctx.refresh()
+```
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+```jsx
+const { context } = useABSmartly();
+
+await context.refresh();
+```
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+```java
+context.refresh();
+```
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+```go
+ctx.Refresh()
+```
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+context.Refresh();
+// or asynchronously:
+await context.RefreshAsync();
+```
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+```php
+$context->refresh();
+```
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+```ruby
+context.refresh
+```
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+```swift
+context.refresh()
+```
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+```dart
+context.refresh();
+```
+
+</TabItem>
+
+</Tabs>
+
+For most server-side apps where contexts are short-lived (one per request), you don't
+need refreshing at all. It's mainly useful for long-lived client-side contexts.
+
+## HTTP request options (JavaScript SDK)
+
+<details>
+<summary>Per-request timeout</summary>
+
+You can override the global timeout for individual HTTP requests. This is useful when
+a specific request (like context creation) can tolerate a different timeout than the
+SDK default.
+
+```js
+const context = sdk.createContext(
+  request,
+  {
+    refreshInterval: 5 * 60 * 1000,
+  },
+  {
+    timeout: 1500,
+  }
+);
+```
+
+</details>
+
+<details>
+<summary>Request cancellation</summary>
+
+You can cancel an in-flight HTTP request using an `AbortSignal`. This is useful when
+the user navigates away before the context is ready.
+
+The SDK bundles its own `AbortController` polyfill for older platforms that don't
+support it natively (via `absmartly.AbortController`). On modern browsers and
+Node.js 15+, the native implementation is used automatically.
+
+```js
+const controller = new absmartly.AbortController();
+const context = sdk.createContext(
+  request,
+  {
+    refreshInterval: 5 * 60 * 1000,
+  },
+  {
+    signal: controller.signal,
+  }
+);
+
+// Abort the request if not ready after 1500ms
+const timeoutId = setTimeout(() => controller.abort(), 1500);
+
+await context.ready();
+
+clearTimeout(timeoutId);
+```
+
+</details>
