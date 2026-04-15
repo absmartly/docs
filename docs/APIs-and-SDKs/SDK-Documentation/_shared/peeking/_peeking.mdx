@@ -28,8 +28,12 @@ import FlutterPeekAtVariable from "!!raw-loader!./flutter/peekAtVariables.dart";
 ## Peeking at treatments
 
 The peek method returns the variant number just like `treatment()`, but without
-recording an exposure. It's called `peek()` in Javascript, React, and Vue, and
-`peekTreatment()` in other SDKs.
+recording an exposure. The method name varies by SDK:
+
+- **Javascript, React, Vue**: `peek()`
+- **Python, Ruby**: `peek_treatment()`
+- **PHP, Swift, Java, Flutter/Dart**: `peekTreatment()`
+- **Go, .NET**: `PeekTreatment()`
 
 <Tabs groupId="language">
 
