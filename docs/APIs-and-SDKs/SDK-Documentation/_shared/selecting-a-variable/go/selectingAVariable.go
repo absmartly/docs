@@ -1,2 +1,5 @@
 buttonColor, _ := context.GetVariableValue("button.color", "blue")
-renderButton(buttonColor.(string))
+
+if color, ok := buttonColor.(string); ok {
+    renderButton(color)
+}

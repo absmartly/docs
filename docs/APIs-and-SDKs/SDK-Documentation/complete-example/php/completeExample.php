@@ -19,12 +19,12 @@ $context = $sdk->createContext($contextConfig);
 // Check which variant the user is in
 $treatment = $context->getTreatment('homepage_banner_experiment');
 
-if ($treatment === 0) {
-    // Variant A (control): show the existing banner
-    showBanner('Welcome back!');
-} else {
+if ($treatment === 1) {
     // Variant B: show a personalized banner
     showBanner('Welcome back, we have new deals for you!');
+} else {
+    // Variant A (control): show the existing banner
+    showBanner('Welcome back!');
 }
 
 // Use a variable set in the Web Console for more flexibility

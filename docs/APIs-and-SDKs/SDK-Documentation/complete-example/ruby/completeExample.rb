@@ -17,12 +17,12 @@ context.wait_until_ready
 # Check which variant the user is in
 treatment = context.treatment("homepage_banner_experiment")
 
-if treatment.zero?
-  # Variant A (control): show the existing banner
-  show_banner("Welcome back!")
-else
+if treatment == 1
   # Variant B: show a personalized banner
   show_banner("Welcome back, we have new deals for you!")
+else
+  # Variant A (control): show the existing banner
+  show_banner("Welcome back!")
 end
 
 # Use a variable set in the Web Console for more flexibility

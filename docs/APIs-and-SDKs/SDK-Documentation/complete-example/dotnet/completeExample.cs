@@ -28,15 +28,15 @@ using var context = abSdk.CreateContext(config);
 await context.WaitUntilReady();
 
 // Check which variant the user is in
-if (context.GetTreatment("homepage_banner_experiment") == 0)
-{
-    // Variant A (control): show the existing banner
-    ShowBanner("Welcome back!");
-}
-else
+if (context.GetTreatment("homepage_banner_experiment") == 1)
 {
     // Variant B: show a personalized banner
     ShowBanner("Welcome back, we have new deals for you!");
+}
+else
+{
+    // Variant A (control): show the existing banner
+    ShowBanner("Welcome back!");
 }
 
 // Use a variable set in the Web Console for more flexibility

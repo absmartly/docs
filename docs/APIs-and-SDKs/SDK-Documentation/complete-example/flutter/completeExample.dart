@@ -24,12 +24,12 @@ void main() async {
   final int treatment =
       await context.getTreatment("homepage_banner_experiment");
 
-  if (treatment == 0) {
-    // Variant A (control): show the existing banner
-    showBanner("Welcome back!");
-  } else {
+  if (treatment == 1) {
     // Variant B: show a personalized banner
     showBanner("Welcome back, we have new deals for you!");
+  } else {
+    // Variant A (control): show the existing banner
+    showBanner("Welcome back!");
   }
 
   // Use a variable set in the Web Console for more flexibility
@@ -47,5 +47,5 @@ void main() async {
   });
 
   // Close the context to flush remaining events
-  context.close();
+  await context.close();
 }

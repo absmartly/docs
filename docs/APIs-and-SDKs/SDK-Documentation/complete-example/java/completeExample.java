@@ -18,32 +18,30 @@ public class ExperimentExample {
         // Create a context for this user
         final ContextConfig contextConfig = ContextConfig.create()
             .setUnit("user_id", "user-12345");
-        final Context context = sdk.createContext(contextConfig)
-            .waitUntilReady();
+        try (final Context context = sdk.createContext(contextConfig)
+            .waitUntilReady()) {
 
-        // Check which variant the user is in
-        if (context.getTreatment("homepage_banner_experiment") == 0) {
-            // Variant A (control): show the existing banner
-            showBanner("Welcome back!");
-        } else {
-            // Variant B: show a personalized banner
-            showBanner("Welcome back, we have new deals for you!");
+            // Check which variant the user is in
+            if (context.getTreatment("homepage_banner_experiment") == 1) {
+                // Variant B: show a personalized banner
+                showBanner("Welcome back, we have new deals for you!");
+            } else {
+                // Variant A (control): show the existing banner
+                showBanner("Welcome back!");
+            }
+
+            // Use a variable set in the Web Console for more flexibility
+            String buttonColor = context.getVariableValue("button.color", "blue");
+            setButtonColor(buttonColor);
+
+            // Track when the user completes a key action
+            context.track("cta_click", Map.of("page", "homepage"));
+
+            // Track a purchase with revenue data
+            context.track("purchase", Map.of(
+                "revenue", 49.99,
+                "item_count", 3
+            ));
         }
-
-        // Use a variable set in the Web Console for more flexibility
-        String buttonColor = context.getVariableValue("button.color", "blue");
-        setButtonColor(buttonColor);
-
-        // Track when the user completes a key action
-        context.track("cta_click", Map.of("page", "homepage"));
-
-        // Track a purchase with revenue data
-        context.track("purchase", Map.of(
-            "revenue", 49.99,
-            "item_count", 3
-        ));
-
-        // Close the context to flush remaining events
-        context.close();
     }
 }
