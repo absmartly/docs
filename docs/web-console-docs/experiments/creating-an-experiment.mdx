@@ -66,7 +66,7 @@ The more variants you have, the less traffic each variant will be exposed to and
 ### Variant Variables
 
 Variant variables can be used to automate your experiments. If you, for example, use a configuration file, you can pass a variant variable here and have it overwrite your code. See
-[treatment variables](/docs/APIs-and-SDKs/SDK-Documentation/basic-usage#treatment-variables) in the SDK Documentation for more information.
+[treatment variables](/docs/APIs-and-SDKs/SDK-Documentation/running-your-first-experiment#step-2-use-variables-for-flexible-experiments) in the SDK Documentation for more information.
 
 :::caution
 We do not recommend changing variables on your control variant (**Variant A**).
@@ -107,7 +107,7 @@ In this case you might set the filter group to:
 
 <Image maxWidth="40rem" centered img="experiment-create/step-3-audience.png" alt="Experiment targeting english speakers on Android" />
 
-These audience parameters can then be passed to the SDK in your code using [context attributes](/docs/APIs-and-SDKs/SDK-Documentation/Advanced/context-attributes.mdx).
+These audience parameters can then be passed to the SDK in your code using [context attributes](/docs/APIs-and-SDKs/SDK-Documentation/targeting-and-audiences#passing-user-attributes-for-targeting).
 #### Audience Enforced
 
 When audience enforced is **on**, only users in the filter groups will be exposed to the experiment. Others will be shown the control variant, but
@@ -133,7 +133,7 @@ Exclusion rules are useful in two main scenarios:
 
 An exclusion rule defines:
 
-1. **Who to exclude** — A set of conditions that identify the visitors to exclude, based on [context attributes](/docs/APIs-and-SDKs/SDK-Documentation/Advanced/context-attributes.mdx) (e.g. `user_type = internal`, `email ends_with @yourcompany.com`).
+1. **Who to exclude** — A set of conditions that identify the visitors to exclude, based on [context attributes](/docs/APIs-and-SDKs/SDK-Documentation/targeting-and-audiences#passing-user-attributes-for-targeting) (e.g. `user_type = internal`, `email ends_with @yourcompany.com`).
 2. **Which variant to show** — The variant that excluded visitors will always be assigned to.
 
 Excluded visitors are **not part of the experiment**. They will see the assigned variant but their data will not be tracked or included in the experiment results.
@@ -154,7 +154,7 @@ This ensures your team can experience the new variant in production while keepin
 
 :::caution
 Exclusion rules require an **SDK update**. Make sure your SDKs are up to date before using this feature. 
-See the [SDK documentation](/docs/APIs-and-SDKs/SDK-Documentation/basic-usage) for details.
+See the [SDK documentation](/docs/APIs-and-SDKs/SDK-Documentation/running-your-first-experiment) for details.
 :::
 
 ## Metrics

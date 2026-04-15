@@ -1,0 +1,82 @@
+---
+sidebar_position: 6
+---
+
+import SetAttributes from "./_shared/context-attributes/_setting-context-attributes.mdx";
+import CustomAssignments from "./_shared/custom-assignments/_custom-assignments.mdx";
+import Overriding from "./_shared/overriding/_overriding.mdx";
+
+# Targeting Users and Controlling Assignments
+
+Not every experiment should run for every user. Sometimes you want to target specific
+browsers, geographies, or user segments. Other times you need to override which variant
+a user sees for development, QA, or API-driven personalization.
+
+This page covers three related features. Jump to the one you need:
+
+- [**Attributes**](#passing-user-attributes-for-targeting) -- pass user metadata so you can create audience segments in the Web Console
+- [**Custom assignments**](#custom-assignments) -- programmatically choose which variant a user sees (counted as real data)
+- [**Overrides**](#overriding-variants-for-development-and-qa) -- force a variant for testing without affecting experiment statistics
+
+:::info Key difference: custom assignments vs overrides
+Custom assignments are **counted as real experiment data**. Use them when an external
+system (ML model, third-party targeting) decides the variant and you want those users
+in your analysis. Overrides are **ignored by the statistics engine**. Use them for
+development and QA.
+:::
+
+## Passing user attributes for targeting
+
+Attributes are metadata about the user or request. Once you pass them to the SDK, you
+can use them in the Web Console to create audience segments that control who enters an
+experiment.
+
+A common example: you're running an experiment only for mobile users. Pass the
+`user_agent` attribute and the SDK will automatically parse it into browser, OS, and
+device attributes that you can filter on in the Web Console.
+
+Other useful attributes might include:
+
+- **Geographic data** like country or region
+- **Account properties** like subscription tier or account age
+- **Request metadata** like referrer or landing page
+
+<SetAttributes />
+
+## Custom assignments
+
+Sometimes you need to control which variant a user gets based on external logic. Maybe
+your recommendation engine determines the best variant, or you're integrating with a
+third-party targeting system that provides variant selections.
+
+Custom assignments let you do this. A few real scenarios:
+
+- **ML-driven variant selection.** Your model predicts which variant performs best for
+  each user segment, and you feed that into ABsmartly.
+- **Third-party targeting integration.** An external system decides the allocation, and
+  you pass it through to ABsmartly for tracking.
+- **Geography-based logic.** An API call determines the user's region, and you assign
+  variants accordingly.
+
+:::warning Important distinction
+Custom assignments are **counted as real experiment data**. ABsmartly's statistics engine
+will include these users in the analysis. If you just need to force a variant for
+development or QA, use [overrides](#overriding-variants-for-development-and-qa) instead.
+:::
+
+<CustomAssignments />
+
+## Overriding variants for development and QA
+
+During development and QA, you need to see specific variants without polluting your
+experiment data. Overrides solve this. They force a particular variant for a user, but
+the event is marked as **ineligible** and completely ignored by ABsmartly's statistics
+engine.
+
+Use overrides when:
+
+- **You're developing a new variant** and need to see it in your local environment
+- **QA is testing** each variant before the experiment goes live
+- **A stakeholder wants a demo** of a specific variant
+
+<Overriding />

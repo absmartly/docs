@@ -1,0 +1,75 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsTrackingGoals from "!!raw-loader!./js/trackingGoals.js";
+import PythonTrackingGoals from "!!raw-loader!./python/trackingGoals.py";
+import ReactTrackingGoals from "!!raw-loader!./react/trackingGoals.js";
+import SwiftTrackingGoals from "!!raw-loader!./swift/trackingGoals.swift";
+import VueTrackingGoals from "!!raw-loader!./vue/trackingGoals.js";
+import JavaTrackingGoals from "!!raw-loader!./java/trackingGoals.java";
+import GoTrackingGoals from "!!raw-loader!./go/trackingGoals.go";
+import DotNetTrackingGoals from "!!raw-loader!./dotnet/trackingGoals.cs";
+import PHPTrackingGoals from "!!raw-loader!./php/trackingGoals.php";
+import RubyTrackingGoals from "!!raw-loader!./ruby/trackingGoals.rb";
+import FlutterTrackingGoals from "!!raw-loader!./flutter/trackingGoals.dart";
+
+The `track()` method records user actions. It takes two arguments:
+
+- **goal_name**: The name of the goal, matching one you've defined in the Web
+  Console. Any name that doesn't match will be ignored (unless
+  `AUTO_GOAL_CREATION` is enabled on your instance).
+- **properties** (optional): Key-value pairs for extra metrics or filtering
+  (e.g., revenue, item category).
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+  <CodeBlock language="js">{JsTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="python" label="Python3">
+  <CodeBlock language="py">{PythonTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="react" label="React">
+  <CodeBlock language="jsx">{ReactTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+  <CodeBlock language="swift">{SwiftTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+  <CodeBlock language="js">{VueTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+  <CodeBlock language="js">{VueTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <CodeBlock language="java">{JavaTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <CodeBlock language="go">{GoTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+  <CodeBlock language="csharp">{DotNetTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="php" label="PHP">
+  <CodeBlock language="php">{PHPTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+  <CodeBlock language="ruby">{RubyTrackingGoals}</CodeBlock>
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+  <CodeBlock language="dart">{FlutterTrackingGoals}</CodeBlock>
+</TabItem>
+
+</Tabs>

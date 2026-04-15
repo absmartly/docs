@@ -1,0 +1,133 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsCustomEventLogger from "!!raw-loader!./js/customEventLogger.js";
+import PythonCustomEventLogger from "!!raw-loader!./python/customEventLogger.py";
+import ReactCustomEventLogger from "!!raw-loader!./react/customEventLogger.jsx";
+import SwiftCustomEventLogger from "!!raw-loader!./swift/customEventLogger.swift";
+import VueCustomEventLogger from "!!raw-loader!./vue/customEventLogger.js";
+import JavaCustomEventLogger from "!!raw-loader!./java/customEventLogger.java";
+import GoCustomEventLogger from "!!raw-loader!./go/customEventLogger.go";
+
+import DotNetCustomEventLogger from "!!raw-loader!./dotnet/customEventLogger.cs";
+import DotNetCustomEventLoggerWithInjection from "!!raw-loader!./dotnet/customEventLoggerInjection.cs";
+
+import PHPCustomEventLogger from "!!raw-loader!./php/customEventLogger.php";
+import PHPHandleEvent from "!!raw-loader!./php/handleEvent.php";
+
+import RubyCustomEventLogger from "!!raw-loader!./ruby/customEventLogger.rb";
+
+import FlutterCustomEventLogger from "!!raw-loader!./flutter/customEventLogger.dart";
+import FlutterUsage from "!!raw-loader!./flutter/usage.dart";
+
+The SDK can be instantiated with an event logger used for all contexts. In
+addition, most SDKs let you specify an event logger per context when calling
+`createContext`.
+
+The event logger receives events with a data payload that depends on the event
+type. The SDK fires the following events:
+
+| Event | When | Data |
+| --- | --- | --- |
+| error | `Context` receives an error | Error/exception object |
+| ready | `Context` turns ready | `ContextData` used to initialize the context |
+| refresh | `refresh()` succeeds | `ContextData` used to refresh the context |
+| publish | `publish()` succeeds | Event data sent to the ABsmartly collector |
+| exposure | `treatment()` succeeds on first exposure | Exposure data enqueued for publishing |
+| goal | `track()` succeeds | Goal data enqueued for publishing |
+| close / finalize | Context is closed or finalized | `null` / `undefined` |
+
+:::note Naming differences
+JavaScript, React, Vue, and Flutter use `"finalize"` for the close event.
+Python, Java, Go, Swift, .NET, PHP, and Ruby use `"close"`. The method and
+event names in the code examples below match each SDK's convention.
+:::
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsCustomEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+<CodeBlock language="py">{PythonCustomEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx">{ReactCustomEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftCustomEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+<CodeBlock language="js">{VueCustomEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+<CodeBlock language="js">{VueCustomEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+<CodeBlock language="java">{JavaCustomEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+<CodeBlock language="go">{GoCustomEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+<CodeBlock language="csharp">{DotNetCustomEventLogger}</CodeBlock>
+
+With dependency injection:
+
+<CodeBlock language="csharp">{DotNetCustomEventLoggerWithInjection}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+<CodeBlock language="php">{PHPCustomEventLogger}</CodeBlock>
+
+Alternatively, you can implement the `\ABSmartly\SDK\Context\ContextEventLogger`
+interface with a `handleEvent()` method that receives the `Context` object and a
+`ContextEventLoggerEvent`:
+
+<CodeBlock language="php">{PHPHandleEvent}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+<CodeBlock language="ruby">{RubyCustomEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+<CodeBlock language="dart">{FlutterCustomEventLogger}</CodeBlock>
+
+<CodeBlock language="dart">{FlutterUsage}</CodeBlock>
+
+</TabItem>
+
+</Tabs>

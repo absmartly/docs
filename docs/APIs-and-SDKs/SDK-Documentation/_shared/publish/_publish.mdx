@@ -1,0 +1,113 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsPublish from "!!raw-loader!./js/publish.js";
+
+import PythonPublish from "!!raw-loader!./python/publish.py";
+
+import ReactPublish from "!!raw-loader!./react/publish.js";
+
+import SwiftPublish from "!!raw-loader!./swift/publish.swift";
+
+import VuePublish from "!!raw-loader!./vue/publish.js";
+
+import JavaPublish from "!!raw-loader!./java/publish.java";
+
+import GoPublish from "!!raw-loader!./go/publish.go";
+
+import DotNetPublish from "!!raw-loader!./dotnet/publish.cs";
+
+import PHPPublish from "!!raw-loader!./php/publish.php";
+
+import RubyPublish from "!!raw-loader!./ruby/publish.rb";
+
+import FlutterPublish from "!!raw-loader!./flutter/publish.dart";
+
+Call `publish()` before page navigations, server responses, or any point where
+the process might exit before the SDK's auto-flush fires. This ensures exposure
+and goal data is sent to the collector before the context is lost.
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+Python also provides `publish_async()` for non-blocking use.
+
+<CodeBlock language="py">{PythonPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx">{ReactPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+<CodeBlock language="js">{VuePublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+<CodeBlock language="js">{VuePublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+Java also provides `publishAsync()` for non-blocking use.
+
+<CodeBlock language="java">{JavaPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+Go also provides `PublishAsync()` for non-blocking use.
+
+<CodeBlock language="go">{GoPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+.NET also provides `PublishAsync()` for non-blocking use.
+
+<CodeBlock language="csharp">{DotNetPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+<CodeBlock language="php">{PHPPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+<CodeBlock language="ruby">{RubyPublish}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+<CodeBlock language="dart">{FlutterPublish}</CodeBlock>
+
+</TabItem>
+
+</Tabs>

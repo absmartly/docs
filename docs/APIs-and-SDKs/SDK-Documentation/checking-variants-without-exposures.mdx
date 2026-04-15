@@ -1,0 +1,51 @@
+---
+sidebar_position: 7
+---
+
+import Peeking from "./_shared/peeking/_peeking.mdx";
+
+# Checking Variants Without Triggering Exposures
+
+When you call `treatment()`, the SDK records an **exposure**, telling ABsmartly that this
+user saw the experiment. That's usually what you want. But sometimes you need to know
+which variant a user is in without counting it as an exposure.
+
+The `peek()` method does exactly this. It returns the same variant number as
+`treatment()`, but silently, without recording anything.
+
+## When to use peek
+
+Here are some real scenarios where peeking makes sense:
+
+- **Pre-loading assets.** You need to know the variant ahead of time to prefetch images,
+  scripts, or data. The actual exposure should be recorded later when the user sees the
+  content.
+- **Server-side routing with client-side exposure.** Your server decides which page
+  template to render based on the variant, but the exposure should only fire on the
+  client where the user actually sees it.
+- **Debug logging.** You want to log which variant a user is in for debugging, but you
+  don't want that logging to affect the experiment by creating exposures.
+- **Admin panels.** An internal dashboard shows the current state of experiments for a
+  user. Looking at this state shouldn't count as an exposure.
+
+:::caution
+If you peek but never call `treatment()` for the same experiment, no exposure will be
+recorded. That user won't appear in your experiment results at all. Make sure that
+somewhere in your code, `treatment()` gets called for users who actually see the
+experiment.
+:::
+
+:::tip React users
+You can also peek using the `useTreatment` hook by passing `true` as the second
+argument:
+
+```jsx
+import { useTreatment } from "@absmartly/react-sdk";
+
+const { variant } = useTreatment("experiment_name", true);
+```
+
+This returns the variant without recording an exposure, just like `context.peek()`.
+:::
+
+<Peeking />

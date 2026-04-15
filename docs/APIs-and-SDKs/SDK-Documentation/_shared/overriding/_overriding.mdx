@@ -1,0 +1,161 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsOverriding from "!!raw-loader!./js/override.js";
+
+import PythonOverriding from "!!raw-loader!./python/override.py";
+
+import ReactOverriding from "!!raw-loader!./react/override.js";
+
+import SwiftOverriding from "!!raw-loader!./swift/override.swift";
+
+import VueOverridingInInitialization from "!!raw-loader!./vue/inInitialization.js";
+import VueWithOverrideMethods from "!!raw-loader!./vue/withOverrideMethods.js";
+
+import JavaOverriding from "!!raw-loader!./java/override.java";
+
+import GoOverriding from "!!raw-loader!./go/override.go";
+
+import DotNetOverriding from "!!raw-loader!./dotnet/override.cs";
+
+import PHPOverriding from "!!raw-loader!./php/override.php";
+
+import RubyOverriding from "!!raw-loader!./ruby/override.rb";
+
+import FlutterOverriding from "!!raw-loader!./flutter/override.dart";
+
+:::warning
+Overridden events are marked as **ineligible** and completely ignored by
+ABsmartly's statistics engine. If you need the event to count as real data, use
+[custom assignments](/docs/APIs-and-SDKs/SDK-Documentation/targeting-and-audiences#custom-assignments)
+instead, though this is rarely what you want for QA.
+:::
+
+Override methods force a specific variant. They can be called before the
+context is ready.
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+<CodeBlock language="py">{PythonOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx">{ReactOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+##### In the SDK initialization
+
+<CodeBlock language="js">{VueOverridingInInitialization}</CodeBlock>
+
+##### With the override methods
+
+<CodeBlock language="js">{VueWithOverrideMethods}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+##### In the SDK initialization
+
+<CodeBlock language="js">{VueOverridingInInitialization}</CodeBlock>
+
+##### With the override methods
+
+<CodeBlock language="js">{VueWithOverrideMethods}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+<CodeBlock language="java">{JavaOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+<CodeBlock language="go">{GoOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+<CodeBlock language="csharp">{DotNetOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+<CodeBlock language="php">{PHPOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+<CodeBlock language="ruby">{RubyOverriding}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+<CodeBlock language="dart">{FlutterOverriding}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
+
+### Overriding Based On URL Params
+
+The most common use case for overriding is to override a treatment based on
+params in the URL. This allows for greater flexibility in the development and 
+QA stages. The following Javascript function can be ported to any language and
+used to parse the URL query parameters and return an object of overrides. This
+object can then be passed to the `overrides()` context method to force a particular
+variant for one or multiple experiment(s).
+
+:::info Prefixes
+Here we using `absmartly_` as a prefix for the query parameters, but you can 
+use whatever prefix you like. It could be `exp_`, `test_`, or even a simple `_`!
+:::
+
+```js
+function getABsmartlyOverridesFromQuery(req) {
+  const overrides = {};
+
+  // Iterate through all query parameters
+  for (const [key, value] of Object.entries(req.query)) {
+    // Check if the query parameter starts with "absmartly_"
+    if (key.startsWith('absmartly_')) {
+      // Extract the experiment name (remove "absmartly_" prefix)
+      const experimentName = key.slice('absmartly_'.length);
+
+      // Convert the value to a number if possible, otherwise keep it as a string
+      const variantValue = isNaN(value) ? value : Number(value);
+
+      // Add to overrides object
+      overrides[experimentName] = variantValue;
+    }
+  }
+
+  return overrides;
+}
+```

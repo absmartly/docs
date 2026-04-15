@@ -1,0 +1,527 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+```js
+import absmartly from "@absmartly/javascript-sdk";
+
+const sdk = new absmartly.SDK({
+  endpoint: "https://your-company.absmartly.io/v1",
+  apiKey: "YOUR-API-KEY",
+  environment: "production",
+  application: "website",
+});
+```
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+The Python SDK separates client and SDK configuration so you can swap the HTTP
+client implementation if needed.
+
+```python
+client_config = ClientConfig()
+client_config.endpoint = "https://your-company.absmartly.io/v1"
+client_config.api_key = "YOUR-API-KEY"
+client_config.application = "website"
+client_config.environment = "production"
+
+sdk_config = ABSmartlyConfig()
+sdk_config.client = Client(client_config, DefaultHTTPClient(DefaultHTTPClientConfig()))
+sdk = ABSmartly(sdk_config)
+```
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+The React SDK wraps your app in a Provider that handles both SDK initialisation and
+context creation in one step:
+
+```jsx
+import ABSmartly from "@absmartly/react-sdk";
+
+function App() {
+  return (
+    <ABSmartly
+      sdkOptions={{
+        endpoint: "https://your-company.absmartly.io/v1",
+        apiKey: "YOUR-API-KEY",
+        environment: "production",
+        application: "website",
+      }}
+      contextOptions={{
+        units: { user_id: "user-12345" },
+      }}
+    >
+      {/* Your app content */}
+    </ABSmartly>
+  );
+}
+```
+
+:::note
+The `<ABSmartly>` Provider creates a context automatically. You can skip ahead to
+[Next steps](#next-steps) and access the context in any child component with the
+`useABSmartly()` hook.
+:::
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+```swift
+import ABSmartly
+
+let clientConfig = ClientConfig(
+    apiKey: "YOUR-API-KEY",
+    application: "website",
+    endpoint: "https://your-company.absmartly.io/v1",
+    environment: "production")
+
+let client = try DefaultClient(config: clientConfig)
+let sdkConfig = ABSmartlyConfig(client: client)
+let sdk = try ABSmartlySDK(config: sdkConfig)
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+The Vue2 SDK initialises as a plugin, creating both the SDK and a context in one step.
+This makes the `$absmartly` extension available in every Vue instance.
+
+```js
+import absmartly from "@absmartly/vue2-sdk";
+
+Vue.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+});
+```
+
+:::note
+The plugin creates a context automatically. You can skip ahead to
+[Next steps](#next-steps) and access it via `this.$absmartly` in any component.
+:::
+
+<details>
+<summary>Passing attributes and overrides at init</summary>
+
+You can also pass context attributes and overrides during plugin initialisation:
+
+```js
+Vue.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  attributes: {
+    user_agent: navigator.userAgent,
+  },
+  overrides: {
+    exp_test_development: 1,
+  },
+});
+```
+
+</details>
+
+<details>
+<summary>Using pre-fetched context data</summary>
+
+If you have already fetched context data on the server (see
+[Pre-Fetching Context Data](./pre-fetching-context-data)), you can pass it directly
+to avoid an extra network request:
+
+```js
+Vue.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  data: prefetchedContext,
+});
+```
+
+</details>
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+The Vue3 SDK initialises as a plugin, creating both the SDK and a context in one step.
+This makes the `$absmartly` extension available in every Vue instance.
+
+```js
+import absmartly from "@absmartly/vue3-sdk";
+
+app.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+});
+```
+
+:::note
+The plugin creates a context automatically. You can skip ahead to
+[Next steps](#next-steps) and access it via `this.$absmartly` in any component.
+:::
+
+<details>
+<summary>Passing attributes and overrides at init</summary>
+
+You can also pass context attributes and overrides during plugin initialisation:
+
+```js
+app.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  attributes: {
+    user_agent: navigator.userAgent,
+  },
+  overrides: {
+    exp_test_development: 1,
+  },
+});
+```
+
+</details>
+
+<details>
+<summary>Using pre-fetched context data</summary>
+
+If you have already fetched context data on the server (see
+[Pre-Fetching Context Data](./pre-fetching-context-data)), you can pass it directly
+to avoid an extra network request:
+
+```js
+app.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  data: prefetchedContext,
+});
+```
+
+</details>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+```java
+final ClientConfig clientConfig = ClientConfig.create()
+    .setEndpoint("https://your-company.absmartly.io/v1")
+    .setAPIKey("YOUR-API-KEY")
+    .setApplication("website")
+    .setEnvironment("production");
+
+final Client absmartlyClient = Client.create(clientConfig);
+
+final ABSmartlyConfig sdkConfig = ABSmartlyConfig.create()
+    .setClient(absmartlyClient);
+
+final ABSmartly sdk = ABSmartly.create(sdkConfig);
+```
+
+<details>
+<summary>Targeting Android 6.0 or earlier</summary>
+
+When targeting Android 6.0 or earlier, set the default Java Security Provider
+for SSL to Conscrypt by creating the Client instance as follows:
+
+```java
+import com.absmartly.sdk.*;
+import org.conscrypt.Conscrypt;
+
+final ClientConfig clientConfig = ClientConfig.create()
+    .setEndpoint("https://your-company.absmartly.io/v1")
+    .setAPIKey("YOUR-API-KEY")
+    .setApplication("website")
+    .setEnvironment("production");
+
+final DefaultHTTPClientConfig httpClientConfig = DefaultHTTPClientConfig.create()
+    .setSecurityProvider(Conscrypt.newProvider());
+
+final DefaultHTTPClient httpClient = DefaultHTTPClient.create(httpClientConfig);
+
+final Client absmartlyClient = Client.create(clientConfig, httpClient);
+
+final ABSmartlyConfig sdkConfig = ABSmartlyConfig.create()
+    .setClient(absmartlyClient);
+
+final ABSmartly sdk = ABSmartly.create(sdkConfig);
+```
+
+</details>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+```go
+clientConfig := ClientConfig{
+    Endpoint_:    "https://your-company.absmartly.io/v1",
+    ApiKey_:      "YOUR-API-KEY",
+    Application_: "website",
+    Environment_: "production",
+}
+
+sdkConfig := ABSmartlyConfig{Client_: CreateDefaultClient(clientConfig)}
+sdk := Create(sdkConfig)
+```
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+If your project uses dependency injection, register the SDK in your startup code:
+
+```csharp
+builder.Services.AddABSmartly(
+    builder.Configuration.GetSection("ABSmartly"),
+    HttpClientConfig.CreateDefault());
+```
+
+```json title="appsettings.json"
+{
+  "ABSmartly": {
+    "Environment": "production",
+    "Application": "website",
+    "Endpoint": "https://your-company.absmartly.io/v1",
+    "ApiKey": "YOUR-API-KEY"
+  }
+}
+```
+
+The `ABSdk` instance is registered as a singleton and can be injected into any controller
+or service:
+
+```csharp
+[ApiController]
+[Route("[controller]")]
+public class Test : ControllerBase
+{
+    private readonly ABSdk _abSdk;
+
+    public Test(ABSdk abSdk)
+    {
+        _abSdk = abSdk;
+    }
+}
+```
+
+<details>
+<summary>Advanced DI configuration (Polly, custom HTTP clients)</summary>
+
+The `AddABSmartly` extension method also allows you to configure HTTP connection settings,
+inject custom implementations of context-specific services, and configure additional HTTP
+request policies using [Polly](https://github.com/App-vNext/Polly).
+
+If you need a custom `IHttpClientFactory` implementation, make sure it creates named
+`IHttpClient` instances with the name `ABSmartlySDK.HttpClient` (available as the static
+field `ABSdk.HttpClientName`).
+
+</details>
+
+<details>
+<summary>Manual instantiation (without dependency injection)</summary>
+
+```csharp
+var serviceProvider = new ServiceCollection()
+    .AddHttpClient()
+    .BuildServiceProvider();
+var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+
+var sdk = new ABSdk(
+    new ABSdkHttpClientFactory(httpClientFactory),
+    new ABSmartlyServiceConfiguration
+    {
+        Environment = "production",
+        Application = "website",
+        Endpoint = "https://your-company.absmartly.io/v1",
+        ApiKey = "YOUR-API-KEY"
+    });
+```
+
+</details>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+```php
+use \ABSmartly\SDK\SDK;
+
+$sdk = SDK::createWithDefaults(
+    endpoint: 'https://your-company.absmartly.io/v1',
+    apiKey: 'YOUR-API-KEY',
+    environment: 'production',
+    application: 'website',
+);
+```
+
+:::note
+The example above uses named parameters (PHP 8.0+). On PHP 7.4, pass the
+parameters in order instead:
+
+```php
+$sdk = SDK::createWithDefaults(
+  'https://your-company.absmartly.io/v1', $apiKey, $environment, $application,
+);
+```
+:::
+
+<details>
+<summary>Granular component setup (custom event logger, etc.)</summary>
+
+The `createWithDefaults` shortcut works for most cases. If you need finer control
+over individual components (for example, to inject a custom event logger), build
+the SDK from its parts instead:
+
+```php
+use ABSmartly\SDK\Client\ClientConfig;
+use ABSmartly\SDK\Client\Client;
+use ABSmartly\SDK\Config;
+use ABSmartly\SDK\SDK;
+use ABSmartly\SDK\Context\ContextConfig;
+use ABSmartly\SDK\Context\ContextEventLoggerCallback;
+
+$clientConfig = new ClientConfig(
+    'https://your-company.absmartly.io/v1',
+    'YOUR-API-KEY',
+    'website',
+    'production'
+);
+$client = new Client($clientConfig);
+$config = new Config($client);
+
+$sdk = new SDK($config);
+
+$contextConfig = new ContextConfig();
+$contextConfig->setEventLogger(new ContextEventLoggerCallback(
+    function (string $event, ?object $data) {
+        // Custom callback
+    }
+));
+
+$context = $sdk->createContext($contextConfig);
+```
+
+</details>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+```ruby
+Absmartly.configure_client do |config|
+  config.endpoint = "https://your-company.absmartly.io/v1"
+  config.api_key = "YOUR-API-KEY"
+  config.application = "website"
+  config.environment = "production"
+end
+```
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+```dart
+final ClientConfig clientConfig = ClientConfig()
+  ..setEndpoint("https://your-company.absmartly.io/v1")
+  ..setAPIKey("YOUR-API-KEY")
+  ..setApplication("website")
+  ..setEnvironment("production");
+
+final ABSmartlyConfig sdkConfig = ABSmartlyConfig.create()
+    .setClient(Client.create(clientConfig));
+final ABSmartly sdk = ABSmartly(sdkConfig);
+```
+
+</TabItem>
+
+</Tabs>
+
+Every SDK requires four options:
+
+| Option | Description |
+|:--|:--|
+| `endpoint` | Your API endpoint URL. Typically `https://your-company.absmartly.io/v1` |
+| `apiKey` | Found in Settings > API Keys in the Web Console |
+| `environment` | Must match an environment configured in the Web Console (e.g. `"production"`, `"development"`) |
+| `application` | Must match an application configured in the Web Console |
+
+<details>
+<summary>Optional configuration</summary>
+
+Beyond the four required options, every SDK also accepts these optional settings:
+
+| Option | Default | Description |
+|:--|:--|:--|
+| `retries` | `5` | Number of retries before the SDK stops trying to connect |
+| `timeout` | `3000` ms | How long to wait for a response before giving up |
+| `eventLogger` | none | Callback that fires on SDK events (exposures, goals, errors). See the [custom event logger](#using-a-custom-event-logger) section below. |
+
+:::info Language-specific differences
+Most SDKs use the names and defaults above. A few differ:
+- **Python**: `max_retries`, `connection_timeout` (in seconds, not milliseconds), `context_event_logger`
+- **Swift**: `retries` defaults to `3` (not `5`). Timeouts are in seconds, not milliseconds.
+- **PHP**: `retries` and `timeout` are `int` types. The event logger accepts a `ContextEventLoggerCallback` or any `ContextEventLogger` implementation.
+- **Flutter/Dart**: Does not expose `retries`, `timeout`, or `eventLogger` as top-level options. These are configured through the client config.
+:::
+
+</details>
