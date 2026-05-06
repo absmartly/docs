@@ -1,0 +1,196 @@
+---
+sidebar_position: 8
+---
+
+import Image from "@theme/IdealImage";
+
+# Using Variables as Code
+
+[Treatment variables](./running-your-first-experiment#step-2-use-variables-for-flexible-experiments)
+are great for setting values like colours, copy, or feature flags. But sometimes you
+want the Web Console to control actual behaviour: injecting HTML elements, running
+functions, or applying CSS styles.
+
+This is useful when your marketing or product team wants to iterate on experiments
+without waiting for a code deploy. They can change the HTML, tweak the CSS, or swap out
+a function directly from the Web Console.
+
+## Starting Point
+
+For these examples, we're using a basic Vite app with the SDK already initialised and a
+context ready (see [Getting Started](./getting-started) if you need to set that up).
+The page starts with a simple heading:
+
+<details>
+<summary>Full starting <code>main.ts</code> file</summary>
+
+```ts
+import absmartly from "@absmartly/javascript-sdk"
+import './style.css'
+
+const sdk = new absmartly.SDK({
+    endpoint: process.env.ABSMARTLY_ENDPOINT_URL,
+    apiKey: process.env.ABSMARTLY_API_KEY,
+    environment: "development",
+    application: "web"
+})
+
+const request = {
+    units: {
+        user_id: Math.floor(Math.random() * 1000000).toString(),
+    }
+}
+
+const context = sdk.createContext(request)
+
+document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+<div>
+    <h1>Variant Variables as Code</h1>
+</div>
+`
+```
+
+</details>
+
+Which looks like this:
+
+<Image
+    img={require("/img/variant_variables_as_code_blank.png")}
+    alt='A screen capture of the base web script. It has a large h1 tag that says "Variant Variables As Code"'
+/>
+
+Now let's see how we can use variant variables to implement some code on this page.
+
+## Adding HTML Elements
+
+Let's say we have an experiment named `hello_world_heading_color`. When
+creating this experiment, we can add the heading tag as a `string` variant
+variable, like so:
+
+<Image
+    img={require("/img/variant_variables_as_code_adding.png")}
+    alt='A screen capture of the absmartly web console variants section where a h1 tag has been added as a variant variable to variant B'
+/>
+
+We can now access this variant variable in our code to display the heading to
+the correct audience.
+
+:::info
+In the Javascript SDK, variant variables can be accessed with the `context.variableValue("VARIABLE_NAME", defaultValue)` method.
+:::
+
+The simplest way to implement this with JS would be to use the innerHTML
+property of a DOM element in our code.
+
+In our base `main.ts` file, we can add the following code:
+
+```ts
+context.ready().then(() => {
+    document.querySelector<HTMLDivElement>('#app')!
+        .appendChild(document.createElement("div"))
+        .innerHTML = context.variableValue("heading", '<h1 style="color: red;">Hello World!</h1>')
+});
+```
+
+This code makes it so that users in **Variant A** (control) see a red `Hello World!`,
+and users in **Variant B** (variant `1`) will see a blue one:
+
+<Image
+    img={require("/img/variant_variables_as_code_red.png")}
+    alt='A screen capture of the website where the control variant is being shown with a large, red Hello World heading'
+/>
+
+<Image
+    img={require("/img/variant_variables_as_code_blue.png")}
+    alt='A screen capture of the website where variant B is being shown with a large, blue Hello World heading'
+/>
+
+## Running Functions
+
+Sometimes your marketing or product team wants to trigger behaviour like a survey
+popup, an analytics call, or a third-party script for certain variants without waiting
+for a deploy. You can store a function as a string variable in the Web Console and
+execute it on the client.
+
+:::caution Security considerations
+Both `new Function()` and injecting `<script>` tags execute arbitrary code from the
+Web Console. This is equivalent to `eval()`. Before using this pattern:
+
+- **Trust your Web Console administrators.** Anyone who can edit variant variables can
+  execute Javascript in your users' browsers.
+- **Content Security Policy (CSP).** If your site uses a CSP, `new Function()` and
+  inline scripts will be blocked unless you explicitly allow `unsafe-eval` and
+  `unsafe-inline`. Consider whether weakening your CSP is acceptable.
+- **Prefer treatment variables for values.** If you only need to change colours, copy,
+  or feature flags, use `variableValue()` with string/number values instead of
+  executable code. Reserve code injection for cases where you genuinely need dynamic
+  behaviour controlled from the Web Console.
+:::
+
+Let's create a new experiment and add an alert function to **Variant B**.
+
+<Image
+    img={require("/img/variant_variables_as_code_adding_function.png")}
+    alt='A screen capture of the absmartly web console variants section where an alert function has been added as a variant variable to variant B'
+/>
+
+Now, we can add more code to our `main.ts` file to run the function variable
+as code when the context is ready:
+
+```ts
+context.ready().then(() => {
+    const code = context.variableValue("function", '');
+
+    const F = new Function(code);
+    F();
+});
+```
+
+Alternatively, you can inject a `<script>` tag:
+
+```ts
+context.ready().then(() => {
+    const code = context.variableValue("function", '');
+
+    const script = document.createElement('script');
+    script.innerHTML = code;
+    document.body.appendChild(script);
+});
+```
+
+Now users who are part of **Variant B** (variant `1`) will receive a Hello World alert and those
+in **Variant A** (control) will not!
+
+## Injecting CSS
+
+If your design team wants to A/B test visual changes like background colours, font
+sizes, or layout tweaks, they can push CSS directly from the Web Console without a
+code deploy.
+
+Let's create a new experiment and add some CSS to **Variant B**.
+
+<Image
+    img={require("/img/variant_variables_as_code_adding_css.png")}
+    alt='A screen capture of the absmartly web console variants section where a CSS rule has been added as a variant variable to variant B'
+/>
+
+Now, we can add more code to our `main.ts` file to inject the CSS variable
+as code when the context is ready:
+
+```ts
+context.ready().then(() => {
+    const css = context.variableValue("css", '');
+
+    const style = document.createElement('style');
+    style.innerHTML = css;
+    document.head.appendChild(style);
+});
+```
+
+Now users who are part of **Variant B** (variant `1`) will see a red background and those
+in **Variant A** (control) will not!
+
+<Image
+    img={require("/img/variant_variables_as_code_bg_red.png")}
+    alt='A screen capture of the website where variant B is being shown with a red background'
+/>

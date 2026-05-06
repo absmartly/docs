@@ -1,1 +1,0 @@
-context_config = Absmartly.create_context_config

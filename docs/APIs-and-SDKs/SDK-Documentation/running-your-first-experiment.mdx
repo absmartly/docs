@@ -1,0 +1,129 @@
+---
+sidebar_position: 3
+---
+
+import SelectingATreatment from "./_selecting-a-treatment-basic.mdx";
+import SelectingAVariable from "./_selecting-a-variable-basic.mdx";
+import TrackingGoals from "./_shared/tracking-goals/_tracking-goals.mdx";
+import Publish from "./_shared/publish/_publish.mdx";
+import CompleteExample from "./complete-example/_complete-example.mdx";
+
+# Running Your First Experiment
+
+Now that your SDK is set up and you have a context, you're ready to run an experiment.
+Here's what that looks like from your code's perspective:
+
+1. **Check the variant** to find out which experience this user should see
+2. **Render the right experience** based on that variant (or use variables to make it flexible)
+3. **Track goals** to measure whether the experiment is working
+4. **Send the data** to ABsmartly's collector
+
+Once the context is ready, all `treatment()` calls are resolved locally with no
+additional network requests. Any experiment that isn't running will return `0`
+(Variant A, the control group).
+
+Steps 1 and 3 are all you need for a basic experiment. Step 2 (variables) and
+Step 4 (manual event flushing) are useful but not required for your first test.
+
+## Step 1: Check which variant the user is in
+
+The `treatment()` method is how you find out which variant a user has been assigned to.
+It returns a number that maps to the variants you see in the Web Console:
+
+| Number | Web Console name | Meaning |
+|--------|-----------------|---------|
+| `0` | Variant A | Control (the baseline experience) |
+| `1` | Variant B | First treatment |
+| `2` | Variant C | Second treatment |
+| `3` | Variant D | Third treatment |
+| ... | ... | ... |
+
+Calling `treatment()` also records an **exposure**, which tells ABsmartly that this user
+actually saw the experiment. This is how ABsmartly knows to include them in the
+statistical analysis.
+
+Use an `if/else` block to branch your code based on the variant:
+
+<SelectingATreatment />
+
+This works well for experiments where the logic change is entirely in your code (show
+component A vs component B). But if you want the Web Console to control values like
+colours, copy, or feature flags, read on.
+
+## Step 2: Use variables for flexible experiments
+
+Instead of hardcoding what each variant does, you can use **treatment variables**.
+These are key-value pairs that you set in the Web Console and pull into your code at runtime.
+
+The benefit: your product team can add new variants or tweak existing ones from the Web
+Console without anyone touching code.
+
+For example, say you have an experiment to find out what colour of button gets the most
+clicks. In the Web Console, you'd add a variable called `button.color` with value `"green"`
+on Variant B. You don't need to set anything on Variant A - that's what the default value
+in your code is for. Then in your code, `variableValue()` returns the experiment value for
+the user's assigned variant, or the default if the experiment isn't running or the user is
+in the control group:
+
+<SelectingAVariable />
+
+## Step 3: Track goals to measure success
+
+An experiment without goals is like running a test without checking the results. Goals
+are the actions you want to measure: did the user click the button? Complete a purchase?
+Sign up for a newsletter?
+
+The `track()` method records these actions. Each goal corresponds to a `goal_name`
+defined in the Web Console. You can also pass properties to create more granular metrics.
+
+<TrackingGoals />
+
+:::info
+- By default, the `goal_name` must match exactly what you defined in the Web Console.
+  Anything else will be ignored. However, if your instance has `AUTO_GOAL_CREATION`
+  enabled, any unseen goals will be automatically created in the Web Console.
+- Properties are optional but useful for filtering and creating extra metrics.
+:::
+
+## Step 4: Make sure your data gets sent
+
+Most SDKs batch events and send them to ABsmartly's collector automatically. For most
+use cases, you don't need to do anything here.
+
+:::warning Node.js, PHP, and Ruby users
+The Javascript SDK running in Node.js, the PHP SDK, and the Ruby SDK do not
+auto-publish events. You must call `publish()` or `finalize()` explicitly at the end of
+each request, or your exposure and goal data will not be sent.
+:::
+
+Even with auto-publishing, there are times when you need to guarantee events are sent
+before moving on. For example, before a page navigation in a multi-page app, or before
+a server sends its response. In those cases, call `publish()` explicitly:
+
+<details>
+<summary>Using publish() to flush events manually</summary>
+
+<Publish />
+
+</details>
+
+## Putting it all together
+
+Here's a realistic starting point you can copy and adapt. It covers SDK init, context
+creation, treatment checking, variable usage, goal tracking, and cleanup.
+
+<CompleteExample />
+
+## Next steps
+
+You now have everything you need to run a basic experiment. When you're ready to go
+deeper:
+
+- [Managing the Context Lifecycle](./managing-the-context-lifecycle) covers when to
+  close contexts, refresh experiment data, and flush events.
+- [Pre-Fetching Context Data](./pre-fetching-context-data) shows how to fetch
+  experiment data on the server and pass it to the client to avoid flickering.
+- [Targeting Users and Controlling Assignments](./targeting-and-audiences) shows how
+  to pass user attributes, use custom assignments, and override variants during QA.
+- [Checking Variants Without Triggering Exposures](./checking-variants-without-exposures)
+  explains peeking, which is useful for pre-loading assets or debugging.

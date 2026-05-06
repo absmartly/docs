@@ -1,0 +1,351 @@
+---
+sidebar_position: 5
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+# Pre-Fetching Context Data
+
+Every time you call `createContext()`, the SDK makes a round-trip to the ABsmartly
+collector to fetch experiment data. In many situations you can avoid that round-trip
+by reusing data you've already fetched. That's what `createContextWith()` is for --
+it creates a context from data you provide, so the context is ready immediately with
+no network request.
+
+This is supported across all ABsmartly SDKs.
+
+## Why pre-fetch?
+
+There are two common reasons to pre-fetch context data:
+
+**Avoiding flickering on the client.** When you create a context client-side, the
+round-trip to the collector means your UI doesn't know which variant to show until the
+response comes back. The result is either a loading state or a flash of the wrong
+content. If you fetch the data on the server and pass it to the client, the context is
+ready on the first render.
+
+**Reducing latency on the server.** If your server handles many requests for the same
+set of experiments, you can fetch the context data once and cache it (in memory, Redis,
+or wherever makes sense for your setup). Subsequent requests can create contexts from
+the cached data instead of making a round-trip to the collector each time.
+
+## How it works
+
+1. Create a context normally with `createContext()` and wait for it to be ready
+2. Extract the experiment data with `context.data()`
+3. Store or transfer that data however you like
+4. Create new contexts with `createContextWith()`, passing in the stored data
+
+A context created with `createContextWith()` is ready immediately. It has the same
+behaviour as a normal context - it tracks exposures, records goals, and publishes
+events. The only difference is that it skips the initial fetch.
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+```js
+const sdk = new absmartly.SDK(sdkOptions);
+
+// Fetch once
+const context = sdk.createContext(contextOptions);
+await context.ready();
+const data = context.data();
+
+// Reuse the data to create new contexts instantly
+const newContext = sdk.createContextWith(contextOptions, data);
+```
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+The React SDK re-exports everything from `@absmartly/javascript-sdk`, so you
+don't need to install the JS SDK separately.
+
+```jsx
+import ABSmartly, { SDK } from "@absmartly/react-sdk";
+
+const sdk = new SDK(sdkOptions);
+const context = sdk.createContextWith(contextOptions, prefetchedData);
+
+<ABSmartly context={context}>
+  <App />
+</ABSmartly>
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+Pass pre-fetched data to the plugin's `data` option to skip the initial network request.
+
+```js
+import absmartly from "@absmartly/vue2-sdk";
+
+Vue.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  data: prefetchedData,
+});
+```
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+Pass pre-fetched data to the plugin's `data` option to skip the initial network request.
+
+```js
+import absmartly from "@absmartly/vue3-sdk";
+
+app.use(absmartly.ABSmartlyVue, {
+  sdkOptions: {
+    endpoint: "https://your-company.absmartly.io/v1",
+    apiKey: "YOUR-API-KEY",
+    environment: "production",
+    application: "website",
+  },
+  context: {
+    units: {
+      user_id: "user-12345",
+    },
+  },
+  data: prefetchedData,
+});
+```
+
+</TabItem>
+
+<TabItem value="python" label="Python">
+
+```python
+sdk = ABSmartly(sdk_options)
+
+# Fetch once
+context = sdk.create_context(context_config)
+context.wait_until_ready()
+data = context.get_data()
+
+# Reuse
+new_context = sdk.create_context_with(context_config, data)
+```
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+```java
+ABSmartly sdk = ABSmartly.create(sdkConfig);
+
+// Fetch once
+Context context = sdk.createContext(contextConfig);
+context.waitUntilReady();
+ContextData data = context.getData();
+
+// Reuse
+Context newContext = sdk.createContextWith(contextConfig, data);
+```
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+```go
+sdk := absmartly.Create(sdkConfig)
+
+// Fetch once
+context := sdk.CreateContext(contextConfig)
+context.WaitUntilReady()
+data := context.GetData()
+
+// Reuse
+newContext := sdk.CreateContextWith(contextConfig, data)
+```
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+var sdk = new ABSdk(sdkConfig);
+
+// Fetch once
+var context = sdk.CreateContext(contextConfig);
+context.WaitUntilReady();
+var data = context.GetContextData();
+
+// Reuse
+var newContext = sdk.CreateContextWith(contextConfig, data);
+```
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+```php
+$sdk = new SDK($sdkConfig);
+
+// Fetch once
+$context = $sdk->createContext($contextConfig);
+$data = $context->getContextData();
+
+// Reuse
+$newContext = $sdk->createContextWithData($contextConfig, $data);
+```
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+```ruby
+# Fetch once
+context_config = Absmartly.create_context_config
+context_config.unit("user_id", "user-12345")
+
+context = Absmartly.create_context(context_config)
+data = context.data
+
+# Reuse
+new_context = Absmartly.create_context_with(context_config, data)
+```
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+```swift
+let sdk = ABSmartlySDK(config: sdkConfig)
+
+// Fetch once
+let context = sdk.createContext(config: contextConfig)
+context.waitUntilReady()
+let data = context.getContextData()
+
+// Reuse
+let newContext = sdk.createContextWithData(config: contextConfig, contextData: data)
+```
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+```dart
+final sdk = ABSmartly(sdkConfig);
+
+// Fetch once
+final context = sdk.createContext(contextConfig);
+await context.waitUntilReady();
+final data = context.getData();
+
+// Reuse
+final newContext = sdk.createContextWith(contextConfig, data);
+```
+
+</TabItem>
+
+</Tabs>
+
+## Use case: server-side caching
+
+On a high-traffic server, you might not want every request to make its own round-trip
+to the collector. Instead, you can fetch the context data on a schedule (or on first
+request) and cache it.
+
+```js
+let cachedData = null;
+
+async function refreshCache() {
+  const sdk = new absmartly.SDK(sdkOptions);
+  // Any unit works here - we're fetching experiment definitions, not
+  // computing assignments. Each context created with createContextWith()
+  // computes its own assignments locally.
+  const context = sdk.createContext({ units: { user_id: "cache-warm" } });
+  await context.ready();
+  cachedData = context.data();
+}
+
+function handleRequest(userId) {
+  const sdk = new absmartly.SDK(sdkOptions);
+  const context = sdk.createContextWith({ units: { user_id: userId } }, cachedData);
+  // context is ready immediately, no round-trip
+  const variant = context.treatment("experiment_name");
+}
+```
+
+The cached data contains experiment definitions, not user assignments. Assignments
+are computed locally by the SDK based on the user's units, so it's safe to share the
+same cached data across all users.
+
+## Use case: server to client (avoiding flicker)
+
+In a server-rendered app, you can fetch the context data during the server render and
+pass it to the client. This is the most common way to eliminate flickering.
+
+### Next.js example
+
+```tsx title="pages/index.tsx"
+import ABSmartly, { SDK } from "@absmartly/react-sdk";
+
+const sdkOptions = {
+  endpoint: "https://your-company.absmartly.io/v1",
+  apiKey: "YOUR-API-KEY",
+  application: "website",
+  environment: process.env.NODE_ENV,
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const serverSDK = new SDK(sdkOptions);
+
+  const contextOptions = {
+    units: {
+      user_id: "user-123",
+      anonymous_id: "anon-456",
+    },
+  };
+
+  const context = serverSDK.createContext(contextOptions);
+  await context.ready();
+
+  return {
+    props: {
+      contextData: context.data(),
+      contextOptions,
+      sdkOptions,
+    },
+  };
+};
+
+export default function Home({ contextData, contextOptions, sdkOptions }) {
+  const clientSDK = new SDK(sdkOptions);
+  const context = clientSDK.createContextWith(contextOptions, contextData);
+
+  return (
+    <ABSmartly context={context}>
+      {/* Your page content */}
+    </ABSmartly>
+  );
+}
+```
+
+The server fetches the experiment data during `getServerSideProps`, serialises it as
+a prop, and the client creates the context instantly with `createContextWith()`. The
+user sees the correct variant on the very first paint.
+
+## Related topics
+
+- [Targeting Users and Controlling Assignments](./targeting-and-audiences) shows how
+  to pass user attributes, use custom assignments, and override variants during QA.
+- [Using Custom Fields](./using-custom-fields) covers adding per-experiment metadata
+  for advanced use cases.

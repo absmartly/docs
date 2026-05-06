@@ -1,0 +1,140 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/js/selectingATreatment.js";
+import PythonSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/python/selectingATreatment.py";
+import ReactUsingUseTreatment from "!!raw-loader!./_shared/selecting-a-treatment/react/usingUseTreatment.js";
+import ReactSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/react/selectingATreatment.js";
+import ReactUsingTernaryOperator from "!!raw-loader!./_shared/selecting-a-treatment/react/usingTernaryOperator.js";
+import SwiftSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/swift/selectingATreatment.swift";
+import VueUsingTreatmentAlias from "!!raw-loader!./_shared/selecting-a-treatment/vue/UsingTreatmentAlias.vue";
+import VueUsingTreatmentIndex from "!!raw-loader!./_shared/selecting-a-treatment/vue/UsingTreatmentIndex.vue";
+import VueUsingOnlyDefaultSlot from "!!raw-loader!./_shared/selecting-a-treatment/vue/UsingOnlyDefaultSlot.vue";
+import JavaSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/java/selectingATreatment.java";
+import GoSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/go/selectingATreatment.go";
+import DotNetSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/dotnet/selectingATreatment.cs";
+import PHPSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/php/selectingATreatment.php";
+import RubySelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/ruby/selectingATreatment.rb";
+import FlutterSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/flutter/selectingATreatment.dart";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsSelectingATreatment}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="python" label="Python3">
+
+<CodeBlock language="py">{PythonSelectingATreatment}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+<CodeBlock language="jsx">{ReactUsingUseTreatment}</CodeBlock>
+
+<details>
+<summary>Alternative: declarative component patterns</summary>
+
+The React SDK also provides component-based approaches. The `Treatment` and
+`TreatmentVariant` components let you declare variants without conditional logic.
+You can pass variant letters (`"A"`, `"B"`) or numbers:
+
+<CodeBlock language="jsx">{ReactSelectingATreatment}</CodeBlock>
+
+For more control, `TreatmentFunction` gives you the variant as a render prop:
+
+<CodeBlock language="jsx">{ReactUsingTernaryOperator}</CodeBlock>
+
+</details>
+
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+
+<CodeBlock language="swift">{SwiftSelectingATreatment}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+
+<CodeBlock language="html">{VueUsingTreatmentAlias}</CodeBlock>
+
+<details>
+<summary>Alternative slot patterns</summary>
+
+**By variant index** - use slot names `#0`, `#1`, `#2` to match variant numbers
+directly. Each slot receives `treatment`, `ready`, and `failed` as scoped properties:
+
+<CodeBlock language="html">{VueUsingTreatmentIndex}</CodeBlock>
+
+**Default slot only** - use a single default slot and handle the branching yourself
+with the `treatment`, `ready`, and `failed` scoped properties:
+
+<CodeBlock language="html">{VueUsingOnlyDefaultSlot}</CodeBlock>
+
+</details>
+
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+
+<CodeBlock language="html">{VueUsingTreatmentAlias}</CodeBlock>
+
+<details>
+<summary>Alternative slot patterns</summary>
+
+**By variant index** - use slot names `#0`, `#1`, `#2` to match variant numbers
+directly. Each slot receives `treatment`, `ready`, and `failed` as scoped properties:
+
+<CodeBlock language="html">{VueUsingTreatmentIndex}</CodeBlock>
+
+**Default slot only** - use a single default slot and handle the branching yourself
+with the `treatment`, `ready`, and `failed` scoped properties:
+
+<CodeBlock language="html">{VueUsingOnlyDefaultSlot}</CodeBlock>
+
+</details>
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+<CodeBlock language="java">{JavaSelectingATreatment}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+<CodeBlock language="go">{GoSelectingATreatment}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+
+<CodeBlock language="csharp">{DotNetSelectingATreatment}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="php" label="PHP">
+
+<CodeBlock language="php">{PHPSelectingATreatment}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+
+<CodeBlock language="ruby">{RubySelectingATreatment}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+
+<CodeBlock language="dart">{FlutterSelectingATreatment}</CodeBlock>
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,76 @@
+---
+sidebar_position: 10
+---
+
+import ConfigApi from "./_shared/config-api/_config-api.mdx";
+
+# Config API
+
+If your application already uses configuration objects to control behaviour (feature flags,
+theme settings, copy, layout), the Config API lets you run experiments on those config
+values with zero additional branching logic.
+
+Instead of writing `if treatment === 1 then color = green`, you just merge your config
+with experiment data and your existing config-driven code handles the rest. This means
+you can set up new experiments from the Web Console without touching a single line of
+application code.
+
+:::info
+The Config API is currently available in the **Javascript SDK** only.
+:::
+
+## What it replaces
+
+Say your app has a config object that controls the homepage. Without the Config API,
+you'd branch on every experiment manually:
+
+```js
+const config = {
+  hero_image: context.treatment("homepage_hero") === 1
+    ? "http://cdn.com/hero-new.png"
+    : "http://cdn.com/hero-default.png",
+  button: {
+    color: context.treatment("homepage_hero") === 1 ? "green" : "blue",
+    cta: context.treatment("homepage_hero") === 1 ? "Start free trial" : "Learn more",
+  },
+};
+```
+
+With `mergeConfig()`, you define your defaults and the SDK merges in the experiment
+values automatically. In the Web Console, you'd set treatment variables that match
+your config keys (e.g. `hero_image`, `button.color`, `button.cta`):
+
+```js
+import { mergeConfig } from "@absmartly/javascript-sdk";
+
+let config = {
+  hero_image: "http://cdn.com/hero-default.png",
+  button: {
+    color: "blue",
+    cta: "Learn more",
+  },
+};
+
+config = mergeConfig(context, config);
+// config.button.color is now a getter that returns the experiment's value
+// and calls treatment() automatically, so exposures are tracked for you
+```
+
+No branching logic in your code. New experiments can be set up entirely from the Web
+Console by adding variables that match your config keys.
+
+## How it works
+
+The `mergeConfig()` function takes a context and your existing config object, and returns
+a new one where any keys that match experiment variables are replaced with getters. When
+those keys are accessed, the SDK automatically calls `treatment()` under the hood, so
+exposures are tracked without you having to think about it.
+
+<ConfigApi />
+
+## Next steps
+
+You've reached the end of the SDK Guide. For per-SDK API details beyond what's
+covered here, check the README in each SDK's GitHub repository (linked on the
+[SDK Guide overview](./)). If you have questions, reach out to our team through
+the Web Console.

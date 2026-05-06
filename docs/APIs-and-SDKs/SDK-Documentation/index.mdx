@@ -1,30 +1,51 @@
-# SDK Documentation
+---
+sidebar_position: 1
+title: SDK Guide
+---
 
-This guide provides detailed information about ABsmartly’s experimentation
-SDKs.
+# ABsmartly SDK Guide
 
-We currently support:
+The ABsmartly SDK lets you run experiments and feature flags in your application. It handles variant assignment, exposure tracking, and goal measurement so you can focus on building the experiences you want to test.
 
-- [Java](https://www.github.com/absmartly/java-sdk)
+## Supported SDKs
+
+**Client-side:**
+
 - [Javascript](https://www.github.com/absmartly/javascript-sdk)
-- [Swift](https://www.github.com/absmartly/swift-sdk)
 - [React](https://www.github.com/absmartly/react-sdk)
 - [Vue2](https://www.github.com/absmartly/vue2-sdk)
 - [Vue3](https://www.github.com/absmartly/vue3-sdk)
-- [PHP](https://www.github.com/absmartly/php-sdk)
-- [.NET](https://www.github.com/absmartly/dotnet-sdk)
-- [Ruby](https://www.github.com/absmartly/ruby-sdk)
-- [Golang](https://www.github.com/absmartly/go-sdk)
+- [Swift](https://www.github.com/absmartly/swift-sdk)
 - [Flutter/Dart](https://www.github.com/absmartly/flutter-sdk)
-- [Python3](https://www.github.com/absmartly/python3-sdk)
 
-Have a look at [our Github](https://github.com/absmartly) to see our current
-SDKs and those which are still in development (here's looking at **you** Python
-developers)!
+**Server-side:**
+
+- [Javascript](https://www.github.com/absmartly/javascript-sdk)
+- [Java](https://www.github.com/absmartly/java-sdk)
+- [Python3](https://www.github.com/absmartly/python3-sdk)
+- [Golang](https://www.github.com/absmartly/go-sdk)
+- [.NET](https://www.github.com/absmartly/dotnet-sdk)
+- [PHP](https://www.github.com/absmartly/php-sdk)
+- [Ruby](https://www.github.com/absmartly/ruby-sdk)
+
+## Where to start
+
+If you're new to ABsmartly, follow this path:
+
+1. **[Getting Started](./getting-started)** - Install the SDK, initialise it, and create your first context.
+2. **[Running Your First Experiment](./running-your-first-experiment)** - Walk through a complete experiment from variant assignment to goal tracking.
+
+These two pages are all you need to start running experiments. When you're ready,
+explore the topics that matter for your use case. You don't need to read them in
+order - pick the ones relevant to your project:
+   - [Managing the Context Lifecycle](./managing-the-context-lifecycle) - When and how to publish events, close contexts, and refresh experiment data.
+   - [Pre-Fetching Context Data](./pre-fetching-context-data) - Fetch experiment data on the server and pass it to the client to avoid flickering.
+   - [Targeting Users and Controlling Assignments](./targeting-and-audiences) - Pass user attributes, set custom assignments, and override variants for QA.
+   - [Checking Variants Without Triggering Exposures](./checking-variants-without-exposures) - Peek at treatments without recording an exposure.
+   - [Using Variables as Code](./using-variables-as-code) - Inject HTML, CSS, or functions from the Web Console.
+   - [Using Custom Fields](./using-custom-fields) - Extend experiment metadata with your own fields.
+   - [Config API](./config-api) - Merge experiment data directly into your app's config objects.
 
 :::note
-This guide assumes that you are already partnered with us and your Web Console
-has been setup by our team. If you are looking to start your experimentation
-journey, [request a demo](https://absmartly.com/elite-experimenter) with one of our
-teammembers!
+This guide assumes your Web Console is already set up by our team. If you're looking to get started with ABsmartly, [request a demo](https://absmartly.com/elite-experimenter) with one of our team members.
 :::

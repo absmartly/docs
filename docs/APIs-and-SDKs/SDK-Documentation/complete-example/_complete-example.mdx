@@ -1,0 +1,68 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsCompleteExample from "!!raw-loader!./js/completeExample.js";
+import PythonCompleteExample from "!!raw-loader!./python/completeExample.py";
+import ReactCompleteExample from "!!raw-loader!./react/completeExample.jsx";
+import VueCompleteExample from "!!raw-loader!./vue/completeExample.js";
+import Vue3CompleteExample from "!!raw-loader!./vue3/completeExample.js";
+import SwiftCompleteExample from "!!raw-loader!./swift/completeExample.swift";
+import JavaCompleteExample from "!!raw-loader!./java/completeExample.java";
+import GoCompleteExample from "!!raw-loader!./go/completeExample.go";
+import DotNetCompleteExample from "!!raw-loader!./dotnet/completeExample.cs";
+import PHPCompleteExample from "!!raw-loader!./php/completeExample.php";
+import RubyCompleteExample from "!!raw-loader!./ruby/completeExample.rb";
+import FlutterCompleteExample from "!!raw-loader!./flutter/completeExample.dart";
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+<CodeBlock language="js">{JsCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="python" label="Python3">
+<CodeBlock language="py">{PythonCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="react" label="React">
+<CodeBlock language="jsx">{ReactCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="swift" label="Swift">
+<CodeBlock language="swift">{SwiftCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="vue" label="Vue2">
+<CodeBlock language="js">{VueCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="vue3" label="Vue3">
+<CodeBlock language="js">{Vue3CompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="java" label="Java">
+<CodeBlock language="java">{JavaCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="go" label="Go">
+<CodeBlock language="go">{GoCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="dotnet" label=".NET">
+<CodeBlock language="csharp">{DotNetCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="php" label="PHP">
+<CodeBlock language="php">{PHPCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="ruby" label="Ruby">
+<CodeBlock language="ruby">{RubyCompleteExample}</CodeBlock>
+</TabItem>
+
+<TabItem value="flutter" label="Flutter/Dart">
+<CodeBlock language="dart">{FlutterCompleteExample}</CodeBlock>
+</TabItem>
+
+</Tabs>
