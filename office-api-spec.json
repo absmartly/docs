@@ -1,0 +1,9 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ABsmartly Office API",
+    "version": "0.0.0",
+    "description": "Auto-generated from the latest release branch. Run scripts/generate-office-api.sh with ABS_REPO_ACCESS_TOKEN to update locally."
+  },
+  "paths": {}
+}
