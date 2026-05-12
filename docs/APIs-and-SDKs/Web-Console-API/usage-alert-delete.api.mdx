@@ -1,0 +1,42 @@
+---
+id: usage-alert-delete
+title: "Usage Alert DELETE"
+description: "Usage Alert DELETE"
+sidebar_label: "Usage Alert DELETE"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVMGO2zgM/RWBp92pN8kUPfmWRXMo2qJFp3NK0gFtM7EaW1IpOh3X8L8vaDupOzOnvSSyRFLvke+pAx+IUax37wpI4T7ikdYVsbylioQgAaYYvIsUIe3g9WqlfwXFnG3QNEjh0wkSyL0TcqKnGEJl86Ho8nvUkA5iXlKNugqsV4odC/qT/kobCFLIvK8IHfS9XvujsUwFpFsN2ieXIJ99p1yg7zXqzerNczz/Hw0xex5WVqiOM2hR2Loj9FcYyIytfr/IIAFyTQ3p9oBVpH0CrqkqzCqCdNh5ynC6OHmRagJiRVNho2FfpoEMLVBAeIxaY3MmJ1HTI+UNW2kh3e4TCMhYk5AS23ZgtUUBpYQEHNZa1hYwhyPcUDLr0cFzjQIpFL5RCld8rqkzYuj7ffJkBIOOzCAk83bzYfN1AwnUJKVXlRUXbQ0wUlieb5c0oF82VwHGZWeLHpQNny/gG64ghVIkxHS5jOiKzD8uMIs1slTtIvc19LMO3CmJcbb3kXgd7HtqZ/PCcSMZu1ISFsTwlMzaaK5Zf35n3lNrDn5cYyOlZ/trkNbC3Nx8bKKYjIx1RkoyY9vMDtbB/qOJrW/4oYnEDxjsw4naHdzc/J7Cel4PpgHowbepwG4Xd7u7V4M9rDv4gcekjAzzEzmdo/ZqxH27WC1Wz9k48ymQUwZ3gXJ7mMxhpEQxY2xGcaCw/ndq7EBYif/0fLLuaH5aKQdChh4Dsa11eiawPzLWNYrNsaraxWRFzNWKfQKVzUmlm3YX1p/ZB7YkyO1ALPgoNbpZxIta+oPTdZxCj7IMFVqnzhzE0k0i28L5Vm05miSBmdAggdQWapzSR9HQrssw0j1Xfa/bPxriyUxnZDv6eNtBYaOui8nUz1BdXyH468vkrr/Nb/v8ifaiSKdyPGPV0PiUnVSwatF+3ycXiert48E6zynILOXZe6d+uFpvamDf/wejPwkK
+sidebar_class_name: "delete api-method"
+info_path: docs/APIs-and-SDKs/Web-Console-API/backend
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Usage Alert DELETE</h1>
+
+<MethodEndpoint method={"delete"} path={"/v1/events/usageAlerts/{id}"}></MethodEndpoint>
+
+
+
+Usage Alert DELETE
+
+## Request
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Path Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"in":"path","name":"id","required":true,"schema":{"format":"double","type":"number"}}}></ParamsItem></ul></div></details><div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+
+Ok
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"ok"} required={true} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean"}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"ok\": true\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"404"} value={"404"}><div></div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"errors"} required={true} schemaName={"string[]"} qualifierMessage={undefined} schema={{"items":{"type":"string"},"type":"array"}}></SchemaItem><SchemaItem collapsible={false} name={"ok"} required={true} schemaName={"boolean"} qualifierMessage={"**Possible values:** [`false`]"} schema={{"type":"boolean","enum":[false],"nullable":false}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"errors\": [\n    \"string\"\n  ],\n  \"ok\": false\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      
