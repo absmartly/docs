@@ -1,0 +1,42 @@
+---
+id: platform-alerts-list
+title: "Get currently active platform alerts"
+description: "Get currently active platform alerts"
+sidebar_label: "Get currently active platform alerts"
+hide_title: true
+hide_table_of_contents: true
+api: eJyNVMFu2zAM/RWBx0xL0h19y4ChKLqhBdqdmiygbTZWY0sqRaf1Av/7QNvtku4yXyxL5NN75KOPECIxigv+qoQMbmuUx8DNqiaW9N0lAQtMKQafKEF2hC/Lpb5KSgW7qImQwc0eLBTBC3nRU4yxdsUAu3hKGnKEVFTUoK6cUDNgRdbbxY3IDaWEO9KldJEggyTs/A56O218PLBAvm0gewDnHwNYeEH2erCxIE5q+qjoXtN7C648AfNtkxODBQ1DgQzK0OY1Qd+r9ufWMZV6yRvBic4As3njBiF/okL+kgVkxg56fSwI7pJinBdY0xMVLTvpIHvYWIjI2JAQp/H7vM6XJKZomclL3RksxB3IxAnS4IhpoSGpgrZzR9q/iFJBBovDxeItdvsem4gP421HaLmGDCqRmLLFIqEv8/A6xzw1yFJ38yI00J9QvtOWjs37mYhX0V1Td1JZHDcsOCVfEZZDnc81rYzmmtXtlbmmzjyGcY2tVIHd78FEczOb/WiTmJyM80YqMmOzzBpW0X3WxC60vG0T8Raj2+6pW8NsBhY8NspldYqnugfukMGvCWC9Tuv13aeh64OdVMdkohyLPfkSLGitRt4X8+V8+a8ab24ieVVwF6lwj9MYGKlQzBibUxokrL5OhR0Eq/CXwHvnd+bFSTUIMvQaiV1DXpKJHHaMTYPiCqzrbj4NHRY6dL2F2hXk0zAok+pbDpEdCXI3CIshSYP+JOI/LXWm8r3BQq+innJefT/Y5zjZ7QEOF+q9D4bbWKhCEj0/HnNM9JPrvtft55Z4GoIDskOdwOxh09s346hD9+ovWBUFRXX2Aet2NNqH/4269H0KLr/dQ9//AeqWsyM=
+sidebar_class_name: "get api-method"
+info_path: docs/APIs-and-SDKs/Web-Console-API/backend
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Get currently active platform alerts</h1>
+
+<MethodEndpoint method={"get"} path={"/v1/platform_alerts"}></MethodEndpoint>
+
+
+
+Get currently active platform alerts
+
+## Request
+
+<div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+
+Ok
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"message"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem><SchemaItem collapsible={false} name={"type"} required={true} schemaName={"PlatformAlertType (string)"} qualifierMessage={"**Possible values:** [`info`, `warning`]"} schema={{"type":"string","enum":["info","warning"],"title":"PlatformAlertType"}}></SchemaItem><SchemaItem collapsible={false} name={"id"} required={true} schemaName={"double"} qualifierMessage={undefined} schema={{"type":"number","format":"double"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"[\n  {\n    \"message\": \"string\",\n    \"type\": \"info\",\n    \"id\": 0\n  }\n]"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      

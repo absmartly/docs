@@ -1,0 +1,46 @@
+---
+id: notification-has-new
+title: "Has New Notifications"
+description: "Check if there are new notifications since the given notification ID."
+sidebar_label: "Has New Notifications"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1VMFS2zAQ/RXNHqlJgN58S0unMEyBKfREaGbjbGI1tiS06wQ343/vrG0GJ5Rb64s90tP6vbf7tAMfKKJY7y4XkMK1F7u0WbtwgXxNW0ggEgfvmBjSHZydnOhrQZxFGxQHKdysIYHMOyEnuoshFH2V8S9WyA44y6lE/ZI6EKQw974gdNDokxxU/JxTtjZ2aSSnSAYjGUdb4wb82LB1GSnCrOyG3N6uuTwfQQKCK4b0YU8Yw2MCTFkVrdSQPjwmEDBiSUJRwYfq7nMyl+fGt2RMgSxm7fx2/38j852kio6NxIqUuaMtxQPG9GxZlJfVwk8VxRoScFiqIVp5NsTP7KK1/6mykRaQLrFgSgZOLn0sUSAF6+TjmcrtrLVOaEURmuYxgZIk99rcFQmoVMkhhfHmdLzHbZwjH7u24Uxx82JFFQtIIRcJnI7HjG4x988jnHOJUYp6lPkSmoGfd0quG5UfTHES7BXVg65jt9A7kBMuKMJh9ydGz5rJ7aW5otosffeNleQ+2t+94UdH3yoWMydjXduazg4zhUmwx3qw9lWcVUxxhsHO1lRP4ejo1fDJsB70xurGz77AdMrT6d0H0Pm0bulbHVaKdnwxW5PTBqlXHe/T0cno5K0aZ24COVVwFyh7HVHJUUyHnRO3EiafemNbwSp86+PaupXZWslbQYaeA0VbkhM2IfpVxLJEsRkWRT3qg4iZBrFJoLAZOSZl3qu+jT5ES4KxboUFz1KiGyAukM01bc1+aA5k7V4D/+/S2s2I0LOMQ4HWQZN0E7jr5/YBNqfawANmL7P7mEDuWRS3282R6UcsmkaXu6y14baM82KQp3dl/Y/g/1XiWiPyXv43WFR6pI3ZBqNV9nptNclLflRWV2OSZRRkcOrNVbx3JXz9cg9N8wdFLRjg
+sidebar_class_name: "get api-method"
+info_path: docs/APIs-and-SDKs/Web-Console-API/backend
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Has New Notifications</h1>
+
+<MethodEndpoint method={"get"} path={"/v1/notifications/has-new"}></MethodEndpoint>
+
+
+
+Check if there are new notifications since the given notification ID.
+
+## Request
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Query Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"description":"The ID of the last known notification. Returns true if newer notifications exist.","in":"query","name":"last_notification_id","required":false,"schema":{"format":"int32","type":"integer"}}}></ParamsItem></ul></div></details><div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+
+Ok
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><div style={{"marginTop":".5rem","marginBottom":".5rem"}}>
+
+boolean
+
+</div></ul></details></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      

@@ -1,0 +1,42 @@
+---
+id: usage-alert-get-all
+title: "UsageAlertGetAll"
+description: "UsageAlertGetAll"
+sidebar_label: "UsageAlertGetAll"
+hide_title: true
+hide_table_of_contents: true
+api: eJydlMFu2zAMhl9F4DHzknRH3zygKIpiaIGup6YLaIeJ1ciSKtFpvcDvPlB2s6QthmK5RLJJ6v/Fj96D8xSQtbOXK8jhLuKGCkOBL4gLYyCDQNE7GylCvodv87n8rShWQXtJgxyut5BB5SyTZXmL3htdpaKzxyghe4hVTQ3Kygc5kvVQEOWstNJMTXwfUDm71ptlGyn8K0zeL/VKltx5ghxs25QUIIO1Cw0y5LBybWkI+l5MPbU60Ary+0PqQ/aa6spHqhj6wwMMATvZk8XS0PExpXOG0KbgOlCsnVktfcWfUpLB/0k+uZS/qt5KSOU/Y8ttP3L05tCxVSn6fVH5ZcC4iRJ7viPLUcIiVW3Q3EF+/5CBx4ANceql7E9B+oC+hrh2QuaGxI9HriGH2e5sRumIWXvIEWmRwm4ovoc2GMihZvYxn80i2lXpXqZYxgYDm25auQb6I4W3guhA012kUHh9Rd3RveDwIAMtWmvCVerVqYVCSa4qbi7VFXVq7YY1tly7oH+noZiqyeRHG1mVpLRVXJMaGq4WUHj9VRI714bU3yV6vdxSt4DJBDKw2IiW4rie+E7aIYdfY4HFIi4Wt19SE7Vdu+RDs0kNxmpLVnCRuxp0n03n0/l7N1Zde7Li4NZTpdfjWCuukdUQW1JMForv48Umw2L82YWtthv1rLlOhhS9eAq6kcYpH9wmYNMg6wqN6abjRwTT7PQZGF2RjSTKR9c3wfmgiTF0yZh3kRu0RxGJIJVwUBfEaoDoxNShn0wvPPMGdRreRMt+BOwedmcyVwPFGRxD9pBB7SJL0H5fYqS7YPpeHj+1FEbOdxi0zKTs+uwVFqFyK0xBUVXkBegdmnaA6803U8g8wH9x/hP6/g8RdvMa
+sidebar_class_name: "get api-method"
+info_path: docs/APIs-and-SDKs/Web-Console-API/backend
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>UsageAlertGetAll</h1>
+
+<MethodEndpoint method={"get"} path={"/v1/events/usageAlerts"}></MethodEndpoint>
+
+
+
+UsageAlertGetAll
+
+## Request
+
+<div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+
+Ok
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>alerts</strong><span className={"openapi-schema__name"}> object[]</span><span className={"openapi-schema__divider"}></span><span className={"openapi-schema__required"}>required</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><span className={"openapi-schema__container"}><strong className={"openapi-schema__property"}>config_users</strong><span className={"openapi-schema__name"}> object[]</span><span className={"openapi-schema__divider"}></span><span className={"openapi-schema__required"}>required</span></span></summary><div style={{"marginLeft":"1rem"}}><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}>Array [</div></li><SchemaItem collapsible={false} name={"user_id"} required={true} schemaName={"double"} qualifierMessage={undefined} schema={{"type":"number","format":"double"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem><SchemaItem collapsible={false} name={"enabled"} required={true} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean"}}></SchemaItem><SchemaItem collapsible={false} name={"threshold_pct"} required={true} schemaName={"double"} qualifierMessage={undefined} schema={{"type":"number","format":"double"}}></SchemaItem><SchemaItem collapsible={false} name={"id"} required={true} schemaName={"double"} qualifierMessage={undefined} schema={{"type":"number","format":"double"}}></SchemaItem><li><div style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}>]</div></li></div></details></SchemaItem><SchemaItem collapsible={false} name={"ok"} required={true} schemaName={"boolean"} qualifierMessage={undefined} schema={{"type":"boolean"}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"alerts\": [\n    {\n      \"config_users\": [\n        {\n          \"user_id\": 0\n        }\n      ],\n      \"enabled\": true,\n      \"threshold_pct\": 0,\n      \"id\": 0\n    }\n  ],\n  \"ok\": true\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      
