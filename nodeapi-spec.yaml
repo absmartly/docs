@@ -2875,7 +2875,7 @@ paths:
                     - id
                   type: object
                 type: array
-      summary: Get currently active platform alerts
+      summary: Platform Alerts LIST
       tags:
         - PlatformAlerts
       security: []
@@ -2985,7 +2985,7 @@ paths:
                   - unseen_count
                 type: object
       description: Get notification summary including unseen/unread counts and a paginated list of notifications.
-      summary: Notification Summary
+      summary: Notification Summary GET
       tags:
         - Notifications
       security: []
@@ -3017,7 +3017,7 @@ paths:
                   - ok
                 type: object
       description: Mark all unseen notifications as seen for the current user.
-      summary: Mark Notifications as Seen
+      summary: Notifications Seen UPDATE
       tags:
         - Notifications
       security: []
@@ -3045,7 +3045,7 @@ paths:
       description: |-
         Mark notifications as read/unread. If ids are provided, only those notifications are updated.
         If ids are omitted, all notifications for the current user are updated.
-      summary: Mark Notifications as Read
+      summary: Notifications Read UPDATE
       tags:
         - Notifications
       security: []
@@ -3067,7 +3067,7 @@ paths:
               schema:
                 type: boolean
       description: Check if there are new notifications since the given notification ID.
-      summary: Has New Notifications
+      summary: Notifications Has New GET
       tags:
         - Notifications
       security: []
@@ -3099,7 +3099,7 @@ paths:
                   - monthlyActiveUnitsQuotaMillions
                   - monthlyEventsQuotaMillions
                 type: object
-      summary: Get monthly events quota from billing configuration
+      summary: Monthly Events Quota GET
       tags:
         - Events
       security: []
@@ -3178,6 +3178,7 @@ paths:
   /v1/events/usageAlerts:
     get:
       operationId: UsageAlertGetAll
+      summary: Usage Alert LIST
       responses:
         '200':
           description: Ok
@@ -3225,6 +3226,7 @@ paths:
       parameters: []
     post:
       operationId: UsageAlertAdd
+      summary: Usage Alert CREATE
       responses:
         '200':
           description: Ok
@@ -3303,6 +3305,7 @@ paths:
   /v1/events/usageAlerts/{id}:
     put:
       operationId: UsageAlertUpdate
+      summary: Usage Alert UPDATE
       responses:
         '200':
           description: Ok
@@ -3389,6 +3392,7 @@ paths:
               type: object
     patch:
       operationId: UsageAlertPatch
+      summary: Usage Alert PATCH
       responses:
         '200':
           description: Ok
@@ -3471,6 +3475,7 @@ paths:
               type: object
     delete:
       operationId: UsageAlertDelete
+      summary: Usage Alert DELETE
       responses:
         '200':
           description: Ok
