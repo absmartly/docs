@@ -1,0 +1,37 @@
+---
+sidebar_position: 1
+title: "BigQuery"
+description: "Connect ABsmartly to Google BigQuery."
+---
+
+import Image from "../../../../src/components/Image";
+
+# Connect to BigQuery
+
+Navigate to **Settings → Data Sources** and click **Add data source**. Give your data source a **name** and optional **description**, then select **BigQuery** from the **Database type** dropdown.
+
+<Image maxWidth="40rem" centered img="warehouse-native/datasource-bigquery.png" alt="BigQuery data source configuration" />
+
+## Connection credentials
+
+| Field | Description |
+|---|---|
+| **Project ID** | Your GCP project ID |
+| **Dataset ID** | The BigQuery dataset containing your experiment tables |
+| **Service Account Credentials (JSON)** | A GCP service account key in JSON format. You can paste the JSON directly into the editor or use the **Upload JSON file** button. This field is required. |
+
+:::tip
+Create a dedicated service account with read-only access to the relevant dataset. Don't reuse a service account that has broader permissions than necessary.
+:::
+
+## Test the connection
+
+Click **Test connection** at the bottom of the form. If everything is configured correctly, you'll see a green **"Connected"** confirmation.
+
+<Image maxWidth="40rem" centered img="warehouse-native/datasource-bigquery-connected.png" alt="Successful BigQuery connection test" />
+
+:::note
+If the test fails, double-check your credentials and make sure ABsmartly's IP addresses are allowed through your BigQuery project's network policies.
+:::
+
+Once connected, save the data source and proceed to [map your tables](../get-started#step-2-map-your-tables).

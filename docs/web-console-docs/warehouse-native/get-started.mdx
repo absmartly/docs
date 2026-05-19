@@ -30,84 +30,15 @@ Start by giving your data source a **name** and an optional **description**. The
 
 ### Choose your warehouse type
 
-Select your warehouse from the **Database type** dropdown. ABsmartly supports five warehouse types, each with its own set of credentials:
+Select your warehouse from the **Database type** dropdown. ABsmartly supports five warehouse types — follow the guide for yours:
 
-#### BigQuery
+- **[BigQuery](./connect/bigquery)**
+- **[Snowflake](./connect/snowflake)**
+- **[ClickHouse](./connect/clickhouse)**
+- **[Redshift](./connect/redshift)**
+- **[Databricks](./connect/databricks)**
 
-<Image maxWidth="40rem" centered img="warehouse-native/datasource-bigquery.png" alt="BigQuery data source configuration" />
-
-| Field | Description |
-|---|---|
-| **Project ID** | Your GCP project ID |
-| **Dataset ID** | The BigQuery dataset containing your experiment tables |
-| **Service Account Credentials (JSON)** | A GCP service account key in JSON format. You can paste the JSON directly into the editor or use the **Upload JSON file** button. This field is required. |
-
-:::tip
-Create a dedicated service account with read-only access to the relevant dataset. Don't reuse a service account that has broader permissions than necessary.
-:::
-
-#### Snowflake
-
-<Image maxWidth="40rem" centered img="warehouse-native/datasource-snowflake.png" alt="Snowflake data source configuration" />
-
-| Field | Description |
-|---|---|
-| **Account** | Your Snowflake account identifier (e.g., `xy12345.us-east-1`) |
-| **Warehouse** | The compute warehouse to use for queries |
-| **Database** | The database containing your experiment tables |
-| **Schema** _(optional)_ | The schema to use. Defaults to `PUBLIC` if not specified |
-| **Username** | Database username |
-| **Password** | Database password |
-
-#### ClickHouse
-
-<Image maxWidth="40rem" centered img="warehouse-native/datasource-clickhouse.png" alt="ClickHouse data source configuration" />
-
-| Field | Description |
-|---|---|
-| **Host** | The ClickHouse server hostname |
-| **Port** | Connection port (default: `8123`) |
-| **Database** | The database containing your experiment tables |
-| **Username** | Database username |
-| **Password** | Database password |
-
-#### Redshift
-
-<Image maxWidth="40rem" centered img="warehouse-native/datasource-redshift.png" alt="Redshift data source configuration" />
-
-| Field | Description |
-|---|---|
-| **Host** | The Redshift cluster endpoint |
-| **Port** | Connection port (default: `5439`) |
-| **Database** | The database containing your experiment tables |
-| **Schema** _(optional)_ | The schema to use. Defaults to `public` if not specified |
-| **Username** | Database username |
-| **Password** | Database password |
-
-#### Databricks
-
-<Image maxWidth="40rem" centered img="warehouse-native/datasource-databricks.png" alt="Databricks data source configuration" />
-
-| Field | Description |
-|---|---|
-| **Server Hostname** | The Databricks server hostname |
-| **Port** _(optional)_ | Connection port (default: `443`) |
-| **HTTP Path** | The HTTP path to your SQL warehouse (e.g., `/sql/1.0/warehouses/xxx`) |
-| **Catalog** | The Unity Catalog name |
-| **Schema** _(optional)_ | The schema to use. Defaults to `default` if not specified |
-| **Access Token** | A Databricks personal access token |
-
-### Test the connection
-
-Once you've filled in your credentials, click the **Test connection** button at the bottom of the form. ABsmartly will attempt to reach your warehouse and verify the credentials.
-
-If everything is configured correctly, you'll see a green **"Connected"** confirmation message.
-
-<Image maxWidth="40rem" centered img="warehouse-native/datasource-bigquery-connected.png" alt="Successful BigQuery connection test" />
-
-:::note
-If the test fails, double-check your credentials and make sure ABsmartly's IP addresses are allowed through your warehouse's firewall or network policies.
-:::
+Each guide walks you through the specific credentials needed and how to test the connection.
 
 Once connected, save the data source and move on to mapping your tables.
 
