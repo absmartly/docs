@@ -136,7 +136,8 @@ const config = {
           alt: "The ABsmartly logo",
           src: "img/absmartly-icon.png",
           style: {
-            width: "3rem",
+            height: "2rem",
+            width: "auto",
           },
         },
         items: [
