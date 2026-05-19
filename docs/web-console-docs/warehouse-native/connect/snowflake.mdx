@@ -1,0 +1,34 @@
+---
+sidebar_position: 2
+title: "Snowflake"
+description: "Connect ABsmartly to Snowflake."
+---
+
+import Image from "../../../../src/components/Image";
+
+# Connect to Snowflake
+
+Navigate to **Settings → Data Sources** and click **Add data source**. Give your data source a **name** and optional **description**, then select **Snowflake** from the **Database type** dropdown.
+
+<Image maxWidth="40rem" centered img="warehouse-native/datasource-snowflake.png" alt="Snowflake data source configuration" />
+
+## Connection credentials
+
+| Field | Description |
+|---|---|
+| **Account** | Your Snowflake account identifier (e.g., `xy12345.us-east-1`) |
+| **Warehouse** | The compute warehouse to use for queries |
+| **Database** | The database containing your experiment tables |
+| **Schema** _(optional)_ | The schema to use. Defaults to `PUBLIC` if not specified |
+| **Username** | Database username |
+| **Password** | Database password |
+
+## Test the connection
+
+Click **Test connection** at the bottom of the form. If everything is configured correctly, you'll see a green **"Connected"** confirmation.
+
+:::note
+If the test fails, double-check your credentials and make sure ABsmartly's IP addresses are allowed through your Snowflake network policies.
+:::
+
+Once connected, save the data source and proceed to [map your tables](../get-started#step-2-map-your-tables).

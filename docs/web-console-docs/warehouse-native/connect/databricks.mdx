@@ -1,0 +1,34 @@
+---
+sidebar_position: 5
+title: "Databricks"
+description: "Connect ABsmartly to Databricks."
+---
+
+import Image from "../../../../src/components/Image";
+
+# Connect to Databricks
+
+Navigate to **Settings → Data Sources** and click **Add data source**. Give your data source a **name** and optional **description**, then select **Databricks** from the **Database type** dropdown.
+
+<Image maxWidth="40rem" centered img="warehouse-native/datasource-databricks.png" alt="Databricks data source configuration" />
+
+## Connection credentials
+
+| Field | Description |
+|---|---|
+| **Server Hostname** | The Databricks server hostname |
+| **Port** _(optional)_ | Connection port (default: `443`) |
+| **HTTP Path** | The HTTP path to your SQL warehouse (e.g., `/sql/1.0/warehouses/xxx`) |
+| **Catalog** | The Unity Catalog name |
+| **Schema** _(optional)_ | The schema to use. Defaults to `default` if not specified |
+| **Access Token** | A Databricks personal access token |
+
+## Test the connection
+
+Click **Test connection** at the bottom of the form. If everything is configured correctly, you'll see a green **"Connected"** confirmation.
+
+:::note
+If the test fails, double-check your credentials and make sure ABsmartly's IP addresses are allowed through your Databricks workspace network settings.
+:::
+
+Once connected, save the data source and proceed to [map your tables](../get-started#step-2-map-your-tables).
