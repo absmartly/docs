@@ -6,6 +6,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
+@font-face {
+  font-family: 'PolySans';
+  src: url('/fonts/PolySans-Bulky.woff2') format('woff2'),
+       url('/fonts/PolySans-Bulky.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-font-family-base: 'Manrope', system-ui, -apple-system, sans-serif;
@@ -31,6 +40,12 @@
   --ifm-color-primary-light: #f6827a;
   --ifm-color-primary-lighter: #f79088;
   --ifm-color-primary-lightest: #fbbbb6;
+}
+
+h1,
+h2 {
+  font-family: 'PolySans', var(--ifm-heading-font-family);
+  font-weight: 900;
 }
 
 .button {
