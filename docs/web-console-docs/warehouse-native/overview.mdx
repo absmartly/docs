@@ -1,0 +1,50 @@
+---
+sidebar_position: 0
+title: "Warehouse Native Overview"
+description: "Run experiment analysis directly in your own data warehouse while benefiting from ABsmartly's platform."
+---
+
+# Warehouse Native
+
+ABsmartly's Warehouse Native mode lets you run experiment analysis directly inside your own data warehouse. Instead of sending event data to ABsmartly's cloud for processing, you point ABsmartly at your existing warehouse tables and it computes results where your data already lives.
+
+## Why Warehouse Native?
+
+Most experimentation platforms follow a cloud-first model: events are sent to the platform, metrics are computed there, and results are served back. This works well — it's fast to set up, provides real-time monitoring, and has no dependency on your data infrastructure.
+
+But as experimentation programs mature, new requirements emerge:
+
+- **Single source of truth** — Experiment metrics should match what finance and BI teams report. When experimentation data lives in a separate system, numbers can diverge, eroding trust in results.
+- **Data residency & compliance** — Regulations like GDPR, SOC2, and HIPAA may require that user-level data stays within your own infrastructure. Warehouse Native means no user-level information leaves your environment.
+- **Auditability** — When results are computed inside your warehouse, you have a full audit trail using your existing governance tools — who accessed what, when, and how metrics were defined at the time.
+
+## How it works
+
+With Warehouse Native, ABsmartly handles experiment assignment, management, statistical analysis, and metric governance. But the underlying data — exposures, goals, and attributes — stays in your warehouse.
+
+You configure a **data source** that connects ABsmartly to your warehouse, map your tables to ABsmartly's expected schema, and set a refresh schedule. ABsmartly then queries your warehouse on that schedule to compute experiment results.
+
+### Supported warehouses
+
+| Warehouse | Status |
+|---|---|
+| **BigQuery** | ✅ Available |
+| **Snowflake** | ✅ Available |
+| **ClickHouse** | ✅ Available |
+| **Redshift** | ✅ Available |
+| **Databricks** | ✅ Available |
+
+## Cloud vs. Warehouse Native
+
+| | Cloud | Warehouse Native |
+|---|---|---|
+| **Setup** | Quick — no data infrastructure needed | Requires existing warehouse and ETL pipelines |
+| **Data speed** | Real-time monitoring | Batch-processed (minutes to hours, depending on your refresh schedule) |
+| **Metric alignment** | Separate from BI/finance data | Same source of truth as the rest of your business |
+| **Data residency** | Data processed in ABsmartly's cloud | Data never leaves your warehouse |
+| **Cost model** | Included in subscription | You control (and pay for) warehouse compute |
+
+
+## Next steps
+
+Ready to set up Warehouse Native? Head to the [Get Started guide](./get-started) to connect your warehouse, map your tables, and configure data freshness.
