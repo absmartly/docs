@@ -134,7 +134,7 @@ const config = {
         title: "ABsmartly Docs",
         logo: {
           alt: "The ABsmartly logo",
-          src: "img/logo.svg",
+          src: "img/absmartly-icon.png",
           style: {
             width: "3rem",
           },
@@ -211,7 +211,7 @@ const config = {
         ],
         copyright: `&copy; Copyright ${new Date().getFullYear()} ABsmartly B.V.`,
         logo: {
-          src: "img/logo.svg",
+          src: "img/absmartly-icon.png",
           alt: "The ABsmartly Logo",
           style: { width: "3rem" },
         },
