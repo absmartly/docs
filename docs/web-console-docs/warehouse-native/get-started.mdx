@@ -183,13 +183,35 @@ Map the following fields:
 
 ### JSON layouts table
 
-ABsmartly uses a `json_layouts` table to power auto-complete for JSON properties in the metric editor. It looks for this table automatically in your data source's default location.
+ABsmartly uses a `json_layouts` table to power **auto-complete for JSON properties** in the metric editor. When you're defining metrics that reference goal properties or attributes, this table tells ABsmartly which JSON keys exist, their types, and where they were observed — so you get suggestions instead of typing paths from memory.
 
-<Image maxWidth="40rem" centered img="warehouse-native/json-layouts-table.png" alt="JSON layouts table configuration" />
+ABsmartly looks for a `json_layouts` table with six columns (`key`, `source`, `source_id`, `phase`, `value_type`, `event_at`) in your data source's default location. If it finds one with the expected schema, you'll see a green confirmation:
 
-If the table doesn't exist yet, ABsmartly will show a warning and offer to **create it for you** (save the data source first). Alternatively, you can point it at an existing table.
+<Image maxWidth="40rem" centered img="warehouse-native/json-layouts-detected.png" alt="JSON layouts table automatically detected" />
 
-Without this table, JSON-property auto-complete will be empty for goals and attributes in this data source — experiments will still work, but metric configuration will require manual entry.
+If the table doesn't exist yet, ABsmartly will show a warning and offer two options:
+
+- **Create the table** — ABsmartly creates a `json_layouts` table for you (save the data source first)
+- **Use an existing table** — map your own table's columns to the expected schema
+
+<Image maxWidth="40rem" centered img="warehouse-native/json-layouts-table.png" alt="JSON layouts table not found warning" />
+
+If you choose to map an existing table, you'll see the column mapping interface:
+
+<Image maxWidth="40rem" centered img="warehouse-native/json-layouts-mapping.png" alt="JSON layouts table column mapping" />
+
+| Field | Description | Accepted types |
+|---|---|---|
+| **key** | JSON property path (e.g., `amount`, `customer.tier`) | `STRING` |
+| **source** | Where the key was observed: `unit_goal_property` or `unit_attribute` | `STRING` |
+| **source_id** | Goal ID (for goal properties) or attribute ID (for attributes) | `STRING`, `INT64` |
+| **phase** | Pipeline phase: `before_enrichment` or `after_enrichment` | `STRING` |
+| **value_type** | JSON value type: `null`, `string`, `number`, `boolean`, `array`, or `object` | `STRING` |
+| **event_at** | Timestamp of the most recent observation (milliseconds) | `INT64` |
+
+:::note
+Without this table, experiments will still work — but JSON-property auto-complete will be empty for goals and attributes on this data source, requiring manual entry when configuring metrics.
+:::
 
 ---
 
