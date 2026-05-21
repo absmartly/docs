@@ -8,6 +8,47 @@ import Image from "../../../../src/components/Image";
 
 # Connect to BigQuery
 
+## Google Cloud prerequisites
+
+Before connecting ABsmartly to BigQuery, you need a Google Cloud service account with the right permissions. The steps below walk through creating one from scratch.
+
+### 1. Enable the BigQuery API
+
+In the [Google Cloud Console](https://console.cloud.google.com), open the project that contains your BigQuery dataset and navigate to **APIs & Services → Library**. Search for **BigQuery API** and enable it if it isn't already.
+
+### 2. Create a service account
+
+1. Go to **IAM & Admin → Service Accounts** and click **Create service account**.
+2. Give it a name (e.g., `absmartly-warehouse`) and an optional description, then click **Create and continue**.
+3. Skip the optional step of granting users access to the service account, then click **Done**.
+
+### 3. Grant permissions
+
+ABsmartly needs two roles:
+
+| Role | Where to grant it | Why |
+|---|---|---|
+| **BigQuery Data Viewer** (`roles/bigquery.dataViewer`) | On the dataset | Allows reading your experiment tables |
+| **BigQuery Job User** (`roles/bigquery.jobUser`) | On the project | Allows running queries |
+
+:::tip
+If you've enabled **"Forward native events to this table"** on your exposures or goals table, ABsmartly also needs to write data back. In that case, replace **BigQuery Data Viewer** with **BigQuery Data Editor** (`roles/bigquery.dataEditor`) on the dataset.
+:::
+
+To grant dataset-level access, open **BigQuery Studio**, select the dataset, click **Sharing → Permissions**, and add the service account email with the appropriate role. To grant the project-level Job User role, go to **IAM & Admin → IAM**, click **Grant access**, paste the service account email, and assign `roles/bigquery.jobUser`.
+
+### 4. Create and download the service account key
+
+1. In **IAM & Admin → Service Accounts**, click the service account you just created.
+2. Go to the **Keys** tab and click **Add key → Create new key**.
+3. Select **JSON** and click **Create**. A `.json` file will download automatically.
+
+This is the file you'll paste into the **Service Account Credentials** field in ABsmartly.
+
+---
+
+## Add the data source in ABsmartly
+
 Navigate to **Settings → Data Sources** and click **Add data source**. Give your data source a **name** and optional **description**, then select **BigQuery** from the **Database type** dropdown.
 
 <Image maxWidth="40rem" centered img="warehouse-native/datasource-bigquery.png" alt="BigQuery data source configuration" />
