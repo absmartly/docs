@@ -1,0 +1,174 @@
+---
+sidebar_position: 1
+title: "Get Started with Warehouse Native"
+description: "Connect your data warehouse to ABsmartly and start running experiments on your own data."
+---
+
+import Image from "../../../src/components/Image";
+
+# Get Started with Warehouse Native
+
+Warehouse Native lets you run experiments directly on data that lives in your own data warehouse. Instead of sending events to ABsmartly's collectors, you point ABsmartly at your existing tables — exposures, goals, and attributes — and it takes care of the rest.
+
+Getting started takes three steps:
+
+1. **[Connect to your data warehouse](#step-1-connect-to-your-data-warehouse)** — set up credentials and test the connection
+2. **[Map your tables](#step-2-map-your-tables)** — tell ABsmartly which columns hold exposures, goals, and attributes
+3. **[Configure data freshness](#step-3-configure-data-freshness)** — define how often ABsmartly should query for new data
+
+---
+
+## Step 1: Connect to your data warehouse
+
+To begin, navigate to **Settings → Data Sources** and click **Add data source**.
+
+You'll see a form with two sections: general information about the data source, and the connection credentials specific to your warehouse type.
+
+### General information
+
+Start by giving your data source a **name** and an optional **description**. The name will be used throughout ABsmartly to identify this connection, so pick something recognizable (e.g., "Production BigQuery" or "Analytics Snowflake").
+
+### Choose your warehouse type
+
+Select your warehouse from the **Database type** dropdown. ABsmartly supports five warehouse types — follow the guide for yours:
+
+- **[BigQuery](./connect/bigquery)**
+- **[Snowflake](./connect/snowflake)**
+- **[ClickHouse](./connect/clickhouse)**
+- **[Redshift](./connect/redshift)**
+- **[Databricks](./connect/databricks)**
+
+Each guide walks you through the specific credentials needed and how to test the connection.
+
+Once connected, save the data source and move on to mapping your tables.
+
+---
+
+## Step 2: Map your tables
+
+With your warehouse connected, the next step is to tell ABsmartly where your experiment data lives. You'll map three types of tables: **exposures**, **goals**, and optionally **attributes**.
+
+For each table, you can either use the **Column mapping** tab to select columns from a dropdown, or switch to the **SQL query** tab to write a custom query.
+
+### Exposure table
+
+The exposure table tracks experiment assignments — which unit was exposed to which variant of which experiment, and when.
+
+Select your table from the **External table name** dropdown. ABsmartly will read the table's schema and populate the column dropdowns automatically.
+
+<Image maxWidth="40rem" centered img="warehouse-native/exposure-mapping-dropdown.png" alt="Mapping exposure table columns with dropdown open" />
+
+Map each field to the corresponding column in your table:
+
+| Field | Description | Accepted types |
+|---|---|---|
+| **unit_uid** | Unique identifier for the unit | `STRING`, `INT64` |
+| **unit_type_id** | Type of the unit (e.g., `user_id`, `device_id`) | `STRING`, `INT64` |
+| **experiment_id** | Unique identifier for the experiment | `STRING`, `INT64` |
+| **variant** | Variant/group assigned to the unit | `STRING`, `INT64` |
+| **exposed_at** | Timestamp when the exposure occurred | `INT64` (milliseconds) |
+| **attributes** | Attribute values as a JSON string | `STRING` |
+
+:::tip
+Column names don't have to match exactly — ABsmartly lets you map any column (or expression) to each field. For example, you could use `CAST(created_at AS INT64)` for the `exposed_at` field.
+:::
+
+Once all fields are mapped, click **Test & fetch rows** to validate the mapping. ABsmartly will fetch a sample of 10 rows so you can verify the data looks right.
+
+<Image maxWidth="40rem" centered img="warehouse-native/exposure-mapping-complete.png" alt="Completed exposure table mapping with sample data preview" />
+
+You'll also see a **"Forward native events to this table"** checkbox. Enable this if you want ABsmartly to write SDK-generated exposure events back into this warehouse table, keeping everything in one place.
+
+### Goals table
+
+The goals table contains your conversion and metric events — the outcomes you're measuring in your experiments.
+
+Map the following fields:
+
+| Field | Description | Accepted types |
+|---|---|---|
+| **goal_id** | Unique identifier for the goal/conversion event | `STRING`, `INT64` |
+| **unit_uid** | Unique identifier for the unit | `STRING`, `INT64` |
+| **unit_type_id** | Type of the unit (e.g., `user_id`, `device_id`) | `STRING`, `INT64` |
+| **achieved_at** | Timestamp when the goal was achieved | `INT64` (milliseconds) |
+| **properties** | Additional goal properties as a JSON string | `STRING` |
+
+<Image maxWidth="40rem" centered img="warehouse-native/goals-mapping-complete.png" alt="Completed goals table mapping" />
+
+As with the exposure table, click **Test & fetch rows** to validate, and optionally enable **"Forward native events to this table"** for SDK-generated goal events.
+
+### Attributes table _(optional)_
+
+The attributes table holds per-unit attribute snapshots used for filtering or segmenting experiments. This table is optional — skip it if you don't have an attributes source for this data source.
+
+Map the following fields:
+
+| Field | Description | Accepted types |
+|---|---|---|
+| **unit_uid** | Unique identifier for the unit | `STRING`, `INT64` |
+| **unit_type_id** | Type of the unit (e.g., `user_id`, `device_id`) | `STRING`, `INT64` |
+| **set_at** | Timestamp when the attribute snapshot was set | `INT64` (milliseconds) |
+| **attributes** | Attribute values as a JSON string | `STRING` |
+
+<Image maxWidth="40rem" centered img="warehouse-native/attributes-mapping-complete.png" alt="Completed attributes table mapping" />
+
+### JSON layouts table
+
+ABsmartly uses a `json_layouts` table to power **auto-complete for JSON properties** in the metric editor. When you're defining metrics that reference goal properties or attributes, this table tells ABsmartly which JSON keys exist, their types, and where they were observed — so you get suggestions instead of typing paths from memory.
+
+ABsmartly looks for a `json_layouts` table with six columns (`key`, `source`, `source_id`, `phase`, `value_type`, `event_at`) in your data source's default location. If it finds one with the expected schema, you'll see a green confirmation:
+
+<Image maxWidth="40rem" centered img="warehouse-native/json-layouts-detected.png" alt="JSON layouts table automatically detected" />
+
+If the table doesn't exist yet, ABsmartly will show a warning and offer two options:
+
+- **Create the table** — ABsmartly creates a `json_layouts` table for you (save the data source first)
+- **Use an existing table** — map your own table's columns to the expected schema
+
+<Image maxWidth="40rem" centered img="warehouse-native/json-layouts-table.png" alt="JSON layouts table not found warning" />
+
+If you choose to map an existing table, you'll see the column mapping interface:
+
+<Image maxWidth="40rem" centered img="warehouse-native/json-layouts-mapping.png" alt="JSON layouts table column mapping" />
+
+| Field | Description | Accepted types |
+|---|---|---|
+| **key** | JSON property path (e.g., `amount`, `customer.tier`) | `STRING` |
+| **source** | Where the key was observed: `unit_goal_property` or `unit_attribute` | `STRING` |
+| **source_id** | Goal ID (for goal properties) or attribute ID (for attributes) | `STRING`, `INT64` |
+| **phase** | Pipeline phase: `before_enrichment` or `after_enrichment` | `STRING` |
+| **value_type** | JSON value type: `null`, `string`, `number`, `boolean`, `array`, or `object` | `STRING` |
+| **event_at** | Timestamp of the most recent observation (milliseconds) | `INT64` |
+
+:::note
+Without this table, experiments will still work — but JSON-property auto-complete will be empty for goals and attributes on this data source, requiring manual entry when configuring metrics.
+:::
+
+---
+
+## Step 3: Configure data freshness
+
+Finally, tell ABsmartly how often your warehouse receives new data so it can query at the right times.
+
+<Image maxWidth="40rem" centered img="warehouse-native/data-freshness.png" alt="Data freshness configuration" />
+
+Choose an **Update frequency** that matches how often your ETL pipeline lands new data:
+
+| Frequency | Best for | What you configure |
+|---|---|---|
+| **Every X minutes** | Near real-time pipelines or streaming ingestion | Interval in minutes |
+| **Every X hours** | Regular batch ETL jobs (e.g., every 6 hours) | Interval in hours |
+| **Daily at specific time** | Once-a-day loads | Offset in minutes from midnight UTC |
+
+For all frequency types, use the **Offset (minutes)** field to control when the schedule starts counting from. This is the number of minutes after midnight UTC.
+
+ABsmartly will show a preview of the computed schedule in both UTC and your local timezone. For example:
+
+- **Every 6 hours** with offset 0 → Updates at 00:00, 06:00, 12:00, 18:00 UTC
+- **Daily** with offset 480 → Updates at 08:00 UTC (10:00 CEST)
+
+:::tip
+Match the frequency to your actual ETL schedule. If your data lands once a day at 8 AM UTC, use **Daily at specific time** with a 480-minute offset. Querying more often than data arrives just adds unnecessary load to your warehouse.
+:::
+
+Save the data source, and you're done. ABsmartly will start querying your warehouse on the configured schedule and your experiment data will flow through automatically.
