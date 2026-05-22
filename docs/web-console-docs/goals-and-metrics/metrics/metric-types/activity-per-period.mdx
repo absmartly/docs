@@ -1,0 +1,57 @@
+---
+sidebar_position: 8
+---
+
+# Activity per Period
+
+## Overview
+
+An `Activity per Period` metric measures **how frequently** a user performs a goal action across a configurable time window 
+— for example, _sessions per week_ or _orders per month_.
+
+Unlike a simple `Goal Count`, which sums all events per user, `Activity per Period` normalises activity into a **rate per period**, making it easier to compare user engagement over time and across cohorts of different exposure lengths.
+
+You can configure:
+
+- the **goal event** to track
+- the **period length** (e.g. day, week, month)
+- whether the period starts:
+    - from the user's first exposure to the experiment, or
+    - from the user's first occurrence of the goal event
+
+## Examples
+
+```javascript
+context.track("session_start", {
+  source: "homepage",
+  device: "mobile"
+});
+```
+
+Imagine you want to measure **average sessions per week per user** during your experiment.
+
+You can create a `Sessions per Week` metric by:
+- Selecting the `session_start` goal
+- Setting the `Period` to 7 days
+- Choosing whether periods start from the user's first exposure or first session
+
+The metric then computes, for each user, the number of goal events per period, and aggregates the result across the experiment population.
+
+**More examples**
+
+- `Orders per Month`:
+Average number of purchases per user per 30-day period.
+
+- `Articles Read per Week`:
+Average number of articles read per user, per 7-day period.
+
+- `Active Days per Week`:
+Average number of distinct days a user was active in a 7-day window.
+
+## Good to know
+
+- Useful when you care about **frequency** of an action rather than total volume or simple conversion.
+- More robust than `Goal Count` when users have different exposure lengths — the per-period normalisation makes long-tenured and short-tenured users directly comparable.
+- Filters on the goal event apply before the per-period rollup (for example: _purchases per week_ restricted to a specific category).
+- Changing the period length alters the meaning of the metric and will require a new version.
+- Ideal for experiments aimed at **engagement, habit formation, or retention frequency** — onboarding flows, notifications, recommendation systems, or loyalty mechanics.
