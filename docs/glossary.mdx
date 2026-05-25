@@ -746,6 +746,20 @@ Lower variance improves power and reduces how long experiments need to run.
 
 ---
 
+## W
+
+### Warehouse-native
+A deployment mode where experiment analysis runs directly inside your own data warehouse instead of in the experimentation platform's cloud. 
+ABsmartly handles experiment assignment, management, statistical analysis and metric governance, while the underlying data — exposures, goals and attributes — stays in your warehouse.
+
+Warehouse-native experimentation supports a single source of truth between experimentation and BI/finance reporting, helps meet data residency and compliance requirements (GDPR, SOC2, HIPAA) by keeping user-level data within your own infrastructure, and provides auditability through your existing data governance tools.
+
+ABsmartly supports warehouse-native analysis on BigQuery, Snowflake, ClickHouse, Redshift and Databricks.
+
+**Example:** Connecting ABsmartly to your Snowflake account, mapping your exposure and event tables to ABsmartly's expected schema, and letting ABsmartly compute experiment results on a refresh schedule — without copying user-level data out of Snowflake.
+
+---
+
 ## Z
 
 ### Z-score  
