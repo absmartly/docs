@@ -1,0 +1,135 @@
+---
+title: Troubleshooting
+sidebar_position: 6
+---
+
+# Troubleshooting
+
+Common issues and how to fix them.
+
+## Authentication
+
+### "Failed to authenticate" or 401 errors with an API key
+
+Check the `Authorization` header format. The server accepts several variants:
+
+| Format | Example |
+| --- | --- |
+| Simple API key | `Authorization: BxYKd1U2...` |
+| Explicit `Api-Key` | `Authorization: Api-Key BxYKd1U2...` |
+| Subdomain shorthand | `Authorization: demo-1 BxYKd1U2...` |
+| Full domain | `Authorization: demo-1.absmartly.com BxYKd1U2...` |
+
+If you use the **subdomain shorthand** or **full domain** form, you do **not**
+need to send `x-absmartly-endpoint` — the server constructs the endpoint
+automatically.
+
+If you use the **simple** or **`Api-Key`** form, you **must** send
+`x-absmartly-endpoint: https://your-instance.absmartly.com` (or include
+`?absmartly-endpoint=...` in the URL).
+
+### OAuth login loops or doesn't complete
+
+- **Wrong instance URL.** If `absmartly-endpoint` is missing or points at the
+  wrong subdomain, the OAuth callback can't reach your instance. Re-add the
+  connector with an explicit `?absmartly-endpoint=https://your-instance.absmartly.com`.
+- **Browser blocking pop-ups or third-party cookies.** Allow pop-ups for
+  `mcp.absmartly.com` and your ABsmartly subdomain, and ensure third-party
+  cookies aren't fully blocked for the SAML/SSO callback.
+- **Stale session.** Sign out of ABsmartly in the browser tab, then restart
+  the OAuth flow from the MCP client.
+
+### "API key sessions can't use OAuth"
+
+The server deliberately blocks mixing the two — you can't connect with an API
+key and then trigger OAuth discovery on the same session. Pick one method per
+connector. If you want to switch, remove the connector and add it again with
+the new auth method.
+
+## Connection
+
+### MCP tools don't appear in the assistant
+
+- **VS Code (Copilot):** MCP tools only show up in **Agent mode**, not Ask or
+  Edit mode. Switch modes and reload the window if needed
+  (Command Palette → **Developer: Reload Window**).
+- **Gemini Code Assist:** MCP support requires the agent preview channel. Set
+  `"geminicodeassist.updateChannel": "Insiders"` in VS Code settings, then
+  reload.
+- **Claude Desktop / Cursor / Windsurf:** restart the app fully (quit, don't
+  just close the window) after editing the config file.
+
+### "Connection refused" or the server doesn't respond
+
+- For **remote**: check that `https://mcp.absmartly.com/sse` (or `/mcp` for
+  Streamable HTTP) is reachable from your machine — corporate proxies and
+  VPNs occasionally block it.
+- For **local stdio (`npx @absmartly/mcp`)**: make sure Node.js 22+ is on
+  your PATH and that the ABsmartly CLI profile you reference exists (run
+  `absmartly profile list` to check).
+
+### SSE transport works but Streamable HTTP doesn't (or vice versa)
+
+The two endpoints expose the same tools. Older MCP clients sometimes only
+support `/sse`; newer ones prefer `/mcp` (Streamable HTTP). If one transport
+fails, switch to the other.
+
+The MCP spec deprecated SSE in March 2025, but `/sse` continues to be supported
+for compatibility.
+
+## Commands
+
+### "Command requires confirmation"
+
+This is expected behavior for destructive operations — `start`, `stop`,
+`archive` and `delete` all pause for confirmation. Re-call `execute_command`
+with the same parameters plus `"confirmed": true` to actually perform the
+action.
+
+### `createExperimentFromTemplate` returned a preview, not a created experiment
+
+Also expected. The first call returns the resolved API payload (with names
+mapped to IDs) plus any warnings. Review the preview, then call again with
+`"confirmed": true` to create the experiment.
+
+### "Method not found" or similar from `execute_command`
+
+The command catalog evolves over time. Use `discover_commands` (no parameters)
+to list current groups, then `discover_commands(group: "...")` to list current
+commands in a group. If a command from older docs is gone, the catalog will
+suggest a replacement.
+
+### Validation errors when creating experiments or metrics
+
+The server surfaces the full validation error from the ABsmartly API. Common
+causes:
+
+- A referenced **application**, **unit type** or **team** doesn't exist (names
+  are resolved to IDs automatically — make sure they match exactly)
+- A referenced **metric** or **goal** is archived
+- The template YAML frontmatter is missing required fields (`name`, `type`,
+  `unit_type`, `application`)
+
+Use the `absmartly://entities/...` resources to look up valid entity names
+before retrying.
+
+## Performance
+
+### List operations are truncated
+
+`execute_command` defaults `limit` to **20** for list operations. To get more
+results, pass `limit: 100` (or higher) in `params`, or use `raw: true` to get
+the full pagination object back so the assistant can fetch additional pages.
+
+### Responses feel slow
+
+The first request after a cold start fetches all entities (applications, unit
+types, users, teams, metrics, goals, tags, custom fields) in parallel and
+caches them. Subsequent requests reuse the cache. If response time is
+consistently bad, check your network path to `mcp.absmartly.com`.
+
+## Still stuck?
+
+- Check the server source and issues:
+  [github.com/absmartly/mcp/issues](https://github.com/absmartly/mcp/issues)
+- For ABsmartly platform questions, reach out to the ABsmartly support team.

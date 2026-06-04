@@ -1,0 +1,71 @@
+---
+title: Usage Examples
+sidebar_position: 5
+---
+
+# Usage Examples
+
+Once the MCP server is connected in your AI assistant (see [Setup](./setup)),
+you can drive ABsmartly with plain language. Here are prompts that map cleanly
+to the underlying [tools](./tools-reference).
+
+## Discover what's available
+
+```text
+What ABsmartly operations can you help me with?
+```
+
+The assistant will call `discover_commands` and summarize the available
+groups.
+
+## List running experiments
+
+```text
+Show me all running experiments
+```
+
+## Create an experiment from a template
+
+```text
+Create a new A/B test called "checkout_cta_test" with Control and Blue Button
+variants
+```
+
+The assistant will draft a markdown template, show a preview, then create the
+experiment after you confirm.
+
+## Full lifecycle
+
+```text
+Create an experiment, move it to ready, start it, then show me its details
+```
+
+## Feature flags
+
+```text
+Create a feature flag called "dark_mode" and start it
+```
+
+## Clone and modify
+
+```text
+Clone experiment 42 as "checkout_v2" and update the traffic split to 70/30
+```
+
+## Compare experiments
+
+```text
+Show me the differences between experiments 42 and 43
+```
+
+---
+
+## Tips
+
+- Destructive actions (`start`, `stop`, `archive`, `delete`) always pause for
+  a confirmation step. You'll see the planned operation before it runs.
+- Experiment creation from templates also pauses with a preview of the
+  resolved payload — review the warnings before confirming.
+- If you're unsure which command an assistant should call, ask it to
+  "browse the ABsmartly commands first" — that triggers `discover_commands`
+  and gives the model the right context before acting.

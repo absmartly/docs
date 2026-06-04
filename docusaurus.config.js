@@ -149,7 +149,7 @@ const config = {
           {
             to: "docs/APIs-and-SDKs/overview",
             position: "left",
-            label: "APIs & SDKs",
+            label: "Developer Tools",
           },
           {
             to: "https://absmartly.com/blog",
@@ -180,6 +180,10 @@ const config = {
               {
                 label: "API Docs",
                 to: "/docs/APIs-and-SDKs/SDK-API/absmartly-collector-api",
+              },
+              {
+                label: "MCP Server",
+                to: "/docs/APIs-and-SDKs/MCP-Server/overview",
               },
             ],
           },

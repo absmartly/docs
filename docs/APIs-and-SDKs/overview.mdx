@@ -4,15 +4,117 @@ sidebar_position: 0
 
 # Overview
 
-The APIs & SDKs section provides everything you need to integrate ABsmartly into your product.  
-This is the technical foundation that powers experiment assignment, event tracking, feature flags and consistent user experiences across all platforms.
+The **Developer Tools** section is the technical home of ABsmartly. It covers
+every way you can integrate, automate, extend or operate the platform from
+code or AI tools — from running your first experiment in a web app to driving
+the entire system from a Claude or Cursor chat.
 
-Here you will find:
-- SDK documentation for client side, server side and mobile environments  
-- API references for the ABsmartly platform and the SDKs  
-- implementation guides, examples and best practices  
-- details on exposure handling, goal tracking and variant assignment  
+If you are an engineer integrating ABsmartly, a platform team maintaining
+experiment infrastructure, or a PM/analyst automating workflows, this section
+is for you.
 
-If you are an engineer integrating ABsmartly or maintaining experiment infrastructure, this section is for you.  
-It explains how the SDKs work, how to use the API programmatically and how to build a reliable experimentation setup that fits your architecture.
+---
 
+## What's in this section
+
+### SDK Guide
+
+The [SDK Guide](/docs/APIs-and-SDKs/SDK-Documentation/getting-started) is the
+starting point for any product integration. It explains how to install the
+client SDK, create a context, expose users to experiments and track goals — in
+all officially supported languages and frameworks.
+
+Topics covered:
+
+- [Getting started](/docs/APIs-and-SDKs/SDK-Documentation/getting-started) — install the SDK and create your first context
+- [Running your first experiment](/docs/APIs-and-SDKs/SDK-Documentation/running-your-first-experiment) — assign variants and use variant variables
+- [Targeting and audiences](/docs/APIs-and-SDKs/SDK-Documentation/targeting-and-audiences) — restrict experiments by attribute
+- [Managing the context lifecycle](/docs/APIs-and-SDKs/SDK-Documentation/managing-the-context-lifecycle) — initialise, publish, refresh and finalise
+- [Pre-fetching context data](/docs/APIs-and-SDKs/SDK-Documentation/pre-fetching-context-data) — speed up first paint with server-side prefetch
+- [Checking variants without exposures](/docs/APIs-and-SDKs/SDK-Documentation/checking-variants-without-exposures) — inspect treatments without logging an exposure
+- [Using variables as code](/docs/APIs-and-SDKs/SDK-Documentation/using-variables-as-code) — push HTML, CSS or JS from the Web Console
+- [Using custom fields](/docs/APIs-and-SDKs/SDK-Documentation/using-custom-fields) — read custom experiment metadata from your code
+
+Full end-to-end examples — covering JavaScript, React, Vue, Vue 3,
+Python, Java, Go, PHP, Ruby, Swift, .NET and Flutter — are embedded as
+language tabs in
+[Running your first experiment](/docs/APIs-and-SDKs/SDK-Documentation/running-your-first-experiment).
+
+### SDK API
+
+The [SDK API](/docs/APIs-and-SDKs/SDK-API/absmartly-collector-api) reference
+documents the **ABsmartly Collector API** — the HTTP endpoints the SDKs talk
+to. Use this when you are building a custom integration in a language that
+doesn't have an official SDK, or when you need to inspect the raw protocol the
+SDKs use to fetch contexts and publish exposures.
+
+It includes endpoints for context creation, exposure publishing (single and
+batch), experiment lookup and collector health checks.
+
+### Platform API
+
+The [Platform API](/docs/APIs-and-SDKs/Web-Console-API/backend) is the full
+HTTP API behind the ABsmartly Web Console. Anything you can do in the UI you
+can do through the API: list and create experiments, manage metrics and goals,
+control teams and permissions, manage applications and unit types, post
+annotations and comments, fetch experiment results, and configure webhooks.
+
+This is the right surface for:
+
+- CI/CD automation (e.g. create experiments from a deploy pipeline)
+- Custom dashboards and internal tooling
+- Bulk imports/exports
+- Programmatic governance — auditing experiments, metrics or permissions
+
+See the [API examples](/docs/APIs-and-SDKs/Web-Console-API/Examples/Slack-Integration)
+for end-to-end integrations such as a custom Slack notifier.
+
+### MCP Server
+
+The [MCP Server](/docs/APIs-and-SDKs/MCP-Server/overview) gives AI
+assistants — Claude, Cursor, VS Code Copilot, Windsurf, Gemini, ChatGPT — full
+access to the ABsmartly platform through a single connector. Drive
+experiments, metrics, goals and teams conversationally instead of by writing
+API calls.
+
+Common starting points:
+
+- [Quick Start](/docs/APIs-and-SDKs/MCP-Server/quick-start) — connect Claude Desktop with OAuth in under five minutes
+- [Setup](/docs/APIs-and-SDKs/MCP-Server/setup) — every supported MCP client
+- [Usage Examples](/docs/APIs-and-SDKs/MCP-Server/usage-examples) — natural-language prompts that work today
+- [Tools Reference](/docs/APIs-and-SDKs/MCP-Server/tools-reference) — the full surface: 230+ commands across 33 groups
+
+---
+
+## Which one should I use?
+
+| If you want to… | Use |
+| --- | --- |
+| Assign variants and track goals in your application code | [SDK Guide](/docs/APIs-and-SDKs/SDK-Documentation/getting-started) |
+| Integrate ABsmartly in a language with no official SDK | [SDK API](/docs/APIs-and-SDKs/SDK-API/absmartly-collector-api) |
+| Create, manage or query experiments programmatically | [Platform API](/docs/APIs-and-SDKs/Web-Console-API/backend) |
+| Build automation, internal tools, or CI/CD integrations | [Platform API](/docs/APIs-and-SDKs/Web-Console-API/backend) |
+| Drive ABsmartly from Claude, Cursor or another AI assistant | [MCP Server](/docs/APIs-and-SDKs/MCP-Server/overview) |
+| Visually edit pages for an A/B test without writing code | [LaunchPad browser extension](/docs/web-console-docs/launchpad-browser-extension/getting-started) |
+| Run experiments and configure the workspace from the UI | [Product Documentation](/docs/web-console-docs/overview) |
+
+The SDK and the APIs solve different problems and are commonly used together
+in the same product: the **SDK** does the user-facing work (assignment,
+exposure, goal tracking) while the **Platform API** is used by your internal
+tools and automation to configure and inspect experiments. The **MCP Server**
+sits on top of the Platform API — it's a conversational interface to the same
+operations.
+
+---
+
+## New to ABsmartly?
+
+If you are integrating the platform for the first time, the recommended path is:
+
+1. Read [Get Started](/docs/get-started) to understand the core concepts
+2. Follow [Running your first experiment](/docs/APIs-and-SDKs/SDK-Documentation/running-your-first-experiment)
+   in the language of your choice
+3. Skim the [Platform API introduction](/docs/APIs-and-SDKs/Web-Console-API/backend)
+   so you know what's available when you need it
+4. Try the [MCP Server Quick Start](/docs/APIs-and-SDKs/MCP-Server/quick-start)
+   if you'd like to drive ABsmartly from your AI assistant
