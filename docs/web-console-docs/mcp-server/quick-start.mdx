@@ -1,0 +1,112 @@
+---
+title: Quick Start
+sidebar_position: 2
+---
+
+# Quick Start
+
+This guide gets you from zero to running your first ABsmartly command via the
+MCP server in under five minutes. We'll use **Claude Desktop** with **OAuth**
+— the fastest path with no API keys to manage.
+
+For other clients or API key setups, jump straight to [Setup](./setup).
+
+## Prerequisites
+
+- **Claude Desktop** installed
+  ([download](https://claude.ai/download))
+- An ABsmartly account on your instance (the URL you log into, e.g.
+  `https://your-company.absmartly.com`)
+
+## 1. Add the connector
+
+In Claude Desktop, open **Settings → Connectors**, scroll to the bottom, and
+click **Add custom connector**.
+
+![Claude Desktop Connectors settings](./images/claude-desktop-connectors.png)
+
+In the dialog:
+
+- **Name:** `ABsmartly`
+- **Remote MCP server URL:**
+
+```text
+https://mcp.absmartly.com/sse?absmartly-endpoint=https://your-instance.absmartly.com
+```
+
+Replace `your-instance` with your ABsmartly subdomain.
+
+![Add custom connector dialog](./images/claude-desktop-add-custom-connector.png)
+
+Click **Add**, then **Connect**.
+
+## 2. Sign in
+
+Claude Desktop opens your browser. Sign in with your normal ABsmartly
+credentials (SAML/SSO if your org uses it). When the browser confirms success,
+the connector is live.
+
+:::tip
+If you didn't include `absmartly-endpoint` in the URL, the OAuth flow prompts
+you for it in the browser before login.
+
+![Connect to ABsmartly endpoint prompt](./images/oauth-endpoint-prompt.png)
+:::
+
+## 3. Verify the connection
+
+Back in Claude Desktop, start a new chat and try:
+
+```text
+Are we authenticated with ABsmartly?
+```
+
+The assistant calls `get_auth_status` and returns your email, name, instance
+endpoint and auth type (`OAuth`).
+
+## 4. Run your first command
+
+```text
+Show me the experiments that are currently running on ABsmartly
+```
+
+Behind the scenes the assistant calls:
+
+```text
+execute_command(group: "experiments", command: "listExperiments",
+                params: { state: "running" })
+```
+
+It returns the list, formatted for chat.
+
+## 5. Try something useful
+
+A few prompts that work out of the box (and don't change any state):
+
+```text
+List all metrics that are pending review
+```
+
+```text
+Which teams own experiments that have been running for more than 14 days?
+```
+
+```text
+Show me the goals defined for the "checkout" application
+```
+
+When you're ready to **create or change** something, the assistant will pause
+and show a preview / confirmation step — destructive actions like `start`,
+`stop`, `archive`, and `delete` always require explicit confirmation before
+they run.
+
+## Where to go next
+
+- **[Usage Examples](./usage-examples)** — more natural-language prompts that
+  work today
+- **[Tools Reference](./tools-reference)** — the full set of commands, including
+  experiment creation from markdown templates
+- **[Authentication](./authentication)** — switch to API key auth (for CI or
+  headless use), or learn about the security model
+- **[Troubleshooting](./troubleshooting)** — if the connection isn't working,
+  start here

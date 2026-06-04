@@ -6,23 +6,51 @@ sidebar_position: 1
 # ABsmartly MCP Server
 
 The ABsmartly [Model Context Protocol](https://modelcontextprotocol.io/) (MCP)
-server gives AI assistants — Claude, Cursor, VS Code, Windsurf, Gemini,
-ChatGPT and others — full access to the ABsmartly experimentation platform.
-It exposes **230+ commands across 33 groups**, covering the entire experiment
-lifecycle plus metrics, goals, teams, applications, segments, webhooks and more.
+server lets AI assistants — Claude, Cursor, VS Code, Windsurf, Gemini, ChatGPT
+and any other MCP-compatible client — operate the ABsmartly experimentation
+platform directly. The AI plans experiments, creates them, starts them, reads
+results and updates metrics, all through natural-language prompts.
 
-## Quick install for Claude Desktop
+It exposes **230+ commands across 33 groups**: experiments, metrics, goals,
+teams, applications, segments, webhooks and more.
 
-[Download the DXT extension](https://mcp.absmartly.com/absmartly-mcp.dxt) and
-double-click the file to install it.
+## Why use it
 
-For other clients (Cursor, VS Code, Windsurf, ChatGPT, Claude Code, Gemini), see
-[Setup](./setup).
+An MCP server turns ABsmartly into a "tool" your AI assistant can call. Instead
+of switching between your assistant, the ABsmartly UI and the API docs, you
+work in one place and the assistant does the rest.
+
+Typical workflows that get faster with MCP:
+
+- **Drafting experiments** from a description, including templates with goals,
+  metrics, variants and ownership prefilled
+- **Bulk operations** — "clone this experiment for the EU app, switch the unit
+  type to `device_id`, and update the audience"
+- **Reading state** — "what experiments are running this week and what's their
+  status?"
+- **Reviewing setups** — "find experiments without owners" or "list metrics
+  pending review"
+- **Cross-tool agentic work** — combine ABsmartly actions with code edits in
+  Cursor / Claude Code, or with Slack / Jira / Notion via other MCP servers
+
+## When to use MCP vs the alternatives
+
+| Use case | Best tool |
+| --- | --- |
+| Conversational, ad-hoc operations | **MCP server** |
+| Application code that assigns variants and tracks goals | [Client SDKs](/docs/APIs-and-SDKs/SDK-Documentation/getting-started) |
+| Programmatic automation, CI/CD, custom integrations | [Web Console API](/docs/APIs-and-SDKs/Web-Console-API/backend) |
+| Visual editing of pages for an A/B test | [LaunchPad browser extension](/docs/web-console-docs/launchpad-browser-extension/getting-started) |
+| Manual UI work | The ABsmartly Web Console |
+
+MCP isn't a replacement for the SDKs — application code still assigns variants
+and tracks goals via the SDK. MCP is for the **control plane**: configuring,
+launching and reviewing experiments and metrics.
 
 ## How it works
 
 The server exposes just **4 tools** that give AI assistants access to the full
-ABsmartly CLI:
+ABsmartly CLI surface:
 
 | Tool | Purpose |
 | --- | --- |
@@ -40,29 +68,35 @@ A typical interaction looks like this:
                     params: { state: "running" })
 ```
 
-See the [Tools Reference](./tools-reference) for the full list of commands,
-resources and prompts.
+Destructive operations (`start`, `stop`, `archive`, `delete`) always require an
+explicit confirmation step before they run. Experiment creation from templates
+returns a preview first.
 
-## Authentication
+See the [Tools Reference](./tools-reference) for the full surface.
 
-The MCP server supports two authentication methods:
+## Authentication at a glance
 
 | Method | Best for | How it works |
 | --- | --- | --- |
-| **API Key** | Programmatic access, CI/CD, headless | Pass key in headers or CLI config |
-| **OAuth** | Interactive use in Claude Desktop or the web | Browser-based login via ABsmartly SAML |
+| **OAuth** | Interactive use in Claude Desktop, Cursor, the web | Browser-based login via your ABsmartly SAML/SSO flow |
+| **API Key** | Programmatic access, CI/CD, headless | Pass the key in HTTP headers or via the URL |
 
-Full details — including all supported `Authorization` header formats — are
-documented in [Authentication](./authentication).
+Both methods are documented in detail in [Authentication](./authentication).
 
 ## What's next
 
-- [Setup](./setup) — install and connect the MCP server in your client of choice
-- [Authentication](./authentication) — API key and OAuth options
-- [Tools Reference](./tools-reference) — tools, resources, prompts and command groups
-- [Usage Examples](./usage-examples) — natural-language prompts that work today
+- **[Quick Start](./quick-start)** — connect Claude Desktop with OAuth and run
+  your first command in under five minutes
+- **[Setup](./setup)** — per-client setup for every supported MCP client
+- **[Authentication](./authentication)** — API key formats, OAuth flow,
+  security model
+- **[Usage Examples](./usage-examples)** — natural-language prompts that work
+  today
+- **[Tools Reference](./tools-reference)** — full list of tools, command groups,
+  resources and prompts
+- **[Troubleshooting](./troubleshooting)** — common errors and how to fix them
 
 ## Source code
 
-The MCP server is open source under the MIT license: see
+The MCP server is open source under the MIT license:
 [github.com/absmartly/mcp](https://github.com/absmartly/mcp).
