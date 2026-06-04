@@ -11,6 +11,23 @@ export const vscodeInstallUrl = "vscode:mcp/install?" + encodeURIComponent('{"na
 export const vscodeInsidersInstallUrl = "vscode-insiders:mcp/install?" + encodeURIComponent('{"name":"absmartly","type":"sse","url":"https://mcp.absmartly.com/sse"}');
 export const cursorInstallUrl = "cursor://anysphere.cursor-deeplink/mcp/install?name=absmartly&config=" + btoa('{"url":"https://mcp.absmartly.com/sse"}');
 
+export const VSCodeInstallLinks = () => (
+  <BrowserOnly>
+    {() => (
+      <span>
+        <a href={vscodeInstallUrl}>Install in VS Code</a>{" · "}
+        <a href={vscodeInsidersInstallUrl}>Install in VS Code Insiders</a>
+      </span>
+    )}
+  </BrowserOnly>
+);
+
+export const CursorInstallLink = () => (
+  <BrowserOnly>
+    {() => <a href={cursorInstallUrl}>Add to Cursor</a>}
+  </BrowserOnly>
+);
+
 # Setup
 
 The ABsmartly MCP server can be added to any MCP-compatible client. This page
@@ -208,7 +225,7 @@ via version control).
 
 ## Cursor
 
-One-click install (OAuth): <BrowserOnly>{() => <a href={cursorInstallUrl}>Add to Cursor</a>}</BrowserOnly>. Cursor will prompt you for the ABsmartly instance URL in the browser, then the flow completes automatically.
+One-click install (OAuth): <CursorInstallLink />. Cursor will prompt you for the ABsmartly instance URL in the browser, then the flow completes automatically.
 
 Or configure manually in **`.cursor/mcp.json`** (project) or
 **`~/.cursor/mcp.json`** (global):
@@ -361,7 +378,7 @@ Windsurf uses `"serverUrl"` (not `"url"`).
 
 ## VS Code (GitHub Copilot)
 
-One-click install (OAuth): <BrowserOnly>{() => <><a href={vscodeInstallUrl}>Install in VS Code</a> · <a href={vscodeInsidersInstallUrl}>Install in VS Code Insiders</a></>}</BrowserOnly>. You'll be prompted for your ABsmartly instance URL in the browser.
+One-click install (OAuth): <VSCodeInstallLinks />. You'll be prompted for your ABsmartly instance URL in the browser.
 
 Or configure manually in **`.vscode/mcp.json`** (workspace) or via Command
 Palette → **MCP: Open User Configuration**.
