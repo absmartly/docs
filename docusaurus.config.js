@@ -149,7 +149,7 @@ const config = {
           {
             to: "docs/APIs-and-SDKs/overview",
             position: "left",
-            label: "APIs & SDKs",
+            label: "Developer Tools",
           },
           {
             to: "https://absmartly.com/blog",
