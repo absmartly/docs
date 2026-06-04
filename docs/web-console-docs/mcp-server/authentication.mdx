@@ -1,0 +1,98 @@
+---
+title: Authentication
+sidebar_position: 3
+---
+
+# Authentication
+
+The ABsmartly MCP server supports two authentication methods. Both are
+configured per client — there are no server-side secrets, so credentials are
+always provided by your MCP client and isolated per connection.
+
+| Method | Best for | How it works |
+| --- | --- | --- |
+| **API Key** | Programmatic access, CI/CD, headless agents | Pass the key in HTTP headers or via the URL |
+| **OAuth** | Interactive use in Claude Desktop, Cursor, the web, etc. | Browser-based login via ABsmartly SAML |
+
+## API key
+
+API keys are issued from your ABsmartly instance under
+**Settings → API Keys**. They authenticate every request and identify which
+ABsmartly account the MCP session belongs to.
+
+### Where to pass the key
+
+Depending on the client, the API key is supplied as either:
+
+- An HTTP header (`Authorization: …` plus `x-absmartly-endpoint: …`), or
+- A query string parameter on the connection URL
+  (`?api_key=YOUR_API_KEY&absmartly-endpoint=https://your-instance.absmartly.com`).
+
+See the [Setup](./setup) guide for the exact configuration per client.
+
+### Authorization header formats
+
+When using API key authentication, these header formats are all supported:
+
+| Format | Example |
+| --- | --- |
+| Simple API key | `Authorization: BxYKd1U2...` |
+| Explicit `Api-Key` | `Authorization: Api-Key BxYKd1U2...` |
+| Subdomain shorthand | `Authorization: demo-1 BxYKd1U2...` |
+| Full domain | `Authorization: demo-1.absmartly.com BxYKd1U2...` |
+
+The **subdomain shorthand** auto-constructs the endpoint as
+`https://<subdomain>.absmartly.com/v1`, so you don't need to send a separate
+`x-absmartly-endpoint` header.
+
+## OAuth
+
+OAuth uses your existing ABsmartly login flow (SAML or username/password) and
+issues a JWT scoped to your MCP session. This is the recommended method for
+interactive clients like Claude Desktop, Cursor or the ChatGPT web app.
+
+When OAuth is configured, the MCP client opens a browser window the first time
+it connects. After you sign in, the client receives the token and the MCP
+connection is established. Subsequent connections reuse the cached token until
+it expires.
+
+### Specifying the instance URL
+
+OAuth needs to know which ABsmartly instance to log in against. You can
+provide this in either of two ways:
+
+- Add `?absmartly-endpoint=https://your-instance.absmartly.com` to the MCP
+  URL, or
+- Omit it — the OAuth flow will prompt you for the URL in the browser before
+  login.
+
+## Local stdio (CLI credentials)
+
+When running the server locally with `npx @absmartly/mcp`, authentication uses
+your ABsmartly CLI configuration and macOS Keychain credentials. Select a
+profile with `--profile=<name>` (for example, `--profile=production`).
+
+## Security model
+
+- **No server-side secrets** — credentials are always provided by the MCP
+  client.
+- **Session isolation** — each connection has its own credentials.
+- **OAuth protection** — API key sessions block OAuth discovery to prevent
+  authentication-method confusion.
+- **Destructive action confirmation** — `start`, `stop`, `archive` and
+  `delete` operations require explicit confirmation before they run (see the
+  [Tools Reference](./tools-reference#execute_command)).
+- **API error surfacing** — validation errors from the API are returned with
+  full detail so the assistant can correct them.
+
+## Checking who you are
+
+Once connected, you can confirm authentication and identity at any time with
+the `get_auth_status` tool:
+
+```text
+Are we authenticated?
+```
+
+The response includes the authenticated email, name, ABsmartly endpoint and the
+authentication type in use (`API Key` or `OAuth`).

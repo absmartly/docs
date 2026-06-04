@@ -1,0 +1,68 @@
+---
+title: Overview
+sidebar_position: 1
+---
+
+# ABsmartly MCP Server
+
+The ABsmartly [Model Context Protocol](https://modelcontextprotocol.io/) (MCP)
+server gives AI assistants — Claude, Cursor, VS Code, Windsurf, Gemini,
+ChatGPT and others — full access to the ABsmartly experimentation platform.
+It exposes **230+ commands across 33 groups**, covering the entire experiment
+lifecycle plus metrics, goals, teams, applications, segments, webhooks and more.
+
+## Quick install for Claude Desktop
+
+[Download the DXT extension](https://mcp.absmartly.com/absmartly-mcp.dxt) and
+double-click the file to install it.
+
+For other clients (Cursor, VS Code, Windsurf, ChatGPT, Claude Code, Gemini), see
+[Setup](./setup).
+
+## How it works
+
+The server exposes just **4 tools** that give AI assistants access to the full
+ABsmartly CLI:
+
+| Tool | Purpose |
+| --- | --- |
+| `discover_commands` | Browse command groups or search by keyword |
+| `get_command_docs` | Get detailed docs for a specific command |
+| `execute_command` | Execute any command with typed parameters |
+| `get_auth_status` | Check authentication status |
+
+A typical interaction looks like this:
+
+```text
+"What experiments are running?"
+  → discover_commands(group: "experiments")
+  → execute_command(group: "experiments", command: "listExperiments",
+                    params: { state: "running" })
+```
+
+See the [Tools Reference](./tools-reference) for the full list of commands,
+resources and prompts.
+
+## Authentication
+
+The MCP server supports two authentication methods:
+
+| Method | Best for | How it works |
+| --- | --- | --- |
+| **API Key** | Programmatic access, CI/CD, headless | Pass key in headers or CLI config |
+| **OAuth** | Interactive use in Claude Desktop or the web | Browser-based login via ABsmartly SAML |
+
+Full details — including all supported `Authorization` header formats — are
+documented in [Authentication](./authentication).
+
+## What's next
+
+- [Setup](./setup) — install and connect the MCP server in your client of choice
+- [Authentication](./authentication) — API key and OAuth options
+- [Tools Reference](./tools-reference) — tools, resources, prompts and command groups
+- [Usage Examples](./usage-examples) — natural-language prompts that work today
+
+## Source code
+
+The MCP server is open source under the MIT license: see
+[github.com/absmartly/mcp](https://github.com/absmartly/mcp).

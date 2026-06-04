@@ -1,0 +1,175 @@
+---
+title: Tools Reference
+sidebar_position: 4
+---
+
+# Tools Reference
+
+The MCP server exposes **4 tools**, plus a rich set of **resources** and
+**prompts**. Together they cover 230+ commands across 33 ABsmartly command
+groups.
+
+## Tools
+
+### `discover_commands`
+
+Browse available command groups or search by keyword. Call without parameters
+to see all groups.
+
+```json
+{ "group": "experiments" }
+```
+
+```json
+{ "search": "archive" }
+```
+
+### `get_command_docs`
+
+Get detailed documentation for a specific command, including parameters, types
+and examples.
+
+```json
+{
+  "group": "experiments",
+  "command": "createExperimentFromTemplate"
+}
+```
+
+### `execute_command`
+
+Execute any ABsmartly command. Common commands are listed in the tool
+description; use `discover_commands` for the full list.
+
+```json
+{
+  "group": "experiments",
+  "command": "listExperiments",
+  "params": { "state": "running", "items": 10 }
+}
+```
+
+**Parameters:**
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `group` | yes | Command group (e.g. `experiments`, `metrics`, `goals`) |
+| `command` | yes | Command name (e.g. `listExperiments`, `createExperimentFromTemplate`) |
+| `params` | no | Command parameters as a JSON object |
+| `confirmed` | no | Set to `true` to confirm destructive actions |
+| `raw` | no | Return the full `CommandResult` with rows / detail / warnings / pagination |
+| `limit` | no | Max items for list operations (default: `20`) |
+
+:::caution Destructive actions require confirmation
+`start`, `stop`, `archive` and `delete` operations all return a confirmation
+prompt on the first call. Re-invoke the command with `confirmed: true` to
+actually perform the action.
+:::
+
+:::info Experiment creation previews
+`createExperimentFromTemplate` also requires confirmation. The first call
+returns a **preview** — the resolved API payload (with names mapped to IDs)
+plus any warnings — without creating the experiment. Review the preview, then
+call again with `confirmed: true` to actually create it.
+:::
+
+#### Creating experiments with templates
+
+The recommended way to create experiments is with markdown templates:
+
+```json
+{
+  "group": "experiments",
+  "command": "createExperimentFromTemplate",
+  "params": {
+    "templateContent": "---\nname: my_experiment\ntype: test\npercentages: \"50/50\"\nunit_type: user_id\napplication: www\n---\n\n## Variants\n\n### variant_0\n\nname: control\nconfig: {}\n\n---\n\n### variant_1\n\nname: treatment\nconfig: {}\n"
+  }
+}
+```
+
+Templates use YAML frontmatter for configuration and markdown for variants,
+audience and description. Names for applications, unit types, metrics, teams,
+tags and owners are **automatically resolved to IDs**.
+
+Read the `absmartly://docs/templates` resource for complete examples,
+including:
+
+- Basic A/B test
+- Feature flags
+- Group Sequential Tests (GST)
+- Screenshots
+- Custom fields
+- Multi-variant (A/B/C) tests
+
+### `get_auth_status`
+
+Check the current authentication state and connection info. Returns the
+authenticated email, name, ABsmartly endpoint and authentication type.
+
+```text
+Are we authenticated?
+```
+
+## Command groups
+
+| Group | Description | Key commands |
+| --- | --- | --- |
+| `experiments` | Experiment lifecycle | `list`, `get`, `create`, `start`, `stop`, `archive`, `clone`, `diff`, `export`, `bulk` |
+| `metrics` | Metric definitions and review | `list`, `get`, `create`, `review`, `access` |
+| `goals` | Goal definitions | `list`, `get`, `create`, `access` |
+| `segments` | Audience segments | `list`, `get`, `create`, `delete` |
+| `teams` | Team management | `list`, `get`, `create`, `members` |
+| `users` | User management | `list`, `get`, `create`, `api-keys` |
+| `apps` | Applications | `list`, `get`, `create`, `archive` |
+| `envs` | Environments | `list`, `get`, `create` |
+| `units` | Unit types | `list`, `get`, `create` |
+| `tags` | Experiment tags | `list`, `get`, `create`, `delete` |
+| `auth` | Authentication | `whoami`, `api-keys` |
+| `insights` | Analytics | `velocity`, `decisions` |
+| `webhooks` | Webhook management | `list`, `get`, `create`, `delete` |
+| `roles` | Role management | `list`, `get`, `create` |
+| `datasources` | Data source config | `list`, `test`, `introspect` |
+| `exportconfigs` | Export configuration | `list`, `create`, `pause` |
+
+Additional groups: `goaltags`, `metrictags`, `metriccategories`, `apikeys`,
+`permissions`, `assetroles`, `notifications`, `favorites`, `cors`,
+`updateschedules`, `customsections`, `platformconfig`, `activity`,
+`statistics`, `events`, `storageconfigs`, `actiondialogfields`.
+
+## Resources
+
+The MCP server exposes resources that AI assistants can read directly,
+without having to call `execute_command`. They're handy for fast lookups
+(entity lists) and embedded documentation.
+
+| URI | Description |
+| --- | --- |
+| `absmartly://entities/applications` | Cached applications list |
+| `absmartly://entities/unit-types` | Available unit types |
+| `absmartly://entities/teams` | Teams list |
+| `absmartly://entities/users` | Users list |
+| `absmartly://entities/metrics` | Metrics list |
+| `absmartly://entities/goals` | Goals list |
+| `absmartly://entities/tags` | Experiment tags |
+| `absmartly://entities/custom-fields` | Custom field definitions |
+| `absmartly://docs/templates` | Markdown template examples and reference |
+| `absmartly://docs/api` | API documentation |
+| `absmartly://docs/experiments` | Experiment management docs |
+| `absmartly://docs/metrics` | Metrics docs |
+| `absmartly://docs/goals` | Goals docs |
+| `absmartly://docs/segments` | Segments docs |
+| `absmartly://docs/analytics` | Analytics docs |
+| `absmartly://examples/api-requests` | Common request patterns |
+
+## Prompts
+
+The server also ships built-in prompts that clients can surface as one-click
+actions:
+
+| Prompt | Description |
+| --- | --- |
+| `experiment-status` | Quick overview of all running experiments |
+| `create-experiment` | Guided experiment creation with entity context |
+| `create-feature-flag` | Simplified feature flag creation |
+| `analyze-experiment` | Deep analysis of a specific experiment |
+| `experiment-review` | Review running experiments for issues |
