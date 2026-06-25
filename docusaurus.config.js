@@ -75,6 +75,17 @@ const config = {
   plugins: [
     "docusaurus-plugin-sass",
     [
+      "@docusaurus/plugin-client-redirects",
+      {
+        redirects: [
+          {
+            from: "/docs/APIs-and-SDKs/MCP-Server",
+            to: "/docs/APIs-and-SDKs/MCP-Server/overview",
+          },
+        ],
+      },
+    ],
+    [
       "@docusaurus/plugin-ideal-image",
       {
         quality: 70,
