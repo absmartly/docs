@@ -4,7 +4,9 @@ import Image from "../../../src/components/Image";
 
 ## Overview
 
-This release is headlined by the **beta of the new experiment creation form** and the new **Metric Usage Report** — a dedicated workspace for understanding where every metric is used, by whom, and how its adoption is trending. We're also extending the changelog introduced in May to **experiments and feature flags**, and adding end-to-end **webhook coverage for the export lifecycle** so customers can fully automate getting experiment data into their warehouse. On top of that, **stopped reasons are now customisable** per account, and we've hardened **regex validation** in metric filters to keep a single bad pattern from breaking an entire experiment.
+This release is headlined by the **beta of the new experiment creation form** and the new **Metric Usage Report**, a dedicated workspace for understanding where every metric is used, by whom, and how its adoption is trending. We're also extending the changelog introduced in May to **experiments and feature flags**, and adding end-to-end **webhook coverage for the export lifecycle** so customers can fully automate getting experiment data into their warehouse. On top of that, **stopped reasons are now customisable** per account.
+
+This release also marks the **beginning of the rollout** of the data retention policy we [pre-announced in November 2025](../2025/11#data-retention-update).
 
 ---
 
@@ -72,6 +74,16 @@ Together they give metric owners, analysts and governance teams a clear picture 
 
 ## Platform
 
+### Data Retention Rollout Begins
+
+In our [November 2025 release notes](../2025/11#data-retention-update) we pre-announced upcoming data retention rules. With this release we're **starting the gradual rollout** of that policy:
+
+- **Goal, exposure and user attribute data will be retained for 1 year.** Once an experiment has been stopped for a year or more, its raw event data will progressively age out and no longer be available for slicing and dicing.
+- **Experiment results remain available and visible** — dashboards, decisions and historical reports are unaffected.
+
+In practice this means you can still look up any past experiment and its outcome, but over the coming weeks you'll gradually stop being able to drill into fresh cuts of the underlying goal / exposure / attribute data for experiments stopped a year ago or more. We're rolling this out progressively so there's still time to flag concerns.
+
+
 ### Export Lifecycle Webhooks
 
 Exports now emit **webhook events for every stage of their lifecycle**, across all export types, so you can fully automate downloading, unzipping and importing experiment data into your own warehouse.
@@ -84,17 +96,6 @@ Two complementary sets of events are available:
 A typical integration subscribes to `ExportDownloadReady` and, on each event, downloads the export via the API, unzips it, and ingests the data into the data warehouse — no polling required.
 
 We've also fixed a race condition where a download file could be cleaned up immediately after the download redirect but before the actual download finished; the cleanup query now honours the full grace period for files that haven't been downloaded yet.
-
-### RE2-Compatible Regex Validation in Metric Filters
-
-User-supplied regular expressions in metric filters are now validated on **both the frontend and the backend** using **RE2-compatible** semantics — the same engine ClickHouse uses to evaluate them.
-
-In practice this means:
-
-- Invalid patterns are caught **inline at edit/save time** with a clear error, and can no longer be saved through the API.
-- An invalid regex sneaking through (e.g. a legacy saved value) **no longer breaks the entire experiment's metrics query** with a 500 — the engine path degrades gracefully and flags the offending metric instead.
-
-This was triggered by a real incident where a single bad pattern took down the metrics query for an entire experiment. Tightening validation at every layer makes that class of failure go away for good.
 
 ---
 
