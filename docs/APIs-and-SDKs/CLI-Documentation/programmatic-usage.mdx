@@ -1,0 +1,101 @@
+---
+sidebar_position: 7
+---
+
+# Programmatic Usage
+
+The package exports a framework-free core layer that can be used programmatically without Commander.js or any CLI dependencies. The core functions are tree-shakeable — import only what you need.
+
+## Exports
+
+| Import path | Description |
+|---|---|
+| `@absmartly/cli/core/experiments` | Experiment lifecycle, metrics, bulk operations |
+| `@absmartly/cli/core/goals` | Goal CRUD and access control |
+| `@absmartly/cli/core/metrics` | Metric CRUD, reviews, access control |
+| `@absmartly/cli/core/teams` | Team CRUD and member management |
+| `@absmartly/cli/core/users` | User CRUD and API key management |
+| `@absmartly/cli/core/events` | Event tracking data |
+| `@absmartly/cli/core/insights` | Velocity and decision analytics |
+| `@absmartly/cli/core/auth` | Auth operations (whoami, API keys, profile) |
+| `@absmartly/cli/core/<module>` | Any other core module (tags, roles, segments, etc.) |
+| `@absmartly/cli/api-client` | Lower-level API client with typed methods |
+| `@absmartly/cli/formatting` | Output formatting utilities |
+
+## Example
+
+```typescript
+import { createAPIClient } from '@absmartly/cli/api-client';
+import { listExperiments, startExperiment, stopExperiment, ExperimentId } from '@absmartly/cli/core/experiments';
+
+const client = createAPIClient({
+  endpoint: 'https://your-instance.absmartly.com/v1',
+  apiKey: 'YOUR_API_KEY',
+});
+
+// List running experiments
+const { data, pagination } = await listExperiments(client, {
+  state: 'running',
+  items: 50,
+  page: 1,
+});
+
+// Start an experiment
+const result = await startExperiment(client, {
+  experimentId: ExperimentId(123),
+  note: 'Starting from script',
+});
+
+if (result.data.skipped) {
+  console.log('Skipped:', result.data.skipReason);
+}
+
+// Stop with validated reason
+await stopExperiment(client, {
+  experimentId: ExperimentId(123),
+  reason: 'hypothesis_rejected',
+  note: 'Results conclusive',
+});
+```
+
+:::note
+`ExperimentId()` is a branded type constructor for type safety. In JavaScript, you can pass plain numeric IDs instead.
+:::
+
+### Create from template
+
+```typescript
+import { createExperimentFromTemplate } from '@absmartly/cli/core/experiments';
+import { readFileSync } from 'fs';
+
+const templateContent = readFileSync('experiment.md', 'utf8');
+
+const { data, warnings } = await createExperimentFromTemplate(client, {
+  templateContent,
+  name: 'my-new-experiment',        // optional override
+  displayName: 'My New Experiment',  // optional override
+  defaultType: 'test',              // 'test' or 'feature'
+});
+
+console.log(`Created experiment ${data.id}: ${data.name}`);
+for (const w of warnings) console.warn(w);
+```
+
+## Core API conventions
+
+All core functions follow a consistent pattern:
+
+```typescript
+function operation(client: APIClient, params: OperationParams): Promise<CommandResult<T>>
+```
+
+- **First argument** is always the `APIClient` instance
+- **Second argument** is a typed params object
+- **Return value** is always `CommandResult<T>` with:
+  - `data: T` — the primary result
+  - `warnings?: string[]` — optional warnings
+  - `pagination?: { page, items, hasMore }` — for list operations
+  - `rows?: Record<string, unknown>[]` — optional tabular view
+  - `detail?: Record<string, unknown>` — optional detail view
+
+Validation errors throw with descriptive messages listing valid values (e.g., stop reasons, schedule actions).
