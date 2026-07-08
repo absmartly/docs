@@ -1,0 +1,89 @@
+---
+sidebar_position: 2
+---
+
+# Authentication
+
+The CLI stores credentials in your OS keychain (via keytar) and configuration in `~/.config/absmartly/config.yaml`. On headless systems without a keychain service, credentials fall back to `~/.config/absmartly/credentials.json` (chmod 600).
+
+Two authentication methods are supported.
+
+## API key authentication
+
+```bash
+# Login with API key
+abs auth login --api-key YOUR_KEY --endpoint https://your-instance.absmartly.com/v1
+
+# Login with a named profile
+abs auth login --api-key YOUR_KEY --endpoint https://staging.absmartly.com/v1 --profile staging
+```
+
+## OAuth authentication
+
+When no `--api-key` is provided, the CLI launches an OAuth browser flow. After authorization, it can either create a persistent API key (default) or use session-based JWT tokens.
+
+```bash
+# OAuth login (opens browser, creates persistent API key)
+abs auth login --endpoint https://your-instance.absmartly.com/v1
+
+# OAuth with session-based JWT tokens (no persistent key, expires in 24h)
+abs auth login --endpoint https://your-instance.absmartly.com/v1 --session
+
+# Skip prompt and always create persistent API key
+abs auth login --endpoint https://your-instance.absmartly.com/v1 --persistent
+
+# Headless environments (print URL instead of opening browser)
+abs auth login --endpoint https://your-instance.absmartly.com/v1 --no-browser
+
+# Allow self-signed TLS certificates
+abs auth login --endpoint https://dev.local/v1 -k
+```
+
+:::warning Security note
+The `-k` flag disables TLS certificate verification. Only use in trusted development environments.
+:::
+
+## Auth commands
+
+```bash
+# Check authentication status
+abs auth status
+abs auth status --show-key    # reveal full API key
+abs auth status --profile staging
+
+# Show current authenticated user
+abs auth whoami
+abs auth whoami --avatar       # display avatar inline (iTerm2, Kitty, Sixel)
+abs auth whoami --avatar 30    # avatar at 30 columns wide
+
+# Manage personal API keys
+abs auth list-api-keys
+abs auth create-api-key --name "CI Key" --description "For CI/CD pipelines"
+abs auth get-api-key 1
+abs auth update-api-key 1 --name "Renamed Key"
+abs auth delete-api-key 1
+
+# Edit your profile
+abs auth edit-profile --first-name "Jonas" --last-name "Alves" --department "Engineering"
+
+# Change your own password
+abs auth reset-my-password
+
+# Logout
+abs auth logout
+abs auth logout --profile staging
+```
+
+You can also override credentials per-command with global options:
+
+```bash
+abs experiments list --api-key YOUR_KEY --endpoint https://your-instance.absmartly.com/v1
+```
+
+## Credential resolution order
+
+`--api-key` flag > `ABSMARTLY_API_KEY` env > OS keychain > `~/.config/absmartly/credentials.json`
+
+:::warning Security note
+Environment variables may be visible in process listings and logs. For production, prefer OS keychain storage (default) or the credentials file on headless systems.
+:::
