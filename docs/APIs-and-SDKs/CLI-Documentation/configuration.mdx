@@ -1,0 +1,109 @@
+---
+sidebar_position: 3
+---
+
+# Global Options & Configuration
+
+## Global options
+
+These options are available on every command:
+
+| Option | Description |
+|---|---|
+| `--config <path>` | Config file path |
+| `--api-key <key>` | Override API key |
+| `--endpoint <url>` | Override API endpoint |
+| `--app <name>` | Override default application |
+| `--env <name>` | Override default environment |
+| `-o, --output <format>` | Output format: `table` (default), `json`, `yaml`, `plain`, `markdown`, `rendered`, `vertical`, `template` |
+| `--no-color` | Disable colored output |
+| `-v, --verbose` | Verbose output |
+| `-q, --quiet` | Minimal output |
+| `--profile <name>` | Use a specific profile |
+| `--terse` | Compact format with truncation |
+| `--full` | Full text without truncation |
+| `--raw` | Show raw API response without summarizing or transforming |
+
+## Configuration file
+
+Configuration is stored in `~/.config/absmartly/config.yaml` as YAML. API keys are stored securely in your OS keychain via [keytar](https://github.com/nicktomlin/keytar).
+
+```bash
+# View current configuration
+abs config list
+
+# Get/set individual values
+abs config get output
+abs config set output json
+abs config unset output
+
+# Manage profiles
+abs config profiles list
+abs config profiles use staging
+abs config profiles delete old-profile
+```
+
+### Configuration file format
+
+```yaml
+default-profile: default
+analytics-opt-out: false
+output: table
+profiles:
+  default:
+    api:
+      endpoint: https://your-instance.absmartly.com/v1
+    expctld:
+      endpoint: https://ctl.absmartly.io/v1
+    application: my-app
+    environment: production
+  staging:
+    api:
+      endpoint: https://staging.absmartly.com/v1
+    expctld:
+      endpoint: https://ctl.absmartly.io/v1
+    environment: staging
+```
+
+### Environment variables
+
+| Variable | Description |
+|---|---|
+| `ABSMARTLY_API_KEY` | API key (overrides keychain and credentials file) |
+| `ABSMARTLY_API_ENDPOINT` | API endpoint URL (overrides profile config) |
+
+See [Authentication](./authentication) for the full credential resolution order and OAuth/API key login flows.
+
+## Date formats
+
+All `--from`, `--to`, `--since`, `--created-after`, `--started-before`, and other date/timestamp options across the CLI accept the same formats:
+
+| Format | Example |
+|---|---|
+| Relative (short) | `7d`, `2w`, `1mo`, `24h`, `30m`, `1y` |
+| Relative (with ago) | `7d ago`, `2 weeks ago`, `3 months ago` |
+| Keywords | `today`, `yesterday`, `now` |
+| ISO 8601 date | `2024-01-01` |
+| ISO 8601 datetime | `2024-01-01T00:00:00Z` |
+| Epoch milliseconds | `1704067200000` |
+
+Relative units: `m` (minutes), `h` (hours), `d` (days), `w` (weeks), `mo` (months), `y` (years). Case-insensitive.
+
+Commands using date formats:
+- `abs experiments list --created-after`, `--created-before`, `--started-after`, `--started-before`, `--stopped-after`, `--stopped-before`
+- `abs experiments metrics results --from`, `--to`
+- `abs activity-feed list --since`
+- `abs events list --from`, `--to`
+- `abs events history --from`, `--to`
+- `abs events json-values --from`, `--to`
+- `abs events json-layouts --from`, `--to`
+
+```bash
+abs experiments list --created-after 7d                  # last 7 days
+abs experiments list --stopped-after "30 days ago"       # stopped in last month
+abs experiments list --started-after yesterday
+abs experiments list --created-after 2024-01-01          # since Jan 1 2024
+abs experiments metrics results 123 --from 7d --to now
+abs activity-feed list --since 1h
+abs events list --from 2w --to yesterday
+```
