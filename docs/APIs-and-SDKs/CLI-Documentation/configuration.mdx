@@ -26,7 +26,7 @@ These options are available on every command:
 
 ## Configuration file
 
-Configuration is stored in `~/.config/absmartly/config.yaml` as YAML. API keys are stored securely in your OS keychain via [keytar](https://github.com/nicktomlin/keytar).
+Configuration is stored in `~/.config/absmartly/config.yaml` as YAML. API keys are stored securely in your OS keychain via [keytar](https://github.com/atom/node-keytar).
 
 ```bash
 # View current configuration
@@ -97,6 +97,7 @@ Commands using date formats:
 - `abs events history --from`, `--to`
 - `abs events json-values --from`, `--to`
 - `abs events json-layouts --from`, `--to`
+- `abs insights velocity --from`, `--to` (and `decisions`, `velocity-detail`, `decisions-history`)
 
 ```bash
 abs experiments list --created-after 7d                  # last 7 days
