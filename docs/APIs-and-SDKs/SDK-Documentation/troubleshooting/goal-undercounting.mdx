@@ -42,10 +42,6 @@ A goal configured to only count events where `plan == "pro"` will miss every `pl
 
 ### How to diagnose
 
-1. Open the metric in the web console and check the time window and property filters against the events you expect to count.
-2. Look at the raw event stream for a user you know converted. If the event is present but the metric does not count it, the filter is the cause.
+1. Open the metric in the web console and check the time window and property filters against the events you expect to count. See [Metrics](/docs/web-console-docs/goals-and-metrics/metrics/overview) for how metrics are configured.
+2. Look at the raw event stream for a user you know converted in [Events &gt; Explore](/docs/web-console-docs/Events/the-events-page). If the event is present but the metric does not count it, the filter is the cause.
 3. Widen the time window or relax the property filter and re-check.
-
-:::info
-Metric configuration lives in the web console, not the SDK. The SDK only sends the goal event; the console decides which events count. See the [metrics documentation](/docs/web-console-docs/goals-and-metrics/metrics/overview) for details.
-:::
