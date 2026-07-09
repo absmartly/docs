@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Authentication
 
-The CLI stores credentials in your OS keychain (via keytar) and configuration in `~/.config/absmartly/config.yaml`. On headless systems without a keychain service, credentials fall back to `~/.config/absmartly/credentials.json` (chmod 600).
+The CLI stores credentials in your OS keychain (via keytar) and configuration in `~/.config/absmartly/config.yaml`. On headless systems without a keychain service, credentials fall back to a local `~/.config/absmartly/credentials.json` file.
 
 Two authentication methods are supported.
 
@@ -14,8 +14,8 @@ Two authentication methods are supported.
 # Login with API key
 abs auth login --api-key YOUR_KEY --endpoint https://your-instance.absmartly.com/v1
 
-# Login with a named profile
-abs auth login --api-key YOUR_KEY --endpoint https://staging.absmartly.com/v1 --profile staging
+# Login with a named profile (e.g. for a read-only key)
+abs auth login --api-key YOUR_READONLY_KEY --endpoint https://your-instance.absmartly.com/v1 --profile readonly
 ```
 
 ## OAuth authentication
@@ -49,7 +49,7 @@ The `-k` flag disables TLS certificate verification. Only use in trusted develop
 # Check authentication status
 abs auth status
 abs auth status --show-key    # reveal full API key
-abs auth status --profile staging
+abs auth status --profile readonly
 
 # Show current authenticated user
 abs auth whoami
@@ -71,7 +71,7 @@ abs auth reset-my-password
 
 # Logout
 abs auth logout
-abs auth logout --profile staging
+abs auth logout --profile readonly
 ```
 
 You can also override credentials per-command with global options:

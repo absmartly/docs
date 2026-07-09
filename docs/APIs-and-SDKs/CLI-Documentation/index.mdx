@@ -13,18 +13,6 @@ The CLI wraps the same Platform API used by the web console, so anything you can
 This project is experimental. The core architecture is settled, but the API surface may change between releases.
 :::
 
-| Area | Status |
-|---|---|
-| Experiment commands (list, get, create, update, start, stop, restart, clone, bulk) | Stable — well tested |
-| Metric results, CI bars, segment breakdowns | Stable |
-| Template round-trip (export → edit → create/update) | Stable |
-| Core layer (`@absmartly/cli/core/*`) for programmatic use | Stable — 444 unit tests |
-| Admin commands (tags, roles, teams, users, webhooks, etc.) | Mostly stable — less battle-tested |
-| OAuth authentication | Working — tested against live API |
-| Interactive editor (`--interactive` / `-i` flag) | Experimental — known issues, not production-ready |
-| Shell completions | Working — may have gaps |
-| Unix pipe composition | Stable |
-
 ## Installation
 
 ```bash
@@ -41,7 +29,9 @@ abs setup
 
 # Non-interactive setup
 abs setup --api-key YOUR_KEY --endpoint https://your-instance.absmartly.com/v1
-abs setup --api-key YOUR_KEY --endpoint https://staging.absmartly.com/v1 --profile staging
+
+# Non-interactive setup with a named profile (e.g. for a read-only key)
+abs setup --api-key YOUR_READONLY_KEY --endpoint https://your-instance.absmartly.com/v1 --profile readonly
 
 # Or authenticate manually
 abs auth login --api-key YOUR_API_KEY --endpoint https://your-instance.absmartly.com/v1

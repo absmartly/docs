@@ -39,7 +39,7 @@ abs config unset output
 
 # Manage profiles
 abs config profiles list
-abs config profiles use staging
+abs config profiles use readonly
 abs config profiles delete old-profile
 ```
 
@@ -57,12 +57,12 @@ profiles:
       endpoint: https://ctl.absmartly.io/v1
     application: my-app
     environment: production
-  staging:
+  readonly:
     api:
-      endpoint: https://staging.absmartly.com/v1
+      endpoint: https://your-instance.absmartly.com/v1
     expctld:
       endpoint: https://ctl.absmartly.io/v1
-    environment: staging
+    environment: production
 ```
 
 ### Environment variables
