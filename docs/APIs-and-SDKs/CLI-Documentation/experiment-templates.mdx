@@ -1,0 +1,115 @@
+---
+sidebar_position: 6
+---
+
+# Experiment Templates
+
+The CLI uses Markdown templates with YAML frontmatter for experiment round-trips. All names (metrics, owners, teams, tags, applications) are resolved by name — no IDs needed.
+
+```bash
+# Generate a blank template
+abs experiments generate-template -o experiment.md
+
+# Export an existing experiment as a template
+abs experiments get 123 -o template > experiment.md
+abs experiments get 123 -o template --embed-screenshots > experiment.md  # with base64 screenshots
+abs experiments get 123 -o template --screenshots-dir ./screenshots      # save screenshots as files
+
+# Create from template
+abs experiments create --from-file experiment.md
+abs experiments create --from-file experiment.md --dry-run   # preview payload
+cat experiment.md | abs experiments create --from-file -     # from stdin
+
+# Update from template
+abs experiments update 123 --from-file experiment.md
+
+# Clone (shortcut)
+abs experiments clone 123 --name my-clone
+
+# Restart with changes
+abs experiments restart 123 --from-file changes.md --reason hypothesis_iteration
+```
+
+## Template format
+
+````markdown
+---
+name: my_experiment
+display_name: "My Experiment"
+unit_type: user_id
+application: www
+primary_metric: Net conversion rate
+secondary_metrics:
+  - Gross conversion rate
+  - Product page views
+guardrail_metrics:
+  - Page load time (ms)
+  - Error rate
+percentages: 50/50
+percentage_of_traffic: 100
+owners:
+  - Márcio Martins <marcio@absmartly.com>
+  - Cal Courtney <cal@absmartly.com>
+teams:
+  - Product
+  - Engineering
+tags:
+  - q1
+  - homepage
+analysis_type: group_sequential
+required_alpha: 0.1
+required_power: 0.8
+baseline_participants: 143
+---
+
+## Audience
+
+```json
+{
+  "filter": [
+    { "and": [{ "eq": [{ "var": { "path": "language" } }, { "value": "en-GB" }] }] }
+  ]
+}
+```
+
+## Variants
+
+### variant_0
+
+name: Control
+config: {}
+![Control variant](./screenshots/control.png)
+
+### variant_1
+
+name: Treatment
+config: {"feature_enabled": true}
+![Treatment variant](./screenshots/treatment.png)
+
+## Description
+
+### Hypothesis
+
+We believe changing X will improve Y by Z%.
+
+### Implementation Details
+
+Details here...
+
+## JIRA
+
+### JIRA URL
+
+https://jira.example.com/IT-1234
+````
+
+## Template features
+
+- **Metrics**: resolved by name, including archived metrics
+- **Owners**: `Name <email>`, email, or user ID
+- **Teams/tags**: resolved by name
+- **Audience**: JSON code block, parsed and compacted for the API
+- **Custom fields**: grouped by section name (matches UI sections)
+- **User-type fields**: exported as email, converted back to `{"selected":[{"userId":N}]}`
+- **Screenshots**: local file paths, URLs, or base64 data URIs
+- **Type**: inferred from command (`abs experiments` → test, `abs features` → feature)

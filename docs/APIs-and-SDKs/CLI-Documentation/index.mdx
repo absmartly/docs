@@ -1,0 +1,59 @@
+---
+sidebar_position: 1
+title: CLI Overview
+---
+
+# ABsmartly CLI
+
+Command-line interface for AI agents and humans to manage experiments, feature flags, and A/B tests on the ABsmartly platform.
+
+The CLI wraps the same Platform API used by the web console, so anything you can do in the dashboard, you can automate from a terminal or a script — listing and creating experiments, starting/stopping tests, managing metrics, teams, users, webhooks, and more.
+
+:::note Project status
+This project is experimental. The core architecture is settled, but the API surface may change between releases.
+:::
+
+| Area | Status |
+|---|---|
+| Experiment commands (list, get, create, update, start, stop, restart, clone, bulk) | Stable — well tested |
+| Metric results, CI bars, segment breakdowns | Stable |
+| Template round-trip (export → edit → create/update) | Stable |
+| Core layer (`@absmartly/cli/core/*`) for programmatic use | Stable — 444 unit tests |
+| Admin commands (tags, roles, teams, users, webhooks, etc.) | Mostly stable — less battle-tested |
+| OAuth authentication | Working — tested against live API |
+| Interactive editor (`--interactive` / `-i` flag) | Experimental — known issues, not production-ready |
+| Shell completions | Working — may have gaps |
+| Unix pipe composition | Stable |
+
+## Installation
+
+```bash
+bun install -g @absmartly/cli
+```
+
+Requires [Bun](https://bun.sh/) >= 1.0 (or Node.js >= 18 at runtime).
+
+## Quick start
+
+```bash
+# Interactive setup wizard
+abs setup
+
+# Non-interactive setup
+abs setup --api-key YOUR_KEY --endpoint https://your-instance.absmartly.com/v1
+abs setup --api-key YOUR_KEY --endpoint https://staging.absmartly.com/v1 --profile staging
+
+# Or authenticate manually
+abs auth login --api-key YOUR_API_KEY --endpoint https://your-instance.absmartly.com/v1
+
+# Verify configuration
+abs doctor
+
+# List experiments
+abs experiments list
+
+# Get experiment details
+abs experiments get 123
+```
+
+See [Authentication](./authentication) for the full login flow, [Configuration](./configuration) for global options and config file details, [Experiments & Feature Flags](./experiments-and-feature-flags) for the primary command reference, [Other Entities](./other-entities) for goals/metrics/teams/admin commands, [Experiment Templates](./experiment-templates) for the markdown round-trip format, and [Programmatic Usage](./programmatic-usage) if you want to call the CLI's core layer directly from TypeScript/JavaScript.

@@ -1,0 +1,407 @@
+---
+sidebar_position: 4
+---
+
+# Experiments & Feature Flags
+
+Full lifecycle management for A/B tests and feature flags.
+
+Aliases: `experiments`, `experiment`, `exp`, `features`, `feature`
+
+Use `abs features` instead of `abs experiments` to auto-filter by `type=feature`. All subcommands work identically:
+
+```bash
+abs features list
+abs features get 123
+abs features create --from-file flag.md
+abs features clone 123 --name my-clone
+abs features restart 123 --as-type experiment    # convert to experiment
+```
+
+All experiment commands accept **names or IDs** — e.g. `abs experiments get checkout_redesign` resolves the name to the latest iteration's ID automatically.
+
+## Listing and searching
+
+```bash
+# List experiments with filters and pagination
+abs experiments list
+abs experiments list --state running --items 50 --sort created_at --desc
+abs experiments list --app my-app --search "checkout" --page 2
+abs experiments list --created-after 2025-01-01 --tags v1,mobile
+
+# Customize columns
+abs experiments list --show experiment_report archived   # add extra columns
+abs experiments list --exclude primary_metric owner      # hide columns
+
+# Search by name
+abs experiments search "onboarding"
+```
+
+### List filters
+
+| Filter | Description |
+|---|---|
+| `--state <state>` | `created`, `ready`, `running`, `development`, `full_on`, `stopped`, `archived`, `scheduled` |
+| `--type <type>` | `test`, `feature` |
+| `--app <name>` | Filter by application name |
+| `--applications <values>` | Filter by application names or IDs (comma-separated) |
+| `--search <query>` | Search by name or display name |
+| `--ids <ids>` | Filter by experiment IDs (comma-separated) |
+| `--unit-types <values>` | Comma-separated unit type names or IDs |
+| `--owners <values>` | Comma-separated owner names, emails, or IDs |
+| `--teams <values>` | Comma-separated team names or IDs |
+| `--tags <values>` | Comma-separated tag names or IDs |
+| `--impact <min,max>` | Filter by impact range (e.g. `-5,50`) |
+| `--confidence <min,max>` | Filter by confidence range (e.g. `90,100`) |
+| `--significance <value>` | `positive`, `negative`, `neutral`, `inconclusive` |
+| `--iterations <n>` | Filter by iteration count |
+| `--iterations-of <id>` | Show all iterations of an experiment |
+| `--created-after <ts>` / `--created-before <ts>` | Filter by creation date |
+| `--started-after <ts>` / `--started-before <ts>` | Filter by start date |
+| `--stopped-after <ts>` / `--stopped-before <ts>` | Filter by stop date |
+| `--analysis-type <type>` | `fixed_horizon`, `group_sequential` |
+| `--running-type <type>` | `full_on`, `experiment` |
+| `--alert-srm` | Has sample ratio mismatch alert (pass `0` for no alert) |
+| `--alert-cleanup-needed` | Has cleanup needed alert |
+| `--alert-sample-size-reached` | Sample size reached alert |
+| `--items <n>` | Results per page (default: 20) |
+| `--page <n>` | Page number (default: 1) |
+| `--sort <field>` | Sort by field (e.g. `created_at`, `name`, `state`) |
+| `--asc` / `--desc` | Sort direction |
+| `--show <fields...>` | Add extra columns |
+| `--exclude <fields...>` | Hide columns |
+
+All `--from`, `--to`, `--created-after`, and other date options accept the shared [date formats](./configuration#date-formats).
+
+## Getting details
+
+```bash
+abs experiments get 123                                  # summary table
+abs experiments get 123 -o vertical                      # one field per line
+abs experiments get 123 -o json                          # summary as JSON
+abs experiments get 123 -o json --raw                    # full API response as JSON
+abs experiments get 123 --show audience Hypothesis       # include extra fields
+abs experiments get 123 --exclude owners tags            # hide fields from output
+abs experiments get 123 --activity                       # include activity log
+
+# Inline screenshots (iTerm2, Kitty, Sixel)
+abs experiments get 123 --show-images                    # display variant screenshots
+abs experiments get 123 --show-images 60                 # at 60 columns wide
+
+# Template export (for cloning, editing, round-tripping)
+abs experiments get 123 -o template                      # markdown template
+abs experiments get 123 -o template --embed-screenshots  # with base64 screenshots
+abs experiments get 123 -o template --screenshots-dir ./screenshots  # save screenshots as files
+```
+
+All `list` and `get` commands return summarized output by default. Use `--raw` for the full API response. The `rendered` format outputs terminal-styled markdown with bold, tables, syntax-highlighted code blocks, ● bullets, and │ blockquotes. JSON and YAML outputs include syntax highlighting by default (`--no-color` to disable).
+
+## Creating experiments
+
+```bash
+abs experiments create --name my-experiment --variants "control,treatment"
+abs experiments create --name my-experiment --secondary-metrics "Revenue,Bookings"
+abs experiments create --name my-experiment --teams "Product" --tags "v1"
+abs experiments create --name my-experiment --audience '{"filter":[]}'
+abs experiments create --name my-experiment --analysis-type fixed_horizon
+abs experiments create --name my-experiment --hypothesis "We believe X"  # custom fields
+abs experiments create --name my-experiment --field "Hypothesis=We believe X"  # generic fallback
+abs experiments create --from-file experiment.md         # from template
+abs experiments create --name my-experiment --dry-run    # preview payload
+abs experiments create --name my-experiment --as-curl    # output as curl command
+cat template.md | abs experiments create --from-file -   # from stdin
+```
+
+### Custom field options
+
+After running `abs experiments refresh-fields`, custom fields from your ABsmartly instance appear as native CLI options:
+
+```bash
+abs experiments create --help
+# Shows: --hypothesis <value>, --jira-url <value>, etc.
+
+abs experiments create --name test --hypothesis "We believe X" --jira-url "https://jira.example.com/IT-1"
+abs experiments update 123 --hypothesis "Updated hypothesis"
+abs experiments restart 123 --hypothesis "New iteration"
+
+# Generic fallback (works without cache)
+abs experiments create --name test --field "Hypothesis=We believe X"
+```
+
+## Cloning
+
+```bash
+abs experiments clone 123 --name my-clone                # clone with new name
+abs experiments clone 123 --name my-clone --dry-run      # preview
+abs experiments clone 123 --name my-clone --from-file overrides.md  # clone with changes
+```
+
+## Updating
+
+```bash
+abs experiments update 123 --display-name "New Name"
+abs experiments update 123 --name new_name --state running
+abs experiments update 123 --percentage-of-traffic 50 --percentages 30,70
+abs experiments update 123 --primary-metric 145 --unit-type 3 --application-id 5
+abs experiments update 123 --variants "control,treatment,treatment2"
+abs experiments update 123 --secondary-metrics "Revenue,Bookings"
+abs experiments update 123 --guardrail-metrics "Error rate"
+abs experiments update 123 --teams "Product,Engineering" --tags "v1,mobile"
+abs experiments update 123 --audience '{"filter":[]}'
+abs experiments update 123 --analysis-type fixed_horizon --required-alpha 0.05
+abs experiments update 123 --owner 10 --owner 20
+abs experiments update 123 --screenshot-id 0:376 --screenshot-id 1:378  # restore screenshots by upload ID
+abs experiments update 123 --from-file experiment.md     # update from template
+abs experiments update 123 --from-file experiment.md --dry-run
+abs experiments update 123 -i                            # interactive editor
+```
+
+## Lifecycle transitions
+
+```bash
+abs experiments development 123                          # enter development mode
+abs experiments start 123                                # start experiment
+abs experiments start 123 --note "Ready for traffic"     # with activity note
+abs experiments stop 123                                 # stop experiment
+abs experiments stop 123 --reason hypothesis_rejected --note "Inconclusive results"
+abs experiments restart 123 --reason other --reshuffle   # restart stopped experiment
+abs experiments restart 123 --from-file changes.md       # restart with template changes
+abs experiments restart 123 --as-type feature            # restart as feature flag
+abs experiments full-on 123 --variant 1                  # set full-on variant
+```
+
+### Valid reasons for stop and restart
+
+The `--reason` option for `stop` and `restart` accepts these values:
+
+| Reason | Description |
+|---|---|
+| `hypothesis_rejected` | Hypothesis was disproven |
+| `hypothesis_iteration` | Iterating on the hypothesis |
+| `user_feedback` | Based on user feedback |
+| `data_issue` | Data quality problems |
+| `implementation_issue` | Bug or implementation problem |
+| `experiment_setup_issue` | Experiment configuration error |
+| `guardrail_metric_impact` | Guardrail metric triggered |
+| `secondary_metric_impact` | Secondary metric concern |
+| `operational_decision` | Business/operational decision |
+| `performance_issue` | Performance degradation |
+| `testing` | Test or QA purposes |
+| `tracking_issue` | Tracking/instrumentation problem |
+| `code_cleaned_up` | Code has been cleaned up |
+| `other` | Other reason |
+
+## Archiving
+
+```bash
+abs experiments archive 123
+abs experiments archive 123 --note "Cleaning up old experiments"
+abs experiments archive 123 --unarchive
+```
+
+## Metric results
+
+`--from`/`--to` accept all [date formats](./configuration#date-formats).
+
+```bash
+abs experiments metrics list 123                         # list assigned metrics
+abs experiments metrics results 123                      # show results with CI as [lower, upper]
+abs experiments metrics results 123 --ci-bar             # visual CI bar ╌╌╌┊╌══●══╌╌╌
+abs experiments metrics results 123 --variant-index      # use v0, v1, v2 instead of names
+abs experiments metrics results 123 --metric 6           # any metric, even unassigned
+abs experiments metrics results 123 --segment Device     # segment breakdown by name
+abs experiments metrics results 123 --segment Device Country  # multiple segments
+abs experiments metrics results 123 --filter '{"filter":[...]}' # raw segment filter JSON
+abs experiments metrics results 123 --from 7d --to now   # time range filter
+abs experiments metrics results 123 --cached             # use previewer cached results (fast)
+abs experiments metrics results 123 -o json              # programmatic metric access
+abs experiments metrics add 123 --metrics 1,2,3
+abs experiments metrics confirm-impact 123 456
+abs experiments metrics exclude 123 456
+abs experiments metrics include 123 456
+
+# Metric dependencies
+abs experiments metrics deps 145                         # show experiments using metric
+abs experiments metrics deps 145 -o json                 # as JSON
+```
+
+Impact values are colored by significance and metric effect direction:
+- **Green**: significant positive outcome (e.g. conversion rate up, or cancellations down)
+- **Red**: significant negative outcome (e.g. conversion rate down, or cancellations up)
+- **Purple**: significant but metric has unknown expected direction
+- **No color**: confidence interval crosses zero (result not statistically significant)
+
+## Activity log
+
+```bash
+abs experiments activity list 123
+abs experiments activity create 123 --note "Deployed to staging"
+abs experiments activity edit 123 456 --note "Updated note"
+abs experiments activity reply 123 456 --note "Looks good"
+```
+
+Notes render with full markdown support via `marked-terminal`: bold, italic, code, tables, ● bullets, │ blockquotes, syntax-highlighted code blocks, and @mention resolution (user/team names).
+
+## Parent, follow, annotations, alerts
+
+```bash
+# Parent experiment
+abs experiments parent 123                               # get parent experiment
+
+# Follow/unfollow
+abs experiments follow 123
+abs experiments unfollow 123
+
+# Annotations
+abs experiments annotations list 123
+abs experiments annotations create 123 --type global
+abs experiments annotations update 456 --type local
+abs experiments annotations archive 456
+
+# Alerts and recommendations
+abs experiments alerts list 123
+abs experiments alerts dismiss 456
+abs experiments recommendations list 123
+abs experiments recommendations dismiss 456
+```
+
+## Access control
+
+```bash
+abs experiments access list-users 123
+abs experiments access grant-user 123 --user 1 --role 2
+abs experiments access revoke-user 123 --user 1 --role 2
+abs experiments access list-teams 123
+abs experiments access grant-team 123 --team 1 --role 2
+abs experiments access revoke-team 123 --team 1 --role 2
+```
+
+## Export, updates, and scheduling
+
+```bash
+# Export data and request update
+abs experiments export 123
+abs experiments request-update 123
+abs experiments request-update 123 --tasks preview_metrics,preview_summary
+abs experiments request-update 123 --replace-gsa
+abs experiments request-update 123 --tasks preview_group_sequential --replace-gsa
+
+# Schedule future actions
+abs experiments schedule create 123 --action start --at 2027-01-15T10:00:00Z
+abs experiments schedule create 123 --action stop --at 2027-01-30T18:00:00+02:00 --reason testing
+abs experiments schedule delete 123 456
+```
+
+The `abs experiments schedule create --action` option accepts: `start`, `restart`, `development`, `stop`, `archive`, `full_on`. The `--at` timestamp must include a timezone — either `Z` (UTC) or an offset like `+02:00`. The time must be in the future.
+
+### Valid request-update tasks
+
+The `abs experiments request-update --tasks` option accepts a comma-separated list of:
+
+| Task | Description |
+|---|---|
+| `preview_metrics` | Refresh metric results |
+| `preview_summary` | Refresh experiment summary |
+| `preview_group_sequential` | Refresh group sequential analysis |
+| `preview_report_metrics` | Refresh report metrics |
+| `preview_participants_history` | Refresh participant history |
+| `check_cleanup_needed` | Check if code cleanup is needed |
+| `check_audience_mismatch` | Check for audience mismatch |
+| `check_sample_size` | Check sample size reached |
+| `check_sample_ratio_mismatch` | Check for SRM |
+| `check_interactions` | Check for interactions |
+| `check_assignment_conflict` | Check for assignment conflicts |
+| `check_metric_threshold` | Check metric thresholds |
+
+## Compare and watch
+
+```bash
+# Compare experiments
+abs experiments diff 22838 22839                         # diff two experiments
+abs experiments diff 22838 --iteration 6                 # diff with a previous iteration
+abs experiments diff 22838 22839 -o json                 # diff as JSON
+abs experiments diff 22838 22839 --raw                   # diff full API response
+
+# Watch live results
+abs experiments watch 22838                              # poll metrics every 60s
+abs experiments watch 22838 --interval 30                # poll every 30s
+abs experiments watch 22838 --variant-index              # use v0, v1, v2 instead of names
+```
+
+## Bulk operations
+
+```bash
+abs experiments bulk start 123 456 789 --note "Resuming"
+abs experiments bulk stop 123 456 --reason hypothesis_rejected --note "Results inconclusive"
+abs experiments bulk archive 123 456 --yes
+abs experiments bulk full-on 123 --variant 1 --note "Winner confirmed"
+abs experiments bulk development 123 456 --note "Moving to dev"
+abs experiments bulk stop --state running --app my-app --note "Maintenance"
+```
+
+## Unix pipe composition
+
+List outputs IDs when piped; action commands read IDs from stdin and pass them through.
+
+```bash
+abs experiments list --state running | abs experiments stop --reason other --note "Stopping all"
+abs experiments list --state stopped | abs experiments archive --note "Cleanup"
+abs experiments list --search e2e- --state running | abs experiments stop --reason testing | abs experiments archive --note "Done"
+
+# Pipe to bulk (auto-detects stdin)
+abs experiments list --state running --app my-app | abs experiments bulk stop --reason other
+
+# Interactive mode — prompts for note (uses dashboard config for defaults/required)
+abs experiments stop 123 -i
+abs experiments archive 123 -i
+
+# Pipe into other tools
+abs experiments list --state running | wc -l              # count running experiments
+abs experiments list --state running | head -5 | abs experiments stop --reason other
+```
+
+When piped, status messages (✓ Experiment N stopped) go to stderr so they don't interfere with the ID stream on stdout. Use `-o json` or `-o yaml` to get full structured output even when piped.
+
+By default, failed IDs are **not** passed through the pipe — only successfully processed IDs flow to the next command. Use `--pass-through` to pass all IDs (including failures) so a downstream command can attempt its own operation:
+
+```bash
+# Default: only successfully stopped experiments get archived
+abs experiments list --state running | abs experiments stop --reason other | abs experiments archive
+
+# With --pass-through: all IDs flow through even if stop fails
+abs experiments list --state running | abs experiments stop --reason other --pass-through | abs experiments archive
+```
+
+## Action dialog configuration
+
+Action commands (`stop`, `start`, `archive`, etc.) respect the action dialog field configuration from your ABsmartly dashboard. After running `abs experiments refresh-fields`, the CLI will:
+
+- Use the configured **default note text** when `--note` is not provided
+- **Require** `--note` when the dashboard marks the note as mandatory
+- Show the configured **description** as the prompt when using `-i` (interactive mode)
+
+```bash
+abs experiments refresh-fields                            # cache action dialog config
+abs experiments stop 123                                  # uses default note from config
+abs experiments stop 123 --note "Custom note"             # overrides default
+abs experiments stop 123 -i                               # interactive prompt with config defaults
+```
+
+## Misc
+
+```bash
+# Generate a markdown template for experiment creation
+abs experiments generate-template -o experiment.md
+
+# Refresh cached fields (custom fields + action dialog config for notes)
+abs experiments refresh-fields
+
+# Estimate maximum participants for an experiment
+abs experiments estimate-participants --unit-type user_id
+abs experiments estimate-participants --unit-type user_id --application absmartly.com
+abs experiments estimate-participants --unit-type 42 --application 1 --application 2
+abs experiments estimate-participants --unit-type user_id --from 90d
+abs experiments estimate-participants --unit-type user_id -o json
+```
+
+See [Experiment Templates](./experiment-templates) for the markdown+YAML round-trip format used by `--from-file` and `-o template`.
