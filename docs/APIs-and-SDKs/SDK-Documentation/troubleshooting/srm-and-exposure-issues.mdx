@@ -2,10 +2,6 @@
 sidebar_position: 1
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-import Publish from "../_shared/publish/_publish.mdx";
-
 # SRM and exposure issues
 
 A [Sample Ratio Mismatch (SRM)](/docs/glossary#srm-sample-ratio-mismatch) warning means the split of participants across your variants does not match the configured allocation. ABsmartly shows an SRM alert on the experiment dashboard when the mismatch is statistically significant. See [Experiment health checks](/docs/web-console-docs/experiments/Experiment-health-checks) for how the alert surfaces.
@@ -14,18 +10,15 @@ The mistakes below are the most common causes. Each one shows the wrong code fir
 
 ## Conditional exposure
 
-Your variants call `treatment()` (or `variableValue()`) at different points in the code path, so some users are exposed and counted in one variant but never reach the call in another.
+Your variants call `treatment()` at different points in the code path, so some users are exposed and counted in one variant but never reach the call in another.
 
 :::tip Rule of thumb
 Call `treatment()` exactly once, in the same place in the request or page lifecycle, for every user who should be in the experiment. Branch on the value you get back, not on whether to call it.
 :::
 
-<Tabs groupId="language">
-<TabItem value="js" label="Javascript">
-
 **Wrong** - `treatment()` called only on one code path:
 
-```js
+```ts
 // Only users who see the new checkout call treatment().
 if (user.featureEnabled) {
   const variant = context.treatment("checkout_flow");
@@ -43,7 +36,7 @@ if (user.featureEnabled) {
 
 **Right** - call `treatment()` once, before any branching:
 
-```js
+```ts
 const variant = context.treatment("checkout_flow");
 
 // Exposure is recorded for everyone at the same point.
@@ -54,86 +47,15 @@ if (variant === 1) {
 }
 ```
 
-</TabItem>
-<TabItem value="python" label="Python3">
-
-**Wrong** - `treatment()` called only on one code path:
-
-```python
-# Only users who see the new checkout call treatment().
-if user.feature_enabled:
-    variant = context.get_treatment("checkout_flow")
-    if variant == 1:
-        render_new_checkout()
-    else:
-        render_old_checkout()
-else:
-    # These users never call treatment(), so they are
-    # never exposed or counted in the experiment.
-    render_old_checkout()
-```
-
-**Right** - call `treatment()` once, before any branching:
-
-```python
-variant = context.get_treatment("checkout_flow")
-
-# Exposure is recorded for everyone at the same point.
-if variant == 1:
-    render_new_checkout()
-else:
-    render_old_checkout()
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-**Wrong** - `treatment()` called only on one code path:
-
-```java
-// Only users who see the new checkout call treatment().
-if (user.isFeatureEnabled()) {
-    int variant = context.getTreatment("checkout_flow");
-    if (variant == 1) {
-        renderNewCheckout();
-    } else {
-        renderOldCheckout();
-    }
-} else {
-    // These users never call treatment(), so they are
-    // never exposed or counted in the experiment.
-    renderOldCheckout();
-}
-```
-
-**Right** - `treatment()` called once, before any branching:
-
-```java
-int variant = context.getTreatment("checkout_flow");
-
-// Exposure is recorded for everyone at the same point.
-if (variant == 1) {
-    renderNewCheckout();
-} else {
-    renderOldCheckout();
-}
-```
-
-</TabItem>
-</Tabs>
-
 ## Audience filtering before treatment
 
 You check an attribute in your own code and skip `treatment()` for users who should not be in the experiment. But the experiment's audience is configured in the web console for a reason: when you filter in code, the users who never call `treatment()` are invisible to the analysis. If they behave differently across variants, the remaining counts skew.
 
 The fix is to let the SDK apply the audience. Call `treatment()` for everyone who hits the experiment surface. The SDK returns variant 0 (control) for users outside the audience, and the exposure is recorded consistently.
 
-<Tabs groupId="language">
-<TabItem value="js" label="Javascript">
-
 **Wrong** - filtering in code before calling `treatment()`:
 
-```js
+```ts
 // You filter out mobile users yourself, so they never call treatment().
 if (context.attributes().platform === "mobile") {
   return renderDefault();
@@ -144,7 +66,7 @@ const variant = context.treatment("checkout_flow");
 
 **Right** - call `treatment()` for everyone, let the audience do the filtering:
 
-```js
+```ts
 const variant = context.treatment("checkout_flow");
 
 // The SDK returns 0 for users outside the audience.
@@ -155,71 +77,15 @@ if (variant === 1) {
 }
 ```
 
-</TabItem>
-<TabItem value="python" label="Python3">
-
-**Wrong** - filtering in code before calling `treatment()`:
-
-```python
-if context.attributes().get("platform") == "mobile":
-    return render_default()
-
-variant = context.get_treatment("checkout_flow")
-```
-
-**Right** - call `treatment()` for everyone, let the audience do the filtering:
-
-```python
-variant = context.get_treatment("checkout_flow")
-
-if variant == 1:
-    render_new_checkout()
-else:
-    render_old_checkout()
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-**Wrong** - filtering in code before calling `treatment()`:
-
-```java
-if ("mobile".equals(context.attributes().get("platform"))) {
-    return renderDefault();
-}
-
-int variant = context.getTreatment("checkout_flow");
-```
-
-**Right** - call `treatment()` for everyone, let the audience do the filtering:
-
-```java
-int variant = context.getTreatment("checkout_flow");
-
-if (variant == 1) {
-    renderNewCheckout();
-} else {
-    renderOldCheckout();
-}
-```
-
-</TabItem>
-</Tabs>
-
 ## Not awaiting publish before navigation
 
 `publish()` sends exposure and goal events to the collector. If the page navigates or the server returns a response before the request completes, events are lost. The exposure was recorded locally but never delivered, so the analysis sees fewer participants than expected and the split skews.
 
 Always await the promise (or call the synchronous blocking variant) before redirecting or returning the response. See [Managing the context lifecycle](/docs/APIs-and-SDKs/SDK-Documentation/managing-the-context-lifecycle) for the full picture.
 
-<Publish />
-
-<Tabs groupId="language">
-<TabItem value="js" label="Javascript">
-
 **Wrong** - fire and forget before navigation:
 
-```js
+```ts
 context.publish();
 window.location.replace("/checkout");
 // The publish request is still in flight when the page unloads.
@@ -227,50 +93,19 @@ window.location.replace("/checkout");
 
 **Right** - await the promise:
 
-```js
+```ts
 await context.publish();
 window.location.replace("/checkout");
 ```
 
-</TabItem>
-<TabItem value="python" label="Python3">
+On the server, call `publish()` before sending the response:
 
-`publish()` is synchronous and blocks until the request completes, so the mistake below does not apply to Python. If you use `publish_async()`, you must await it before the response is returned.
-
-**Wrong** - starting async publish without waiting:
-
-```python
-context.publish_async()
-return redirect("/checkout")
-# The publish request is still in flight when the response returns.
+```ts
+export async function handleRequest(req: Request, res: Response) {
+  const context = sdk.createContext({ units: { user_id: req.userId } });
+  const variant = context.treatment("checkout_flow");
+  await context.publish();
+  context.finalize();
+  res.render(variant === 1 ? "new" : "old");
+}
 ```
-
-**Right** - await the async result:
-
-```python
-await context.publish_async()
-return redirect("/checkout")
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-`publish()` blocks until the request completes, so the mistake below does not apply to Java. If you use `publishAsync()`, you must await the future before the response is returned.
-
-**Wrong** - starting async publish without waiting:
-
-```java
-context.publishAsync();
-return redirect("/checkout");
-// The publish request is still in flight when the response returns.
-```
-
-**Right** - await the future:
-
-```java
-context.publishAsync().get();
-return redirect("/checkout");
-```
-
-</TabItem>
-</Tabs>
