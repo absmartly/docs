@@ -1,0 +1,111 @@
+---
+sidebar_position: 3
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Common SDK mistakes
+
+The symptoms below show up as data quality problems in the web console: SRM warnings, assignment conflicts, or participants counted under the wrong user. Each entry describes the symptom, the cause, and the fix.
+
+## Symptom: SRM warning with assignment conflicts
+
+You see an SRM alert on the experiment dashboard, and the raw event stream shows the same user assigned to different variants across requests or page loads.
+
+**Cause: multiple contexts for one user.** A context is scoped to one user. If you create a new context for every treatment check, the SDK records a separate exposure each time and the user can land in different variants across requests. On a server, each request gets its own context; on a client, the context should live for the session.
+
+**Fix: one context per user lifecycle.** Create the context once at the start of the request or app session, reuse it for every treatment check and goal track, and finalize it before the response returns or the session ends.
+
+<Tabs groupId="language">
+<TabItem value="js" label="Javascript (Node.js)">
+
+**Wrong** - new context per treatment check:
+
+```js
+export function handleRequest(req, res) {
+  // New context each call. Two requests for the same user
+  // can land in different variants.
+  const context = sdk.createContext({ units: { user_id: req.userId } });
+  const variant = context.getTreatment("checkout_flow");
+  res.render(variant === 1 ? "new" : "old");
+}
+```
+
+**Right** - one context per request, finalized before the response:
+
+```js
+export async function handleRequest(req, res) {
+  const context = sdk.createContext({ units: { user_id: req.userId } });
+  const variant = context.treatment("checkout_flow");
+  res.render(variant === 1 ? "new" : "old");
+  await context.publish();
+  context.finalize();
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python3">
+
+**Wrong** - new context per treatment check:
+
+```python
+def handle_request(request):
+    # New context each call. Two requests for the same user
+    # can land in different variants.
+    context = sdk.create_context({"units": {"user_id": request.user_id}})
+    variant = context.get_treatment("checkout_flow")
+    return render(variant)
+```
+
+**Right** - one context per request, closed before the response:
+
+```python
+def handle_request(request):
+    context = sdk.create_context({"units": {"user_id": request.user_id}})
+    variant = context.get_treatment("checkout_flow")
+    response = render(variant)
+    context.publish()
+    context.close()
+    return response
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+**Wrong** - new context per treatment check:
+
+```java
+public String handleRequest(Request request) {
+    // New context each call. Two requests for the same user
+    // can land in different variants.
+    Context context = sdk.createContext(Map.of("units", Map.of("user_id", request.getUserId())));
+    return render(context.getTreatment("checkout_flow"));
+}
+```
+
+**Right** - one context per request, finalized before the response:
+
+```java
+public String handleRequest(Request request) throws Exception {
+    Context context = sdk.createContext(Map.of("units", Map.of("user_id", request.getUserId())));
+    int variant = context.getTreatment("checkout_flow");
+    String response = render(variant);
+    context.publish();
+    context.close();
+    return response;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Symptom: participants counted under the wrong user after login or logout
+
+After a user logs out or a different user logs in, the next participant is counted under the previous user's identity.
+
+**Cause: context not reset on user change.** The current context belongs to the old user. Reusing it leaks the old user's units and attributes into the new session.
+
+**Fix: finalize the old context and create a new one.** On logout, finalize the existing context and create a new one with a fresh `anonymous_id`. On login, add the `user_id` to the existing context (or create a new one if you did not keep the anonymous session). The React SDK's `resetContext` does this for you.
+
+For the full lifecycle (create, publish, finalize, refresh, reset), see [Managing the context lifecycle](/docs/APIs-and-SDKs/SDK-Documentation/managing-the-context-lifecycle).

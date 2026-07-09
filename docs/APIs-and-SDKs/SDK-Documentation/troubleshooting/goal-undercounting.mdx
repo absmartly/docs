@@ -1,0 +1,102 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Goal undercounting
+
+Your experiment results show fewer goal events than you expect, or goals that should be common look rare. The usual causes are ordering (the goal fires before exposure) and metric misconfiguration (the time or property filters on the metric exclude the events you wanted to count).
+
+## Goal tracked before exposure
+
+A goal event must be recorded after the exposure for the SDK to attribute it to the experiment. When the goal fires first, the SDK has no exposure to tie it to, and the event is not counted against the experiment.
+
+The most common version of this is on a page where the user lands and the goal event (a page view, a purchase, a sign-up) fires before your experiment code calls `treatment()`.
+
+:::tip Rule of thumb
+Call `treatment()` before anything that can produce a goal event. If the goal is a click on a button, the exposure must have happened by the time the button renders.
+:::
+
+<Tabs groupId="language">
+<TabItem value="js" label="Javascript">
+
+**Wrong** - the goal event fires before exposure:
+
+```js
+analytics.track("checkout_complete", { orderId: 123 });
+// Too late: the goal already fired.
+const variant = context.treatment("checkout_flow");
+```
+
+**Right** - expose first, then track the goal:
+
+```js
+const variant = context.treatment("checkout_flow");
+// Now the SDK has recorded the exposure.
+context.track("checkout_complete");
+```
+
+</TabItem>
+<TabItem value="python" label="Python3">
+
+**Wrong** - the goal event fires before exposure:
+
+```python
+analytics.track("checkout_complete", {"orderId": 123})
+# Too late: the goal already fired.
+variant = context.get_treatment("checkout_flow")
+```
+
+**Right** - expose first, then track the goal:
+
+```python
+variant = context.get_treatment("checkout_flow")
+# Now the SDK has recorded the exposure.
+context.track("checkout_complete")
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+**Wrong** - the goal event fires before exposure:
+
+```java
+analytics.track("checkout_complete", Map.of("orderId", 123));
+// Too late: the goal already exposed.
+int variant = context.getTreatment("checkout_flow");
+```
+
+**Right** - expose first, then track the goal:
+
+```java
+int variant = context.getTreatment("checkout_flow");
+// Now the SDK has recorded the exposure.
+context.track("checkout_complete");
+```
+
+</TabItem>
+</Tabs>
+
+## Metric time or property filters misconfigured
+
+A metric is more than a goal name. When you configure a metric in the web console, you can restrict which events count by time window (relative to exposure) or by event properties. If those filters are wrong, events that you expect to count are excluded.
+
+### Time window too narrow
+
+A purchase goal with a 1-hour window will not count purchases that happen the next day. If your conversion cycle is longer than the window, undercounting is guaranteed.
+
+### Property filter excludes valid events
+
+A goal configured to only count events where `plan == "pro"` will miss every `plan == "enterprise"` conversion. The goal event fires, but the metric filter discards it.
+
+### How to diagnose
+
+1. Open the metric in the web console and check the time window and property filters against the events you expect to count.
+2. Look at the raw event stream for a user you know converted. If the event is present but the metric does not count it, the filter is the cause.
+3. Widen the time window or relax the property filter and re-check.
+
+:::info
+Metric configuration lives in the web console, not the SDK. The SDK only sends the goal event; the console decides which events count. See the [metrics documentation](/docs/web-console-docs/goals-and-metrics/metrics/overview) for details.
+:::
