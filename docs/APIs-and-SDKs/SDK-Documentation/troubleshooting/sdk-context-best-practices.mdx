@@ -6,11 +6,11 @@ sidebar_position: 3
 
 The symptoms below show up as data quality problems in the web console: SRM warnings, assignment conflicts, or participants counted under the wrong user. Each entry describes the symptom, the cause, and the fix.
 
-## Symptom: SRM warning with assignment conflicts
+## Symptom: SRM warning from duplicate exposures
 
-You see an SRM alert on the experiment dashboard, and the raw event stream shows the same user assigned to different variants across requests or page loads.
+You see an SRM alert on the experiment dashboard, and the raw event stream shows the same user exposed multiple times.
 
-**Cause: multiple contexts for one user.** A context is scoped to one user. If you create a new context for every treatment check, the SDK records a separate exposure each time and the user can land in different variants across requests. On a server, each request gets its own context; on a client, the context should live for the session.
+**Cause: multiple contexts for one user.** A context is scoped to one user. If you create a new context for every treatment check, the SDK records a separate exposure each time. Variant assignment is deterministic from the unit ID and experiment name, so the user sees the same variant on every request. But each context emits its own exposure event, so the analysis over-counts that user and the variant split skews. On a server, each request gets its own context; on a client, the context should live for the session.
 
 **Fix: one context per user lifecycle.** Create the context once at the start of the request or app session, reuse it for every treatment check and goal track, and finalize it before the response returns or the session ends.
 
@@ -18,8 +18,8 @@ You see an SRM alert on the experiment dashboard, and the raw event stream shows
 
 ```ts
 export function handleRequest(req: Request, res: Response) {
-  // New context each call. Two requests for the same user
-  // can land in different variants.
+  // New context each call. The user gets the same variant,
+  // but the SDK records a separate exposure each time.
   const context = sdk.createContext({ units: { user_id: req.userId } });
   const variant = context.treatment("checkout_flow");
   res.render(variant === 1 ? "new" : "old");
