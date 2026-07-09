@@ -27,7 +27,7 @@ export function handleRequest(req, res) {
   // New context each call. Two requests for the same user
   // can land in different variants.
   const context = sdk.createContext({ units: { user_id: req.userId } });
-  const variant = context.getTreatment("checkout_flow");
+  const variant = context.treatment("checkout_flow");
   res.render(variant === 1 ? "new" : "old");
 }
 ```
@@ -38,9 +38,9 @@ export function handleRequest(req, res) {
 export async function handleRequest(req, res) {
   const context = sdk.createContext({ units: { user_id: req.userId } });
   const variant = context.treatment("checkout_flow");
-  res.render(variant === 1 ? "new" : "old");
   await context.publish();
   context.finalize();
+  res.render(variant === 1 ? "new" : "old");
 }
 ```
 
