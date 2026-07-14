@@ -109,9 +109,12 @@ Below is an overview of some of the data you will find in the exposure event's r
 
 The `flags` field matters most when you export events and crunch the numbers
 yourself. Inside the UI it's already applied, so you rarely have to think about
-it. In a raw export you get every exposure we ingested, and `flags` is how you
-tell a real participant apart from a bot, an ineligible visitor or an overridden
-assignment.
+it. A raw [events-page export](downloading-events#from-the-events-page) gives you
+every exposure we ingested, and `flags` is how you tell a real participant apart
+from a bot, an ineligible visitor or an overridden assignment. An
+[experiment export](downloading-events#from-the-experiments-overview) skips this
+step, since it's already filtered down to effective exposures, but any query you
+run against a raw export or your own warehouse needs it.
 
 `flags` is a **bitmask**. Each bit answers one yes/no question about the
 exposure, all packed into a single integer, so one event can have several bits

@@ -9,11 +9,13 @@ import Image from "../../../src/components/Image"
 
 Raw event data can be downloaded directly from an experiment's overview page or from the [Events Page](the-events-page).
 
-:::note Check the `flags` column before you analyse exposures
-An export contains every matching exposure within your export scope, not just the
-real participants. The [`flags` field](exposure-events#the-flags-field) is what
-separates the two. Skip it and your participant counts come out too high, and the
-same visitor can end up on more than one variant.
+:::note The `flags` column depends on which export you use
+Experiment-overview exports are already filtered to effective participants, so
+you can use them as-is. Events-page exports are raw and still include
+non-participants, so you'll need the [`flags` field](exposure-events#the-flags-field)
+to filter them. Count a raw export without it and your participant numbers come
+out too high, and one visitor can show up on more than one variant. Each section
+below spells out which case applies.
 :::
 
 ## From the Experiment's overview
@@ -33,9 +35,21 @@ To download an experiment's raw event data
 The link to download the file is only valid for 30 days. A new request can be made if the link has expired.
 :::
 
+An experiment export is already filtered to effective exposures. Ineligible
+visitors, bots, and overridden and rule-override assignments are stripped out for
+you, so every row you get is a participant ABsmartly counts. There's no `flags`
+mask to apply.
+
 ## From the Event's page
 
 Downloading events from the Events page makes it possible to select which events will be downloaded and does not restrict events from a single experiment.
+
+:::warning This export is raw
+An events-page export isn't filtered the way an experiment export is, so
+non-participants are still in there. Apply the
+[`flags` field](exposure-events#the-flags-field) yourself before you count
+participants.
+:::
 
 ### Exporting Events
 
