@@ -155,11 +155,17 @@ test, `(flags & 207) = 3`: the mask keeps bits `1 + 2 + 4 + 8 + 64 + 128`, and
 `= 3` means eligible (`1`) and assigned (`2`) are the only ones left standing.
 
 ```sql
--- matches the UI's participant count
+-- matches the UI's participant count for one experiment
 SELECT count(DISTINCT unit_uid)
 FROM exposures
 WHERE (flags & 207) = 3
+  AND experiment_id = <your experiment id>
+  AND unit_type = '<your unit type>'
 ```
+
+Scope the count to a single experiment and unit type, as shown above. A
+`unit_uid` is only unique within its `unit_type`, and an export can span many
+experiments, so counting across the whole file would merge separate visitors.
 
 The `207` mask throws out overridden (`4`), full on (`8`), crawler (`64`) and
 ignored (`128`) rows. Rule overrides get excluded too, just by a different
