@@ -9,6 +9,13 @@ import Image from "../../../src/components/Image"
 
 Raw event data can be downloaded directly from an experiment's overview page or from the [Events Page](the-events-page).
 
+:::note Check the `flags` column before you analyse exposures
+An export contains every exposure we ingested, not just the real participants.
+The [`flags` field](exposure-events#the-flags-field) is what separates the two.
+Skip it and your participant counts come out too high, and the same visitor can
+end up on more than one variant.
+:::
+
 ## From the Experiment's overview
 
 Downloading events data directly from an experiment makes it easy to download all experiment related data in a single file directly into your computer.

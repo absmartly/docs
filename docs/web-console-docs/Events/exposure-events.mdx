@@ -103,12 +103,84 @@ Below is an overview of some of the data you will find in the exposure event's r
 | **experiment_id**| The experiment's id. |
 | **experiment_name**| The experiment's name. |
 | **variant**| The variant's assignment'. 0 for base. 1 for variant 1. etc. |
+| **flags**| A bitmask describing how this exposure was assigned. See [The flags field](#the-flags-field) below. |
+
+## The flags field
+
+The `flags` field matters most when you export events and crunch the numbers
+yourself. Inside the UI it's already applied, so you rarely have to think about
+it. In a raw export you get every exposure we ingested, and `flags` is how you
+tell a real participant apart from a bot, an ineligible visitor or an overridden
+assignment.
+
+`flags` is a **bitmask**. Each bit answers one yes/no question about the
+exposure, all packed into a single integer, so one event can have several bits
+set at once. That means you test it with a bitwise `AND` rather than comparing
+the whole number.
+
+### The bits
+
+| Bit value | Name | Meaning |
+|-----------|------|---------|
+| `1` | eligible | The unit was eligible to participate. When this is **0**, traffic allocation was below 100% and this unit fell outside it. |
+| `2` | assigned | The assignment logic ran for this exposure. When this is **0**, no variant was actually assigned. |
+| `4` | overridden | The assignment was overridden by the SDK. |
+| `8` | full on | The experiment was full on (100% on a single variant) when the event was ingested. |
+| `16` | custom | The exposure used a custom assignment. |
+| `32` | audience mismatch | The unit did not match the experiment's intended audience. |
+| `64` | crawler | The unit was detected as a bot or crawler. |
+| `128` | ignored | The unit was flagged to be ignored via its unit attributes. Present in exported data but not shown in the UI. |
+| `256` | rule override | The variant was determined by a rule override rather than the normal assignment. |
+
+### Reading a value
+
+Take `flags = 3`. In binary that's `0000 0011`, so bits `1` and `2` are set:
+
+```javascript
+const eligible = (flags & 1) !== 0; // true
+const assigned = (flags & 2) !== 0; // true
+const crawler  = (flags & 64) !== 0; // false
+```
+
+That's a clean exposure: the visitor was eligible and got assigned a variant.
+Compare it with `flags = 66` (`0100 0010`), where bit `2` (assigned) and bit
+`64` (crawler) are set but bit `1` (eligible) isn't. That row is a bot, so it
+shouldn't count as a participant.
+
+### Matching the UI's participant count
+
+A row counts as an effective participant when it's eligible and assigned and
+none of the disqualifying bits are set. You can check all of that in one masked
+test, `(flags & 207) = 3`: the mask keeps bits `1 + 2 + 4 + 8 + 64 + 128`, and
+`= 3` means eligible (`1`) and assigned (`2`) are the only ones left standing.
+
+```sql
+-- matches the UI's participant count
+SELECT count(DISTINCT unit_uid)
+FROM exposures
+WHERE (flags & 207) = 3
+```
+
+The `207` mask throws out overridden (`4`), full on (`8`), crawler (`64`) and
+ignored (`128`) rows. Rule overrides get excluded too, just by a different
+route: the SDK never marks them as assigned (bit `2`), so they fail the `= 3`
+test on their own. Custom (`16`) and audience mismatch (`32`) aren't in the
+mask, so on their own they won't drop a row from the count.
 
 ## Events info & warning 
 
 Exposure events can be labelled with extra information or warning
 
-| Label | Type | Description |
-|-------|--------------|-------------|
-| **An experiment with this name was not running at the time of ingestion** | warning | Indicates that the underlying experiment was not running when this event was triggered . |
-| **The experiment was full on at the time of ingestion**| info | The experiment related to this event is full on. It is good practice to clean up full on experiments. |
+| Label | Type | Trigger |
+|-------|------|---------|
+| **An experiment with this name was not running at the time of ingestion** | warning | `experiment_id` empty (not flag-driven) |
+| **The unit of this exposure event was not eligible to participate in the experiment at the time of ingestion because traffic allocation for the experiment was &lt; 100** | warning | eligible bit (`1`) not set |
+| **The assignment logic did not run for this exposure event** | warning | assigned bit (`2`) not set |
+| **The assignment of this exposure was overridden by the SDK** | warning | overridden bit (`4`) set |
+| **The experiment was full on at the time of ingestion** | info | full on bit (`8`) set |
+| **This exposure has a custom assignment** | info | custom bit (`16`) set |
+| **The unit of this exposure event did not match the intended audience** | info | audience mismatch bit (`32`) set |
+| **The unit of this exposure event was detected to be a bot/crawler** | info | crawler bit (`64`) set |
+| **The variant of this exposure was determined by a rule override** | info | rule override bit (`256`) set |
+
+The full on label is worth acting on: it's good practice to clean up full on experiments once you're done with them.
