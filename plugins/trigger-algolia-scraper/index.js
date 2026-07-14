@@ -55,6 +55,6 @@ export const onSuccess = async ({ utils }) => {
   );
   utils.status.show({
     title: "Algolia scraper trigger failed",
-    summary: `GitHub API responded with ${response.status} ${response.statusText}.`,
+    summary: `GitHub API responded with status ${response.status}. See build log for details.`,
   });
 };
