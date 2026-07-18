@@ -10,7 +10,7 @@ import Image from "../../../src/components/Image";
 
 ABsmartly supports two ways of running Warehouse Native, depending on how much of your experiment data you want to keep inside your own warehouse:
 
-- **Hybrid Warehouse Native** — ABsmartly handles assignment and exposures in its managed ClickHouse, while your **goals and metrics** are computed against your own warehouse.
+- **Hybrid Warehouse Native** — ABsmartly handles assignment and exposures in its managed ClickHouse, while your **goals and metrics** can be computed against your own warehouse. This is set per goal, so you can mix goals that stay in ABsmartly's ClickHouse with goals sourced from your warehouse.
 - **Fully Warehouse Native** — your warehouse holds **everything** — exposures, goals, and attributes — and nothing user-level ever leaves your infrastructure.
 
 Both modes are built on the same foundation: **[data sources](./get-started)**. The mode you're in is determined by which data source is your **default**.
@@ -28,13 +28,13 @@ The default data source is special: **exposure events can only come from the def
 
 ## Hybrid Warehouse Native
 
-In Hybrid mode, you keep ABsmartly's managed ClickHouse as the default data source and attach one or more external warehouses for your **goals**.
+In Hybrid mode, you keep ABsmartly's managed ClickHouse as the default data source and attach one or more external warehouses that your **goals** can draw from.
 
 - **Assignment and exposures** are handled by ABsmartly and stored in the managed ClickHouse.
-- **Goals and metrics** are computed against your external warehouse, where your business data already lives — so experiment results line up with what your BI and finance teams report.
-- To join exposures against goals that live in a different warehouse, ABsmartly exports the exposures table as Parquet and imports it into your external data source at query time. You configure this on each external data source through the **[Exposures import](./get-started#step-4-configure-exposures-import-hybrid-only)** section.
+- **Goals and metrics** are assigned a data source per goal. A goal can be sourced from an external warehouse — where your business data already lives, so results line up with what your BI and finance teams report — or from ABsmartly's managed ClickHouse. You can mix both: some goals stay in ClickHouse while others come from your warehouse.
+- When a goal is sourced from an external warehouse, ABsmartly joins it against the exposures that live in the default ClickHouse by exporting the exposures table as Parquet and importing it into your external data source at query time. You configure this on each external data source through the **[Exposures import](./get-started#step-4-configure-exposures-import-hybrid-only)** section.
 
-Hybrid is the fastest way to get warehouse-aligned metrics: you keep ABsmartly's battle-tested assignment and exposure pipeline, and only move the metric computation into your warehouse.
+Hybrid lets you bring metrics into your warehouse at your own pace: you keep ABsmartly's battle-tested assignment and exposure pipeline, and move as many (or as few) of your goals into your warehouse as you like.
 
 ## Fully Warehouse Native
 
@@ -55,13 +55,13 @@ Exposure-side filtering (robots, scrapers, internal traffic) and attribute enric
 |---|---|---|
 | **Default data source** | ABsmartly's managed ClickHouse | Your own warehouse |
 | **Where exposures live** | ABsmartly's managed ClickHouse | Your warehouse |
-| **Where goals & metrics are computed** | Your warehouse | Your warehouse |
-| **User-level data in ABsmartly cloud** | Exposures only | None |
+| **Where goals & metrics are computed** | Per goal: ABsmartly's ClickHouse or your warehouse | Your warehouse |
+| **User-level data in ABsmartly cloud** | Exposures, plus any goals kept in ClickHouse | None |
 | **Filter exposures yourself (bots/scrapers/internal traffic)** | ❌ | ✅ |
 | **Enrich exposures with your own attributes table** | ❌ | ✅ |
 | **Setup effort** | Lower — keep ABsmartly's exposure pipeline | Higher — your warehouse owns exposures end to end |
 
-**Choose Hybrid** when you want goal and metric calculations to run against your warehouse data, but are happy to let ABsmartly manage assignment and exposures.
+**Choose Hybrid** when you want some or all of your goals to draw from your warehouse data, but are happy to let ABsmartly manage assignment and exposures.
 
 **Choose Fully** when data residency requires that no user-level data leaves your infrastructure, or when you need to filter exposures or enrich them with your own attributes.
 

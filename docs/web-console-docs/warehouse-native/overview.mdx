@@ -28,7 +28,7 @@ You configure a **data source** that connects ABsmartly to your warehouse, map y
 
 Warehouse Native comes in two flavors, depending on how much of your data you want to keep in your own warehouse:
 
-- **Hybrid Warehouse Native** — ABsmartly manages assignment and exposures in its managed ClickHouse, while your **goals and metrics** are computed against your own warehouse.
+- **Hybrid Warehouse Native** — ABsmartly manages assignment and exposures in its managed ClickHouse, while your **goals and metrics** can be computed against your own warehouse. It's set per goal, so you can mix goals sourced from ABsmartly's ClickHouse with goals sourced from your warehouse.
 - **Fully Warehouse Native** — **everything** lives in your warehouse: exposures, goals, and attributes. No user-level data ever leaves your infrastructure, and you can filter exposures or enrich them with your own attributes.
 
 Which mode you're in is determined by which data source is your **default**. See **[Warehouse Native Modes](./modes)** for a full comparison and guidance on choosing.
