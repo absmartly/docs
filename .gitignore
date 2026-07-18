@@ -12,6 +12,13 @@
 /docs/APIs-and-SDKs/SDK-API*.js
 /docs/Web-Console-API/*.js
 
+# Worktrees
+/.worktrees
+
+# Local dev/screenshot scratch (not site content)
+/.playwright-shots
+/docs/superpowers
+
 # Misc
 .DS_Store
 .env.local
