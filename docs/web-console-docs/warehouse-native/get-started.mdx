@@ -59,7 +59,7 @@ With your warehouse connected, the next step is to tell ABsmartly where your exp
 For each table, you can either use the **Column mapping** tab to select columns from a dropdown, or switch to the **SQL query** tab to write a custom query.
 
 :::note Which tables apply to your data source
-Exposures always come from the **[default data source](./modes#the-default-data-source)**, so the exposure mapping below matters most on whichever data source is your default. On an **external** (non-default) data source used in [Hybrid mode](./modes#hybrid-warehouse-native), you'll typically map only the **goals** table — exposures are brought in automatically through the [Exposures import](#step-4-configure-exposures-import-hybrid-only) bridge rather than mapped here.
+Exposures always come from the **[default data source](./modes#the-default-data-source)**, so the exposure mapping below matters most on whichever data source is your default. On an **external** (non-default) data source used in [Hybrid mode](./modes#hybrid-warehouse-native), you'll typically map only the **goals** table — exposures are brought in automatically through the [Exposures import](#step-4-configure-exposures-import-hybrid-only) setup rather than mapped here.
 :::
 
 ### Exposure table
@@ -191,19 +191,19 @@ Save the data source. If this is your **default** data source (a [Fully Warehous
 
 This step only applies to **external** (non-default) data sources — the setup used in [Hybrid Warehouse Native](./modes#hybrid-warehouse-native). If your warehouse is the default data source, you can skip it.
 
-In Hybrid mode, a goal can live in an external warehouse, but exposures come from the default data source (ABsmartly's managed ClickHouse). To compute metrics for such a goal, ABsmartly needs to join those exposures against the goal — which lives in a different warehouse. It bridges the gap by exporting the exposures (participants) table as **Parquet** to an object store, then importing it into your external data source at query time.
+In Hybrid mode, a goal can live in an external warehouse, but exposures come from the default data source (ABsmartly's managed ClickHouse). To compute metrics for such a goal, ABsmartly needs to make those exposures available to your external warehouse. It does this through an object store that you provide — you point ABsmartly at a storage location it can use, and your warehouse reads the exposures from there.
 
-The **Exposures import** section configures where those Parquet files land:
+The **Exposures import** section configures that storage location:
 
 | Field | Description |
 |---|---|
-| **Object store URL** | The bucket/prefix where exposures are exported. The accepted scheme depends on your warehouse (for example, `gs://` for BigQuery, `s3://` for Redshift, and `s3://`, `gs://`, or `azure://` for Snowflake). |
-| **Credentials** | The access needed to write and read those objects — an access key/secret for BigQuery and ClickHouse, a stage name for Snowflake, an IAM role ARN for Redshift. Databricks needs no extra credentials. |
+| **Object store URL** | The bucket/prefix ABsmartly uses to stage exposures for your warehouse. The accepted scheme depends on your warehouse (for example, `gs://` for BigQuery, `s3://` for Redshift, and `s3://`, `gs://`, or `azure://` for Snowflake). |
+| **Credentials** | The access needed to read and write that location — an access key/secret for BigQuery and ClickHouse, a stage name for Snowflake, an IAM role ARN for Redshift. Databricks needs no extra credentials. |
 
 :::note
-Exported files are cached and reused for a short window, then swept automatically — no manual cleanup is required. For defense in depth, you can also add a bucket lifecycle rule (e.g. "delete objects older than 1 day") as a backstop.
+Staged files are cached and reused for a short window, then cleaned up automatically — no manual cleanup is required. For defense in depth, you can also add a bucket lifecycle rule (e.g. "delete objects older than 1 day") as a backstop.
 :::
 
-Save the data source once the exposures import is configured. ABsmartly will then query your warehouse on the configured schedule, joining imported exposures against your goals automatically.
+Save the data source once the exposures import is configured. ABsmartly will then query your warehouse on the configured schedule, evaluating your externally-sourced goals against the exposures automatically.
 
-In [Fully Warehouse Native](./modes#fully-warehouse-native), your warehouse is the default and already holds the exposures, so this step doesn't apply — no exposures-import bridge is needed.
+In [Fully Warehouse Native](./modes#fully-warehouse-native), your warehouse is the default and already holds the exposures, so this step doesn't apply.

@@ -32,7 +32,7 @@ In Hybrid mode, you keep ABsmartly's managed ClickHouse as the default data sour
 
 - **Assignment and exposures** are handled by ABsmartly and stored in the managed ClickHouse.
 - **Goals and metrics** are assigned a data source per goal. A goal can be sourced from an external warehouse — where your business data already lives, so results line up with what your BI and finance teams report — or from ABsmartly's managed ClickHouse. You can mix both: some goals stay in ClickHouse while others come from your warehouse.
-- When a goal is sourced from an external warehouse, ABsmartly joins it against the exposures that live in the default ClickHouse by exporting the exposures table as Parquet and importing it into your external data source at query time. You configure this on each external data source through the **[Exposures import](./get-started#step-4-configure-exposures-import-hybrid-only)** section.
+- When a goal is sourced from an external warehouse, ABsmartly makes the exposures that live in the default ClickHouse available to that warehouse so the two can be evaluated together. You enable this by pointing ABsmartly at an object store through the **[Exposures import](./get-started#step-4-configure-exposures-import-hybrid-only)** section on each external data source.
 
 Hybrid lets you bring metrics into your warehouse at your own pace: you keep ABsmartly's battle-tested assignment and exposure pipeline, and move as many (or as few) of your goals into your warehouse as you like.
 
