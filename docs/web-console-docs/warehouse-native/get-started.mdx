@@ -191,7 +191,7 @@ Save the data source. If this is your **default** data source (a [Fully Warehous
 
 This step only applies to **external** (non-default) data sources — the setup used in [Hybrid Warehouse Native](./modes#hybrid-warehouse-native). If your warehouse is the default data source, you can skip it.
 
-In Hybrid mode, your goals live in an external warehouse, but exposures come from the default data source (ABsmartly's managed ClickHouse). To compute metrics, ABsmartly needs to join those exposures against your goals — which live in a different warehouse. It bridges the gap by exporting the exposures (participants) table as **Parquet** to an object store, then importing it into your external data source at query time.
+In Hybrid mode, a goal can live in an external warehouse, but exposures come from the default data source (ABsmartly's managed ClickHouse). To compute metrics for such a goal, ABsmartly needs to join those exposures against the goal — which lives in a different warehouse. It bridges the gap by exporting the exposures (participants) table as **Parquet** to an object store, then importing it into your external data source at query time.
 
 The **Exposures import** section configures where those Parquet files land:
 
