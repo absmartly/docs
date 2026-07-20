@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 title: "Get Started with Warehouse Native"
 description: "Connect your data warehouse to ABsmartly and start running experiments on your own data."
 ---
@@ -9,6 +9,10 @@ import Image from "../../../src/components/Image";
 # Get Started with Warehouse Native
 
 Warehouse Native lets you run experiments directly on data that lives in your own data warehouse. Instead of sending events to ABsmartly's collectors, you point ABsmartly at your existing tables — exposures, goals, and attributes — and it takes care of the rest.
+
+:::tip New to Warehouse Native?
+This guide covers connecting and configuring a data source. If you're deciding between **Hybrid** and **Fully** Warehouse Native first, read [Warehouse Native Modes](./modes).
+:::
 
 Getting started takes three steps:
 
@@ -21,6 +25,10 @@ Getting started takes three steps:
 ## Step 1: Connect to your data warehouse
 
 To begin, navigate to **Settings → Data Sources** and click **Add data source**.
+
+:::note The default data source
+Every installation ships with a built-in **default** data source — ABsmartly's managed ClickHouse. In [Hybrid mode](./modes#hybrid-warehouse-native) you keep this default and add external data sources for your goals. In [Fully mode](./modes#fully-warehouse-native) your own warehouse becomes the default. Exposure events always come from the default data source, so which one is the default determines your mode.
+:::
 
 You'll see a form with two sections: general information about the data source, and the connection credentials specific to your warehouse type.
 
@@ -49,6 +57,10 @@ Once connected, save the data source and move on to mapping your tables.
 With your warehouse connected, the next step is to tell ABsmartly where your experiment data lives. You'll map three types of tables: **exposures**, **goals**, and optionally **attributes**.
 
 For each table, you can either use the **Column mapping** tab to select columns from a dropdown, or switch to the **SQL query** tab to write a custom query.
+
+:::note Which tables apply to your data source
+Exposures always come from the **[default data source](./modes#the-default-data-source)**, so the exposure mapping below matters most on whichever data source is your default. On an **external** (non-default) data source used in [Hybrid mode](./modes#hybrid-warehouse-native), you'll typically map only the **goals** table — exposures are brought in automatically through the [Exposures import](#step-4-configure-exposures-import-hybrid-only) setup rather than mapped here.
+:::
 
 ### Exposure table
 
@@ -171,4 +183,27 @@ ABsmartly will show a preview of the computed schedule in both UTC and your loca
 Match the frequency to your actual ETL schedule. If your data lands once a day at 8 AM UTC, use **Daily at specific time** with a 480-minute offset. Querying more often than data arrives just adds unnecessary load to your warehouse.
 :::
 
-Save the data source, and you're done. ABsmartly will start querying your warehouse on the configured schedule and your experiment data will flow through automatically.
+Save the data source. If this is your **default** data source (a [Fully Warehouse Native](./modes#fully-warehouse-native) setup, or the standard managed ClickHouse), you're done — ABsmartly will start querying your warehouse on the configured schedule and your experiment data will flow through automatically. If you're connecting an **external** data source for [Hybrid mode](./modes#hybrid-warehouse-native), continue to Step 4.
+
+---
+
+## Step 4: Configure exposures import _(Hybrid only)_
+
+This step only applies to **external** (non-default) data sources — the setup used in [Hybrid Warehouse Native](./modes#hybrid-warehouse-native). If your warehouse is the default data source, you can skip it.
+
+In Hybrid mode, a goal can live in an external warehouse, but exposures come from the default data source (ABsmartly's managed ClickHouse). To compute metrics for such a goal, ABsmartly needs to make those exposures available to your external warehouse. It does this through an object store that you provide — you point ABsmartly at a storage location it can use, and your warehouse reads the exposures from there.
+
+The **Exposures import** section configures that storage location:
+
+| Field | Description |
+|---|---|
+| **Object store URL** | The bucket/prefix ABsmartly uses to stage exposures for your warehouse. The accepted scheme depends on your warehouse (for example, `gs://` for BigQuery, `s3://` for Redshift, and `s3://`, `gs://`, or `azure://` for Snowflake). |
+| **Credentials** | The access needed to read and write that location — an access key/secret for BigQuery and ClickHouse, a stage name for Snowflake, an IAM role ARN for Redshift. Databricks needs no extra credentials. |
+
+:::note
+Staged files are cached and reused for a short window, then cleaned up automatically — no manual cleanup is required. For defense in depth, you can also add a bucket lifecycle rule (e.g. "delete objects older than 1 day") as a backstop.
+:::
+
+Save the data source once the exposures import is configured. ABsmartly will then query your warehouse on the configured schedule, evaluating your externally-sourced goals against the exposures automatically.
+
+In [Fully Warehouse Native](./modes#fully-warehouse-native), your warehouse is the default and already holds the exposures, so this step doesn't apply.

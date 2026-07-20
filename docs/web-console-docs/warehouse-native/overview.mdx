@@ -24,6 +24,15 @@ With Warehouse Native, ABsmartly handles experiment assignment, management, stat
 
 You configure a **data source** that connects ABsmartly to your warehouse, map your tables to ABsmartly's expected schema, and set a refresh schedule. ABsmartly then queries your warehouse on that schedule to compute experiment results.
 
+## Two modes: Hybrid and Fully
+
+Warehouse Native comes in two flavors, depending on how much of your data you want to keep in your own warehouse:
+
+- **Hybrid Warehouse Native** — ABsmartly manages assignment and exposures in its managed ClickHouse, while your **goals and metrics** can be computed against your own warehouse. It's set per goal, so you can mix goals sourced from ABsmartly's ClickHouse with goals sourced from your warehouse.
+- **Fully Warehouse Native** — **everything** lives in your warehouse: exposures, goals, and attributes. No user-level data ever leaves your infrastructure, and you can filter exposures or enrich them with your own attributes.
+
+Which mode you're in is determined by which data source is your **default**. See **[Warehouse Native Modes](./modes)** for a full comparison and guidance on choosing.
+
 ### Supported warehouses
 
 | Warehouse | Status |
@@ -47,4 +56,4 @@ You configure a **data source** that connects ABsmartly to your warehouse, map y
 
 ## Next steps
 
-Ready to set up Warehouse Native? Head to the [Get Started guide](./get-started) to connect your warehouse, map your tables, and configure data freshness.
+New to Warehouse Native? Start by understanding the [two modes](./modes) — Hybrid and Fully — and which one fits your needs. When you're ready to set it up, head to the [Get Started guide](./get-started) to connect your warehouse, map your tables, and configure data freshness.
