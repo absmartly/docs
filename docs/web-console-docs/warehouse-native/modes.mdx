@@ -91,6 +91,7 @@ flowchart TB
         GOALS[("Goals")]
         ATTR[("Your attributes")]
         FILTER("Filter and enrich")
+        QUERY("Query interface")
     end
 
     subgraph ABC["ABsmartly Cloud"]
@@ -100,8 +101,10 @@ flowchart TB
     SDK --> EXP
     EXP --> FILTER
     ATTR --> FILTER
-    FILTER ==>|"filtered and enriched, every goal"| ENGINE
-    GOALS -->|"queried on your schedule"| ENGINE
+    FILTER --> QUERY
+    GOALS --> QUERY
+    ENGINE -.->|"scheduled query"| QUERY
+    QUERY -.->|"aggregate results only"| ENGINE
 
     style WH fill:#EEF1FF,stroke:#465BFF,stroke-width:1.5px,color:#28293d
     style ABC fill:#FBEDEA,stroke:#CA3721,stroke-width:1.5px,color:#28293d
@@ -109,6 +112,7 @@ flowchart TB
     style GOALS fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
     style ATTR fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
     style FILTER fill:#465BFF,stroke:#465BFF,stroke-width:1.5px,color:#ffffff
+    style QUERY fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
     style ENGINE fill:#ffffff,stroke:#CA3721,stroke-width:1.5px,color:#28293d
     style SDK fill:#ffffff,stroke:#9296a6,stroke-width:1.5px,color:#28293d
 ```
