@@ -1,0 +1,108 @@
+---
+sidebar_position: 2
+title: "Setting up a Holdout"
+description: "Configure a holdout group's traffic allocation, metrics and schedule, then start it."
+---
+
+import Image from "../../../src/components/Image";
+
+# Setting up a Holdout
+
+A step by step guide to configuring a holdout group and starting it.
+
+Holdout groups are not created from scratch. One already exists for each tracking unit on your
+platform, waiting to be configured. Open the **Holdouts** page from the left navigation to see them
+all, along with the status, traffic allocation, metrics and schedule of each.
+
+<Image maxWidth="48rem" centered img="holdout/holdouts-list.png" alt="The Holdouts page listing one holdout group per tracking unit" />
+
+Select the holdout you want to configure to open its settings.
+
+<Image maxWidth="40rem" centered img="holdout/configure-holdout.png" alt="The Configure Holdout page" />
+
+## General
+
+Give the holdout a **Name** and an optional **Description**. These appear on the Holdouts page and at
+the top of the report, so describe what the holdout covers, for example
+`Holdout group for all experiments tracking visitors by device`.
+
+## Configuration
+
+### Tracking unit
+
+The **tracking unit** is fixed for each holdout and cannot be changed. Only experiments that track
+visitors with this unit are part of this holdout.
+
+If you want to hold out visitors identified by a different unit, configure that unit's own holdout
+instead.
+
+### Traffic allocation
+
+Choose what share of this unit's traffic the holdout uses, between **1% and 10%**. The default is
+**5%**, and 3% to 5% is recommended for most platforms.
+
+The allocated traffic is split equally between the two holdout variants: the group kept out of all
+experiments, and the equal-size sample of the general population it is compared against.
+
+:::tip
+Increasing the allocation lets you detect smaller cumulative effects, but keeps more visitors away
+from the improvements you have shipped. If you are unsure, start at the 5% default.
+:::
+
+## Metrics
+
+Select the metrics used to evaluate the holdout, from your existing metric catalogue.
+
+Only metrics compatible with the holdout's tracking unit are shown, and the active filter is
+displayed above the selector. A metric defined on a different unit cannot be computed for this
+holdout, so it does not appear in the list.
+
+Choose metrics that reflect the overall health of your product rather than the success of any one
+feature. A holdout measures the combined effect of everything you shipped, so top-line business
+metrics are the ones worth watching.
+
+## Schedule
+
+### Duration
+
+Choose a **duration** of **3 months** or **6 months**. Set a **start date**, and the end date is
+calculated for you.
+
+A longer period accumulates more experiments and more data, which makes small cumulative effects
+easier to detect. A shorter period gives you a completed, archived result sooner and refreshes the
+randomisation more often. Three months suits platforms running many experiments; six months suits
+those with fewer experiments or slower-moving metrics.
+
+### Restart automatically when holdout ends
+
+When this is enabled, a new holdout period with the same configuration begins immediately once the
+current one ends, and visitors are randomised again from scratch. A visitor who was in the holdout
+group during one period might not be in it during the next.
+
+Automatic restart is disabled when a holdout is stopped manually.
+
+## Starting and stopping
+
+Save the configuration, then start the holdout when you are ready. Running holdouts show a
+**Running** status on the Holdouts page, along with their current period's dates.
+
+:::caution
+Changes saved while a holdout is running only apply to the **next** period. The current period keeps
+the configuration it started with, so its dataset stays internally consistent. To change a running
+holdout immediately, stop it first, then save.
+:::
+
+## Excluding an experiment
+
+Every experiment on the holdout's tracking unit is included automatically, with no opt-in step
+during experiment creation.
+
+Users with the appropriate permissions can exclude an individual experiment from the holdout. Do
+this only when withholding a change is genuinely not acceptable, such as a legal or compliance
+requirement, or a fix that has to reach every visitor. Each exclusion means the holdout group has
+been exposed to that experiment, which moves the baseline a little further from the unchanged
+product and weakens the comparison.
+
+## Next steps
+
+Once the holdout is running, see [Reading holdout results](./reading-holdout-results).

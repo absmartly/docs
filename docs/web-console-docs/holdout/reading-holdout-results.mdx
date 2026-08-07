@@ -1,0 +1,98 @@
+---
+sidebar_position: 3
+title: "Reading Holdout Results"
+description: "Interpret the holdout report, and browse the archived results of previous periods."
+---
+
+import Image from "../../../src/components/Image";
+
+# Reading Holdout Results
+
+A holdout report shows the cumulative impact of all your experiments on a tracking unit, measured
+against a group of visitors who were kept out of every one of them.
+
+Open a holdout from the **Holdouts** page to see its detail view. The **Overview** tab shows the
+results of a single period, and the **Iterations** tab lists every period the holdout has run.
+
+## The Overview tab
+
+<Image maxWidth="48rem" centered img="holdout/holdout-results.png" alt="The Overview tab of a holdout showing the metrics table for the current period" />
+
+The header names the period you are looking at, its status and its start date. Use the arrows on the
+right to move between periods without leaving the tab.
+
+Below it, a summary card repeats the holdout's configuration: tracking unit, traffic allocation,
+duration and the scheduled start and end dates of this period.
+
+### The two variants
+
+Every metric is reported for the same two groups.
+
+| Variant | Name | What it represents |
+| --- | --- | --- |
+| Control | **Holdout** | Visitors kept out of all experiments. The baseline. |
+| Variant 1 | **No Holdout** | A sample of the experiment-exposed population, sized to match the holdout group. |
+
+The two rows carry equal participant counts by design. **No Holdout** is sampled from the full
+population rather than being every remaining visitor, so that the comparison is between two groups
+of the same size. A **Sampling** toggle above the metrics indicates that this equal-size sampling is
+in effect.
+
+### Reading a metric
+
+Each metric card lists both variants with their participants, value and mean, then the statistics
+for the comparison:
+
+- **Confidence** — how confident the test is that the observed difference is real.
+- **Relative impact** — how much the experiment-exposed group differs from the holdout baseline.
+- **Impact per day** — the effect expressed as a daily rate.
+
+Because Control is the holdout, a **positive relative impact means your experiments are performing
+better than the unchanged product**. That is the outcome you are hoping for: the changes you shipped
+add up to a measurable gain over doing nothing.
+
+A negative or flat result is equally informative. It suggests the individual wins you recorded did
+not accumulate, whether through decay over time, interaction between experiments, or effects that
+were smaller than they first appeared.
+
+:::info
+For a fuller explanation of confidence, impact and the statistics behind them, see
+[Interpreting metrics in experiment results](/docs/web-console-docs/experiments/Interpreting-metrics-in-experiment-results).
+:::
+
+### Checking results before the period ends
+
+Holdouts use Fully Sequential testing, so the numbers are valid whenever you look at them. You can
+check a running holdout at any point during its 3 or 6 month period without waiting for it to
+finish, and without the risk of an inflated false positive rate that repeatedly checking a fixed
+horizon test would carry.
+
+Reading results early does not mean acting early. A holdout runs for its full period regardless, and
+an early reading is a progress check rather than a decision point.
+
+## The Iterations tab
+
+<Image maxWidth="48rem" centered img="holdout/holdout-iterations.png" alt="The Iterations tab listing completed and running holdout periods" />
+
+Each period the holdout has run appears here, newest first, with its status, date range and total
+participants. The current period shows as **Running**; earlier ones show as **Completed**.
+
+Expand any period to see its results.
+
+### Periods are independent
+
+Each period is a separate dataset with its own randomisation and its own results. Periods are never
+merged or averaged, because the holdout group is drawn fresh each time and the experiments running
+during one period are not the same as those running during the next.
+
+Read the sequence as a trend rather than a single accumulating number. A run of periods each showing
+a positive impact is strong evidence that your experimentation programme is delivering; a series
+that flattens over time is a signal worth investigating.
+
+Completed periods stay accessible indefinitely, so the archive builds into a long-run record of what
+your experimentation has been worth.
+
+## Related
+
+- [Holdout overview](./overview)
+- [Setting up a holdout](./setting-up-a-holdout)

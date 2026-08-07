@@ -1,0 +1,118 @@
+---
+sidebar_position: 1
+title: "Overview"
+description: "Holdouts measure the combined impact of all your experiments by keeping a small group of visitors out of every experiment."
+---
+
+import Image from "../../../src/components/Image";
+
+# Overview
+
+## What is a holdout
+
+Individual experiments tell you the impact of a single change. A **holdout** tells you the
+impact of everything you shipped, together.
+
+A holdout keeps a small, randomly selected group of visitors out of every experiment on your
+platform. Their behaviour becomes a baseline. By comparing that baseline with visitors who are
+exposed to your experiments as normal, you can measure the cumulative effect of your entire
+experimentation programme over a period of months rather than the effect of one change at a time.
+
+This answers questions that individual experiment results cannot:
+
+- Do the wins we recorded across dozens of experiments add up at the aggregate level?
+- Are the effects of our changes still present months after launch, or did they decay?
+- Is there an interaction between our experiments that no single test would reveal?
+
+<Image maxWidth="48rem" centered img="holdout/holdouts-list.png" alt="The Holdouts page listing one holdout group per tracking unit" />
+
+## One holdout per tracking unit
+
+Each tracking unit has its own holdout group. If your platform tracks visitors by User ID, Device ID
+and Anonymous ID, you get three separate holdouts, each configured and started independently.
+
+This mirrors how experiments work. An experiment that randomises on Device ID can only be held out
+from a group defined by Device ID, so a holdout can only cover experiments that share its tracking
+unit. Holdouts on other units run alongside it, without overlapping.
+
+A holdout does not have to be running on every unit. Configure and start the ones that are useful to
+you and leave the rest stopped.
+
+:::info
+To understand how tracking units are defined on your platform, see
+[Tracking Unit](/docs/web-console-docs/experiments/creating-an-experiment#tracking-unit).
+:::
+
+## How the comparison works
+
+A holdout report compares two groups of equal size:
+
+| Group | Role | What it sees |
+| --- | --- | --- |
+| **Holdout** | Control | No experiments. The baseline experience. |
+| **No Holdout** | Variant 1 | Experiments as normal, exactly like the rest of your population. |
+
+The **No Holdout** group is not simply "everyone else". It is a sample drawn from the full
+experiment-exposed population and sized to match the holdout group. Comparing a 5% holdout against
+the remaining 95% directly would put a small group next to a very large one, and the imbalance costs
+you statistical power. Sampling an equal-size comparison group keeps the two sides balanced and the
+comparison fair.
+
+The relative impact reported on each metric therefore reads as: how much the experiment-exposed
+group differs from the holdout baseline.
+
+## Traffic allocation
+
+A holdout can be allocated between **1% and 10%** of the traffic for its tracking unit, and defaults
+to **5%**. The allocated traffic is split equally between the two groups above.
+
+The size of the allocation is a trade-off. A larger holdout detects smaller cumulative effects, but
+it also means more visitors are kept away from the improvements you have shipped. Between 3% and 5%
+is usually the right balance for most platforms.
+
+## Which experiments are included
+
+Every experiment running on the holdout's tracking unit is included automatically. There is no
+opt-in step when you create an experiment, and no way for an experiment to join a holdout by
+accident, because inclusion follows the tracking unit.
+
+Users with the appropriate permissions can exclude individual experiments from a holdout. This is
+worth doing sparingly. Each exclusion means the holdout group has seen that experiment after all, so
+the baseline drifts a little further from "the product as it was". Reserve exclusions for cases
+where withholding a change is not acceptable, such as a legal or compliance requirement, or a fix
+that must reach all visitors.
+
+## Periods and resets
+
+A holdout runs for a fixed **duration of 3 or 6 months**, chosen at setup. When that period ends,
+the holdout can restart automatically: a new period begins immediately with the same configuration,
+and visitors are randomised again from scratch.
+
+Fresh randomisation matters. A visitor who was held out during one period is unlikely to be held out
+in the next, which stops the same people from being excluded from your product improvements
+indefinitely, and prevents the holdout group from slowly diverging into an unrepresentative
+population.
+
+Each period is an **independent dataset** with its own results. Periods are not merged or averaged.
+When a period ends its results are archived and stay accessible, so you can look back at how the
+cumulative impact of your experimentation changed from one quarter or half-year to the next.
+
+## Reading results before the period ends
+
+You do not have to wait 3 or 6 months to learn something. Holdouts are analysed once per day using **Fully
+Sequential testing**, so results are valid whenever you look at them and can be checked at any point
+during the period.
+
+## Metrics
+
+The metrics used to evaluate a holdout (max 5 of them) are selected from your existing metric catalogue, filtered to
+those compatible with the holdout's tracking unit. A metric defined on User ID cannot be computed
+for a Device ID holdout, so it is not offered.
+
+Because a holdout measures broad, long-run impact rather than the effect of one change, favour your
+top-line business metrics over narrow, feature-specific ones.
+
+## Next steps
+
+- [Setting up a holdout](./setting-up-a-holdout) walks through the configuration.
+- [Reading holdout results](./reading-holdout-results) explains the report and the period history.
