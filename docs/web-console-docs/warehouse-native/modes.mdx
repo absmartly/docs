@@ -39,7 +39,7 @@ flowchart TB
     SDK(["Your app - ABsmartly SDK"])
 
     subgraph ABC["ABsmartly (default)"]
-        DEFAULT[("Exposures and<br/>managed goals")]
+        DEFAULT[("Exposures (no filtering)<br/>and managed goals")]
     end
 
     subgraph EWH["Your warehouse (external)"]
@@ -47,26 +47,33 @@ flowchart TB
         WGOALS[("Your goals")]
         ATTR[("Your attributes")]
         FILTER("Filter and enrich")
+        QUERY("Query interface")
     end
 
-    RESULTS(("Experiment<br/>results"))
+    subgraph CLOUD["ABsmartly Cloud"]
+        ENGINE("Assignment logic, stats and<br/>metric governance")
+    end
 
     SDK --> DEFAULT
     DEFAULT -.->|"exposures import"| IMPORT
     IMPORT --> FILTER
     ATTR --> FILTER
-    FILTER ==>|"filtered and enriched exposures"| RESULTS
-    WGOALS -->|"warehouse goals"| RESULTS
-    DEFAULT -->|"managed goals<br/>no filtering"| RESULTS
+    FILTER --> QUERY
+    WGOALS --> QUERY
+    DEFAULT --> ENGINE
+    ENGINE -.->|"scheduled query"| QUERY
+    QUERY -.->|"aggregate results only"| ENGINE
 
     style ABC fill:#FBEDEA,stroke:#CA3721,stroke-width:1.5px,color:#28293d
     style EWH fill:#EEF1FF,stroke:#465BFF,stroke-width:1.5px,color:#28293d
+    style CLOUD fill:#FBEDEA,stroke:#CA3721,stroke-width:1.5px,color:#28293d
     style DEFAULT fill:#ffffff,stroke:#CA3721,stroke-width:1.5px,color:#28293d
     style IMPORT fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
     style WGOALS fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
     style ATTR fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
     style FILTER fill:#465BFF,stroke:#465BFF,stroke-width:1.5px,color:#ffffff
-    style RESULTS fill:#28293d,stroke:#28293d,stroke-width:1.5px,color:#ffffff
+    style QUERY fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
+    style ENGINE fill:#ffffff,stroke:#CA3721,stroke-width:1.5px,color:#28293d
     style SDK fill:#ffffff,stroke:#9296a6,stroke-width:1.5px,color:#28293d
 ```
 
