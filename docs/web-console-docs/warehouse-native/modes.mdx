@@ -54,9 +54,9 @@ flowchart TB
     SDK --> DEFAULT
     DEFAULT -.->|"exposures import"| IMPORT
     IMPORT --> FILTER
-    WGOALS --> FILTER
     ATTR --> FILTER
-    FILTER ==>|"filtered and enriched"| RESULTS
+    FILTER ==>|"filtered and enriched exposures"| RESULTS
+    WGOALS -->|"warehouse goals"| RESULTS
     DEFAULT -->|"managed goals<br/>no filtering"| RESULTS
 
     style ABC fill:#FBEDEA,stroke:#CA3721,stroke-width:1.5px,color:#28293d
