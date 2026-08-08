@@ -1,0 +1,1 @@
+{"parameters":[{"description":"The ID of the last known notification. Returns true if newer notifications exist.","in":"query","name":"last_notification_id","required":false,"schema":{"format":"int32","type":"integer"}}]}

@@ -1,0 +1,1 @@
+{"parameters":[{"description":"Cursor-based pagination. Pass the last notification ID from the previous page.","in":"query","name":"cursor","required":false,"schema":{"format":"int32","type":"integer"}}]}

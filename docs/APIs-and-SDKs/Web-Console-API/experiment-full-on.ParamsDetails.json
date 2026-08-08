@@ -1,0 +1,1 @@
+{"parameters":[{"name":"experimentId","in":"path","required":true,"description":"The `id` of the experiment which you want to put full on.","schema":{"type":"integer","format":"int64","minimum":1}}]}

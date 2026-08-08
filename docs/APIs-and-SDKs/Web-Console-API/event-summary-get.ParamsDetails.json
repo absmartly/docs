@@ -1,0 +1,1 @@
+{"parameters":[{"description":"Unix timestamp (ms) for the start of the range. Defaults to 30 days ago.","in":"query","name":"from","required":false,"schema":{"format":"int32","type":"integer"}},{"description":"Unix timestamp (ms) for the end of the range. Defaults to now.","in":"query","name":"to","required":false,"schema":{"format":"int32","type":"integer"}}]}

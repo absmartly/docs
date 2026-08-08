@@ -11,34 +11,49 @@ info_path: docs/APIs-and-SDKs/SDK-API/absmartly-collector-api
 custom_edit_url: null
 ---
 
-import ApiTabs from "@theme/ApiTabs";
-import DiscriminatorTabs from "@theme/DiscriminatorTabs";
 import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
-import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
-import MimeTabs from "@theme/MimeTabs";
-import ParamsItem from "@theme/ParamsItem";
-import ResponseSamples from "@theme/ResponseSamples";
-import SchemaItem from "@theme/SchemaItem";
-import SchemaTabs from "@theme/SchemaTabs";
-import Markdown from "@theme/Markdown";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
 import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
 
-<h1 className={"openapi__heading"}>Check Service Health</h1>
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Check Service Health"}
+>
+</Heading>
 
-<MethodEndpoint method={"get"} path={"/healthy"}></MethodEndpoint>
+<MethodEndpoint
+  method={"get"}
+  path={"/healthy"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
 
 
 
 A GET request to check that the service is running as expected.
 
-<div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+<ParamsDetails>
+  
+</ParamsDetails>
 
-Server is healthy
+<RequestSchema
+  {...require("./collector-health-check.RequestSchema.json")}
+>
+  
+</RequestSchema>
 
-</div><div></div></TabItem><TabItem label={"500"} value={"500"}><div>
+<StatusCodes
+  {...require("./collector-health-check.StatusCodes.json")}
+>
+  
+</StatusCodes>
 
-Server is not healthy
 
-</div><div></div></TabItem></ApiTabs></div></div>
       

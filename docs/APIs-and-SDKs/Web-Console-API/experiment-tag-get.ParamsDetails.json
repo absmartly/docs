@@ -1,0 +1,1 @@
+{"parameters":[{"name":"experimentTagId","in":"path","required":true,"schema":{"type":"integer"},"description":"The id of the Experiment Tag that you wish to get data from."}]}

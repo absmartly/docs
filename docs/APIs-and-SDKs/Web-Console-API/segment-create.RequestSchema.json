@@ -1,0 +1,1 @@
+{"title":"Body","body":{"required":true,"content":{"application/json":{"schema":{"properties":{"name":{"type":"string"},"description":{"type":"string"},"value_source_attribute":{"type":"string"}},"required":["name","description","value_source_attribute"],"type":"object","additionalProperties":false,"title":"CreateSegmentBody"}}}}}

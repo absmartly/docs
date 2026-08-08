@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Ok","content":{"application/json":{"schema":{"items":{"properties":{"message":{"type":"string"},"type":{"type":"string","enum":["info","warning"],"title":"PlatformAlertType"},"id":{"type":"number","format":"double"}},"required":["message","type","id"],"type":"object"},"type":"array"}}}}}}

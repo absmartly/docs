@@ -1,0 +1,1 @@
+{"parameters":[{"name":"experimentAnnotationId","in":"path","required":true,"schema":{"type":"integer"},"description":"The id of the Experiment Annotation that you wish to get data from."}]}

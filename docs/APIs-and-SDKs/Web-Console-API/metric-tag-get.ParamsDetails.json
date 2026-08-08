@@ -1,0 +1,1 @@
+{"parameters":[{"name":"metricTagId","in":"path","required":true,"schema":{"type":"integer"},"description":"The id of the Metric Tag that you wish to get data from."}]}

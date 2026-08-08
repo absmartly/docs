@@ -1,0 +1,1 @@
+{"parameters":[{"name":"goalTagId","in":"path","required":true,"schema":{"type":"integer"},"description":"The id of the Goal Tag that you wish to get data from."}]}

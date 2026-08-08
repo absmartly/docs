@@ -1,0 +1,1 @@
+{"title":"Body","body":{"required":true,"content":{"application/json":{"schema":{"properties":{"user_ids":{"items":{"type":"number","format":"double"},"type":"array"},"enabled":{"type":"boolean"},"threshold_pct":{"type":"number","format":"double"}},"required":["user_ids","enabled","threshold_pct"],"type":"object"}}}}}

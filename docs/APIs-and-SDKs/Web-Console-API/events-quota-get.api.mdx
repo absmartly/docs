@@ -11,32 +11,59 @@ info_path: docs/APIs-and-SDKs/Web-Console-API/backend
 custom_edit_url: null
 ---
 
-import ApiTabs from "@theme/ApiTabs";
-import DiscriminatorTabs from "@theme/DiscriminatorTabs";
 import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
-import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
-import MimeTabs from "@theme/MimeTabs";
-import ParamsItem from "@theme/ParamsItem";
-import ResponseSamples from "@theme/ResponseSamples";
-import SchemaItem from "@theme/SchemaItem";
-import SchemaTabs from "@theme/SchemaTabs";
-import Markdown from "@theme/Markdown";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
 import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
 
-<h1 className={"openapi__heading"}>Monthly Events Quota GET</h1>
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Monthly Events Quota GET"}
+>
+</Heading>
 
-<MethodEndpoint method={"get"} path={"/v1/events/quota"}></MethodEndpoint>
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/events/quota"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
 
 
 
 Monthly Events Quota GET
 
-## Request
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
 
-<div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+<ParamsDetails
+  {...require("./events-quota-get.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
 
-Ok
+<RequestSchema
+  {...require("./events-quota-get.RequestSchema.json")}
+>
+  
+</RequestSchema>
 
-</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"monthlyActiveUnitsQuotaMillions"} required={true} schemaName={"double"} qualifierMessage={undefined} schema={{"type":"number","format":"double"}}></SchemaItem><SchemaItem collapsible={false} name={"monthlyEventsQuotaMillions"} required={true} schemaName={"double"} qualifierMessage={undefined} schema={{"type":"number","format":"double"}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"monthlyActiveUnitsQuotaMillions\": 0,\n  \"monthlyEventsQuotaMillions\": 0\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+<StatusCodes
+  {...require("./events-quota-get.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
       

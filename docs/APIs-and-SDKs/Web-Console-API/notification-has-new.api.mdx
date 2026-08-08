@@ -11,36 +11,59 @@ info_path: docs/APIs-and-SDKs/Web-Console-API/backend
 custom_edit_url: null
 ---
 
-import ApiTabs from "@theme/ApiTabs";
-import DiscriminatorTabs from "@theme/DiscriminatorTabs";
 import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
-import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
-import MimeTabs from "@theme/MimeTabs";
-import ParamsItem from "@theme/ParamsItem";
-import ResponseSamples from "@theme/ResponseSamples";
-import SchemaItem from "@theme/SchemaItem";
-import SchemaTabs from "@theme/SchemaTabs";
-import Markdown from "@theme/Markdown";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
 import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
 
-<h1 className={"openapi__heading"}>Notifications Has New GET</h1>
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Notifications Has New GET"}
+>
+</Heading>
 
-<MethodEndpoint method={"get"} path={"/v1/notifications/has-new"}></MethodEndpoint>
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/notifications/has-new"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
 
 
 
 Check if there are new notifications since the given notification ID.
 
-## Request
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
 
-<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Query Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"description":"The ID of the last known notification. Returns true if newer notifications exist.","in":"query","name":"last_notification_id","required":false,"schema":{"format":"int32","type":"integer"}}}></ParamsItem></ul></div></details><div><div><ApiTabs label={undefined} id={undefined}><TabItem label={"200"} value={"200"}><div>
+<ParamsDetails
+  {...require("./notification-has-new.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
 
-Ok
+<RequestSchema
+  {...require("./notification-has-new.RequestSchema.json")}
+>
+  
+</RequestSchema>
 
-</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><div style={{"marginTop":".5rem","marginBottom":".5rem"}}>
+<StatusCodes
+  {...require("./notification-has-new.StatusCodes.json")}
+>
+  
+</StatusCodes>
 
-boolean
 
-</div></ul></details></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
       

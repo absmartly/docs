@@ -1,0 +1,1 @@
+{"parameters":[{"name":"experimentId","in":"path","required":true,"schema":{"type":"integer","format":"int64","minimum":1}},{"name":"commentId","in":"path","required":true,"description":"The `id` of the comment where the reply will be created.","schema":{"type":"integer","format":"int64","minimum":1}}]}

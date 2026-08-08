@@ -1,0 +1,1 @@
+{"title":"Body","body":{"description":"The action to take on the experiment and a comment to go along with it.","required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"action":{"type":"string","format":"stop","example":"stop"},"note":{"type":"string","example":"Stopping experiment as no significant results were found"}}}}}}}

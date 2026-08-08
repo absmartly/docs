@@ -1,0 +1,1 @@
+{"parameters":[{"name":"experimentId","in":"path","required":true,"schema":{"type":"integer"}},{"name":"offset","in":"query","required":false,"schema":{"type":"integer"}}]}

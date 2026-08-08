@@ -1,0 +1,1 @@
+{"parameters":[{"description":"The segment's numeric ID","in":"path","name":"id","required":true,"schema":{"format":"int32","type":"integer"}}]}

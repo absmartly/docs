@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Server is healthy"},"500":{"description":"Server is not healthy"}}}

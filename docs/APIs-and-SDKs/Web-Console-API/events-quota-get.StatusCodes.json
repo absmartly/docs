@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Ok","content":{"application/json":{"schema":{"properties":{"monthlyActiveUnitsQuotaMillions":{"type":"number","format":"double"},"monthlyEventsQuotaMillions":{"type":"number","format":"double"}},"required":["monthlyActiveUnitsQuotaMillions","monthlyEventsQuotaMillions"],"type":"object"}}}}}}

@@ -58,7 +58,6 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/absmartly/docs/edit/master",
-          docLayoutComponent: "@theme/DocPage",
           docItemComponent: "@theme/ApiItem",
         },
         theme: {
