@@ -9,13 +9,16 @@ to get it set up!
 
 1. Go to the [Google Admin Console](https://admin.google.com) and log in as an administrator.
 2. In the sidebar, navigate to `Apps > Web and Mobile Apps`.
+
 <Image
     img="google/sidebar.png"
     alt="Google Admin Console sidebar"
     maxWidth={300}
     centered={false}
 />
+
 3. At the top, click `Add app > Add custom SAML app`.
+
 <Image
     img="google/add_app.png"
     alt="Google Admin Console Add custom SAML app button"
@@ -45,12 +48,14 @@ You can use the ABsmartly logo by uploading [this image](/img/logo.png).
 />
 
 5. Click `Download Metadata` and save the file somewhere safe. At the end of this guide you will send your metadata to us so that we can get you set up quickly. Click `Continue`.
+
 <Image
     img="google/create_app_2.png"
     alt="Google Admin Console Create App Step 2"
     maxWidth={800}
     centered={false}
 />
+
 6. For these fields input:
     - **ACS URL**: `https://<your-assigned-subdomain>.absmartly.com/auth/saml/google/callback`
     - **Entity ID**: `absmartly-<your-assigned-subdomain>`
