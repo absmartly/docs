@@ -34,7 +34,7 @@ In Hybrid mode, you keep the ABsmartly-managed data source as your default and a
 - Because that import lands the exposures inside your warehouse, **goals sourced from your warehouse can filter and enrich those exposures** the same way Fully mode does — strip out bots and internal traffic, or join in your own attributes table. **Goals that stay managed by ABsmartly don't get this**, since their exposures never leave ABsmartly's default data source.
 
 ```mermaid
-%%{init: {"themeVariables": {"fontFamily": "Manrope, system-ui, sans-serif", "fontSize": "15px", "archEdgeColor": "#9296a6", "archEdgeArrowColor": "#9296a6", "archGroupBorderColor": "#CA3721"}, "architecture": {"padding": 60, "nodeSeparation": 160, "idealEdgeLengthMultiplier": 2.2, "numIter": 6000, "seed": 2}}}%%
+%%{init: {"themeVariables": {"fontFamily": "Manrope, system-ui, sans-serif", "fontSize": "15px", "archEdgeColor": "#9296a6", "archEdgeArrowColor": "#9296a6", "archGroupBorderColor": "#CA3721"}, "architecture": {"iconSize": 100, "padding": 60, "nodeSeparation": 160, "idealEdgeLengthMultiplier": 2.2, "numIter": 6000, "seed": 2}}}%%
 architecture-beta
     service sdk(mdi:cellphone-link)[Your app ABsmartly SDK]
 
@@ -51,15 +51,20 @@ architecture-beta
     group cloud(mdi:cloud-outline)[ABsmartly Cloud]
     service engine(mdi:cog-outline)[Assignment stats and governance] in cloud
 
+    align row sdk default importsvc wgoals
+    align row attr filtersvc query
+    align column importsvc filtersvc
+    align column wgoals query
+
     sdk:R --> L:default
-    default:B --> T:importsvc
-    importsvc:R --> L:filtersvc
-    attr:B --> T:filtersvc
+    default:R --> L:importsvc
+    importsvc:B --> T:filtersvc
+    attr:R --> L:filtersvc
     filtersvc:R --> L:query
-    wgoals:R --> L:query
+    wgoals:B --> T:query
     default:B --> T:engine
-    engine:R --> L:query
-    query:T --> B:engine
+    engine:L --> R:query
+    query:R --> L:engine
 ```
 
 *Across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a scheduled query in and only aggregate results come back out — no user-level data crosses that boundary. The default source's exposures flow into your warehouse on a scheduled exposures import.*
@@ -76,7 +81,7 @@ Because every exposure already lives in your warehouse, Fully extends Hybrid's w
 - **Enrich exposures with your own attributes.** You can join in an external **attributes** table to add segmentation dimensions, then slice experiment results by those attributes.
 
 ```mermaid
-%%{init: {"themeVariables": {"fontFamily": "Manrope, system-ui, sans-serif", "fontSize": "15px", "archEdgeColor": "#9296a6", "archEdgeArrowColor": "#9296a6", "archGroupBorderColor": "#CA3721"}, "architecture": {"padding": 60, "nodeSeparation": 160, "idealEdgeLengthMultiplier": 2.2, "numIter": 6000, "seed": 2}}}%%
+%%{init: {"themeVariables": {"fontFamily": "Manrope, system-ui, sans-serif", "fontSize": "15px", "archEdgeColor": "#9296a6", "archEdgeArrowColor": "#9296a6", "archGroupBorderColor": "#CA3721"}, "architecture": {"iconSize": 100, "padding": 60, "nodeSeparation": 160, "idealEdgeLengthMultiplier": 2.2, "numIter": 6000, "seed": 2}}}%%
 architecture-beta
     service sdk(mdi:cellphone-link)[Your app ABsmartly SDK]
 
@@ -88,15 +93,20 @@ architecture-beta
     service query(mdi:magnify)[Query interface] in wh
 
     group cloud(mdi:cloud-outline)[ABsmartly Cloud]
-    service engine(mdi:cog-outline)[Assignment logic stats and metric governance with no user level data stored] in cloud
+    service engine(mdi:cog-outline)[Assignment stats and governance with no user level data stored] in cloud
 
-    sdk:T --> L:exp
+    align row sdk exp goals
+    align row attr filtersvc query
+    align column exp filtersvc
+    align column goals query
+
+    sdk:R --> L:exp
     exp:B --> T:filtersvc
-    attr:T --> B:filtersvc
+    attr:R --> L:filtersvc
     filtersvc:R --> L:query
-    goals:R --> L:query
-    engine:R --> L:query
-    query:T --> B:engine
+    goals:B --> T:query
+    engine:L --> R:query
+    query:R --> L:engine
 ```
 
 *Across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a scheduled query in and only aggregate results come back out — no user-level data crosses that boundary.*
