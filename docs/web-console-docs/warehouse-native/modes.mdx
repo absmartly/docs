@@ -35,47 +35,34 @@ In Hybrid mode, you keep the ABsmartly-managed data source as your default and a
 
 ```mermaid
 %%{init: {"theme": "base", "themeVariables": {"fontFamily": "Manrope, system-ui, sans-serif", "primaryColor": "#ffffff", "primaryBorderColor": "#CA3721", "primaryTextColor": "#28293d", "lineColor": "#9296a6", "tertiaryColor": "#ffffff", "fontSize": "15px"}}}%%
-flowchart TB
-    SDK(["Your app - ABsmartly SDK"])
+architecture-beta
+    service sdk(mdi:cellphone-link)[Your app ABsmartly SDK]
 
-    subgraph ABC["ABsmartly (default)"]
-        DEFAULT[("Exposures (no filtering)<br/>and managed goals")]
-    end
+    group abc(mdi:server)[ABsmartly default]
+    service default(mdi:database)[Exposures with no filtering and managed goals] in abc
 
-    subgraph EWH["Your warehouse (external)"]
-        IMPORT[("Imported<br/>exposures")]
-        WGOALS[("Your goals")]
-        ATTR[("Your attributes")]
-        FILTER("Filter and enrich")
-        QUERY("Query interface")
-    end
+    group ewh(mdi:server-network)[Your warehouse external]
+    service importsvc(mdi:database-import)[Imported exposures] in ewh
+    service wgoals(mdi:database)[Your goals] in ewh
+    service attr(mdi:database)[Your attributes] in ewh
+    service filtersvc(mdi:filter-outline)[Filter and enrich] in ewh
+    service query(mdi:magnify)[Query interface] in ewh
 
-    subgraph CLOUD["ABsmartly Cloud"]
-        ENGINE("Assignment logic, stats and<br/>metric governance")
-    end
+    group cloud(mdi:cloud-outline)[ABsmartly Cloud]
+    service engine(mdi:cog-outline)[Assignment stats and governance] in cloud
 
-    SDK --> DEFAULT
-    DEFAULT -.->|"exposures import"| IMPORT
-    IMPORT --> FILTER
-    ATTR --> FILTER
-    FILTER --> QUERY
-    WGOALS --> QUERY
-    DEFAULT --> ENGINE
-    ENGINE -.->|"scheduled query"| QUERY
-    QUERY -.->|"aggregate results only"| ENGINE
-
-    style ABC fill:#FBEDEA,stroke:#CA3721,stroke-width:1.5px,color:#28293d
-    style EWH fill:#EEF1FF,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style CLOUD fill:#FBEDEA,stroke:#CA3721,stroke-width:1.5px,color:#28293d
-    style DEFAULT fill:#ffffff,stroke:#CA3721,stroke-width:1.5px,color:#28293d
-    style IMPORT fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style WGOALS fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style ATTR fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style FILTER fill:#465BFF,stroke:#465BFF,stroke-width:1.5px,color:#ffffff
-    style QUERY fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style ENGINE fill:#ffffff,stroke:#CA3721,stroke-width:1.5px,color:#28293d
-    style SDK fill:#ffffff,stroke:#9296a6,stroke-width:1.5px,color:#28293d
+    sdk:R --> L:default
+    default:R --> L:importsvc
+    importsvc:B --> T:filtersvc
+    attr:B --> T:filtersvc
+    filtersvc:R --> L:query
+    wgoals:R --> L:query
+    default:B --> T:engine
+    engine:R --> L:query
+    query:T --> B:engine
 ```
+
+*Across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a scheduled query in and only aggregate results come back out — no user-level data crosses that boundary. The default source's exposures flow into your warehouse on a scheduled exposures import.*
 
 Hybrid lets you bring metrics into your warehouse at your own pace: you keep ABsmartly's battle-tested assignment and exposure pipeline, and move as many (or as few) of your goals into your warehouse as you like — gaining filtering and enrichment for each one you move.
 
@@ -90,39 +77,29 @@ Because every exposure already lives in your warehouse, Fully extends Hybrid's w
 
 ```mermaid
 %%{init: {"theme": "base", "themeVariables": {"fontFamily": "Manrope, system-ui, sans-serif", "primaryColor": "#ffffff", "primaryBorderColor": "#CA3721", "primaryTextColor": "#28293d", "lineColor": "#9296a6", "tertiaryColor": "#ffffff", "fontSize": "15px"}}}%%
-flowchart TB
-    SDK(["Your app - ABsmartly SDK"])
+architecture-beta
+    service sdk(mdi:cellphone-link)[Your app ABsmartly SDK]
 
-    subgraph WH["Your warehouse (default)"]
-        EXP[("Exposures")]
-        GOALS[("Goals")]
-        ATTR[("Your attributes")]
-        FILTER("Filter and enrich")
-        QUERY("Query interface")
-    end
+    group wh(mdi:cloud-outline)[Your warehouse default]
+    service exp(mdi:database)[Exposures] in wh
+    service goals(mdi:database)[Goals] in wh
+    service attr(mdi:database)[Your attributes] in wh
+    service filtersvc(mdi:filter-outline)[Filter and enrich] in wh
+    service query(mdi:magnify)[Query interface] in wh
 
-    subgraph ABC["ABsmartly Cloud"]
-        ENGINE("Assignment logic, stats and<br/>metric governance<br/>no user-level data stored")
-    end
+    group cloud(mdi:cloud-outline)[ABsmartly Cloud]
+    service engine(mdi:cog-outline)[Assignment logic stats and metric governance with no user level data stored] in cloud
 
-    SDK --> EXP
-    EXP --> FILTER
-    ATTR --> FILTER
-    FILTER --> QUERY
-    GOALS --> QUERY
-    ENGINE -.->|"scheduled query"| QUERY
-    QUERY -.->|"aggregate results only"| ENGINE
-
-    style WH fill:#EEF1FF,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style ABC fill:#FBEDEA,stroke:#CA3721,stroke-width:1.5px,color:#28293d
-    style EXP fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style GOALS fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style ATTR fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style FILTER fill:#465BFF,stroke:#465BFF,stroke-width:1.5px,color:#ffffff
-    style QUERY fill:#ffffff,stroke:#465BFF,stroke-width:1.5px,color:#28293d
-    style ENGINE fill:#ffffff,stroke:#CA3721,stroke-width:1.5px,color:#28293d
-    style SDK fill:#ffffff,stroke:#9296a6,stroke-width:1.5px,color:#28293d
+    sdk:R --> L:exp
+    exp:B --> T:filtersvc
+    attr:B --> T:filtersvc
+    filtersvc:R --> L:query
+    goals:R --> L:query
+    engine:R --> L:query
+    query:T --> B:engine
 ```
+
+*Across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a scheduled query in and only aggregate results come back out — no user-level data crosses that boundary.*
 
 :::info Why the exposure source matters
 Exposure-side filtering (bots, scrapers, internal traffic) and attribute enrichment both operate on the exposure stream, and only work once that stream lives inside your warehouse. In **Hybrid**, that's true for goals you source from your warehouse — their imported exposures can be filtered and enriched. It's **not** true for goals that stay managed by ABsmartly, since their exposures never leave the default data source. In **Fully**, every exposure lives in your warehouse, so filtering and enrichment apply to every goal.
