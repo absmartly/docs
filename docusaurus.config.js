@@ -56,8 +56,11 @@ const config = {
     locales: ["en"],
   },
 
-  // Client modules for anchor redirects
-  clientModules: [require.resolve("./src/anchorRedirects.ts")],
+  // Client modules for anchor redirects and mermaid icon registration
+  clientModules: [
+    require.resolve("./src/anchorRedirects.ts"),
+    require.resolve("./src/scripts/mermaidIcons.js"),
+  ],
 
   presets: [
     [
