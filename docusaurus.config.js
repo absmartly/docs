@@ -31,6 +31,15 @@ const config = {
             tsx: true,
           },
           target: "es2017",
+          transform: {
+            // Must match Docusaurus's own Babel preset (runtime: 'automatic').
+            // Theme packages ship .js files containing JSX without a default
+            // React import, so SWC's classic runtime emits unbound
+            // React.createElement calls that throw during SSG.
+            react: {
+              runtime: "automatic",
+            },
+          },
         },
         module: {
           type: isServer ? "commonjs" : "es6",
