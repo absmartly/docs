@@ -109,7 +109,7 @@ To avoid such bias, ABsmartly recommends pre-registering the [decision criteria]
 ### Confidence level  
 The probability that the [confidence interval](#confidence-interval) procedure will capture the true value, across many hypothetical repetitions of the experiment.
 
-Common choices such as 90, 95 percent or 99 percent define how strict you are about uncertainty and directly relate to the [significance level](#significance-level). 
+Common choices such as 90, 95 percent or 99 percent define how strict you are about uncertainty and directly relate to the [significance level](#significance-level-alpha). 
 A higher confidence level reduces the risk of [false positive](#false-positive) but requires more data (wider intervals).
 
 ### Continuous metric  
@@ -550,7 +550,7 @@ This outlier can shift the average upward, making the treatment look better than
 Peeking refers to looking at experiment results before the test is completed, especially to check for statistical significance and 
 making decisions based on those early results without proper statistical adjustments.
 
-Peeking inflates the [false positive rate](##false-discovery-rate-fdr), making it more likely that you'll incorrectly conclude a treatment is effective when it’s not. 
+Peeking inflates the [false positive rate](#false-discovery-rate-fdr), making it more likely that you'll incorrectly conclude a treatment is effective when it’s not. 
 This happens because repeatedly checking increases the chance that random noise appears significant at least once.
 
 **Example**:
@@ -615,7 +615,7 @@ P-hacking severely inflates false positives and creates misleading “evidence�
 
 ### Sample size  
 The number of visitors included in an experiment.  
-Sample size, together with [variance](#variance) and [effect size](#effect-size), determines [power](##experimentation-power) and the time needed to reach a conclusion.  
+Sample size, together with [variance](#variance) and [effect size](#effect-size), determines [power](#experimentation-power) and the time needed to reach a conclusion.  
 
 ### Secondary metrics  
 Additional metrics tracked in an experiment to understand side effects or support interpretation of the primary metric.  
@@ -624,7 +624,7 @@ Secondary metrics reveal trade-offs and help explain why a primary metric change
 **Example:** Monitoring average order value and gross conversions while the primary metric is net conversion rate.
 
 ### Significance level (alpha)  
-The maximum acceptable probability of a [Type I error](#type-1-error) that you are willing to tolerate in a single hypothesis test.  
+The maximum acceptable probability of a [Type I error](#type-i-error) that you are willing to tolerate in a single hypothesis test.  
 It determines the threshold at which you consider a result statistically significant.  
 
 **Example:** If you set α = 0.05, and your p-value is below 0.05, you declare the test result statistically significant — i.e., there's enough evidence to reject the null hypothesis.
@@ -646,7 +646,7 @@ ABsmartly automatically checks for SRM and reports any issue to the experimenter
 
 ### Standard deviation  
 A measure of how spread out or variable your data is. It tells you, on average, how far each data point is from the mean (average).
-Standard deviation is central to many formulas for [confidence intervals](#confidnce-interval), [z-scores](#z-score) and sample size calculations.  
+Standard deviation is central to many formulas for [confidence intervals](#confidence-interval), [z-scores](#z-score) and sample size calculations.  
 
 - If your data points are close to the mean, the standard deviation is small.
 - If your data points are widely spread out, the standard deviation is large.
