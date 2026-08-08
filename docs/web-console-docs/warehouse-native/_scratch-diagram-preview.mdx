@@ -37,3 +37,31 @@ architecture-beta
 ```
 
 *Dashed arrows in the original flowchart diagram: the default source's exposures flow into your warehouse on a scheduled "exposures import". Across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a "scheduled query" in and only "aggregate results" come back out — no user-level data crosses that boundary.*
+
+## Fully
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Manrope, system-ui, sans-serif", "primaryColor": "#ffffff", "primaryBorderColor": "#CA3721", "primaryTextColor": "#28293d", "lineColor": "#9296a6", "tertiaryColor": "#ffffff", "fontSize": "15px"}}}%%
+architecture-beta
+    service sdk(mdi:cellphone-link)[Your app ABsmartly SDK]
+
+    group wh(mdi:cloud-outline)[Your warehouse default]
+    service exp(mdi:database)[Exposures] in wh
+    service goals(mdi:database)[Goals] in wh
+    service attr(mdi:database)[Your attributes] in wh
+    service filtersvc(mdi:filter-outline)[Filter and enrich] in wh
+    service query(mdi:magnify)[Query interface] in wh
+
+    group cloud(mdi:cloud-outline)[ABsmartly Cloud]
+    service engine(mdi:cog-outline)[Assignment logic stats and metric governance with no user level data stored] in cloud
+
+    sdk:R --> L:exp
+    exp:B --> T:filtersvc
+    attr:B --> T:filtersvc
+    filtersvc:R --> L:query
+    goals:R --> L:query
+    engine:R --> L:query
+    query:T --> B:engine
+```
+
+*Dashed arrows in the original flowchart diagram: across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a "scheduled query" in and only "aggregate results" come back out — no user-level data crosses that boundary.*
