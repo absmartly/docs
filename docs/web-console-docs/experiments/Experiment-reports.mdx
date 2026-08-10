@@ -261,11 +261,6 @@ This widget counts the experiments put `Full on` in the reporting period which c
 An inconclusive experiment is one where the confidence interval spans zero, so the data cannot tell whether the change helped or hurt.
 Inconclusive experiments are still included in the totals, because their point estimate remains the best available estimate of their effect.
 
-:::caution
-Where an experiment has no confidence interval data available for the selected metric, a warning is shown above the report indicating how many experiments are affected.
-Their point estimates remain included in the totals, but they contribute no uncertainty to the likely range, which will therefore appear narrower than it should be.
-:::
-
 ### Impact by experiment
 
 The `Impact by experiment` table breaks the total down to the individual experiments contributing to it, so a headline figure can be traced back to its source.
@@ -301,9 +296,9 @@ Markers along the top of the chart indicate the point at which each experiment w
 
 #### Chart controls
 
-- **Cumulative / Daily** — switch between total impact accumulated to date and the impact contributed on each individual day
-- **Day / Week / Month / Quarter / Year** — the granularity at which points are plotted
-- **Forecast** — project the trend forward by `1 month`, `3 months`, `6 months` or `1 year`, or turn the projection `Off`
+- **Cumulative / Daily** switch between total impact accumulated to date and the impact contributed on each individual day
+- **Day / Week / Month / Quarter / Year** the granularity at which points are plotted
+- **Forecast** project the trend forward by `1 month`, `3 months`, `6 months` or `1 year`, or turn the projection `Off`
 
 #### Reading the chart
 
@@ -319,8 +314,6 @@ The chart distinguishes measured impact from projected impact, and depreciated f
 | `Depreciated forecast band` | The confidence interval around the depreciated forecast |
 
 Hovering over any point on the chart shows the values behind it for that date, including the upper bound, the estimate with depreciation, the lower bound and the raw figure.
-
-<Image img="experiment-report/impact-over-time-tooltip.png" alt="Impact over time chart tooltip" maxWidth="50rem" />
 
 :::caution
 The forecast is an extrapolation of the trend to date under the selected depreciation rate, not a prediction that accounts for seasonality, planned changes or market conditions.
