@@ -6,6 +6,16 @@ import Image from "../../../src/components/Image";
 
 # Experiment Reports
 
+Experiment reports are organised into three tabs, each answering a different question about your experimentation programme:
+
+| Tab | What it answers |
+| --- | --- |
+| [Velocity](#velocity-report) | How many experiments were started, run and completed? |
+| [Decisions](#decisions-report) | What decisions were made as a result of those experiments? |
+| [Impact](#impact-report) | What impact did those experiments have? |
+
+The [general settings & filters](#general-settings--filters) and [report settings](#report-settings) described below apply to all three tabs.
+
 ## General settings & filters 
 
 The settings and filter described below apply to all reports.
@@ -47,7 +57,7 @@ Choosing the right aggregation depends mainly on the length or the reporting per
 Changing the aggregation period does not impact the data shown.
 
 
-## Experiment Velocity Report
+## Velocity report
 
 The `Experiment velocity` report provides an overview of the experimentation program.
 It highlights how many experiments were started, running, completed and not completed in the reporting period.
@@ -115,20 +125,26 @@ This can sometimes happen for strategic or legal reasons but because the experim
 This report shows the ratio of non-running experiments (completed + early full on + aborted) which were completed in the reporting period. 
 This provides a good overview of the quality of the experimentation program and decisions which are based on those experiments.
 
-## Decisions overview
+## Decisions report
 
-The `Decisions overview` report provides an overview of decisions made by experimenters as a result of their experiments. 
+The `Decisions` report provides an overview of decisions made by experimenters as a result of their experiments.
 Possible decisions types included in the report are `Full on` where a tested change is fully rolled out with or without full supporting evidence; 
 `Keep current` where the tested change is not rolled out, and the existing experience remains; 
 and `Abort` where it was decided to stop the experiment before it could provide reliable evidence.
+
+The tab contains two views: the [Decisions overview](#decisions-overview), which aggregates decisions by type over the reporting period,
+and the [Decisions history](#decisions-history), which lists those same decisions as a timeline.
 
 ### Permissions
 
 Access to the decisions report requires the permission `Experiment reports` > `View decisions`. 
 If you wish to access the report but do not have permissions please reach out to your platform admin so they can grant you access.
 
+### Decisions overview
 
-### Full on
+The `Decisions overview` report provides an overview of decisions made by experimenters as a result of their experiments. 
+
+#### Full on
 
 <Image img="experiment-report/decision-full-on.png" alt="Full on decisions report" maxWidth="30rem" />
 
@@ -144,7 +160,7 @@ The supported by evidence validation does not currently include checks on the se
 :::
 
 
-### Keep current
+#### Keep current
 
 <Image img="experiment-report/decision-keep-current.png" alt="Keep current decisions report" maxWidth="30rem" />
 
@@ -153,7 +169,7 @@ Keep current means that the change was not rolled out and that the current exper
 `Keep current` decisions means that the experiment was completed but it was decided not to roll it out. 
 This typically happens when the evidence does not support the hypothesis.
 
-### Abort
+#### Abort
 
 <Image img="experiment-report/decision-abort.png" alt="Abort decisions report" maxWidth="30rem" />
 
@@ -163,24 +179,152 @@ when early negative signals indicate a possible degradation in certain key metri
 Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
 Like with `Keep current` decisions, `Abort` decisons means that the current experience remains but unlike `Keep current` decisions it does not say anything about the hypothesis being tested or not.
 
-## Decisions history
+### Decisions history
 
 The `Decisions history` provides a timeline of decisions overtime.  
-Possible decisions types included in the report are `Full on` where a tested change is fully rolled out with or without full supporting evidence; 
-`Keep current` where the tested change is not rolled out, and the existing experience remains; 
-and `Abort` where it was decided to stop the experiment before it could provide reliable evidence.
 
 This report can be used to browse through past decisions to understand the reasoning behind each of them.
 
-### Permissions
-
-Access to the decisions report requires the permission `Experiment reports` > `View decisions`. 
-If you wish to access the report but do not have permissions please reach out to your platform admin so they can grant you access.
-
-### Filter
+#### Filter
 
 The `Decision type` filter allows to select the type of decisions to show on the timeline.
 
-### Decision card
+#### Decision card
 
 Each decision card provides an overview of the past decisions, highlighting the hypothesis, the rational behind the decision and the key metrics supporting the decision. 
+
+## Impact report
+
+<Image img="experiment-report/impact-report.png" alt="Impact report" maxWidth="60rem" />
+
+The `Impact` report provides a view of the cumulative impact your experimentation programme is delivering.
+Where the [Velocity report](#velocity-report) counts experiments and the [Decisions report](#decisions-report) records what was decided,
+the Impact report estimates what those decisions were actually worth, combining estimated impact, statistical confidence intervals and per-experiment breakdowns for a selected metric.
+
+The report only includes experiments which were put `Full on` in the reporting period.
+An experiment which was completed but where the decision was to `Keep current` contributes no impact, since the tested change was never rolled out.
+
+:::info
+Impact figures are estimates, not measured revenue. They extrapolate the effect observed during the experiment forward over time,
+which assumes the effect persists after roll-out. Use the [depreciation](#depreciation) setting to reflect how quickly you believe that effect fades.
+:::
+
+### Permissions
+
+Access to the impact report requires the permission `Experiment reports` > `View impact`. 
+If you wish to access the report but do not have permissions please reach out to your platform admin so they can grant you access.
+
+### Metric selection
+
+The report is calculated for one metric at a time, selected using the metric picker at the top of the report.
+Impact can only be estimated for metrics where an absolute difference is meaningful, so the picker lists the metrics available for the experiments in the reporting period.
+
+### Depreciation
+
+<Image img="experiment-report/impact-depreciation-settings.png" alt="Impact report depreciation settings" maxWidth="40rem" />
+
+An experiment measures an effect over a short window, but that effect rarely persists unchanged forever.
+Novelty wears off, competitors respond, and the baseline experience moves on.
+The `Depreciation` setting applies a monthly decay to the estimated impact so the cumulative total reflects that fade.
+
+The following presets are available, and the rate can also be set to any value using the slider or input field:
+
+| Preset | Monthly rate |
+| --- | --- |
+| No depreciation | 0% |
+| Low | 2%/mo |
+| Medium (default) | 5%/mo |
+| High | 10%/mo |
+| Aggressive | 20%/mo |
+
+The panel shows what the selected rate means over time. At the default 5%/mo, impact retains 85.7% of its original value after 3 months and 73.5% after 6 months.
+
+Depreciation affects the totals, the per-experiment breakdown and the chart. The raw, undepreciated figures remain visible on the [Impact over time](#impact-over-time) chart for comparison.
+
+### Total estimated impact
+
+<Image img="experiment-report/impact-total-estimated-impact.png" alt="Total estimated impact widget" maxWidth="40rem" />
+
+This widget shows the accumulated impact since full-on for all experiments in the reporting period, accounting for depreciation over time.
+
+The headline figure is a `Likely range` rather than a single number, reflecting the statistical uncertainty of the underlying experiments.
+Hovering over the widget reveals the detail behind it:
+
+- **Point estimate** — the central estimate of the accumulated impact
+- **Today's impact per day** — the rate at which impact is currently accruing
+- **Per-day range** — the confidence interval around that daily rate
+
+### Full-on experiments
+
+This widget counts the experiments put `Full on` in the reporting period which contribute to the report, broken down by the direction of their result: how many were positive, how many negative and how many inconclusive.
+
+An inconclusive experiment is one where the confidence interval spans zero, so the data cannot tell whether the change helped or hurt.
+Inconclusive experiments are still included in the totals, because their point estimate remains the best available estimate of their effect.
+
+:::caution
+Where an experiment has no confidence interval data available for the selected metric, a warning is shown above the report indicating how many experiments are affected.
+Their point estimates remain included in the totals, but they contribute no uncertainty to the likely range, which will therefore appear narrower than it should be.
+:::
+
+### Impact by experiment
+
+The `Impact by experiment` table breaks the total down to the individual experiments contributing to it, so a headline figure can be traced back to its source.
+
+Each row shows the impact of the metric selected at the top of the report. A badge next to the experiment name indicates whether that metric was the `Primary` or a `Secondary` metric for that particular experiment.
+
+The table shows the following columns:
+
+| Column | Description |
+| --- | --- |
+| `Experiment` | The experiment name, tagged to show whether the selected metric was `Primary` or `Secondary` for that experiment |
+| `Full-on date` | The date the experiment was put full on, from which its impact starts accruing |
+| `Owners` | The experiment owners |
+| `Incremental per day` | The range of impact the experiment is currently contributing per day |
+| `Cumulative impact` | The range of impact accumulated since the full-on date |
+
+A `Total` row aggregates all experiments, matching the [Total estimated impact](#total-estimated-impact) widget.
+
+Experiments with no confidence interval data for the selected metric show `No interval available` in place of a range.
+
+:::info
+A cumulative impact range spanning zero, shown with a negative lower bound and a positive upper bound, means the experiment cannot be said to have helped or hurt with confidence.
+This is a normal and expected outcome, particularly for experiments which completed without a significant result on the selected metric.
+:::
+
+### Impact over time
+
+<Image img="experiment-report/impact-over-time.png" alt="Impact over time chart" maxWidth="60rem" />
+
+The `Impact over time` chart plots how impact has accumulated across the reporting period, and optionally projects it forward.
+
+Markers along the top of the chart indicate the point at which each experiment was put full on, showing which roll-outs drove which movements in the line.
+
+#### Chart controls
+
+- **Cumulative / Daily** — switch between total impact accumulated to date and the impact contributed on each individual day
+- **Day / Week / Month / Quarter / Year** — the granularity at which points are plotted
+- **Forecast** — project the trend forward by `1 month`, `3 months`, `6 months` or `1 year`, or turn the projection `Off`
+
+#### Reading the chart
+
+The chart distinguishes measured impact from projected impact, and depreciated figures from raw ones:
+
+| Series | Meaning |
+| --- | --- |
+| `Depreciated impact` | Accumulated impact to date, with depreciation applied |
+| `Raw impact` | Accumulated impact to date, without depreciation |
+| `Depreciated confidence band` | The confidence interval around the depreciated impact |
+| `Raw forecast` | Projected impact without depreciation |
+| `Depreciated forecast` | Projected impact with depreciation |
+| `Depreciated forecast band` | The confidence interval around the depreciated forecast |
+
+Hovering over any point on the chart shows the values behind it for that date, including the upper bound, the estimate with depreciation, the lower bound and the raw figure.
+
+<Image img="experiment-report/impact-over-time-tooltip.png" alt="Impact over time chart tooltip" maxWidth="50rem" />
+
+:::caution
+The forecast is an extrapolation of the trend to date under the selected depreciation rate, not a prediction that accounts for seasonality, planned changes or market conditions.
+The widening band around the forecast reflects that uncertainty compounds the further ahead it projects.
+:::
+
+
