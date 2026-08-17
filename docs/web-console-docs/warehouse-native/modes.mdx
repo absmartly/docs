@@ -52,9 +52,10 @@ architecture-beta
     service engine(mdi:cog-outline)[Assignment stats and governance] in cloud
 
     align row sdk default importsvc wgoals
-    align row attr filtersvc query engine
+    align row attr filtersvc query
     align column importsvc filtersvc
     align column wgoals query
+    align column query engine
 
     sdk:R --> L:default
     default:R --> L:importsvc
@@ -63,8 +64,8 @@ architecture-beta
     filtersvc:R --> L:query
     wgoals:B --> T:query
     default:B --> T:engine
-    query:R --> L:engine
-    engine:L --> R:query
+    query:B --> T:engine
+    engine:T --> B:query
 ```
 
 *Across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a scheduled query in and only aggregate results come back out — no user-level data crosses that boundary. The default source's exposures flow into your warehouse on a scheduled exposures import.*
@@ -96,17 +97,18 @@ architecture-beta
     service engine(mdi:cog-outline)[Assignment stats and governance with no user level data stored] in cloud
 
     align row sdk exp goals
-    align row attr filtersvc query engine
+    align row attr filtersvc query
     align column exp filtersvc
     align column goals query
+    align column query engine
 
     sdk:R --> L:exp
     exp:B --> T:filtersvc
     attr:R --> L:filtersvc
     filtersvc:R --> L:query
     goals:B --> T:query
-    query:R --> L:engine
-    engine:L --> R:query
+    query:B --> T:engine
+    engine:T --> B:query
 ```
 
 *Across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a scheduled query in and only aggregate results come back out — no user-level data crosses that boundary.*
