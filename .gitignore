@@ -7,10 +7,22 @@
 # Generated files
 .docusaurus
 .cache-loader
-/docs/APIs-and-SDKs/SDK-API*.mdx
-/docs/Web-Console-API/*.mdx
-/docs/APIs-and-SDKs/SDK-API*.js
-/docs/Web-Console-API/*.js
+
+# Generated OpenAPI docs (run `yarn gen:api` to regenerate)
+/docs/APIs-and-SDKs/SDK-API/*.api.mdx
+/docs/APIs-and-SDKs/SDK-API/*.info.mdx
+/docs/APIs-and-SDKs/SDK-API/*.ParamsDetails.json
+/docs/APIs-and-SDKs/SDK-API/*.RequestSchema.json
+/docs/APIs-and-SDKs/SDK-API/*.StatusCodes.json
+/docs/APIs-and-SDKs/SDK-API/sidebar.js
+/docs/APIs-and-SDKs/SDK-API/sidebar.ts
+/docs/APIs-and-SDKs/Web-Console-API/*.api.mdx
+/docs/APIs-and-SDKs/Web-Console-API/*.info.mdx
+/docs/APIs-and-SDKs/Web-Console-API/*.ParamsDetails.json
+/docs/APIs-and-SDKs/Web-Console-API/*.RequestSchema.json
+/docs/APIs-and-SDKs/Web-Console-API/*.StatusCodes.json
+/docs/APIs-and-SDKs/Web-Console-API/sidebar.js
+/docs/APIs-and-SDKs/Web-Console-API/sidebar.ts
 
 # Worktrees
 /.worktrees
