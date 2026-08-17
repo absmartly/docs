@@ -33,40 +33,7 @@ In Hybrid mode, you keep the ABsmartly-managed data source as your default and a
 - When a goal is sourced from an external warehouse, ABsmartly makes the default source's exposures available to that warehouse so the two can be evaluated together. You enable this by pointing ABsmartly at an object store through the **[Exposures import](./get-started#step-4-configure-exposures-import-hybrid-only)** section on each external data source.
 - Because that import lands the exposures inside your warehouse, **goals sourced from your warehouse can filter and enrich those exposures** the same way Fully mode does — strip out bots and internal traffic, or join in your own attributes table. **Goals that stay managed by ABsmartly don't get this**, since their exposures never leave ABsmartly's default data source.
 
-```mermaid
-%%{init: {"themeVariables": {"fontFamily": "Manrope, system-ui, sans-serif", "fontSize": "15px", "archEdgeColor": "#9296a6", "archEdgeArrowColor": "#9296a6", "archGroupBorderColor": "#CA3721"}, "architecture": {"iconSize": 250, "padding": 60, "nodeSeparation": 160, "idealEdgeLengthMultiplier": 2.2, "numIter": 6000, "seed": 2}}}%%
-architecture-beta
-    service sdk(mdi:cellphone-link)[Your app ABsmartly SDK]
-
-    group abc(mdi:server)[ABsmartly default]
-    service default(mdi:database)[Exposures with no filtering and managed goals] in abc
-
-    group ewh(mdi:server-network)[Your warehouse external]
-    service importsvc(mdi:database-import)[Imported exposures] in ewh
-    service wgoals(mdi:database)[Your goals] in ewh
-    service attr(mdi:database)[Your attributes] in ewh
-    service filtersvc(mdi:filter-outline)[Filter and enrich] in ewh
-    service query(mdi:magnify)[Query interface] in ewh
-
-    group cloud(mdi:cloud-outline)[ABsmartly Cloud]
-    service engine(mdi:cog-outline)[Assignment stats and governance] in cloud
-
-    align row sdk default importsvc wgoals
-    align row attr filtersvc query
-    align column importsvc filtersvc
-    align column wgoals query
-    align column query engine
-
-    sdk:R --> L:default
-    default:R --> L:importsvc
-    importsvc:B --> T:filtersvc
-    attr:R --> L:filtersvc
-    filtersvc:R --> L:query
-    wgoals:B --> T:query
-    default:B --> T:engine
-    query:B --> T:engine
-    engine:T --> B:query
-```
+![Hybrid Warehouse Native architecture: the ABsmartly SDK sends exposures into ABsmartly's default source, which handles unfiltered managed goals directly and also imports exposures into the customer's external warehouse, where imported exposures, goals, and attributes are filtered and enriched before ABsmartly Cloud runs a scheduled query and returns only aggregate results.](/img/warehouse-native/hybrid-architecture.svg)
 
 *Across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a scheduled query in and only aggregate results come back out — no user-level data crosses that boundary. The default source's exposures flow into your warehouse on a scheduled exposures import.*
 
@@ -81,35 +48,7 @@ Because every exposure already lives in your warehouse, Fully extends Hybrid's w
 - **Filter exposures yourself.** You control the exposures table, so you can strip out bots, scrapers, internal traffic, or any other unwanted exposures before ABsmartly analyzes them — using your own logic in your own warehouse.
 - **Enrich exposures with your own attributes.** You can join in an external **attributes** table to add segmentation dimensions, then slice experiment results by those attributes.
 
-```mermaid
-%%{init: {"themeVariables": {"fontFamily": "Manrope, system-ui, sans-serif", "fontSize": "15px", "archEdgeColor": "#9296a6", "archEdgeArrowColor": "#9296a6", "archGroupBorderColor": "#CA3721"}, "architecture": {"iconSize": 250, "padding": 60, "nodeSeparation": 160, "idealEdgeLengthMultiplier": 2.2, "numIter": 6000, "seed": 2}}}%%
-architecture-beta
-    service sdk(mdi:cellphone-link)[Your app ABsmartly SDK]
-
-    group wh(mdi:cloud-outline)[Your warehouse default]
-    service exp(mdi:database)[Exposures] in wh
-    service goals(mdi:database)[Goals] in wh
-    service attr(mdi:database)[Your attributes] in wh
-    service filtersvc(mdi:filter-outline)[Filter and enrich] in wh
-    service query(mdi:magnify)[Query interface] in wh
-
-    group cloud(mdi:cloud-outline)[ABsmartly Cloud]
-    service engine(mdi:cog-outline)[Assignment stats and governance with no user level data stored] in cloud
-
-    align row sdk exp goals
-    align row attr filtersvc query
-    align column exp filtersvc
-    align column goals query
-    align column query engine
-
-    sdk:R --> L:exp
-    exp:B --> T:filtersvc
-    attr:R --> L:filtersvc
-    filtersvc:R --> L:query
-    goals:B --> T:query
-    query:B --> T:engine
-    engine:T --> B:query
-```
+![Fully Warehouse Native architecture: the ABsmartly SDK sends exposures into the customer's own warehouse, which is the default data source holding exposures, attributes, and goals, filtering and enriching every exposure before ABsmartly Cloud runs a scheduled query and returns only aggregate results, storing no user-level data.](/img/warehouse-native/fully-architecture.svg)
 
 *Across the privacy boundary between your warehouse and ABsmartly Cloud, ABsmartly runs a scheduled query in and only aggregate results come back out — no user-level data crosses that boundary.*
 
