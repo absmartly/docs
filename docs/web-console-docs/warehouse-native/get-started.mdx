@@ -183,7 +183,7 @@ ABsmartly will show a preview of the computed schedule in both UTC and your loca
 Match the frequency to your actual ETL schedule. If your data lands once a day at 8 AM UTC, use **Daily at specific time** with a 480-minute offset. Querying more often than data arrives just adds unnecessary load to your warehouse.
 :::
 
-Save the data source. If you're setting up [Fully Warehouse Native](./modes#fully-warehouse-native) and this warehouse is your **default** data source, you're done — ABsmartly will start querying your warehouse on the configured schedule and your experiment data will flow through automatically. The built-in ABsmartly-managed default data source needs no such configuration, since it isn't a warehouse of yours. If you're connecting an **external** data source for [Hybrid mode](./modes#hybrid-warehouse-native), continue to Step 4.
+Save the data source. If you're setting up [Fully Warehouse Native](./modes#fully-warehouse-native) and this warehouse is your **default** data source, you're done - ABsmartly will start querying your warehouse on the configured schedule and your experiment data will flow through automatically. The built-in ABsmartly-managed default data source needs no such configuration, since it isn't a warehouse of yours. If you're connecting an **external** data source for [Hybrid mode](./modes#hybrid-warehouse-native), continue to Step 4.
 
 ---
 
@@ -191,7 +191,7 @@ Save the data source. If you're setting up [Fully Warehouse Native](./modes#full
 
 This step only applies to **external** (non-default) data sources — the setup used in [Hybrid Warehouse Native](./modes#hybrid-warehouse-native). If your warehouse is the default data source, you can skip it.
 
-In Hybrid mode, a goal can live in an external warehouse, but exposures come from the default data source (managed by ABsmartly). To compute metrics for such a goal, ABsmartly needs to make those exposures available to your external warehouse. It does this through an object store that you provide — you point ABsmartly at a storage location it can use, and your warehouse reads the exposures from there.
+In Hybrid mode, a goal can live in an external warehouse, but exposures come from the default data source (managed by ABsmartly). To compute metrics for such a goal, ABsmartly needs to make those exposures available to your external warehouse. It does this through an object store that you provide - you point ABsmartly at a storage location it can use, and your warehouse reads the exposures from there.
 
 The **Exposures import** section configures that storage location:
 
