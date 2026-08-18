@@ -165,8 +165,8 @@ const SERVER_REDIRECTS = [
   { from: '/docs/getting-started', to: '/docs/APIs-and-SDKs/SDK-Documentation/getting-started', type: 'server' },
 
   // Examples moves (2)
-  { from: '/docs/Examples/Slack-Integration', to: '/docs/APIs-and-SDKs/Web-Console-API/Examples/Slack-Integration', type: 'server' },
-  { from: '/docs/examples/slack-integration', to: '/docs/APIs-and-SDKs/Web-Console-API/Examples/Slack-Integration', type: 'server' },
+  { from: '/docs/Examples/Slack-Integration', to: '/docs/APIs-and-SDKs/Web-Console-API/examples/slack-integration', type: 'server' },
+  { from: '/docs/examples/slack-integration', to: '/docs/APIs-and-SDKs/Web-Console-API/examples/slack-integration', type: 'server' },
 
   // Onboarding/SSO moves (12)
   { from: '/docs/onboarding/google%20saml%20setup', to: '/docs/Third-party-integrations/SSO/Google%20SAML%20Setup', type: 'server' },
