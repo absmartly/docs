@@ -8,21 +8,16 @@
 .docusaurus
 .cache-loader
 
-# Generated OpenAPI docs (run `yarn gen:api` to regenerate)
-/docs/APIs-and-SDKs/SDK-API/*.api.mdx
-/docs/APIs-and-SDKs/SDK-API/*.info.mdx
-/docs/APIs-and-SDKs/SDK-API/*.ParamsDetails.json
-/docs/APIs-and-SDKs/SDK-API/*.RequestSchema.json
-/docs/APIs-and-SDKs/SDK-API/*.StatusCodes.json
-/docs/APIs-and-SDKs/SDK-API/sidebar.js
-/docs/APIs-and-SDKs/SDK-API/sidebar.ts
-/docs/APIs-and-SDKs/Web-Console-API/*.api.mdx
-/docs/APIs-and-SDKs/Web-Console-API/*.info.mdx
-/docs/APIs-and-SDKs/Web-Console-API/*.ParamsDetails.json
-/docs/APIs-and-SDKs/Web-Console-API/*.RequestSchema.json
-/docs/APIs-and-SDKs/Web-Console-API/*.StatusCodes.json
-/docs/APIs-and-SDKs/Web-Console-API/sidebar.js
-/docs/APIs-and-SDKs/Web-Console-API/sidebar.ts
+# Generated OpenAPI docs (run `yarn gen:api` to regenerate). Everything in these
+# directories is plugin output except _category_.json and the hand-authored
+# Examples/ page, so ignore everything and carve those back out rather than
+# listing every generated filename pattern (which drifts each time the plugin
+# changes its output, e.g. the *.ParamsDetails.json/etc sidecars added in 5.x).
+/docs/APIs-and-SDKs/SDK-API/*
+!/docs/APIs-and-SDKs/SDK-API/_category_.json
+/docs/APIs-and-SDKs/Web-Console-API/*
+!/docs/APIs-and-SDKs/Web-Console-API/_category_.json
+!/docs/APIs-and-SDKs/Web-Console-API/Examples
 
 # Worktrees
 /.worktrees
