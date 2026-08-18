@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 1240 680" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hybrid-architecture-dark-title hybrid-architecture-dark-desc">
       <title id="hybrid-architecture-dark-title">Hybrid Warehouse Native architecture</title>
-      <desc id="hybrid-architecture-dark-desc">Architecture diagram showing the customer's SDK sending exposures into ABsmartly's default source, which handles unfiltered managed goals directly and also imports exposures into the customer's external warehouse, where imported exposures, goals, and attributes are filtered and enriched before ABsmartly Cloud runs a scheduled query and returns only aggregate results, storing no user-level data.</desc>
+      <desc id="hybrid-architecture-dark-desc">Architecture diagram showing the customer's SDK sending exposures into ABsmartly's default source, which handles unfiltered managed goals directly and also imports exposures into the customer's external warehouse, where imported exposures, goals, and attributes are filtered and enriched before ABsmartly Cloud runs a scheduled query and returns only aggregate results. ABsmartly Cloud retains user-level data for exposures and any goals kept on the managed default source.</desc>
       <defs>
         <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
         <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#9296a6"/></marker>
@@ -13,10 +13,18 @@
 
       <!-- Zones (bg -> zones -> arrows -> nodes) -->
       <rect x="40" y="300" width="780" height="260" rx="8" fill="rgba(91,127,255,0.05)" stroke="rgba(91,127,255,0.35)" stroke-width="0.8"/>
-      <text x="56" y="320" fill="#5b7fff" font-size="8" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.10em">YOUR WAREHOUSE &#8212; EXTERNAL</text>
+      <rect x="40" y="306" width="284" height="16" rx="2" fill="#111219"/>
+      <g transform="translate(50,310) scale(0.5)" fill="none" stroke="#5b7fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 7a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3" /><path d="M3 15a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -2" /><path d="M7 8l0 .01" /><path d="M7 16l0 .01" />
+      </g>
+      <text x="66" y="317" fill="#5b7fff" font-size="8" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.10em">YOUR WAREHOUSE &#8212; EXTERNAL</text>
 
       <rect x="880" y="420" width="320" height="140" rx="8" fill="rgba(244,102,92,0.06)" stroke="rgba(244,102,92,0.45)" stroke-width="0.8"/>
-      <text x="896" y="440" fill="#F4665C" font-size="8" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.10em">ABSMARTLY CLOUD</text>
+      <rect x="880" y="426" width="200" height="16" rx="2" fill="#111219"/>
+      <g transform="translate(890,430) scale(0.5)" fill="none" stroke="#F4665C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6.657 18c-2.572 0 -4.657 -2.007 -4.657 -4.483c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486c0 1.927 -1.551 3.487 -3.465 3.487h-11.878" />
+      </g>
+      <text x="906" y="437" fill="#F4665C" font-size="8" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.10em">ABSMARTLY CLOUD</text>
 
       <!-- Arrows (before nodes) -->
       <!-- 1. SDK -> default source (straight, shared x=180) -->
@@ -51,52 +59,77 @@
       <!-- Node: SDK -->
       <rect x="64" y="40" width="232" height="64" rx="6" fill="#111219"/>
       <rect x="64" y="40" width="232" height="64" rx="6" fill="rgba(146,150,166,0.10)" stroke="#6f7487" stroke-width="1"/>
-      <text x="180" y="68" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Your app</text>
-      <text x="180" y="84" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">ABsmartly SDK</text>
+      <g transform="translate(78,58) scale(1.1667)" fill="none" stroke="#f5f5f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14" /><path d="M11 4h2" /><path d="M12 17v.01" />
+      </g>
+      <text x="116" y="70" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Your app</text>
+      <text x="116" y="86" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="start">ABsmartly SDK</text>
 
       <!-- Node: ABsmartly default source -->
       <rect x="64" y="160" width="232" height="64" rx="6" fill="#111219"/>
       <rect x="64" y="160" width="232" height="64" rx="6" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1"/>
       <rect x="72" y="168" width="52" height="12" rx="2" fill="transparent" stroke="rgba(245,245,244,0.40)" stroke-width="0.8"/>
       <text x="98" y="177" fill="#9296a6" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">DEFAULT</text>
-      <text x="180" y="200" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Exposures &amp; managed goals</text>
-      <text x="180" y="216" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">no filtering</text>
+      <g transform="translate(78,186) scale(1.1667)" fill="none" stroke="#f5f5f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" /><path d="M4 6v6a8 3 0 0 0 16 0v-6" /><path d="M4 12v6a8 3 0 0 0 16 0v-6" />
+      </g>
+      <text x="116" y="200" fill="#f5f5f4" font-size="11.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Exposures &amp; managed goals</text>
+      <text x="116" y="216" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="start">no filtering</text>
 
       <!-- Node: Imported exposures -->
       <rect x="80" y="340" width="200" height="64" rx="6" fill="#111219"/>
       <rect x="80" y="340" width="200" height="64" rx="6" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1"/>
-      <text x="180" y="368" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Imported exposures</text>
-      <text x="180" y="384" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">via object store</text>
+      <g transform="translate(94,358) scale(1.1667)" fill="none" stroke="#f5f5f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 7a8 4 0 1 0 16 0a8 4 0 1 0 -16 0" /><path d="M4 7c0 .664 .088 1.324 .263 1.965l2.737 10.035c.5 1.5 2.239 2 5 2s4.5 -.5 5 -2c.333 -1 1.246 -4.345 2.737 -10.035a7.45 7.45 0 0 0 .263 -1.965" />
+      </g>
+      <text x="132" y="368" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Imported exposures</text>
+      <text x="132" y="384" fill="#9296a6" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="start">via object store</text>
 
       <!-- Node: Your goals -->
       <rect x="560" y="340" width="200" height="64" rx="6" fill="#111219"/>
       <rect x="560" y="340" width="200" height="64" rx="6" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1"/>
-      <text x="660" y="368" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Your goals</text>
-      <text x="660" y="384" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">warehouse-sourced</text>
+      <g transform="translate(574,358) scale(1.1667)" fill="none" stroke="#f5f5f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" /><path d="M4 6v6a8 3 0 0 0 16 0v-6" /><path d="M4 12v6a8 3 0 0 0 16 0v-6" />
+      </g>
+      <text x="612" y="368" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Your goals</text>
+      <text x="612" y="384" fill="#9296a6" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="start">warehouse-sourced</text>
 
       <!-- Node: Your attributes -->
       <rect x="80" y="460" width="176" height="64" rx="6" fill="#111219"/>
       <rect x="80" y="460" width="176" height="64" rx="6" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1"/>
-      <text x="168" y="488" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Your attributes</text>
-      <text x="168" y="504" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">segmentation</text>
+      <g transform="translate(94,478) scale(1.1667)" fill="none" stroke="#f5f5f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" /><path d="M4 6v6a8 3 0 0 0 16 0v-6" /><path d="M4 12v6a8 3 0 0 0 16 0v-6" />
+      </g>
+      <text x="132" y="488" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Your attributes</text>
+      <text x="132" y="504" fill="#9296a6" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="start">segmentation</text>
 
       <!-- Node: Filter & enrich (link) -->
       <rect x="280" y="460" width="200" height="64" rx="6" fill="#111219"/>
       <rect x="280" y="460" width="200" height="64" rx="6" fill="rgba(91,127,255,0.12)" stroke="#5b7fff" stroke-width="1"/>
-      <text x="380" y="488" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Filter &amp; enrich</text>
-      <text x="380" y="504" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">warehouse goals only</text>
+      <g transform="translate(294,478) scale(1.1667)" fill="none" stroke="#5b7fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M5 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M15 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 8l0 8" /><path d="M7 8a4 4 0 0 0 4 4h4" />
+      </g>
+      <text x="332" y="488" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Filter &amp; enrich</text>
+      <text x="332" y="504" fill="#9296a6" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="start">warehouse goals only</text>
 
       <!-- Node: Query interface -->
       <rect x="560" y="460" width="200" height="64" rx="6" fill="#111219"/>
       <rect x="560" y="460" width="200" height="64" rx="6" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1"/>
-      <text x="660" y="488" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Query interface</text>
-      <text x="660" y="504" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">scheduled reads</text>
+      <g transform="translate(574,478) scale(1.1667)" fill="none" stroke="#f5f5f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" />
+      </g>
+      <text x="612" y="488" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Query interface</text>
+      <text x="612" y="504" fill="#9296a6" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="start">scheduled reads</text>
 
       <!-- Node: ABsmartly Cloud engine (focal / accent) -->
       <rect x="900" y="460" width="280" height="64" rx="6" fill="#111219"/>
       <rect x="900" y="460" width="280" height="64" rx="6" fill="rgba(244,102,92,0.12)" stroke="#F4665C" stroke-width="1"/>
-      <text x="1040" y="488" fill="#f5f5f4" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Assignment stats &amp; governance</text>
-      <text x="1040" y="504" fill="#9296a6" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">no user-level data stored</text>
+      <g transform="translate(914,478) scale(1.1667)" fill="none" stroke="#F4665C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19l16 0" /><path d="M4 15l4 -6l4 2l4 -5l4 4" />
+      </g>
+      <text x="952" y="482" fill="#f5f5f4" font-size="11.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Assignment stats</text>
+      <text x="952" y="496" fill="#f5f5f4" font-size="11.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">&amp; governance</text>
+      <text x="952" y="510" fill="#9296a6" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="start">holds managed-source data</text>
 
       <!-- Legend strip -->
       <line x1="40" y1="616" x2="1200" y2="616" stroke="rgba(245,245,244,0.14)" stroke-width="0.8"/>
