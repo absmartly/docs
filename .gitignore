@@ -7,10 +7,17 @@
 # Generated files
 .docusaurus
 .cache-loader
-/docs/APIs-and-SDKs/SDK-API*.mdx
-/docs/Web-Console-API/*.mdx
-/docs/APIs-and-SDKs/SDK-API*.js
-/docs/Web-Console-API/*.js
+
+# Generated OpenAPI docs (run `yarn gen:api` to regenerate). Everything in these
+# directories is plugin output except _category_.json and the hand-authored
+# Examples/ page, so ignore everything and carve those back out rather than
+# listing every generated filename pattern (which drifts each time the plugin
+# changes its output, e.g. the *.ParamsDetails.json/etc sidecars added in 5.x).
+/docs/APIs-and-SDKs/SDK-API/*
+!/docs/APIs-and-SDKs/SDK-API/_category_.json
+/docs/APIs-and-SDKs/Web-Console-API/*
+!/docs/APIs-and-SDKs/Web-Console-API/_category_.json
+!/docs/APIs-and-SDKs/Web-Console-API/Examples
 
 # Worktrees
 /.worktrees
