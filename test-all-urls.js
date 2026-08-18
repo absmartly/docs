@@ -47,20 +47,20 @@ const PREVIOUSLY_FAILED_PAGES = [
   '/docs/platform-release-notes/2025/10',
   '/docs/platform-release-notes/2025/11',
   '/docs/platform-release-notes/2025/12',
-  '/docs/web-console-docs/Configuration/Applications',
-  '/docs/web-console-docs/Configuration/Units',
-  '/docs/web-console-docs/Configuration/settings',
-  '/docs/web-console-docs/Events/downloading-events',
-  '/docs/web-console-docs/Events/exposure-events',
-  '/docs/web-console-docs/Events/goal-events',
-  '/docs/web-console-docs/Events/the-events-page',
-  '/docs/web-console-docs/Events/visitors-identity',
-  '/docs/web-console-docs/Users-teams-Permissions/Roles',
-  '/docs/web-console-docs/Users-teams-Permissions/Teams',
-  '/docs/web-console-docs/Users-teams-Permissions/ownership-and-permissions',
-  '/docs/web-console-docs/experiments/Aborting-experiments',
-  '/docs/web-console-docs/experiments/Experiment-reports',
-  '/docs/web-console-docs/experiments/Interpreting-metrics-in-experiment-results',
+  '/docs/web-console-docs/configuration/applications',
+  '/docs/web-console-docs/configuration/units',
+  '/docs/web-console-docs/configuration/settings',
+  '/docs/web-console-docs/events/downloading-events',
+  '/docs/web-console-docs/events/exposure-events',
+  '/docs/web-console-docs/events/goal-events',
+  '/docs/web-console-docs/events/the-events-page',
+  '/docs/web-console-docs/events/visitors-identity',
+  '/docs/web-console-docs/users-teams-permissions/roles',
+  '/docs/web-console-docs/users-teams-permissions/teams',
+  '/docs/web-console-docs/users-teams-permissions/ownership-and-permissions',
+  '/docs/web-console-docs/experiments/aborting-experiments',
+  '/docs/web-console-docs/experiments/experiment-reports',
+  '/docs/web-console-docs/experiments/interpreting-metrics-in-experiment-results',
   '/docs/web-console-docs/experiments/creating-an-experiment',
   '/docs/web-console-docs/experiments/overview',
   '/docs/web-console-docs/experiments/setting-up-a-fixed-horizon-experiment',
@@ -86,7 +86,7 @@ const PREVIOUSLY_FAILED_PAGES = [
 /**
  * Convert filesystem path to URL path
  * /Users/.../docs/docs/get-started.mdx → /docs/get-started
- * /Users/.../docs/docs/web-console-docs/Events/goal-events.mdx → /docs/web-console-docs/Events/goal-events
+ * /Users/.../docs/docs/web-console-docs/events/goal-events.mdx → /docs/web-console-docs/events/goal-events
  */
 function filePathToUrl(filePath) {
   const relativePath = path.relative(DOCS_DIR, filePath);
@@ -306,18 +306,18 @@ const SERVER_REDIRECTS = [
   { from: '/docs/SDK-API/experiment-get', to: '/docs/APIs-and-SDKs/SDK-API/experiment-get', type: 'server' },
 
   // Web Console - Configuration (1)
-  { from: '/docs/web-console-docs/settings', to: '/docs/web-console-docs/Configuration/settings', type: 'server' },
+  { from: '/docs/web-console-docs/settings', to: '/docs/web-console-docs/configuration/settings', type: 'server' },
 
   // Web Console - Users, Teams & Permissions (3)
-  { from: '/docs/web-console-docs/creating-and-managing-teams', to: '/docs/web-console-docs/Users-teams-Permissions/Teams', type: 'server' },
-  { from: '/docs/web-console-docs/managing-teams', to: '/docs/web-console-docs/Users-teams-Permissions/Teams', type: 'server' },
-  { from: '/docs/web-console-docs/ownership-and-permissions', to: '/docs/web-console-docs/Users-teams-Permissions/ownership-and-permissions', type: 'server' },
+  { from: '/docs/web-console-docs/creating-and-managing-teams', to: '/docs/web-console-docs/users-teams-permissions/teams', type: 'server' },
+  { from: '/docs/web-console-docs/managing-teams', to: '/docs/web-console-docs/users-teams-permissions/teams', type: 'server' },
+  { from: '/docs/web-console-docs/ownership-and-permissions', to: '/docs/web-console-docs/users-teams-permissions/ownership-and-permissions', type: 'server' },
 
   // Web Console - Experiments (8)
-  { from: '/docs/web-console-docs/Aborting-experiments', to: '/docs/web-console-docs/experiments/Aborting-experiments', type: 'server' },
-  { from: '/docs/web-console-docs/Experiment-health-checks', to: '/docs/web-console-docs/experiments/Experiment-health-checks', type: 'server' },
-  { from: '/docs/web-console-docs/Experiment-reports', to: '/docs/web-console-docs/experiments/Experiment-reports', type: 'server' },
-  { from: '/docs/web-console-docs/Interpreting-metrics-in-experiment-results', to: '/docs/web-console-docs/experiments/Interpreting-metrics-in-experiment-results', type: 'server' },
+  { from: '/docs/web-console-docs/Aborting-experiments', to: '/docs/web-console-docs/experiments/aborting-experiments', type: 'server' },
+  { from: '/docs/web-console-docs/Experiment-health-checks', to: '/docs/web-console-docs/experiments/experiment-health-checks', type: 'server' },
+  { from: '/docs/web-console-docs/Experiment-reports', to: '/docs/web-console-docs/experiments/experiment-reports', type: 'server' },
+  { from: '/docs/web-console-docs/Interpreting-metrics-in-experiment-results', to: '/docs/web-console-docs/experiments/interpreting-metrics-in-experiment-results', type: 'server' },
   { from: '/docs/web-console-docs/creating-an-experiment', to: '/docs/web-console-docs/experiments/creating-an-experiment', type: 'server' },
   { from: '/docs/web-console-docs/setting-up-a-fixed-horizon-experiment', to: '/docs/web-console-docs/experiments/setting-up-a-fixed-horizon-experiment', type: 'server' },
   { from: '/docs/web-console-docs/setting-up-a-gst-experiment', to: '/docs/web-console-docs/experiments/setting-up-a-gst-experiment', type: 'server' },
@@ -368,17 +368,17 @@ const ANCHOR_REDIRECTS = [
   { from: '/docs/web-console-docs/templates#introduction', to: '/docs/web-console-docs/experiments/templates#overview', type: 'js-transform' },
 
   // Managing teams - anchor renames
-  { from: '/docs/web-console-docs/managing-teams#creating-a-team', to: '/docs/web-console-docs/Users-teams-Permissions/Teams#create-a-team', type: 'js-transform' },
-  { from: '/docs/web-console-docs/managing-teams#viewing-the-company-hierarchy', to: '/docs/web-console-docs/Users-teams-Permissions/Teams#viewing-the-team-hierarchy', type: 'js-transform' },
-  { from: '/docs/web-console-docs/creating-and-managing-teams#creating-a-team', to: '/docs/web-console-docs/Users-teams-Permissions/Teams#create-a-team', type: 'js-transform' },
-  { from: '/docs/web-console-docs/creating-and-managing-teams#viewing-the-company-hierarchy', to: '/docs/web-console-docs/Users-teams-Permissions/Teams#viewing-the-team-hierarchy', type: 'js-transform' },
+  { from: '/docs/web-console-docs/managing-teams#creating-a-team', to: '/docs/web-console-docs/users-teams-permissions/teams#create-a-team', type: 'js-transform' },
+  { from: '/docs/web-console-docs/managing-teams#viewing-the-company-hierarchy', to: '/docs/web-console-docs/users-teams-permissions/teams#viewing-the-team-hierarchy', type: 'js-transform' },
+  { from: '/docs/web-console-docs/creating-and-managing-teams#creating-a-team', to: '/docs/web-console-docs/users-teams-permissions/teams#create-a-team', type: 'js-transform' },
+  { from: '/docs/web-console-docs/creating-and-managing-teams#viewing-the-company-hierarchy', to: '/docs/web-console-docs/users-teams-permissions/teams#viewing-the-team-hierarchy', type: 'js-transform' },
 
   // Settings - sections moved to separate pages
-  { from: '/docs/web-console-docs/settings#applications', to: '/docs/web-console-docs/Configuration/Applications', type: 'js-cross-page' },
-  { from: '/docs/web-console-docs/settings#units', to: '/docs/web-console-docs/Configuration/Units', type: 'js-cross-page' },
+  { from: '/docs/web-console-docs/settings#applications', to: '/docs/web-console-docs/configuration/applications', type: 'js-cross-page' },
+  { from: '/docs/web-console-docs/settings#units', to: '/docs/web-console-docs/configuration/units', type: 'js-cross-page' },
   { from: '/docs/web-console-docs/settings#goals', to: '/docs/web-console-docs/goals-and-metrics/goals/overview', type: 'js-cross-page' },
   { from: '/docs/web-console-docs/settings#metrics', to: '/docs/web-console-docs/goals-and-metrics/metrics/overview', type: 'js-cross-page' },
-  { from: '/docs/web-console-docs/settings#teams', to: '/docs/web-console-docs/Users-teams-Permissions/Teams', type: 'js-cross-page' },
+  { from: '/docs/web-console-docs/settings#teams', to: '/docs/web-console-docs/users-teams-permissions/teams', type: 'js-cross-page' },
 
   // Types-of-analysis - anchor renames
   { from: '/docs/web-console-docs/types-of-analysis#fixed-horizon-testing', to: '/docs/web-console-docs/experiments/overview#fixed-horizon', type: 'js-transform' },
@@ -409,9 +409,9 @@ const ANCHOR_PRESERVATION_TESTS = [
   { from: '/docs/web-console-docs/creating-an-experiment#metrics', to: '/docs/web-console-docs/experiments/creating-an-experiment#metrics', type: 'browser-preserved' },
   { from: '/docs/web-console-docs/creating-a-feature#variants', to: '/docs/web-console-docs/feature-flags/creating-a-feature#variants', type: 'browser-preserved' },
   { from: '/docs/web-console-docs/creating-a-feature#metrics', to: '/docs/web-console-docs/feature-flags/creating-a-feature#metrics', type: 'browser-preserved' },
-  { from: '/docs/web-console-docs/settings#custom-fields', to: '/docs/web-console-docs/Configuration/settings#custom-fields', type: 'browser-preserved' },
-  { from: '/docs/web-console-docs/Experiment-reports#experiment-velocity-report', to: '/docs/web-console-docs/experiments/Experiment-reports#experiment-velocity-report', type: 'browser-preserved' },
-  { from: '/docs/web-console-docs/Aborting-experiments#when-to-abort', to: '/docs/web-console-docs/experiments/Aborting-experiments#when-to-abort', type: 'browser-preserved' },
+  { from: '/docs/web-console-docs/settings#custom-fields', to: '/docs/web-console-docs/configuration/settings#custom-fields', type: 'browser-preserved' },
+  { from: '/docs/web-console-docs/Experiment-reports#experiment-velocity-report', to: '/docs/web-console-docs/experiments/experiment-reports#experiment-velocity-report', type: 'browser-preserved' },
+  { from: '/docs/web-console-docs/Aborting-experiments#when-to-abort', to: '/docs/web-console-docs/experiments/aborting-experiments#when-to-abort', type: 'browser-preserved' },
   { from: '/docs/web-console-docs/templates#what-are-templates', to: '/docs/web-console-docs/experiments/templates#what-are-templates', type: 'browser-preserved' },
 ];
 
@@ -432,15 +432,15 @@ const NEW_PATH_ANCHOR_TESTS = [
   { from: '/docs/web-console-docs/experiments/templates#introduction', to: '/docs/web-console-docs/experiments/templates#overview', type: 'js-new-path' },
 
   // Teams - new path anchor transforms
-  { from: '/docs/web-console-docs/Users-teams-Permissions/Teams#creating-a-team', to: '/docs/web-console-docs/Users-teams-Permissions/Teams#create-a-team', type: 'js-new-path' },
-  { from: '/docs/web-console-docs/Users-teams-Permissions/Teams#viewing-the-company-hierarchy', to: '/docs/web-console-docs/Users-teams-Permissions/Teams#viewing-the-team-hierarchy', type: 'js-new-path' },
+  { from: '/docs/web-console-docs/users-teams-permissions/teams#creating-a-team', to: '/docs/web-console-docs/users-teams-permissions/teams#create-a-team', type: 'js-new-path' },
+  { from: '/docs/web-console-docs/users-teams-permissions/teams#viewing-the-company-hierarchy', to: '/docs/web-console-docs/users-teams-permissions/teams#viewing-the-team-hierarchy', type: 'js-new-path' },
 
   // Settings - new path cross-page anchors
-  { from: '/docs/web-console-docs/Configuration/settings#applications', to: '/docs/web-console-docs/Configuration/Applications', type: 'js-new-path' },
-  { from: '/docs/web-console-docs/Configuration/settings#units', to: '/docs/web-console-docs/Configuration/Units', type: 'js-new-path' },
-  { from: '/docs/web-console-docs/Configuration/settings#goals', to: '/docs/web-console-docs/goals-and-metrics/goals/overview', type: 'js-new-path' },
-  { from: '/docs/web-console-docs/Configuration/settings#metrics', to: '/docs/web-console-docs/goals-and-metrics/metrics/overview', type: 'js-new-path' },
-  { from: '/docs/web-console-docs/Configuration/settings#teams', to: '/docs/web-console-docs/Users-teams-Permissions/Teams', type: 'js-new-path' },
+  { from: '/docs/web-console-docs/configuration/settings#applications', to: '/docs/web-console-docs/configuration/applications', type: 'js-new-path' },
+  { from: '/docs/web-console-docs/configuration/settings#units', to: '/docs/web-console-docs/configuration/units', type: 'js-new-path' },
+  { from: '/docs/web-console-docs/configuration/settings#goals', to: '/docs/web-console-docs/goals-and-metrics/goals/overview', type: 'js-new-path' },
+  { from: '/docs/web-console-docs/configuration/settings#metrics', to: '/docs/web-console-docs/goals-and-metrics/metrics/overview', type: 'js-new-path' },
+  { from: '/docs/web-console-docs/configuration/settings#teams', to: '/docs/web-console-docs/users-teams-permissions/teams', type: 'js-new-path' },
 
   // Experiments overview - new path anchor transforms
   { from: '/docs/web-console-docs/experiments/overview#fixed-horizon-testing', to: '/docs/web-console-docs/experiments/overview#fixed-horizon', type: 'js-new-path' },

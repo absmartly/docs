@@ -26,6 +26,7 @@
 # =============================================================================
 /docs/Examples /docs/APIs-and-SDKs/Web-Console-API/examples/ 302
 /docs/examples /docs/APIs-and-SDKs/Web-Console-API/examples/ 302
+/docs/Examples/Slack-Integration /docs/APIs-and-SDKs/Web-Console-API/examples/slack-integration/ 302
 /docs/Examples/* /docs/APIs-and-SDKs/Web-Console-API/examples/:splat 302
 /docs/examples/* /docs/APIs-and-SDKs/Web-Console-API/examples/:splat 302
 /docs/APIs-and-SDKs/Web-Console-API/Examples/Slack-Integration /docs/APIs-and-SDKs/Web-Console-API/examples/slack-integration/ 302
