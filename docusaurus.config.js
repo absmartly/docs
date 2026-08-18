@@ -1,8 +1,9 @@
 // @ts-checkdocus
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const { themes } = require("prism-react-renderer");
+const lightCodeTheme = themes.github;
+const darkCodeTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -30,6 +31,15 @@ const config = {
             tsx: true,
           },
           target: "es2017",
+          transform: {
+            // Must match Docusaurus's own Babel preset (runtime: 'automatic').
+            // Theme packages ship .js files containing JSX without a default
+            // React import, so SWC's classic runtime emits unbound
+            // React.createElement calls that throw during SSG.
+            react: {
+              runtime: "automatic",
+            },
+          },
         },
         module: {
           type: isServer ? "commonjs" : "es6",
@@ -57,7 +67,6 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/absmartly/docs/edit/master",
-          docLayoutComponent: "@theme/DocPage",
           docItemComponent: "@theme/ApiItem",
         },
         theme: {
