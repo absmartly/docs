@@ -62,7 +62,7 @@ Changing the aggregation period does not impact the data shown.
 The `Experiment velocity` report provides an overview of the experimentation program.
 It highlights how many experiments were started, running, completed and not completed in the reporting period.
 This report can be used to understand how the experimentation program is growing in terms of experiments started.
-More importantly it shows how many experiments were successfully completed (vs aborted or early full on).
+More importantly it shows how many experiments were successfully completed (vs aborted or early Full on).
 Only completed experiments can provide the evidence for making reliable and data-informed decisions.
 
 ### Permissions
@@ -107,14 +107,14 @@ Knowing that something does not have the expected impact on customer behaviour c
 
 <Image img="experiment-report/experiments-aborted.png" alt="Experiments not completed report" maxWidth="30rem" />
 
-`Experiment not completed` shows experiments which were **stopped** or put **full on** before they were completed. 
+`Experiment not completed` shows experiments which were **stopped** or put **Full on** before they were completed.
 
 In the case of **early stopped experiments** (also known as aborted experiments), the decisions to abort can happen because of bugs in the implementation, 
 early worrying negative signals, strategic reasons or for any other reason. 
 Depending on the reason for early stopping, aborted experiments are typically restarted once the underlying issue is fixed. 
 Read our [When to abort an experiment?](Aborting-experiments) guide to understand more about aborting experiments.
 
-While aborting experiments is common and part of the process, **early full on**, should be rare as they indicate that changes were pushed without supporting evidence.
+While aborting experiments is common and part of the process, **early Full on**, should be rare as they indicate that changes were pushed without supporting evidence.
 This can sometimes happen for strategic or legal reasons but because the experiment did not complete, it does not provide the reliable evidence needed to support or discard the underlying hypothesis.
 
 
@@ -122,7 +122,7 @@ This can sometimes happen for strategic or legal reasons but because the experim
 
 <Image img="experiment-report/experiments-completion-rate.png" alt="Experiments completion rate report" maxWidth="30rem" />
 
-This report shows the ratio of non-running experiments (completed + early full on + aborted) which were completed in the reporting period. 
+This report shows the ratio of non-running experiments (completed + early Full on + aborted) which were completed in the reporting period.
 This provides a good overview of the quality of the experimentation program and decisions which are based on those experiments.
 
 ## Decisions report
@@ -245,7 +245,7 @@ Depreciation affects the totals, the per-experiment breakdown and the chart. The
 
 <Image img="experiment-report/impact-total-estimated-impact.png" alt="Total estimated impact widget" maxWidth="40rem" />
 
-This widget shows the accumulated impact since full-on for all experiments in the reporting period, accounting for depreciation over time.
+This widget shows the accumulated impact since Full on for all experiments in the reporting period, accounting for depreciation over time.
 
 The headline figure is a `Likely range` rather than a single number, reflecting the statistical uncertainty of the underlying experiments.
 Hovering over the widget reveals the detail behind it:
@@ -254,7 +254,7 @@ Hovering over the widget reveals the detail behind it:
 - **Today's impact per day** — the rate at which impact is currently accruing
 - **Per-day range** — the confidence interval around that daily rate
 
-### Full-on experiments
+### Full on experiments
 
 This widget counts the experiments put `Full on` in the reporting period which contribute to the report, broken down by the direction of their result: how many were positive, how many negative and how many inconclusive.
 
@@ -272,10 +272,10 @@ The table shows the following columns:
 | Column | Description |
 | --- | --- |
 | `Experiment` | The experiment name, tagged to show whether the selected metric was `Primary` or `Secondary` for that experiment |
-| `Full-on date` | The date the experiment was put full on, from which its impact starts accruing |
+| `Full on date` | The date the experiment was put Full on, from which its impact starts accruing |
 | `Owners` | The experiment owners |
 | `Incremental per day` | The range of impact the experiment is currently contributing per day |
-| `Cumulative impact` | The range of impact accumulated since the full-on date |
+| `Cumulative impact` | The range of impact accumulated since the Full on date |
 
 A `Total` row aggregates all experiments, matching the [Total estimated impact](#total-estimated-impact) widget.
 
@@ -292,7 +292,7 @@ This is a normal and expected outcome, particularly for experiments which comple
 
 The `Impact over time` chart plots how impact has accumulated across the reporting period, and optionally projects it forward.
 
-Markers along the top of the chart indicate the point at which each experiment was put full on, showing which roll-outs drove which movements in the line.
+Markers along the top of the chart indicate the point at which each experiment was put Full on, showing which roll-outs drove which movements in the line.
 
 #### Chart controls
 
