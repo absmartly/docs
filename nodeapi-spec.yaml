@@ -865,6 +865,95 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ApiKey'
+    post:
+      operationId: ApiKeyCreate
+      summary: API Key CREATE
+      description: |
+        Creates an SDK API key.
+
+        **Required permissions**: `ApiKey Create` or `ApiKey Admin`.
+
+        The response contains the plaintext `key` exactly once. Store it securely when it is returned. Later API key responses expose `hashed_key` and `key_ending`, but never return the plaintext key again.
+
+        Permissions are supplied as a comma-separated string. The recognized values are:
+
+        - `request`: Required alongside an endpoint-specific permission for authenticated Collector API requests.
+        - `context`: Allows access to the context authentication check. Context creation and publishing require both `request` and `context`.
+        - `experiment`: Allows access to experiment data. Fetching experiment data requires both `request` and `experiment`.
+
+        Unrecognized values are stored but do not grant access to Collector endpoints.
+      requestBody:
+        required: true
+        description: The SDK API key to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyCreateRequest'
+            example:
+              name: Production SDK
+              description: Used by the production web application.
+              permissions: request,context,experiment
+      responses:
+        '200':
+          description: The API key was created successfully. This is the only response that includes the plaintext key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyCreateResponse'
+              example:
+                ok: true
+                api_key:
+                  id: 8
+                  name: Production SDK
+                  description: Used by the production web application.
+                  hashed_key: NrO+68FctJlcNvOBDqT4ETH2fAN7iyghYaRH2U+Cl0M=
+                  key_ending: Yz01
+                  permissions: request,context,experiment
+                  used_at: null
+                  created_at: '2026-09-04T10:15:30.000Z'
+                  created_by_user_id: 7
+                  created_by:
+                    archived: false
+                    email: developer@example.com
+                  updated_at: null
+                  updated_by_user_id: null
+                  updated_by: null
+                  key: AbCdEfGhIjKlMnOpQrStUvWxYz0123456789AbCdEfGhIjKlMnOpQrStUvWxYz01
+                errors: []
+        '400':
+          description: The request is invalid or a field exceeds its maximum length.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                ok: false
+                errors:
+                  - Argument 'name' is missing.
+        '401':
+          description: The User API key is missing or invalid.
+        '403':
+          description: The authenticated user does not have permission to create API keys.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: An API key with the same name already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                ok: false
+                errors:
+                  - An API Key with this name already exists.
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api_keys/{apiKeyId}:
     get:
       summary: API Key GET
@@ -931,6 +1020,82 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Application'
+    post:
+      operationId: ApplicationCreate
+      summary: Application CREATE
+      description: |
+        Creates an application that can be associated with experiments and metrics.
+
+        **Required permissions**: `Application Create` or `Application Admin`.
+
+        The application name must be unique. If `description` is omitted, it defaults to an empty string. If `archived` is omitted, it defaults to `false`.
+      requestBody:
+        required: true
+        description: The application to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationCreateRequest'
+            example:
+              name: web
+              description: Customer-facing web application.
+      responses:
+        '200':
+          description: The application was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationCreateResponse'
+              example:
+                ok: true
+                application:
+                  id: 5
+                  name: web
+                  description: Customer-facing web application.
+                  archived: false
+                  created_at: '2026-09-04T10:15:30.000Z'
+                  created_by_user_id: 7
+                  created_by:
+                    archived: false
+                    email: developer@example.com
+                  updated_at: null
+                  updated_by_user_id: null
+                  updated_by: null
+                errors: []
+        '400':
+          description: The request is invalid or a field exceeds its maximum length.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                ok: false
+                errors:
+                  - Argument 'name' is missing.
+        '401':
+          description: The User API key is missing or invalid.
+        '403':
+          description: The authenticated user does not have permission to create applications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: An application with the same name already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                ok: false
+                errors:
+                  - An Application with this name already exists.
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /applications/{applicationId}:
     get:
       summary: Application GET
@@ -1755,6 +1920,111 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Team'
+    post:
+      operationId: TeamCreate
+      summary: Team CREATE
+      description: |
+        Creates a team beneath an existing, active parent team.
+
+        **Required permissions**: `Team Create` or `Team Admin`. When access is granted through a team role rather than globally, the permission must apply to the selected parent team.
+
+        If `initials` is omitted, null, or empty, the API derives up to two initials from the team name and converts them to uppercase. If `color` is omitted, null, or empty, it defaults to `#60A5FA`.
+      requestBody:
+        required: true
+        description: The team to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamCreateRequest'
+            example:
+              name: Growth
+              initials: GR
+              color: '#7C3AED'
+              description: Runs acquisition and activation experiments.
+              parent_team_id: 1
+      responses:
+        '200':
+          description: The team was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamCreateResponse'
+              example:
+                ok: true
+                team:
+                  id: 12
+                  external_id: null
+                  name: Growth
+                  initials: GR
+                  color: '#7C3AED'
+                  description: Runs acquisition and activation experiments.
+                  avatar_file_upload_id: null
+                  archived: false
+                  parent_team_id: 1
+                  is_global_team: false
+                  created_at: '2026-09-04T10:15:30.000Z'
+                  created_by_user_id: 7
+                  created_by:
+                    archived: false
+                    email: developer@example.com
+                  updated_at: null
+                  updated_by_user_id: null
+                errors: []
+        '400':
+          description: The request is invalid, the parent team does not exist, or the parent team is archived.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingParent:
+                  summary: Missing parent team
+                  value:
+                    ok: false
+                    errors:
+                      - A parent team is required
+                parentNotFound:
+                  summary: Parent team not found
+                  value:
+                    ok: false
+                    errors:
+                      - Parent team not found
+                archivedParent:
+                  summary: Archived parent team
+                  value:
+                    ok: false
+                    errors:
+                      - Parent team is archived
+                missingName:
+                  summary: Missing name
+                  value:
+                    ok: false
+                    errors:
+                      - Name is required
+        '401':
+          description: The User API key is missing or invalid.
+        '403':
+          description: The authenticated user does not have permission to create a team under the selected parent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: A team with the same name already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                ok: false
+                errors:
+                  - A Team with this name already exists.
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /teams/{teamId}:
     get:
       summary: Team GET
@@ -3798,6 +4068,63 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExperimentExperimentTag'
+    TeamCreateRequest:
+      type: object
+      required:
+        - name
+        - parent_team_id
+      properties:
+        name:
+          type: string
+          maxLength: 256
+          pattern: '\S'
+          description: Unique team name. The value must contain at least one non-whitespace character.
+          example: Growth
+        initials:
+          type: string
+          maxLength: 2
+          nullable: true
+          description: Optional team initials. The API derives them from `name` when omitted, null, or empty and always stores them in uppercase.
+          example: GR
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+          nullable: true
+          default: '#60A5FA'
+          description: Team avatar color as a six-digit hexadecimal color including the leading `#`.
+          example: '#7C3AED'
+        description:
+          type: string
+          maxLength: 1024
+          nullable: true
+          description: The team's focus or mission.
+          example: Runs acquisition and activation experiments.
+        archived:
+          type: boolean
+          default: false
+          description: Whether to create the team in an archived state.
+        parent_team_id:
+          type: integer
+          minimum: 1
+          description: ID of the existing, active parent team.
+          example: 1
+    TeamCreateResponse:
+      type: object
+      required:
+        - ok
+        - team
+        - errors
+      properties:
+        ok:
+          type: boolean
+          enum:
+            - true
+        team:
+          $ref: '#/components/schemas/Team'
+        errors:
+          type: array
+          items:
+            type: string
     Team:
       type: object
       properties:
@@ -3808,14 +4135,45 @@ components:
           type: integer
         name:
           type: string
+          maxLength: 256
           example: Marketing
+        initials:
+          type: string
+          maxLength: 2
+          nullable: true
+          example: MA
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+          nullable: true
+          example: '#60A5FA'
+        description:
+          type: string
+          maxLength: 1024
+          nullable: true
+          example: Plans and runs marketing experiments.
+        avatar_file_upload_id:
+          type: integer
+          nullable: true
+        archived:
+          type: boolean
+          example: false
+        parent_team_id:
+          type: integer
+          nullable: true
+          example: 1
+        is_global_team:
+          type: boolean
+          example: false
         created_at:
           type: string
           format: date-time
         created_by:
           $ref: '#/components/schemas/User'
+          nullable: true
         created_by_user_id:
           type: integer
+          nullable: true
         updated_at:
           type: string
           format: date-time
@@ -4186,6 +4544,43 @@ components:
         application_version:
           type: integer
           format: bigint
+    ApplicationCreateRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          maxLength: 256
+          description: Unique application name.
+          example: web
+        description:
+          type: string
+          maxLength: 1024
+          default: ''
+          description: Purpose of the application.
+          example: Customer-facing web application.
+        archived:
+          type: boolean
+          default: false
+          description: Whether to create the application in an archived state.
+    ApplicationCreateResponse:
+      type: object
+      required:
+        - ok
+        - application
+        - errors
+      properties:
+        ok:
+          type: boolean
+          enum:
+            - true
+        application:
+          $ref: '#/components/schemas/Application'
+        errors:
+          type: array
+          items:
+            type: string
     Application:
       type: object
       properties:
@@ -4193,9 +4588,11 @@ components:
           type: integer
         name:
           type: string
+          maxLength: 256
           example: ios
         description:
           type: string
+          maxLength: 1024
           example: Our iOS app
         created_at:
           type: string
@@ -4567,23 +4964,101 @@ components:
           nullable: true
           type: string
           format: url
+    ApiKeyCreateRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          maxLength: 256
+          description: Unique name used to identify the API key.
+          example: Production SDK
+        description:
+          type: string
+          maxLength: 1024
+          default: ''
+          description: Purpose or owner of the API key.
+          example: Used by the production web application.
+        permissions:
+          type: string
+          maxLength: 1024
+          default: ''
+          description: Comma-separated Collector permissions. Recognized values are `request`, `context`, and `experiment`.
+          example: request,context,experiment
+    ApiKeyCreateResponse:
+      type: object
+      required:
+        - ok
+        - api_key
+        - errors
+      properties:
+        ok:
+          type: boolean
+          enum:
+            - true
+        api_key:
+          allOf:
+            - $ref: '#/components/schemas/ApiKey'
+            - type: object
+              required:
+                - key
+        errors:
+          type: array
+          items:
+            type: string
     ApiKey:
       type: object
+      required:
+        - id
+        - name
+        - description
+        - hashed_key
+        - key_ending
+        - permissions
+        - used_at
+        - created_at
+        - created_by_user_id
+        - created_by
+        - updated_at
+        - updated_by_user_id
+        - updated_by
       properties:
         id:
           type: integer
         name:
           type: string
-          example: All CRUD API Key
+          maxLength: 256
+          example: Production SDK
         description:
           type: string
-          example: An API key with all permissions
+          maxLength: 1024
+          example: Used by the production web application.
         key:
           type: string
-          format: uuid
+          minLength: 64
+          maxLength: 64
+          pattern: '^[A-Za-z0-9_-]{64}$'
+          readOnly: true
+          description: Plaintext API key. Returned only when the key is created.
+        hashed_key:
+          type: string
+          maxLength: 64
+          readOnly: true
+          description: Base64-encoded SHA-256 hash stored by ABsmartly.
+          example: NrO+68FctJlcNvOBDqT4ETH2fAN7iyghYaRH2U+Cl0M=
+        key_ending:
+          type: string
+          minLength: 4
+          maxLength: 4
+          readOnly: true
+          description: Last four characters of the plaintext key, used to identify it after creation.
+          example: Yz01
         permissions:
           type: string
-          pattern: create,edit,delete,read
+          maxLength: 1024
+          description: Comma-separated Collector permissions.
+          example: request,context,experiment
         used_at:
           nullable: true
           type: string
@@ -4601,6 +5076,9 @@ components:
           nullable: true
           type: integer
         created_by:
+          $ref: '#/components/schemas/User'
+        updated_by:
+          nullable: true
           $ref: '#/components/schemas/User'
     CORS:
       type: object

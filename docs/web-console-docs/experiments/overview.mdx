@@ -39,7 +39,7 @@ When a user reaches an experiment, ABsmartly assigns them to a variant using a d
 - consistent behaviour during the entire experiment
 - predictable control of traffic allocation
 
-[Exposure events](../Events/exposure-events) are sent automatically by the SDK, and these events define when users become part of the analysis dataset.
+[Exposure events](../events/exposure-events) are sent automatically by the SDK, and these events define when users become part of the analysis dataset.
 
 ### Variants
 
@@ -65,7 +65,7 @@ context.track("add_to_cart", { product_id: "ABC123" });
 context.track("view_item", { item_id: "XYZ987" });
 ```
 
-Metrics take your [goal events](../Events/goal-events) and turn them into meaningful measurements of user behaviour. 
+Metrics take your [goal events](../events/goal-events) and turn them into meaningful measurements of user behaviour. 
 They let you answer questions like:
 
 - how many times something happened
@@ -77,14 +77,14 @@ ABsmartly handles all the computation and presents the results in a clear, compa
 
 ### Guardrails and monitoring
 
-Before experiment results can be trusted, ABsmartly performs several [health checks](Experiment-health-checks) automatically:
+Before experiment results can be trusted, ABsmartly performs several [health checks](experiment-health-checks) automatically:
 - Sample Ratio Mismatch at the experiment level
 - assignment and exposure conflicts
 - guardrail metric thresholds
 - unexpected behaviour in exposure or goal events
 - data quality anomalies
 
-Guardrails help detect harmful side effects and make it possible to [abort experiments](Aborting-experiments) if needed.
+Guardrails help detect harmful side effects and make it possible to [abort experiments](aborting-experiments) if needed.
 
 You can also configure guardrail metrics with [thresholds](../goals-and-metrics/metrics/create#metric-threshold-alert) that alert you when impact crosses meaningful limits, 
 for example when a performance metric becomes slower or when a business KPI shows a potential drop.

@@ -22,12 +22,15 @@
 /docs/getting-started /docs/APIs-and-SDKs/SDK-Documentation/getting-started/ 302
 
 # =============================================================================
-# Examples (docs/Examples/* → docs/APIs-and-SDKs/Web-Console-API/Examples/*)
+# Examples (docs/Examples/* → docs/APIs-and-SDKs/Web-Console-API/examples/*)
 # =============================================================================
-/docs/Examples /docs/APIs-and-SDKs/Web-Console-API/Examples/ 302
-/docs/examples /docs/APIs-and-SDKs/Web-Console-API/Examples/ 302
-/docs/Examples/* /docs/APIs-and-SDKs/Web-Console-API/Examples/:splat 302
-/docs/examples/* /docs/APIs-and-SDKs/Web-Console-API/Examples/:splat 302
+/docs/Examples /docs/APIs-and-SDKs/Web-Console-API/examples/ 302
+/docs/examples /docs/APIs-and-SDKs/Web-Console-API/examples/ 302
+/docs/Examples/Slack-Integration /docs/APIs-and-SDKs/Web-Console-API/examples/slack-integration/ 302
+/docs/Examples/* /docs/APIs-and-SDKs/Web-Console-API/examples/:splat 302
+/docs/examples/* /docs/APIs-and-SDKs/Web-Console-API/examples/:splat 302
+/docs/APIs-and-SDKs/Web-Console-API/Examples/Slack-Integration /docs/APIs-and-SDKs/Web-Console-API/examples/slack-integration/ 302
+/docs/APIs-and-SDKs/Web-Console-API/Examples/* /docs/APIs-and-SDKs/Web-Console-API/examples/:splat 302
 
 # =============================================================================
 # Onboarding/SSO → Third-party-integrations/SSO
@@ -111,22 +114,43 @@
 # =============================================================================
 # Web Console - Configuration
 # =============================================================================
-/docs/web-console-docs/settings /docs/web-console-docs/Configuration/settings/ 302
+/docs/web-console-docs/settings /docs/web-console-docs/configuration/settings/ 302
+/docs/web-console-docs/Configuration/applications /docs/web-console-docs/configuration/applications/ 302
+/docs/web-console-docs/Configuration/settings /docs/web-console-docs/configuration/settings/ 302
+/docs/web-console-docs/Configuration/units /docs/web-console-docs/configuration/units/ 302
+
+# =============================================================================
+# Web Console - Events
+# =============================================================================
+/docs/web-console-docs/Events/downloading-events /docs/web-console-docs/events/downloading-events/ 302
+/docs/web-console-docs/Events/exposure-events /docs/web-console-docs/events/exposure-events/ 302
+/docs/web-console-docs/Events/goal-events /docs/web-console-docs/events/goal-events/ 302
+/docs/web-console-docs/Events/overview /docs/web-console-docs/events/overview/ 302
+/docs/web-console-docs/Events/settings /docs/web-console-docs/events/settings/ 302
+/docs/web-console-docs/Events/the-events-page /docs/web-console-docs/events/the-events-page/ 302
+/docs/web-console-docs/Events/visitors-identity /docs/web-console-docs/events/visitors-identity/ 302
 
 # =============================================================================
 # Web Console - Users, Teams & Permissions
 # =============================================================================
-/docs/web-console-docs/creating-and-managing-teams /docs/web-console-docs/Users-teams-Permissions/Teams/ 302
-/docs/web-console-docs/managing-teams /docs/web-console-docs/Users-teams-Permissions/Teams/ 302
-/docs/web-console-docs/ownership-and-permissions /docs/web-console-docs/Users-teams-Permissions/ownership-and-permissions/ 302
+/docs/web-console-docs/creating-and-managing-teams /docs/web-console-docs/users-teams-permissions/teams/ 302
+/docs/web-console-docs/managing-teams /docs/web-console-docs/users-teams-permissions/teams/ 302
+/docs/web-console-docs/ownership-and-permissions /docs/web-console-docs/users-teams-permissions/ownership-and-permissions/ 302
+/docs/web-console-docs/Users-teams-Permissions/ownership-and-permissions /docs/web-console-docs/users-teams-permissions/ownership-and-permissions/ 302
+/docs/web-console-docs/Users-teams-Permissions/Roles /docs/web-console-docs/users-teams-permissions/roles/ 302
+/docs/web-console-docs/Users-teams-Permissions/Teams /docs/web-console-docs/users-teams-permissions/teams/ 302
 
 # =============================================================================
 # Web Console - Experiments
 # =============================================================================
-/docs/web-console-docs/Aborting-experiments /docs/web-console-docs/experiments/Aborting-experiments/ 302
-/docs/web-console-docs/Experiment-health-checks /docs/web-console-docs/experiments/Experiment-health-checks/ 302
-/docs/web-console-docs/Experiment-reports /docs/web-console-docs/experiments/Experiment-reports/ 302
-/docs/web-console-docs/Interpreting-metrics-in-experiment-results /docs/web-console-docs/experiments/Interpreting-metrics-in-experiment-results/ 302
+/docs/web-console-docs/Aborting-experiments /docs/web-console-docs/experiments/aborting-experiments/ 302
+/docs/web-console-docs/Experiment-health-checks /docs/web-console-docs/experiments/experiment-health-checks/ 302
+/docs/web-console-docs/Experiment-reports /docs/web-console-docs/experiments/experiment-reports/ 302
+/docs/web-console-docs/Interpreting-metrics-in-experiment-results /docs/web-console-docs/experiments/interpreting-metrics-in-experiment-results/ 302
+/docs/web-console-docs/experiments/Aborting-experiments /docs/web-console-docs/experiments/aborting-experiments/ 302
+/docs/web-console-docs/experiments/Experiment-health-checks /docs/web-console-docs/experiments/experiment-health-checks/ 302
+/docs/web-console-docs/experiments/Experiment-reports /docs/web-console-docs/experiments/experiment-reports/ 302
+/docs/web-console-docs/experiments/Interpreting-metrics-in-experiment-results /docs/web-console-docs/experiments/interpreting-metrics-in-experiment-results/ 302
 /docs/web-console-docs/creating-an-experiment /docs/web-console-docs/experiments/creating-an-experiment/ 302
 /docs/web-console-docs/setting-up-a-fixed-horizon-experiment /docs/web-console-docs/experiments/setting-up-a-fixed-horizon-experiment/ 302
 /docs/web-console-docs/setting-up-a-gst-experiment /docs/web-console-docs/experiments/setting-up-a-gst-experiment/ 302
