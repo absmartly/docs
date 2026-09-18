@@ -18,6 +18,38 @@ $ yarn start
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
+### API Docs
+
+The Web Console API reference docs are generated from the OpenAPI spec shipped by the
+[`@absmartly/api-mocks`](https://www.npmjs.com/package/@absmartly/api-mocks) package. The
+`docusaurus-plugin-openapi-docs` `nodeapi` config points at
+`node_modules/@absmartly/api-mocks/openapi/openapi.bundle.yaml`, so `yarn install` pulls the
+latest published spec.
+
+To regenerate the API docs after upgrading the package or changing the spec:
+
+```
+$ yarn gen:api
+```
+
+#### Developing against the local `absmartly-api-mocks` repo
+
+If you are iterating on the API spec in the sibling `absmartly-api-mocks` repo and want the docs
+site to pick up your local changes, link the package instead of using the published one:
+
+```
+# from the absmartly-api-mocks repo
+$ cd ../absmartly-api-mocks
+$ npm link
+
+# back in the docs repo
+$ cd -
+$ npm link @absmartly/api-mocks
+```
+
+Then regenerate the docs (`yarn gen:api`). Run `npm unlink @absmartly/api-mocks` to go back to the
+published package.
+
 ### Build
 
 ```

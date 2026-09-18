@@ -108,7 +108,7 @@ const config = {
             },
           },
           nodeapi: {
-            specPath: "nodeapi-spec.yaml",
+            specPath: "node_modules/@absmartly/api-mocks/openapi/openapi.bundle.yaml",
             outputDir: "docs/APIs-and-SDKs/Web-Console-API", // Output directory for generated .mdx docs
             sidebarOptions: {
               sidebarCollapsible: false,
