@@ -107,6 +107,10 @@
 /docs/web-console-api /docs/APIs-and-SDKs/Web-Console-API/ 302
 /docs/Web-Console-API /docs/APIs-and-SDKs/Web-Console-API/ 302
 
+# Old overview page was named "backend" (from the previous spec's info.title);
+# the @absmartly/api-mocks spec titles it "ABsmartly Web Console API".
+/docs/APIs-and-SDKs/Web-Console-API/backend /docs/APIs-and-SDKs/Web-Console-API/absmartly-web-console-api 302
+
 # General splat rule (catches all other paths that don't need transformation)
 /docs/web-console-api/* /docs/APIs-and-SDKs/Web-Console-API/:splat 302
 /docs/Web-Console-API/* /docs/APIs-and-SDKs/Web-Console-API/:splat 302

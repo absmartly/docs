@@ -135,7 +135,7 @@ function findAllMdxFiles(dir) {
   return files;
 }
 
-// ALL SERVER-SIDE REDIRECTS (from static/_redirects) - 169 total
+// ALL SERVER-SIDE REDIRECTS (from static/_redirects) - 170 total
 const SERVER_REDIRECTS = [
   // SDK Documentation moves - PascalCase (10)
   { from: '/docs/SDK-Documentation/Advanced/code-as-a-variant-variable', to: '/docs/APIs-and-SDKs/SDK-Documentation/Advanced/code-as-a-variant-variable', type: 'server' },
@@ -196,6 +196,8 @@ const SERVER_REDIRECTS = [
   { from: '/docs/API/experiment-get', to: '/docs/APIs-and-SDKs/SDK-API/experiment-get', type: 'server' },
 
   // Web Console API - current naming (49)
+  // Old overview page was named "backend"; renamed when the spec moved to @absmartly/api-mocks
+  { from: '/docs/APIs-and-SDKs/Web-Console-API/backend', to: '/docs/APIs-and-SDKs/Web-Console-API/absmartly-web-console-api', type: 'server' },
   { from: '/docs/web-console-api/absmartly-web-console-api', to: '/docs/APIs-and-SDKs/Web-Console-API/absmartly-web-console-api', type: 'server' },
   { from: '/docs/web-console-api/api-key-get', to: '/docs/APIs-and-SDKs/Web-Console-API/api-key-get', type: 'server' },
   { from: '/docs/web-console-api/api-keys-list', to: '/docs/APIs-and-SDKs/Web-Console-API/api-keys-list', type: 'server' },
