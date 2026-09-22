@@ -1,0 +1,81 @@
+---
+sidebar_position: 6
+---
+
+import Image from "../../../src/components/Image";
+
+# Personal API Keys
+
+Every user can create their own personal API keys from their user profile. A personal API key
+authenticates as that specific user and is commonly used for the [ABsmartly CLI](/docs/APIs-and-SDKs/CLI-Documentation/authentication),
+scripts, and other tools that need to act on a user's behalf.
+
+:::info Personal keys vs. application API keys
+Personal API keys are different from the application/SDK API keys managed under
+[Settings > API Keys](/docs/web-console-docs/configuration/settings#api-keys). Application API
+keys authenticate the ABsmartly SDKs and are scoped to specific permissions (SDK requests, SDK
+context endpoint, fetching experiment data). Personal API keys authenticate as a user and carry
+that user's own permissions — they don't have separate scopes to configure.
+:::
+
+## Creating a Personal API Key
+
+1. Click on your user avatar in the bottom of the left-hand navigation.
+
+<Image
+    img="user-profile/avatar-menu.png"
+    alt="The user avatar menu open, showing a Profile option and a Sign out option."
+    maxWidth={800}
+    centered={true}
+/>
+
+2. Click **Profile** to go to your user profile page.
+
+<Image
+    img="user-profile/profile-page.png"
+    alt="The User profile page, showing General details (user picture, first name, last name, email) and Company info fields."
+    maxWidth={800}
+    centered={true}
+/>
+
+3. Scroll down to the **API keys** section.
+
+<Image
+    img="user-profile/api-keys-section.png"
+    alt="The API keys section of the user profile page, with a search field, a Create API key button, and a table listing existing keys."
+    maxWidth={800}
+    centered={true}
+/>
+
+4. Click **Create API key**. In the **Add API key** dialog, give the key a **Key name** and an
+   optional **Description** to help you identify what it's used for.
+
+<Image
+    img="user-profile/create-api-key-dialog-filled.png"
+    alt="The Add API key dialog filled in with a key name of 'Docs Example Key' and a description."
+    maxWidth={800}
+    centered={true}
+/>
+
+5. Click **Create API key**. The key's value is shown once — copy it now using the copy button
+   next to it, since you won't be able to see it again after closing this dialog.
+
+<Image
+    img="user-profile/api-key-created.png"
+    alt="The API key created dialog, showing the raw key value with a warning that it will only be shown once, a copy button, and an 'I have saved the key' button."
+    maxWidth={800}
+    centered={true}
+/>
+
+6. Click **I have saved the key** to close the dialog. Your new key now appears in the API keys
+   list, with its value masked.
+
+<Image
+    img="user-profile/api-key-in-list.png"
+    alt="The API keys table showing the newly created key with its name and description, a masked key value, and edit/delete action icons."
+    maxWidth={800}
+    centered={true}
+/>
+
+From the list you can also edit a key's name and description, or delete it, using the action
+icons on the right of each row.
