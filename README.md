@@ -20,11 +20,12 @@ This command starts a local development server and opens up a browser window. Mo
 
 ### API Docs
 
-The Web Console API reference docs are generated from the OpenAPI spec shipped by the
+The Web Console API reference docs are generated from the bundled OpenAPI spec shipped by the
 [`@absmartly/api-mocks`](https://www.npmjs.com/package/@absmartly/api-mocks) package. The
 `docusaurus-plugin-openapi-docs` `nodeapi` config points at
-`node_modules/@absmartly/api-mocks/openapi/openapi.bundle.yaml`, so `yarn install` pulls the
-latest published spec.
+`node_modules/@absmartly/api-mocks/openapi/openapi.bundle.yaml`. The package is pinned to a
+specific version in `package.json` (currently `1.0.8`), so `yarn install` fetches that pinned
+spec — to pick up a newer spec, bump the `@absmartly/api-mocks` version in `package.json` first.
 
 To regenerate the API docs after upgrading the package or changing the spec:
 
@@ -47,8 +48,14 @@ $ cd -
 $ npm link @absmartly/api-mocks
 ```
 
-Then regenerate the docs (`yarn gen:api`). Run `npm unlink @absmartly/api-mocks` to go back to the
-published package.
+Then regenerate the docs (`yarn gen:api`). To go back to the pinned published package, unlink
+without saving (so the dependency stays in `package.json`) and reinstall:
+
+```
+$ npm unlink @absmartly/api-mocks --no-save
+$ yarn install
+$ yarn gen:api
+```
 
 ### Build
 

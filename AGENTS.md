@@ -39,7 +39,14 @@ npm link @absmartly/api-mocks
 yarn gen:api
 ```
 
-Run `npm unlink @absmartly/api-mocks` to return to the published package.
+To return to the pinned published package, unlink without saving (so the dependency stays in
+`package.json`) and reinstall:
+
+```bash
+npm unlink @absmartly/api-mocks --no-save
+yarn install
+yarn gen:api
+```
 
 ## Notes
 
