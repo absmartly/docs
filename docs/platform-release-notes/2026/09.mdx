@@ -39,13 +39,14 @@ We're particularly interested in how you're using depreciation, and whether the 
 
 ## Experiment Analysis
 
-### Improved corrections for multi-variant experiments
+### Improved corrections for multi-variant Fixed Horizon experiments
 
-When an experiment compares several treatment variants against the same control, each comparison adds a chance of a false positive. This release corrects how that is handled for **Fixed Horizon** experiments.
+When an experiment compares several treatment variants against the same control, each comparison adds a chance of a false positive. 
+This release improved how that is handled for Fixed Horizon experiments so it aligns with the Group Sequential Test approach.
 
-Sample size and power calculations now use the same Dunnett-corrected threshold that the results are actually tested against. Previously the two were calculated differently, so a multi-variant experiment reached its target sample size while being underpowered for the comparison it was making. A three-variant experiment requesting 80% power was achieving roughly 71%.
-
-The reported point estimate is now taken directly from the observed treatment effect. Previously it was reconstructed from the corrected p-value, which in some cases displayed an effect with the wrong sign and a magnitude several times larger than the real one. The distortion was worst where the evidence was weakest.
+The reported point estimate is now taken directly from the observed treatment effect. 
+Previously it was reconstructed from the corrected p-value, which in some cases displayed an effect with the wrong sign and a magnitude several times larger than the real one. 
+The distortion was worst where the evidence was weakest.
 
 Two-variant experiments are unaffected.
 
@@ -65,7 +66,7 @@ The label describes the data in the table, not the experiment's configuration. O
 
 ### Up to 20 analyses for Group Sequential Tests
 
-A GST analysis plan may now include up to **20 interim analyses**, up from 11 previously. More analyses mean more opportunities to stop early, at the cost of slightly less information per look.
+A GST analysis plan may now include up to **20 interim analyses**, up from 11 previously. More analyses mean more opportunities to stop early.
 
 ---
 
@@ -93,9 +94,10 @@ This form is still evolving and your feedback decides where it goes next. Tell u
 If you switch back to the classic form, we'd especially like to know why, since that's the clearest signal of what still needs work. Reach out via your usual support channel or [drop us a line](mailto:support@absmartly.com).
 :::
 
-### Experiment payload limits
+### Experiment payload limits for better performance
 
-Large experiment configurations can affect the performance of the context endpoint that serves them. This release introduces configurable size limits on the parts of an experiment which tend to grow:
+The performance of the client can be affected when several experiments with large payload are running at the same time.
+This release introduces configurable size limits on the parts of an experiment:
 
 | Experiment data | Default limit |
 | --- | ---: |
