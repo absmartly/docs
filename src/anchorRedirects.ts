@@ -34,11 +34,11 @@ const ANCHOR_REDIRECTS: AnchorRedirects = {
     'viewing-the-company-hierarchy': 'viewing-the-team-hierarchy',
   },
   '/docs/web-console-docs/configuration/settings': {
-    'applications': '/docs/web-console-docs/Configuration/Applications',
-    'units': '/docs/web-console-docs/Configuration/Units',
+    'applications': '/docs/web-console-docs/configuration/applications',
+    'units': '/docs/web-console-docs/configuration/units',
     'goals': '/docs/web-console-docs/goals-and-metrics/goals/overview',
     'metrics': '/docs/web-console-docs/goals-and-metrics/metrics/overview',
-    'teams': '/docs/web-console-docs/Users-teams-Permissions/Teams',
+    'teams': '/docs/web-console-docs/users-teams-permissions/teams',
   },
   '/docs/web-console-docs/experiments/overview': {
     'fixed-horizon-testing': 'fixed-horizon',
@@ -82,19 +82,19 @@ const ANCHOR_REDIRECTS: AnchorRedirects = {
     'introduction': '/docs/web-console-docs/experiments/templates#overview',
   },
   '/docs/web-console-docs/managing-teams': {
-    'creating-a-team': '/docs/web-console-docs/Users-teams-Permissions/Teams#create-a-team',
-    'viewing-the-company-hierarchy': '/docs/web-console-docs/Users-teams-Permissions/Teams#viewing-the-team-hierarchy',
+    'creating-a-team': '/docs/web-console-docs/users-teams-permissions/teams#create-a-team',
+    'viewing-the-company-hierarchy': '/docs/web-console-docs/users-teams-permissions/teams#viewing-the-team-hierarchy',
   },
   '/docs/web-console-docs/creating-and-managing-teams': {
-    'creating-a-team': '/docs/web-console-docs/Users-teams-Permissions/Teams#create-a-team',
-    'viewing-the-company-hierarchy': '/docs/web-console-docs/Users-teams-Permissions/Teams#viewing-the-team-hierarchy',
+    'creating-a-team': '/docs/web-console-docs/users-teams-permissions/teams#create-a-team',
+    'viewing-the-company-hierarchy': '/docs/web-console-docs/users-teams-permissions/teams#viewing-the-team-hierarchy',
   },
   '/docs/web-console-docs/settings': {
-    'applications': '/docs/web-console-docs/Configuration/Applications',
-    'units': '/docs/web-console-docs/Configuration/Units',
+    'applications': '/docs/web-console-docs/configuration/applications',
+    'units': '/docs/web-console-docs/configuration/units',
     'goals': '/docs/web-console-docs/goals-and-metrics/goals/overview',
     'metrics': '/docs/web-console-docs/goals-and-metrics/metrics/overview',
-    'teams': '/docs/web-console-docs/Users-teams-Permissions/Teams',
+    'teams': '/docs/web-console-docs/users-teams-permissions/teams',
   },
   '/docs/web-console-docs/types-of-analysis': {
     'fixed-horizon-testing': '/docs/web-console-docs/experiments/overview#fixed-horizon',

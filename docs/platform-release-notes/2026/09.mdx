@@ -1,0 +1,175 @@
+# September 2026
+
+## Overview
+
+This release brings the **Impact report** to beta, giving teams a view of the cumulative value their experimentation programme has delivered. Alongside it, several improvements to how experiments are analysed: **corrections for multi-variant experiments**, a new **analysis overview on every metric table**, and support for up to **20 analyses** in a Group Sequential Test.
+
+On the experiment management side, the **redesigned experiment form** opens up as a beta to everyone, **payload limits** keep experiment configurations within supported sizes, and a new **recompute** action rebuilds an experiment's results from its retained event history.
+
+The **Metric Usage Report** is now on by default for every account, and **experiments and feature flags no longer share a single set of permissions**.
+
+Three of the features in this release are in beta, and all three are still being shaped by what you tell us. We want to hear what you like as much as what you don't, and above all what you'd like to see next.
+
+---
+
+## Impact Report (Beta)
+
+The new **Impact** tab on the Reports page estimates the cumulative impact your experimentation programme has delivered. Where the Velocity report counts experiments and the Decisions report records what was decided, the Impact report estimates what those decisions were worth.
+
+The report covers experiments which were put `Full on` in the reporting period, and for a selected metric it shows:
+
+- The total estimated impact, expressed as a likely range rather than a single number
+- How many contributing experiments were positive, negative or inconclusive
+- A per-experiment breakdown with incremental and cumulative contributions
+- How impact has accumulated over time, with optional forecasting
+
+Because an experiment's effect rarely persists unchanged forever, a configurable **depreciation** rate applies a monthly decay to the estimate. The raw undepreciated figures stay visible on the chart for comparison.
+
+Access requires the `Experiment reports` > `View impact` permission.
+
+See the [Impact report documentation](/docs/web-console-docs/experiments/experiment-reports#impact-report) for details on metric selection, depreciation and reading the chart.
+
+:::info Beta: we'd love your feedback
+The Impact report is in beta and we are actively shaping what it becomes. Tell us what works, what doesn't, and what you'd like to see next: which figures you rely on, which ones you don't trust yet, and what's missing before this becomes the number you'd put in front of your leadership team.
+
+We're particularly interested in how you're using depreciation, and whether the forecast is useful or just noise. Reach out via your usual support channel or [drop us a line](mailto:support@absmartly.com).
+:::
+
+---
+
+## Experiment Analysis
+
+### Improved corrections for multi-variant Fixed Horizon experiments
+
+When an experiment compares several treatment variants against the same control, each comparison adds a chance of a false positive. 
+This release improved how that is handled for Fixed Horizon experiments so it aligns with the Group Sequential Test approach.
+
+The reported point estimate is now taken directly from the observed treatment effect. 
+Previously it was reconstructed from the corrected p-value, which in some cases displayed an effect with the wrong sign and a magnitude several times larger than the real one. 
+The distortion was worst where the evidence was weakest.
+
+Two-variant experiments are unaffected.
+
+### Analysis configuration on metric tables
+
+Every metric table now shows which statistical test produced the numbers in it, in the top right of the table header. Previously you had to open the experiment's edit form to find out.
+
+Hovering or focusing the label opens an **Analysis configuration** tooltip with the full detail:
+
+- The test type: `Fixed horizon` or `Group sequential`
+- Sidedness and significance level
+- Confidence level
+- Power
+- Minimum detectable effect, where one is available
+
+The label describes the data in the table, not the experiment's configuration. On the Overview tab it follows the GST switch, so a Group Sequential primary metric reads `Group sequential` with the switch on and `Fixed horizon` with it off. The Explore metrics tab always shows live fixed-horizon numbers, so the label reads `Fixed horizon` there.
+
+### Up to 20 analyses for Group Sequential Tests
+
+A GST analysis plan may now include up to **20 interim analyses**, up from 11 previously. More analyses mean more opportunities to stop early.
+
+---
+
+## Experiment Management
+
+### Redesigned experiment form open beta
+
+The redesigned experiment form is now available as an **open beta** to all customers, and each user can choose which version to use.
+
+Previously the beta was an all-or-nothing switch per account: once an admin turned it on, everyone moved to the new form with no way back, and a single blocker meant disabling it for the whole organisation. Now a banner on both versions lets each user switch between them. The preference is stored per browser, so it does not follow you across devices, and the account-level setting remains the master switch.
+
+This release also includes a number of improvements from early beta feedback:
+
+- Archived primary metrics are now visible and correctly block submission
+- The Cancel and Save footer stays pinned on short viewports instead of floating mid-page
+- Saving a draft can no longer be submitted twice at once
+- Fixed Horizon experiments with an uneven split no longer submit invalid futility fields
+- Consistent spacing between dropdown triggers and their popovers
+
+The classic form remains available, and we are still collecting feedback before making the new form the default.
+
+:::info Beta: we'd love your feedback
+This form is still evolving and your feedback decides where it goes next. Tell us what you like about it as well as what gets in your way: the fixes listed above all came from early beta users telling us what was wrong.
+
+If you switch back to the classic form, we'd especially like to know why, since that's the clearest signal of what still needs work. Reach out via your usual support channel or [drop us a line](mailto:support@absmartly.com).
+:::
+
+### Experiment payload limits for better performance
+
+The performance of the client can be affected when several experiments with large payload are running at the same time.
+This release introduces configurable size limits on the parts of an experiment:
+
+| Experiment data | Default limit |
+| --- | ---: |
+| Configuration for a single variant | 32 KB |
+| Configuration across all variants | 64 KB |
+| Custom section field values | 8 KB |
+| Audience configuration | 8 KB |
+| Combined governed experiment data | 68 KB |
+
+Both experiment forms check these limits before saving and show a clear error when a configuration is too large. The API applies the same validation when creating or updating an experiment.
+
+Experiments which already exceed a limit keep working. They can be started, stopped, restarted and edited, and the oversized field can be reduced, but it cannot grow any further.
+
+### Recompute experiment results
+
+Authorised users can now **recompute** an experiment, rebuilding its results from the event history ABsmartly has retained. This is useful when the underlying data or its processing has been corrected and you want the experiment's results to reflect that without restarting it and losing the data collected so far.
+
+**Recompute** sits in the experiment's **Actions** menu and can carry an optional reason. The request moves through queued and running states, and the existing results stay visible the whole time. When the new results are ready they replace the old ones in a single update, and any alerts or recommended actions which no longer apply are marked as superseded in the Activity tab rather than disappearing.
+
+If a recompute fails, the previous results remain in place and the request can be retried.
+
+Recompute applies to experiments only, requires the `Experiment:Recompute` permission, and is unavailable once an experiment's data has been retired.
+
+---
+
+## Metrics
+
+### Metric Usage Report enabled by default
+
+The **Metric Usage Report**, [introduced as an opt-in beta in June](06#metric-usage-report-beta), is now enabled by default for every account. There is no longer a step in Platform Settings to turn it on.
+
+The report answers, at a glance, where a metric is being used, by whom, and how that is changing over time, with a usage summary panel, a list of the experiments and features using the metric, and an adoption chart with metric version releases marked on it.
+
+The report remains in beta while we continue collecting feedback, and can still be turned off from Platform Settings if you would rather wait.
+
+:::info Beta: we'd love your feedback
+Now that everyone has the Usage Report, we want to hear what you make of it: which views you actually use, what you like, and what you'd want added before it leaves beta. Reach out via your usual support channel or [drop us a line](mailto:support@absmartly.com).
+:::
+
+---
+
+## Permissions
+
+### Separate permissions for experiments and feature flags
+
+Experiments and feature flags have historically shared a single set of permissions. For teams where the two are managed by different people, that made it impossible to grant someone access to feature flags without also granting the equivalent access to experiments.
+
+The two are now scoped separately. Permissions apply independently across creating and editing, lifecycle actions such as starting and stopping, scheduled actions, metrics and activity, so a role can grant access to one without the other. Restarting an experiment as a feature, or a feature as an experiment, checks that you are authorised for both.
+
+Account admins may want to review their role configuration to confirm each role grants the access they intend under the separated permissions.
+
+See the [Roles documentation](/docs/web-console-docs/users-teams-permissions/roles) for the full permission list.
+
+---
+
+## Bug Fixes
+
+This release also includes a number of security, stability and reliability improvements, including:
+
+- SAML just-in-time provisioning no longer drops a single-valued roles attribute, which previously left affected users with only the default role
+- Users are no longer signed out after 24 hours despite continued activity
+- The Export data page and experiment exports now check the right permissions
+- Experiment exports now authorise against the experiment being downloaded
+- Group Sequential information is no longer missing from experiment list previews
+- Segment filters with no values selected no longer return a server error
+- The Metrics page no longer crashes when the browser translates the page
+- Data source column mappings are no longer discarded when saving a table with its default name
+- Select and multi-select controls now close consistently without clearing the current selection
+- Collapsed activity threads can be expanded without needing permission to comment
+
+---
+
+## Questions or Feedback?
+
+We're always happy to help, so reach out if you have any questions or want to explore how to make the most of these new capabilities.
