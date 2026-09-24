@@ -109,11 +109,28 @@ Unless it was disabled, users with the `Team Contributor` role can start/stop/fu
 
 #### The Team Admin role
 
-Same as `Team Contributor` but the `Team Admin` can also manage the users in that team.
+Same as `Team Contributor` but the `Team Admin` can also manage the users in that team, and manage
+the team's holdouts.
 
 ### Assigning Team roles
 
 Global `FullAdmin` or users with `Team Admin` on that team, can invite users to a team and grant them one of the team role.
+
+---
+
+## Holdouts
+
+Holdouts follow the team-based model, with some differences, because a holdout takes traffic from
+every experiment in its team's scope:
+
+- **Viewing**: any member of a holdout's team can view it, without needing a team role. Everyone is
+  a member of your top-level team, so everyone can view the general holdout.
+- **Managing**: only the `Team Admin` of a holdout's team, not the `Team Contributor`. A Team Admin
+  can delegate by sharing the holdout with **Can Edit**.
+- **Excluding an experiment**: a dedicated permission, which is not part of editing a holdout.
+
+See [Holdout permissions](/docs/web-console-docs/holdout/overview#permissions) for the details and
+the full list of permissions.
 
 ---
 

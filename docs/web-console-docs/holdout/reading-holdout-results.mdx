@@ -8,64 +8,85 @@ import Image from "../../../src/components/Image";
 
 # Reading Holdout Results
 
-A holdout report shows the cumulative impact of all your experiments on a tracking unit, measured
-against a group of visitors who were kept out of every one of them.
+A holdout report shows the cumulative impact of your experiments on a tracking unit, measured
+against a group of visitors who were kept out of them.
 
 Open a holdout from the **Holdouts** page to see its detail view. The **Overview** tab shows the
 results of a single period, and the **Iterations** tab lists every period the holdout has run.
+
+Members of a holdout's team can view its results, and everyone can view the general holdout's
+results. See [Permissions](./overview#permissions).
 
 ## The Overview tab
 
 <Image maxWidth="48rem" centered img="holdout/holdout-results.png" alt="The Overview tab of a holdout showing the metrics table for the current period" />
 
-The header names the period you are looking at, its status and its start date. Use the arrows on the
-right to move between periods without leaving the tab.
+The top of the page shows the holdout's name, its description, and badges for its holdout type
+(**Advanced**), its experiment inclusion setting (**Opt-out** or **Opt-in**) and its teams.
 
-Below it, a summary card repeats the holdout's configuration: tracking unit, traffic allocation,
-duration and the scheduled start and end dates of this period.
+Below that, the period header names the period you are looking at, its status and its scheduled
+start and end dates. Use the arrows on the right to move between periods without leaving the tab.
 
-### The two variants
+A summary card repeats the holdout's configuration: tracking unit, traffic allocation, duration and
+schedule.
 
-Every metric is reported for the same two groups.
+### The variants
 
-| Variant | Name | What it represents |
-| --- | --- | --- |
-| Control | **Holdout** | Visitors kept out of all experiments. The baseline. |
-| Variant 1 | **No Holdout** | A sample of the experiment-exposed population, sized to match the holdout group. |
+Every metric is reported for the same groups. Each variant is compared with the control.
 
-The two rows carry equal participant counts by design. **No Holdout** is sampled from the full
-population rather than being every remaining visitor, so that the comparison is between two groups
-of the same size. A **Sampling** toggle above the metrics indicates that this equal-size sampling is
+| Variant | Name | What it represents | Holdout type |
+| --- | --- | --- | --- |
+| Control | **Holdout** | Visitors kept out of all experiments. The baseline. | Simple and advanced |
+| Variant 1 | **No Holdout** | A sample of the experiment-exposed population, sized to match the holdout group. | Simple and advanced |
+| Variant 2 | **Full on only** | Visitors held out of experiments who only see features already shipped to 100% of traffic. | Advanced only |
+
+All rows carry equal participant counts by design. **No Holdout** is sampled from the full
+population rather than being every remaining visitor, so that the comparison is between groups of
+the same size. A **Sampling** toggle above the metrics indicates that this equal-size sampling is
 in effect.
 
 ### Reading a metric
 
-Each metric card lists both variants with their participants, value and mean, then the statistics
-for the comparison:
+Each metric card lists every variant with its participants, value and mean, followed by a
+**Metric total** row. For each variant, the statistics of its comparison with the control are
+shown:
 
-- **Confidence** — how confident the test is that the observed difference is real.
-- **Relative impact** — how much the experiment-exposed group differs from the holdout baseline.
-- **Impact per day** — the effect expressed as a daily rate.
+- **Confidence**: how confident the test is that the observed difference is real.
+- **Relative impact**: how much the variant differs from the holdout baseline.
+- **Impact per day**: the effect expressed as a daily rate.
 
-Because Control is the holdout, a **positive relative impact means your experiments are performing
-better than the unchanged product**. That is the outcome you are hoping for: the changes you shipped
-add up to a measurable gain over doing nothing.
+Because Control is the holdout, a **positive relative impact on No Holdout means your experiments
+are performing better than the unchanged product**. That is the outcome you are hoping for: the
+changes you shipped add up to a measurable gain over doing nothing.
 
 A negative or flat result is equally informative. It suggests the individual wins you recorded did
 not accumulate, whether through decay over time, interaction between experiments, or effects that
 were smaller than they first appeared.
+
+In an advanced holdout, **Full on only** shows the impact of the features you shipped on their
+own, without exposure to the experiments that were tested but not kept. Comparing it with **No
+Holdout** tells you how much of the overall impact comes from what you shipped, and how much comes
+from running experiments.
 
 :::info
 For a fuller explanation of confidence, impact and the statistics behind them, see
 [Interpreting metrics in experiment results](/docs/web-console-docs/experiments/interpreting-metrics-in-experiment-results).
 :::
 
+### Experiments in this period
+
+Below the metrics, the **Experiments in this period** table lists every experiment that ran at any
+point during the period, with its status, start date, and the date it was stopped or put Full on.
+
+Use it to connect a change in the holdout's results with the experiments that were running at the
+time.
+
 ### Checking results before the period ends
 
 Holdouts are analysed once per day using Fully Sequential testing, so the numbers are valid whenever
-you look at them. You can check a running holdout at any point during its 3 or 6 month period
-without waiting for it to finish, and without the risk of an inflated false positive rate that
-repeatedly checking a fixed horizon test would carry.
+you look at them. You can check a running holdout at any point during its period without waiting
+for it to finish, and without the risk of an inflated false positive rate that repeatedly checking
+a fixed horizon test would carry.
 
 Because results refresh daily rather than continuously, the figures you see reflect the most recent
 analysis rather than the last few minutes of traffic.
