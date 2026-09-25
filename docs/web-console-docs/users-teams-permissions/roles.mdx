@@ -14,7 +14,7 @@ ABsmartly supports two types of roles:
 
 :::info
 In ABsmartly Experiment Assets are assets created by teams on the day to day basis as part of their experimentation program.
-Those Experiment Assets include **Experiments**, **Feature Flag**, **Metrics**, **Goals** and **Templates**.
+Those Experiment Assets include **Experiments**, **Feature Flag**, **Metrics**, **Goals**, **Templates** and **Holdouts**.
 Access to those Assets can be defined and granted at the global or the team level.
 :::
 
@@ -32,7 +32,7 @@ They provide users with :
 
 :::info
 While  possible, it is not recommended to assign global read/write access to Experiment Assets like 
-**Experiments**, **Feature Flag**, **Metrics**, **Goals** and **Templates**.
+**Experiments**, **Feature Flag**, **Metrics**, **Goals**, **Templates** and **Holdouts**.
 It is easier and cleaner to set up proper governance when ownership and permissions of Experiment Assets is defined at the team level.
 :::
 
@@ -44,7 +44,7 @@ custom roles can be created to address specific needs or organisational structur
 #### The Base User role
 
 The `Base User` role grants users basic access to the platform. Those users can access the platform and have read-only access to all platform settings.
-By default, this role does not provide any permissions to view or edit Experiment Assets like **Experiments**, **Feature Flag**, **Metrics**, **Goals** and **Templates**.
+By default, this role does not provide any permissions to view or edit Experiment Assets like **Experiments**, **Feature Flag**, **Metrics**, **Goals**, **Templates** and **Holdouts**.
 Access to those Experiment Assets will be granted to users as part of their team membership.
 
 #### The FullAdmin role
@@ -101,7 +101,7 @@ A user with the `Team Viewer` can view and comment on, any Experiment Assets in 
 
 #### The Team Contributor role
 
-A user with the `Team Contributor` role can view and comment on, create and manage, any Experiment Assets in that team scope.
+A user with the `Team Contributor` role can view and comment on, create and manage, any Experiment Assets in that team scope, except holdouts, which they can only view.
 
 :::caution
 Unless it was disabled, users with the `Team Contributor` role can start/stop/full on all experiments in that team's scope.
@@ -120,14 +120,15 @@ Global `FullAdmin` or users with `Team Admin` on that team, can invite users to 
 
 ## Holdouts
 
-Holdouts follow the team-based model, with some differences, because a holdout takes traffic from
-every experiment in its team's scope:
+Holdouts are Experiment Assets and follow the team-based model. Because a holdout takes traffic from
+every experiment of the teams it holds out, the built-in team roles grant less on holdouts than on
+other assets:
 
-- **Viewing**: any member of a holdout's team can view it, without needing a team role. Everyone is
-  a member of your top-level team, so everyone can view the general holdout.
-- **Managing**: only the `Team Admin` of a holdout's team, not the `Team Contributor`. A Team Admin
-  can delegate by sharing the holdout with **Can Edit**.
-- **Excluding an experiment**: a dedicated permission, which is not part of editing a holdout.
+- **Team Admin**: creates, edits, starts, stops, archives and views the team's holdouts.
+- **Team Contributor** and **Team Viewer**: view the team's holdouts only.
+
+Only users who can edit a holdout can share it with **Can Edit**. On a holdout, **Can View** lets
+users find it and view its results, but not use it.
 
 See [Holdout permissions](/docs/web-console-docs/holdout/overview#permissions) for the details and
 the full list of permissions.

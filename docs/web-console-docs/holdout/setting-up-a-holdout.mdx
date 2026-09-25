@@ -17,20 +17,17 @@ with its status, tracking unit, traffic allocation, metrics and schedule.
 
 ## Creating a holdout
 
-You need to be a Team Admin of the team the holdout will belong to. To create a general holdout,
-you need a global role with holdout permissions, such as `FullAdmin`. See
-[Permissions](./overview#permissions).
-
 Click **New holdout**, then choose:
 
 - **Tracking unit** (required): the unit used to identify visitors. It is fixed once the holdout is
   created, and only experiments using this unit can join it.
-- **Teams** (optional): the teams the holdout belongs to. It covers the experiments of these teams
-  and their child teams. Leave it empty to create a general holdout, which belongs to your top-level
-  team and covers experiments from all teams.
+- **Held-out teams** (optional): the teams whose experiments the holdout covers, along with those of
+  their child teams. You can only add teams where you are a Team Admin. Leave it empty to create a
+  general holdout, which covers experiments from all teams. Only `FullAdmin` users can create a
+  general holdout.
 
-A team can only have one holdout per tracking unit, so there can be at most one general holdout per
-tracking unit.
+A team can only be held out by one holdout per tracking unit, so there can be at most one general
+holdout per tracking unit. See [Permissions](./overview#permissions).
 
 Click **Create holdout** to open its configuration page.
 
@@ -41,6 +38,10 @@ Click **Create holdout** to open its configuration page.
 Give the holdout a **Name** and an optional **Description**. These appear on the Holdouts page and at
 the top of the report, so describe what the holdout covers, for example
 `Holdout group for all experiments tracking visitors by device`.
+
+Choose the holdout's **Owners**: the teams, or individual users where user-level ownership is
+enabled, who manage it. Owners are separate from the held-out teams. The owners manage the holdout,
+while the held-out teams decide which experiments it covers.
 
 ## Configuration
 
@@ -68,21 +69,20 @@ compare.
 The **tracking unit** chosen when the holdout was created is shown here and cannot be changed. Only
 experiments that track visitors with this unit are part of this holdout.
 
-### Teams
+### Held-out teams
 
-The teams the holdout belongs to. The holdout covers the experiments of these teams and their child
-teams, and its teams decide who can view and manage it. Leave it empty for a general holdout.
+The teams whose experiments the holdout covers, along with those of their child teams. You can only
+add teams where you are a Team Admin. Leave it empty for a general holdout.
 
 ### Experiment inclusion
 
 Choose how experiments join this holdout.
 
-- **Opt-out** (default): all experiments on the holdout's tracking unit, from its teams and their
-  child teams, are included automatically. Specific experiments can be excluded from the experiment
-  form.
+- **Opt-out** (default): all experiments on the holdout's tracking unit, from its held-out teams and
+  their child teams, are included automatically. An experiment's owners can request to exclude it.
 - **Opt-in**: experimenters add their experiment to this holdout from the experiment form. Only
-  experiments from the holdout's teams and their child teams can be added, and only opted-in
-  experiments take part.
+  experiments from the holdout's held-out teams and their child teams can be added, and only
+  opted-in experiments take part.
 
 ### Traffic allocation
 
@@ -152,16 +152,15 @@ first, then save.
 
 ## Adding and excluding experiments
 
-Experiments join and leave a holdout from the experiment form, not from the holdout itself.
+With **Opt-in** inclusion, experimenters add their experiment to the holdout from the experiment
+form. Anyone who can edit an experiment can add it.
 
-With **Opt-in** inclusion, anyone who can edit an experiment can add it to the holdout.
+With **Opt-out** inclusion, every experiment on the holdout's tracking unit, from its held-out teams
+and their child teams, is included automatically. To exclude an experiment, its owners request the
+exclusion, and the people who can edit the holdout grant or refuse it. Owning the experiment is not
+enough on its own.
 
-With **Opt-out** inclusion, every experiment on the holdout's tracking unit, from its teams and
-their child teams, is included automatically. The Team Admins of the holdout's team, and users with
-the permission to exclude experiments from holdouts, can exclude an individual experiment. Owning
-the experiment is not enough on its own.
-
-Exclude an experiment only when withholding a change is genuinely not acceptable, such as a legal or
+Grant an exclusion only when withholding a change is genuinely not acceptable, such as a legal or
 compliance requirement, or a fix that has to reach every visitor. Each exclusion means the holdout
 group has been exposed to that experiment, which moves the baseline a little further from the
 unchanged product and weakens the comparison.
