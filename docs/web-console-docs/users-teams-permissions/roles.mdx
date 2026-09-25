@@ -121,11 +121,14 @@ Global `FullAdmin` or users with `Team Admin` on that team, can invite users to 
 ## Holdouts
 
 Holdouts are Experiment Assets and follow the team-based model. Because a holdout takes traffic from
-every experiment of the teams it holds out, the built-in team roles grant less on holdouts than on
+every experiment of the teams that own it, the built-in team roles grant less on holdouts than on
 other assets:
 
 - **Team Admin**: creates, edits, starts, stops, archives and views the team's holdouts.
 - **Team Contributor** and **Team Viewer**: view the team's holdouts only.
+
+Holdouts are always owned by teams, never by individual users. A holdout can be owned by several
+teams, and it covers the experiments of all of them.
 
 Only users who can edit a holdout can share it with **Can Edit**. On a holdout, **Can View** lets
 users find it and view its results, but not use it.
