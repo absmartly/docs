@@ -9,7 +9,7 @@ import Image from "../../../src/components/Image";
 Over the last few months we incrementally released many new features related to teams, ownership & collaboration aimed at improving how teams are experimenting and collaborating with each other.
 In this document we will discuss those changes and how you can start making use of them.
 
-Experiment Assets in scope: **Experiments**, **Features**, **Templates**, **Metrics**  & **Goals**.
+Experiment Assets in scope: **Experiments**, **Features**, **Templates**, **Metrics**, **Goals** & **Holdouts**.
 
 All other configuration settings are managed using global roles. For more details see our [Roles](./roles) page.
 
@@ -32,17 +32,17 @@ If you have not done so yet, we encourage you to go to /settings/teams and start
 Until now, the ownership of anything created on the ABsmartly platform was set at the individual user level (usually the person who created the item).
 While this is often fine, in many cases it is preferable for assets like Experiment or Metrics to be owned by a team and not by an individual.
 Team level ownership is more resilient to changes and it makes it easier to manage and share assets at scale.
-Because of this we introduced team level ownership for `Experiments`, `Features`, `Templates`, `Goals` & `Metrics`.
+Because of this we introduced team level ownership for `Experiments`, `Features`, `Templates`, `Goals`, `Metrics` & `Holdouts`.
 Other assets like `Applications`, `Tracking Unit`, etc which are platform level settings remain unchanged.
 
 For backward compatibility, existing assets will retain their current individual owners but it won't be possible to add new ones.
 
 :::info
-While Team Ownership is the new default and preferred way of assigning ownership for Experiments, Features, Templates, Goals & Metrics, it is possible to re-enable user level ownership in the platform settings (/settings/platform).
+While Team Ownership is the new default and preferred way of assigning ownership for Experiments, Features, Templates, Goals, Metrics & Holdouts, it is possible to re-enable user level ownership in the platform settings (/settings/platform).
 :::
 
 :::tip
-To get the most of the new model we encourage you to move the ownership of your existing Experiments, Features, Templates, Goals & Metrics to the most relevant team in your organisation. To do that, just edit assets that you currently own and re-assign ownership to the correct team. Make sure that you are a member of that team if you want to retain your access to that asset.
+To get the most of the new model we encourage you to move the ownership of your existing Experiments, Features, Templates, Goals, Metrics & Holdouts to the most relevant team in your organisation. To do that, just edit assets that you currently own and re-assign ownership to the correct team. Make sure that you are a member of that team if you want to retain your access to that asset.
 :::
 
 ---
@@ -53,7 +53,7 @@ Together with the new team structure, you can now also assign members to those t
 By default all platform users are members of the Global Team (feel free to rename it so it matches your company name) which represents your entire organisation but you can now also add them to their actual team in the team hierarchy.
 
 When adding a new member to a team, it is also possible to assign this user an optional role in that team.
-The role that a member has in a team will define how this person can interact with the assets owned by that team. Assets here are Experiments, Features, Templates, Goals & Metrics.
+The role that a member has in a team will define how this person can interact with the assets owned by that team. Assets here are Experiments, Features, Templates, Goals, Metrics & Holdouts.
 
 Possible team roles are :
 
@@ -85,19 +85,19 @@ Make sure to add all platform users to their respective team and assign them the
 ## Global team permissions & Base user role
 
 The Global Team is unique in the team structure, not only does it automatically contain all the members of the platform (no need to add them),
-it is also where general roles and permissions are defined. As discussed above, team level roles define how users can interact with `Experiments`, `Features`, `Templates`, `Goals` & `Metrics` owned by that team,
+it is also where general roles and permissions are defined. As discussed above, team level roles define how users can interact with `Experiments`, `Features`, `Templates`, `Goals`, `Metrics` & `Holdouts` owned by that team,
 everything else (who can create new Applications, who can manage Segments and API Keys) are platform level settings and are managed at the Global Team level.
 
-For backward compatibility, it is still possible to assign permissions to `Experiments`, `Features`, `Templates`, `Goals` & `Metrics` at the Global Team level but it is not recommended as it would interfere and overwrite anything specified at the team level.
+For backward compatibility, it is still possible to assign permissions to `Experiments`, `Features`, `Templates`, `Goals`, `Metrics` & `Holdouts` at the Global Team level but it is not recommended as it would interfere and overwrite anything specified at the team level.
 For example currently users with the built-in `User` role can view and list ANY experiment or metric irrespective of the role members have in their team.
-For the new team level model to work correctly, you should refrain from granting any permissions on Experiments, Features, Templates, Goals & Metrics in a global team role.
+For the new team level model to work correctly, you should refrain from granting any permissions on Experiments, Features, Templates, Goals, Metrics & Holdouts in a global team role.
 
 To facilitate the transition to the new ownership model, we created a new (immutable) `Base User` role which contains all the basic permissions any user of the platform needs.
-This role does not grant the user any permission to view or edit `Experiments`, `Features`, `Templates`, `Goals` & `Metrics`.
+This role does not grant the user any permission to view or edit `Experiments`, `Features`, `Templates`, `Goals`, `Metrics` & `Holdouts`.
 In time this role should replace the current User role assigned by default to all new users of the platform.
 
 :::tip action
-Review your current roles & permissions to align with the new model (Ideally no global roles, besides the fulladmin role, should grant permissions to `Experiments`, `Features`, `Templates`, `Goals` & `Metrics`) and start migrating your user from the `User` role to the new `Base User`.
+Review your current roles & permissions to align with the new model (Ideally no global roles, besides the fulladmin role, should grant permissions to `Experiments`, `Features`, `Templates`, `Goals`, `Metrics` & `Holdouts`) and start migrating your user from the `User` role to the new `Base User`.
 If you need help automating this step please let us know. Once the migration is done, you can let us know so we can remove it and make `Base User` the new default role for all new users.
 :::
 
@@ -108,7 +108,7 @@ If you need help automating this step please let us know. Once the migration is 
 All the features described above enable users to collaborate within their team but it does not allow them to share assets with other teams or individuals.
 For example a team owning a metric wants to make this metric available to all teams in Engineering or a team working on an experiment wants to allow specific users from other teams to collaborate on that experiment without making them owners.
 
-To address this we introduced Asset level permissions (for `Experiments`, `Features`, `Templates`, `Goals` & `Metrics`) which is the ability to share an asset with other teams or individuals.
+To address this we introduced Asset level permissions (for `Experiments`, `Features`, `Templates`, `Goals`, `Metrics` & `Holdouts`) which is the ability to share an asset with other teams or individuals.
 For now there are 2 types of possible permissions associated with sharing of assets.
 
 - **Can View**: Grants the ability to search for, to view, comment on and to use this specific asset. A good use case for this is if you want to make your metric or a template available to another team or if you want other people to be able to view your experiment on the search page without being able to edit it.
@@ -124,7 +124,7 @@ Following the least privilege principle, and unless there is a good reason, it i
 :::
 
 :::tip
-Go over your list of Experiments, Features, Templates, Goals & Metrics that you own (or that your team owns) and make sure to share it with the relevant individual(s) or team(s).
+Go over your list of Experiments, Features, Templates, Goals, Metrics & Holdouts that you own (or that your team owns) and make sure to share it with the relevant individual(s) or team(s).
 For example if you want a metric or a goal to be available for everybody to use, then share it with the Global Team with Can View permission.
 It is possible that you want all your existing metrics, goals and possibly all your experiments, features and templates to be discoverable and usable by anyone on the platform.
 If this is the case, just let us know and we will run a script to automatically grant Can View to all your existing assets saving you loads of manual work.
