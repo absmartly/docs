@@ -1,0 +1,271 @@
+---
+title: OAuth & Client Registration
+sidebar_position: 5
+description: How MCP clients sign in to ABsmartly with OAuth, the endpoints they call, and the ways a client can be registered and accepted.
+---
+
+# OAuth & Client Registration
+
+This page explains what happens when an MCP client signs in to ABsmartly with
+OAuth: which endpoints it calls, how it gets registered, and why some clients
+are accepted while others are rejected. You don't need any of this to connect a
+supported client, because the client does it all for you. It is useful when you
+connect a client that isn't listed in [Setup](./setup), or when you need to
+debug a failed connection.
+
+## Two ways to connect with OAuth
+
+You can reach the MCP server at two addresses. Both use OAuth 2.1 with the
+authorization code flow and PKCE, but the parties involved are different.
+
+| | Hosted server | Your instance's `/mcp` endpoint |
+| --- | --- | --- |
+| **MCP URL** | `https://mcp.absmartly.com/mcp` (or `/sse`) | `https://your-instance.absmartly.com/mcp` |
+| **Transports** | Streamable HTTP and SSE | Streamable HTTP |
+| **OAuth authorization server** | `mcp.absmartly.com`, which in turn signs you in through your instance | Your ABsmartly instance |
+| **Token the client holds** | An MCP access token (1 hour) plus a refresh token (30 days) | Your ABsmartly session token (no refresh token) |
+| **Consent page** | Shown once per client and instance, then remembered in that browser for 30 days | Shown on every authorization |
+| **Instance URL** | Passed as `?absmartly-endpoint=…`, or entered in the browser | Implied by the URL |
+
+In both cases you sign in with your normal ABsmartly login, whether that is
+SAML, SSO or email and password. The MCP client never sees your password.
+
+### Hosted server (`mcp.absmartly.com`)
+
+The hosted server runs **two OAuth flows in a row**. Toward your MCP client it
+is the authorization server: it registers the client, shows the consent page and
+issues the client's tokens. Toward your ABsmartly instance it is itself an OAuth
+client: it sends you to your instance to sign in, then keeps the resulting
+ABsmartly session token on the server side.
+
+![Sequence diagram of the hosted OAuth flow. The MCP client calls /mcp and receives a 401 with a WWW-Authenticate header, discovers the protected-resource and authorization-server metadata, registers with POST /register or uses a trusted client metadata URL, and opens /authorize in the browser. mcp.absmartly.com asks for the instance URL if needed and shows the consent page, then redirects the browser to the instance's /auth/oauth/authorize, where the user signs in. The instance redirects back to /oauth/callback; mcp.absmartly.com exchanges the code at /auth/oauth/token, reads /auth/oauth/userinfo, and redirects the browser to the client with its own code. The client exchanges that code at /token for an MCP access token and refresh token, then calls /mcp with a Bearer token, and mcp.absmartly.com calls the instance's /v1 API with the ABsmartly session token.](/img/mcp/oauth-hosted-flow.svg)
+
+Step by step:
+
+1. The client calls `POST /mcp` without a token and gets `401 Unauthorized`
+   with a `WWW-Authenticate` header that points to the protected-resource
+   metadata and asks for the `mcp:access` scope.
+2. The client reads the discovery documents:
+   `/.well-known/oauth-protected-resource/mcp` and
+   `/.well-known/oauth-authorization-server`.
+3. The client [registers](#how-a-client-gets-accepted), either through
+   `POST /register` or by using a trusted metadata-document URL as its
+   `client_id`.
+4. The client opens `/authorize` in your browser, with a PKCE `S256` code
+   challenge.
+5. If the URL didn't include `absmartly-endpoint`, a **Connect to ABsmartly**
+   page asks for your instance URL. Then the consent page asks you to
+   **Approve** or **Deny** the client.
+6. `mcp.absmartly.com` redirects your browser to your instance's
+   `/auth/oauth/authorize`, where you sign in.
+7. Your instance redirects back to `https://mcp.absmartly.com/oauth/callback`.
+   The hosted server exchanges the code at your instance's `/auth/oauth/token`
+   and reads your name and email from `/auth/oauth/userinfo`.
+8. Your browser is redirected back to the MCP client with an authorization
+   code, which the client exchanges at `POST /token`.
+9. The client calls `/mcp` with `Authorization: Bearer <token>`. The hosted
+   server calls your instance's `/v1` API on your behalf.
+
+When the client refreshes its token, the hosted server first checks that your
+ABsmartly session is still valid. If it has ended, the refresh fails and the
+client asks you to sign in again.
+
+### Your instance's `/mcp` endpoint
+
+Your ABsmartly instance also serves MCP directly at
+`https://your-instance.absmartly.com/mcp`. Here the instance is both the MCP
+server and the OAuth authorization server, so there is only one flow.
+
+![Sequence diagram of the in-product OAuth flow. The MCP client calls the instance's /mcp and receives a 401, reads the discovery documents, registers with POST /auth/oauth/register or uses a trusted client metadata URL, and opens /auth/oauth/authorize in the browser. If the user isn't signed in, the instance shows its login page (SAML, SSO or password) and then returns to the authorization request. The consent page is shown, and on approval the browser is redirected to the client with a code. The client exchanges it at /auth/oauth/token for an access token and calls /mcp with a Bearer token.](/img/mcp/oauth-in-product-flow.svg)
+
+The token your MCP client receives is tied to the browser session you approved
+it from:
+
+- It lasts as long as that session. Using it keeps the session alive.
+- **Signing out of ABsmartly in that browser ends access for every MCP client
+  you approved from it.** Reconnect from the client to sign in again.
+- There is no refresh token. When the token expires, the client starts the
+  flow again.
+
+## Endpoints
+
+All of these are standard OAuth endpoints. Your MCP client discovers them
+automatically from the `.well-known` documents. You only need to call one
+yourself when you [register a client manually](#manual-registration).
+
+| Purpose | Hosted (`https://mcp.absmartly.com`) | Your instance (`https://your-instance.absmartly.com`) |
+| --- | --- | --- |
+| MCP (Streamable HTTP) | `POST /mcp` | `POST /mcp` |
+| MCP (SSE, legacy) | `GET /sse` | Not available |
+| Protected-resource metadata ([RFC 9728](https://www.rfc-editor.org/rfc/rfc9728)) | `GET /.well-known/oauth-protected-resource/mcp` | `GET /.well-known/oauth-protected-resource/mcp` |
+| Authorization-server metadata ([RFC 8414](https://www.rfc-editor.org/rfc/rfc8414)) | `GET /.well-known/oauth-authorization-server` | `GET /.well-known/oauth-authorization-server` |
+| Dynamic client registration ([RFC 7591](https://www.rfc-editor.org/rfc/rfc7591)) | `POST /register` | `POST /auth/oauth/register` |
+| Authorization and consent | `GET /authorize` | `GET /auth/oauth/authorize` |
+| Token | `POST /token` | `POST /auth/oauth/token` |
+| User info | Not available | `GET /auth/oauth/userinfo` |
+
+Both servers support:
+
+| Setting | Value |
+| --- | --- |
+| Grant type | `authorization_code` (the hosted server also issues `refresh_token`) |
+| PKCE | Required, `S256` only. `plain` and missing challenges are rejected. |
+| Client authentication | `none` (public clients), `client_secret_basic`, `client_secret_post` |
+| Scopes | `mcp:access` (default) and `user:info` |
+| Client ID metadata documents | Supported, for [trusted clients](#client-id-metadata-documents) only |
+
+:::note
+The `mcp:access` scope grants the same access you have in the ABsmartly Web
+Console. The MCP client can do anything you can do, so only approve clients
+you trust.
+:::
+
+## How a client gets accepted
+
+An MCP client can be accepted in one of four ways. The client picks the first
+one it supports. Most clients need no setup from you.
+
+![Decision flowchart. A client that uses an API key needs no OAuth registration. A client whose client_id is a URL is accepted only if the URL is on the trusted list of client metadata documents, otherwise it is rejected with invalid_client. Any other client registers with POST /register and is accepted only if all its redirect URIs are on the allowlist, otherwise it is rejected with invalid_redirect_uri. A client that can't register itself can use a client ID and secret registered manually. Rejected clients can fall back to an API key or ask ABsmartly support to add the client. Accepted clients continue to the authorization code flow with PKCE and the consent page.](/img/mcp/oauth-client-registration.svg)
+
+### Client ID metadata documents
+
+Some clients don't register at all. Instead their `client_id` is an HTTPS URL
+that points to a JSON document describing the client. ABsmartly fetches the
+document only if the URL is on this trusted list:
+
+| Client | Metadata document URL |
+| --- | --- |
+| Claude (claude.ai, Claude Desktop, mobile) | `https://claude.ai/oauth/mcp-oauth-client-metadata` |
+| Claude Code | `https://claude.ai/oauth/claude-code-client-metadata` |
+| VS Code | `https://vscode.dev/oauth/client-metadata.json` |
+| VS Code Insiders | `https://insiders.vscode.dev/oauth/client-metadata.json` |
+| Goose | `https://goose-docs.ai/oauth/client-metadata.json` |
+| GitHub Copilot CLI | `https://github.com/copilot/cli/client-metadata.json` |
+
+Any other URL used as a `client_id` is rejected without being fetched, with
+`invalid_client` and the message *"This MCP client is not supported by this
+server"*. Redirect URIs listed in a trusted document are still checked against
+the [redirect URI allowlist](#allowed-redirect-uris).
+
+### Dynamic client registration
+
+Clients that don't use a metadata document register themselves by calling the
+registration endpoint with their name and redirect URIs. This is how Cursor,
+ChatGPT, Windsurf, Gemini CLI, Zed, MCP Inspector and most other clients
+connect.
+
+Registration succeeds only if **every** redirect URI is on the
+[allowlist](#allowed-redirect-uris). Otherwise it fails with
+`invalid_redirect_uri` and the message *"One or more redirect_uris are not
+allowed"*.
+
+Registered clients that go unused expire after 90 days. If a client that used
+to work starts failing with `invalid_client`, remove and re-add the connector so
+it registers again.
+
+### Manual registration
+
+Some platforms can't register themselves and ask you for a **client ID** and
+**client secret** instead. Gemini Enterprise is one example when its automatic
+registration isn't available. In that case, register the client yourself once,
+then paste the result into the platform:
+
+```bash
+curl -X POST https://mcp.absmartly.com/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "client_name": "Gemini Enterprise",
+    "redirect_uris": ["https://vertexaisearch.cloud.google.com/oauth-redirect"],
+    "token_endpoint_auth_method": "client_secret_post"
+  }'
+```
+
+The response contains a `client_id` and a `client_secret`. Use the platform's
+real callback URL as the redirect URI, and it must be on the
+[allowlist](#allowed-redirect-uris). Keep the client secret private, and
+register again if the client expires.
+
+### API key
+
+If your client can't use OAuth at all, or isn't on the allowlist, connect with
+an [API key](./authentication#api-key) instead. API key connections skip OAuth
+entirely, so no registration is needed. This works with any client that can send
+an HTTP header or connect to a URL with a query string.
+
+## Allowed redirect URIs
+
+A redirect URI is where your browser sends the authorization code after you
+approve the client. To stop a malicious client from receiving your access,
+ABsmartly only accepts redirect URIs from this list. URIs that contain a
+fragment (`#…`) or embedded credentials are always rejected.
+
+| Kind | Allowed values | Used by |
+| --- | --- | --- |
+| **Loopback** | `http://localhost`, `http://127.0.0.1` and `http://[::1]`, on any port and path ([RFC 8252](https://www.rfc-editor.org/rfc/rfc8252#section-7.3)) | Claude Code, Gemini CLI, Goose, GitHub Copilot CLI, Windsurf, Zed, Kiro, MCP Inspector, the ABsmartly CLI and other local apps |
+| **Custom schemes** | `cursor://…`, `claude://…` | Cursor and Claude desktop apps |
+| **Claude** | `https://claude.ai/api/mcp/auth_callback`, `https://claude.com/api/mcp/auth_callback` | claude.ai, Claude Desktop |
+| **ChatGPT** | `https://chatgpt.com/connector_platform_oauth_redirect`, `https://chatgpt.com/connector/oauth/…` | ChatGPT connectors |
+| **VS Code** | `https://vscode.dev/redirect`, `https://insiders.vscode.dev/redirect` | VS Code, VS Code Insiders |
+| **Cursor** | `https://www.cursor.com/agents/mcp/oauth/callback` | Cursor background agents |
+| **Cloudflare** | `https://playground.ai.cloudflare.com/oauth/callback` | Cloudflare AI Playground |
+| **Productboard** | `https://integrations.productboard.com/oauth2/callback` | Productboard |
+| **Perplexity** | `https://www.perplexity.ai/rest/connections/oauth_callback`, `https://enterprise.perplexity.ai/rest/connections/oauth_callback` | Perplexity, Perplexity Enterprise |
+| **Google** | `https://vertexaisearch.cloud.google.com/oauth-redirect` | Gemini Enterprise |
+| **Microsoft** | `https://global.consent.azure-apim.net/redirect` and `https://global.consent.azure-apim.net/redirect/<connector-id>` | Microsoft Copilot Studio, Azure AI Foundry |
+| **Amazon** | `https://bedrock-agentcore.<region>.amazonaws.com/identities/oauth2/callback/<uuid>` | Amazon Bedrock AgentCore |
+
+HTTPS redirect URIs must match the listed scheme, host and path exactly. Plain
+`http://` is only accepted for the loopback addresses.
+
+:::info Cloud agent platforms
+The Perplexity, Google, Microsoft and Amazon callbacks are shared by every
+customer of those platforms, so they don't identify whose connector will
+receive the access. The consent page shows a warning for these hosts. Only
+approve when you have just started the connection yourself.
+
+These platform callbacks are accepted by the hosted server at
+`mcp.absmartly.com`. Use the hosted server URL when you connect from these
+platforms.
+:::
+
+### Your client isn't on the list?
+
+If your MCP client is rejected and isn't covered above:
+
+1. **Use an API key.** It works with any client and needs no registration. See
+   [Authentication](./authentication#api-key).
+2. **Ask for the client to be added.** Contact ABsmartly support with the
+   client's name and its redirect URI or metadata-document URL. You can also
+   open an issue on
+   [github.com/absmartly/mcp](https://github.com/absmartly/mcp/issues).
+
+Self-hosted clients with a callback on your own domain, for example LibreChat,
+Open WebUI or self-hosted n8n, can't be added to the shared allowlist. Use an
+API key for these.
+
+## The consent page
+
+After you sign in, ABsmartly shows an **Authorize Access** page before any
+client receives access. It shows:
+
+- the name of the client asking for access,
+- which ABsmartly account will be shared and the site the access will be sent
+  to,
+- what the client will be able to do, and
+- **Approve** and **Deny** buttons.
+
+Extra warnings appear when the access goes to an app on your own computer
+(loopback redirect) or to a [shared cloud platform](#allowed-redirect-uris).
+Only approve a request you started yourself from your own MCP client.
+
+The consent request expires after 10 minutes, and it must be completed in the
+same browser that started it. If it expires, restart the connection from your
+MCP client.
+
+## Related
+
+- [Authentication](./authentication) — API keys, header formats and the
+  security model
+- [Setup](./setup) — per-client configuration
+- [Troubleshooting](./troubleshooting#oauth-errors) — what each OAuth error
+  means

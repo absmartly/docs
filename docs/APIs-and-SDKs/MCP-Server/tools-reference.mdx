@@ -1,6 +1,6 @@
 ---
 title: Tools Reference
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Tools Reference
@@ -56,21 +56,25 @@ description; use `discover_commands` for the full list.
 | `group` | yes | Command group (e.g. `experiments`, `metrics`, `goals`) |
 | `command` | yes | Command name (e.g. `listExperiments`, `createExperimentFromTemplate`) |
 | `params` | no | Command parameters as a JSON object |
-| `confirmed` | no | Set to `true` to confirm destructive actions |
+| `confirmed` | no | Set to `true` only after the user has explicitly confirmed this specific action |
 | `raw` | no | Return the full `CommandResult` with rows / detail / warnings / pagination |
 | `limit` | no | Max items for list operations (default: `20`) |
 
 :::caution Destructive actions require confirmation
-`start`, `stop`, `archive` and `delete` operations all return a confirmation
-prompt on the first call. Re-invoke the command with `confirmed: true` to
-actually perform the action.
+`start`, `stop`, `archive` and `delete` operations always ask the user to
+confirm, on every transport. If the MCP client supports **elicitation**, the
+server asks the user directly with a prompt to type `yes`. Otherwise, the first
+call returns a message telling the assistant to ask the user, and only after
+the user confirms does the assistant re-invoke the command with
+`confirmed: true`.
 :::
 
 :::info Experiment creation previews
 `createExperimentFromTemplate` also requires confirmation. The first call
 returns a **preview** — the resolved API payload (with names mapped to IDs)
 plus any warnings — without creating the experiment. Review the preview, then
-call again with `confirmed: true` to actually create it.
+call again with `confirmed: true` to actually create it. Reviewing the preview
+alone isn't confirmation — the assistant asks you before creating it.
 :::
 
 #### Creating experiments with templates
