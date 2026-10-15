@@ -12,7 +12,7 @@ always provided by your MCP client and isolated per connection.
 | Method | Best for | How it works |
 | --- | --- | --- |
 | **API Key** | Programmatic access, CI/CD, headless agents | Pass the key in HTTP headers or via the URL |
-| **OAuth** | Interactive use in Claude Desktop, Cursor, the web, etc. | Browser-based login via ABsmartly SAML |
+| **OAuth** | Interactive use in Claude Desktop, Cursor, the web, etc. | Browser-based login via your ABsmartly SAML/SSO or password |
 
 ## API key
 
@@ -45,26 +45,56 @@ The **subdomain shorthand** auto-constructs the endpoint as
 `https://<subdomain>.absmartly.com/v1`, so you don't need to send a separate
 `x-absmartly-endpoint` header.
 
+### API keys on your instance's `/mcp` endpoint
+
+When you connect to `https://your-instance.absmartly.com/mcp` directly, the
+instance is already known, so only the key is needed:
+
+```text
+Authorization: Api-Key YOUR_API_KEY
+```
+
 ## OAuth
 
-OAuth uses your existing ABsmartly login flow (SAML or username/password) and
-issues a JWT scoped to your MCP session. This is the recommended method for
-interactive clients like Claude Desktop, Cursor or the ChatGPT web app.
+OAuth uses your existing ABsmartly login (SAML, SSO or email and password).
+This is the recommended method for interactive clients like Claude Desktop,
+Cursor, VS Code or ChatGPT.
 
-When OAuth is configured, the MCP client opens a browser window the first time
-it connects. After you sign in, the client receives the token and the MCP
-connection is established. Subsequent connections reuse the cached token until
-it expires.
+The first time the client connects, it opens a browser window. You sign in to
+your ABsmartly instance, review the **Authorize Access** consent page, and click
+**Approve**. The client then receives a token and the MCP connection is
+established. Later connections reuse the token until it expires or your
+ABsmartly session ends.
+
+There are two OAuth-enabled MCP URLs:
+
+| URL | How OAuth works |
+| --- | --- |
+| `https://mcp.absmartly.com/mcp` (hosted) | The hosted server signs you in through your instance and issues its own access token (1 hour) and refresh token (30 days) to the client. |
+| `https://your-instance.absmartly.com/mcp` | Your instance is the OAuth server. The client receives a token tied to your browser session; signing out of ABsmartly ends its access. |
+
+Every OAuth connection uses the authorization code flow with PKCE (`S256`). For
+the full sequence, the endpoints involved and the ways an MCP client can be
+registered, see [OAuth & Client Registration](./oauth-clients).
 
 ### Specifying the instance URL
 
-OAuth needs to know which ABsmartly instance to log in against. You can
-provide this in either of two ways:
+On the hosted server, OAuth needs to know which ABsmartly instance to sign you
+in to. You can provide this in either of two ways:
 
 - Add `?absmartly-endpoint=https://your-instance.absmartly.com` to the MCP
   URL, or
-- Omit it — the OAuth flow will prompt you for the URL in the browser before
-  login.
+- Omit it — the OAuth flow asks you for the URL in the browser before login.
+
+When you connect to `https://your-instance.absmartly.com/mcp` directly, the
+instance is implied by the URL.
+
+### Supported clients
+
+Most MCP clients are accepted automatically, either through a trusted client
+metadata document or through dynamic client registration with an allowlisted
+redirect URI. If your client is rejected, use an API key instead, or see
+[Your client isn't on the list?](./oauth-clients#your-client-isnt-on-the-list).
 
 ## Local stdio (CLI credentials)
 
@@ -79,9 +109,13 @@ profile with `--profile=<name>` (for example, `--profile=production`).
 - **Session isolation** — each connection has its own credentials.
 - **OAuth protection** — API key sessions block OAuth discovery to prevent
   authentication-method confusion.
+- **Restricted OAuth clients** — only trusted clients and allowlisted redirect
+  URIs can receive OAuth access, and every new client is shown on a consent
+  page first (see [OAuth & Client Registration](./oauth-clients)).
+- **PKCE required** — OAuth requests must use PKCE with `S256`.
 - **Destructive action confirmation** — `start`, `stop`, `archive` and
-  `delete` operations require explicit confirmation before they run (see the
-  [Tools Reference](./tools-reference#execute_command)).
+  `delete` operations ask you to confirm before they run, on every transport
+  (see the [Tools Reference](./tools-reference#execute_command)).
 - **API error surfacing** — validation errors from the API are returned with
   full detail so the assistant can correct them.
 
