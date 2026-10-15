@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Troubleshooting
@@ -57,6 +57,27 @@ If you use the **simple** or **`Api-Key`** form, you **must** send
 
 See [OAuth & Client Registration](./oauth-clients) for how clients are
 accepted.
+
+### 401 errors with a Microsoft Entra ID token
+
+If your backend calls `/mcp` with a federated Entra ID token and gets
+`401 Unauthorized`, decode the token locally and check its claims. The most
+common causes are:
+
+- **Wrong token.** A Microsoft Graph token, an ID token or the token for your
+  own backend app is rejected. Send the access token from the On-Behalf-Of
+  exchange, requested with the ABsmartly scope (`api://…/mcp.access`).
+- **Version 1 token.** `iss` is `https://sts.windows.net/…`. Set the ABsmartly
+  app registration to issue version 2 tokens.
+- **Missing scope or email.** `scp` doesn't contain `mcp.access`, or the
+  token has no `email` claim.
+- **Unknown or archived user.** No active ABsmartly user has the token's
+  email address.
+- **Calling app not allowed.** `azp` isn't one of the backend client IDs you
+  sent to ABsmartly support.
+
+See [Federated sign-in with Microsoft Entra ID](./entra-id-federation#troubleshooting)
+for the full list.
 
 ### MCP client loses access after I sign out
 

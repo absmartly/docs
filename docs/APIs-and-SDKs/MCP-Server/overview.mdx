@@ -81,10 +81,13 @@ See the [Tools Reference](./tools-reference) for the full surface.
 | --- | --- | --- |
 | **OAuth** | Interactive use in Claude Desktop, Cursor, VS Code, ChatGPT and cloud agent platforms | Browser-based login via your ABsmartly SAML/SSO or password |
 | **API Key** | Programmatic access, CI/CD, headless, or clients that can't use OAuth | Pass the key in HTTP headers or via the URL |
+| **Federated token** | Your own backend agent acting for users signed in to Microsoft Entra ID | Send an Entra ID access token to your instance's `/mcp` (enabled on request) |
 
-Both methods are documented in detail in [Authentication](./authentication).
+All methods are documented in detail in [Authentication](./authentication).
 [OAuth & Client Registration](./oauth-clients) explains the OAuth flow, the
 endpoints involved and which clients are accepted.
+[Federated sign-in with Microsoft Entra ID](./entra-id-federation) explains
+how to set up federated tokens.
 
 ## Where to connect
 
