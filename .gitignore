@@ -41,3 +41,6 @@ yarn-error.log*
 .claude/tasks/
 .claude/audits/
 openapi_console_bk/
+
+# Gradle caches (e.g. from IDEs opening the Java install snippet folder)
+.gradle/
