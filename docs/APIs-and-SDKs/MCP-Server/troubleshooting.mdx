@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 # Troubleshooting
@@ -58,26 +58,30 @@ If you use the **simple** or **`Api-Key`** form, you **must** send
 See [OAuth & Client Registration](./oauth-clients) for how clients are
 accepted.
 
-### 401 errors with a Microsoft Entra ID token
+### Errors with a federated OIDC token (e.g. Microsoft Entra ID)
 
-If your backend calls `/mcp` with a federated Entra ID token and gets
-`401 Unauthorized`, decode the token locally and check its claims. The most
+If your backend calls `/mcp` with a federated token and the request is
+rejected, decode the token locally and compare its claims with the
+[token requirements](./federated-oidc-tokens#token-requirements). The most
 common causes are:
 
-- **Wrong token.** A Microsoft Graph token, an ID token or the token for your
-  own backend app is rejected. Send the access token from the On-Behalf-Of
-  exchange, requested with the ABsmartly scope (`api://…/mcp.access`).
-- **Version 1 token.** `iss` is `https://sts.windows.net/…`. Set the ABsmartly
-  app registration to issue version 2 tokens.
-- **Missing scope or email.** `scp` doesn't contain `mcp.access`, or the
-  token has no `email` claim.
+- **Wrong token.** An ID token, the token for your own backend app, or a token
+  for another API (such as Microsoft Graph) is rejected. Send the access token
+  issued for the ABsmartly API, with the agreed scope (for example
+  `mcp.access`).
+- **Issuer mismatch.** `iss` must match the issuer ABsmartly has exactly. With
+  Entra ID, version 1 tokens (`https://sts.windows.net/…`) don't match.
+- **Missing scope or user claim.** The scope claim doesn't contain the agreed
+  scope, or the token has no `email` (or agreed user) claim.
 - **Unknown or archived user.** No active ABsmartly user has the token's
   email address.
-- **Calling app not allowed.** `azp` isn't one of the backend client IDs you
-  sent to ABsmartly support.
+- **Calling app not allowed.** The client ID claim isn't one of the client IDs
+  you sent to ABsmartly support.
 
-See [Federated sign-in with Microsoft Entra ID](./entra-id-federation#troubleshooting)
-for the full list.
+See [Federated OIDC access tokens](./federated-oidc-tokens#troubleshooting)
+for the full list, and
+[Microsoft Entra ID](./microsoft-entra-id#troubleshooting) for Entra-specific
+problems.
 
 ### MCP client loses access after I sign out
 

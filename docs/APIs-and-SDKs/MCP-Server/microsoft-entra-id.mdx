@@ -1,59 +1,36 @@
 ---
-title: Federated sign-in with Microsoft Entra ID
-sidebar_position: 6
-description: Let your own backend agent call your instance's /mcp endpoint on behalf of users who are signed in to Microsoft Entra ID, using the On-Behalf-Of flow.
+title: Microsoft Entra ID
+sidebar_position: 7
+description: Set up Microsoft Entra ID so your backend agent can call your instance's /mcp endpoint on behalf of signed-in users, using the On-Behalf-Of flow.
 ---
 
-# Federated sign-in with Microsoft Entra ID
+# Microsoft Entra ID
 
-Your ABsmartly instance's `/mcp` endpoint can accept access tokens issued by
-your own Microsoft Entra ID tenant. This lets an application that you run, for
-example an internal AI agent, call ABsmartly **on behalf of each of your
-users**. Each call acts as the matching ABsmartly user, with exactly that
-user's permissions.
-
-Your application gets the token with the Entra
+This guide sets up [federated OIDC access tokens](./federated-oidc-tokens)
+with Microsoft Entra ID. Your backend uses the Entra
 [On-Behalf-Of (OBO) flow](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-on-behalf-of-flow)
-and sends it as a `Bearer` token. No ABsmartly API key or browser sign-in is
-needed.
+to exchange a signed-in user's token for an access token issued for ABsmartly,
+and calls your instance's `/mcp` endpoint with it. Each call acts as the
+matching ABsmartly user, with exactly that user's permissions.
+
+Read [Federated OIDC access tokens](./federated-oidc-tokens) first for how the
+feature works, how to call `/mcp`, the errors and the security model. This page
+covers only the Entra ID setup.
 
 :::info Enabled on request
-Federated sign-in is off by default. ABsmartly support turns it on for your
+Federated tokens are off by default. ABsmartly support turns them on for your
 instance after you complete the setup on this page and send the
 [details we need](#step-4-send-the-details-to-absmartly-support).
 :::
-
-## When to use it
-
-| Method | Best for | Who the calls act as |
-| --- | --- | --- |
-| **Federated Entra ID token** (this page) | Your own backend agent or app that serves many users who are already signed in to Entra ID | The signed-in user, with that user's permissions |
-| **[OAuth](./oauth-clients)** | Interactive MCP clients such as Claude, Cursor or VS Code | The person who approved the client in the browser |
-| **[API key](./authentication#api-key)** | Scripts, CI/CD and headless agents that act as one account | The account that owns the key |
-
-Use federated sign-in when your application already holds a user's Entra ID
-token and you want ABsmartly to apply that user's own permissions, instead of
-one shared API key for everyone.
-
-## How it works
-
-1. A user signs in to your application with Entra ID. Your backend receives an
-   access token issued for your application.
-2. Your backend exchanges that token at Entra ID for a new access token issued
-   for ABsmartly (the On-Behalf-Of flow).
-3. Your backend calls `https://your-instance.absmartly.com/mcp` with
-   `Authorization: Bearer <token>`.
-4. ABsmartly verifies the token, finds the matching ABsmartly user and runs the
-   MCP request as that user.
 
 ## Prerequisites
 
 - **SAML SSO with Entra ID is already set up** for your instance, in the same
   tenant. See [SAML SSO - Azure](/docs/Third-party-integrations/SSO/Azure%20SAML%20Setup).
-- **Your users already exist in ABsmartly** and aren't archived. ABsmartly
-  doesn't create users from a federated token. A user is created in ABsmartly
-  the first time they sign in to the Web Console with SAML SSO, so each user
-  must do that once before your backend can act for them.
+- **Your users already exist in ABsmartly** and aren't archived. A user is
+  created in ABsmartly the first time they sign in to the Web Console with
+  SAML SSO, so each user must do that once before your backend can act for
+  them.
 - **Your backend application is registered in Entra ID** (or you can register
   it) and can keep a client secret or certificate.
 - You can grant **admin consent** in the tenant.
@@ -183,11 +160,13 @@ or by email:
 | **Application ID URI** of the ABsmartly app | **Expose an API** (for example `api://…`) |
 | **Application (client) ID** of the ABsmartly app | Overview page of the ABsmartly app |
 | **Application (client) ID** of your backend app (one or more) | Overview page of your backend app |
+| **Scope name** | The scope you added in Step 1, usually `mcp.access` |
+| **User claim** | `email` (default), or `preferred_username` or `upn` if your SAML Name ID uses that |
 | **Your instance URL** | For example `https://your-instance.absmartly.com` |
 
 None of these values is secret. Never send a client secret or a token.
 
-ABsmartly confirms when federated sign-in is enabled for your instance.
+ABsmartly confirms when federated tokens are enabled for your instance.
 
 ## Request a token with the On-Behalf-Of flow
 
@@ -244,125 +223,59 @@ ABsmartly app registration.
 
 ## Call `/mcp` with the token
 
-Send the token in the `Authorization` header of every MCP request to your
-instance's `/mcp` endpoint (Streamable HTTP). For example, the MCP
-`initialize` request:
+Send the `access_token` from the OBO response as
+`Authorization: Bearer <token>` on every request to
+`https://your-instance.absmartly.com/mcp`. See
+[Call `/mcp` with the token](./federated-oidc-tokens#call-mcp-with-the-token)
+for a full example.
 
-```bash
-curl -i https://your-instance.absmartly.com/mcp \
-  -H "Authorization: Bearer $ABSMARTLY_TOKEN" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "initialize",
-    "params": {
-      "protocolVersion": "2025-06-18",
-      "capabilities": {},
-      "clientInfo": { "name": "my-backend-agent", "version": "1.0.0" }
-    }
-  }'
-```
+## What ABsmartly checks in Entra ID tokens
 
-Most MCP client libraries let you pass custom headers to the Streamable HTTP
-transport, so you can set the `Authorization` header there instead.
-
-The `get_auth_status` tool returns the email of the user the call acts as,
-which is a quick way to confirm the mapping works.
-
-Federated tokens are accepted only on your instance's own `/mcp` endpoint.
-The hosted server at `mcp.absmartly.com` doesn't accept them. Access to the
-ABsmartly REST API with the same tokens is off by default and can be enabled
-for your instance on request.
-
-## What ABsmartly checks
-
-ABsmartly accepts a token only when all of these checks pass:
+ABsmartly applies all the
+[token requirements](./federated-oidc-tokens#token-requirements). For Entra ID
+they mean:
 
 | Check | Token claim | Must be |
 | --- | --- | --- |
-| Signature | header `kid` | Signed with `RS256` by a current key from your tenant's published signing keys |
-| Issuer | `iss` | Exactly your tenant's v2 issuer, `https://login.microsoftonline.com/<tenant-id>/v2.0` |
-| Audience | `aud` | The ABsmartly app's Application (client) ID, as in every version 2 access token |
-| Tenant | `tid` | Your tenant ID |
-| Calling app | `azp` (v2) or `appid` (v1) | One of the backend client IDs you sent to ABsmartly |
-| Scope | `scp` or `roles` | Includes `mcp.access` |
-| Lifetime | `exp`, `nbf` | Not expired and already valid, with up to 60 seconds of clock skew allowed |
-| Token type | | An access token for a signed-in user. ID tokens and app-only tokens are rejected. |
-| User | `email` | Matches an active ABsmartly user (not case-sensitive) |
+| Issuer | `iss` | Exactly `https://login.microsoftonline.com/<tenant-id>/v2.0` |
+| Audience | `aud` | The ABsmartly app's Application (client) ID |
+| Tenant | `tid` | Your Directory (tenant) ID. Tokens from other tenants are rejected. |
+| Calling app | `azp` | One of the backend app client IDs you sent to ABsmartly |
+| Scope | `scp` | Includes `mcp.access` |
+| User | `email` (or the agreed `preferred_username` or `upn`) | The email address of an existing, active ABsmartly user |
+| Token type | `idtyp` | Not `app`. App-only tokens from the client credentials flow are rejected, because they don't act for a user. |
 
-If any check fails, `/mcp` answers `401 Unauthorized` with the plain-text
-body `Unauthorized`. This is the same response as for any other failed sign-in
-to `/mcp`, and it doesn't say which check failed, so it gives nothing away to
-an attacker. Use the [troubleshooting](#troubleshooting) list below, or ask
-ABsmartly support to look up the reason for a specific request time. ABsmartly
-logs the reason, never the token.
+## Revoking access
 
-The `401` response includes a `WWW-Authenticate` header that points to
-ABsmartly's own OAuth sign-in:
-
-```text
-WWW-Authenticate: Bearer resource_metadata="https://your-instance.absmartly.com/.well-known/oauth-protected-resource/mcp", scope="mcp:access"
-```
-
-It is meant for interactive MCP clients. A backend app using federated tokens
-should ignore it and fix the token instead.
-
-## Security
-
-- **Your tenant only.** ABsmartly trusts only your tenant's issuer and checks
-  the `tid` claim, so tokens from other Entra tenants are rejected.
-- **Your apps only.** Only the backend client IDs you sent to ABsmartly can
-  use the tokens. Another app in your tenant that was granted the same scope
-  is still rejected.
-- **Same permissions as the user.** Calls act as the matching ABsmartly user,
-  with that user's roles and team permissions. There is no extra access.
-- **No credentials can be created.** A federated caller can't create or
-  manage API keys, create users, reset or change passwords, or create AI
-  provider credentials, not even through MCP tools. Those actions are refused
-  with `403 Forbidden` and the message *"Federated credentials cannot create
-  or manage credentials."*, even when the user would otherwise be allowed to
-  do them.
-- **No new users.** A token for a user who doesn't exist in ABsmartly is
-  rejected. Users are never created from a federated token.
-- **Revoking access.** Entra ID tokens can't be revoked early. To cut a user
-  off, archive the user in ABsmartly (**Settings** > **Users**), which takes
-  effect on the next request, and disable or unassign the user in Entra ID so
-  no new tokens are issued. Any token already issued stays valid in Entra ID
-  until it expires (60 to 90 minutes), but ABsmartly rejects it once the user
-  is archived.
-- **Keep tokens out of logs.** Treat the token like a password while it is
-  valid.
+Entra ID access tokens can't be revoked early. To cut a user off, archive the
+user in ABsmartly (**Settings** > **Users**), which takes effect on the next
+request, and disable the user in Entra ID or remove their assignment so no new
+tokens are issued. A token that was already issued stays valid in Entra ID
+until it expires (60 to 90 minutes), but ABsmartly rejects it once the user is
+archived.
 
 ## Troubleshooting
 
-All of these show up as `401 Unauthorized` from `/mcp`, except the last row of
-the table.
+See [the shared troubleshooting list](./federated-oidc-tokens#troubleshooting)
+first. These problems are specific to Entra ID:
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| Every request is rejected, `aud` is `00000003-0000-0000-c000-000000000000` or `https://graph.microsoft.com` | The token is a Microsoft Graph token | Request the token with scope `api://<absmartly-app>/mcp.access`, not `User.Read` or `.default` for Graph |
+| `aud` is `00000003-0000-0000-c000-000000000000` or `https://graph.microsoft.com` | The token is a Microsoft Graph token | Request the token with scope `api://<absmartly-app>/mcp.access`, not `User.Read` or `.default` for Graph |
 | `aud` is your backend app's client ID | You sent the user's ID token or the token for your backend app | Exchange it with the [OBO flow](#request-a-token-with-the-on-behalf-of-flow) and send the resulting access token |
-| `iss` is `https://sts.windows.net/<tenant-id>/` and `ver` is `1.0` | The ABsmartly app issues version 1 tokens | Set `requestedAccessTokenVersion` to `2` in the ABsmartly app's [manifest](#use-version-2-access-tokens), then request a new token |
+| `aud` is `api://…` instead of a GUID, or `iss` is `https://sts.windows.net/<tenant-id>/` and `ver` is `1.0` | The ABsmartly app issues version 1 tokens | Set the access token version to `2` in the ABsmartly app's [manifest](#use-version-2-access-tokens), then request a new token |
+| `tid` isn't your tenant ID | The token comes from another tenant, for example a guest user's home tenant | Request the token from your own tenant's endpoint |
 | `scp` doesn't contain `mcp.access` | The scope wasn't requested, or consent wasn't granted | Request `api://<absmartly-app>/mcp.access` and [grant admin consent](#step-2-give-your-backend-app-permission-to-call-absmartly) |
 | The token has no `email` claim | The optional claim isn't configured, or the user has no email address in Entra ID | [Add the email optional claim](#add-the-users-email-to-the-access-token) and check the user's **Email** property |
-| The token looks right but is still rejected for one user | No ABsmartly user has that email, or the user is archived | Ask the user to sign in to the Web Console with SAML SSO once, or ask an ABsmartly admin to unarchive them |
-| The token is rejected for every user, even with the right claims | `azp` isn't one of the client IDs ABsmartly has, or federated sign-in isn't enabled yet | Compare `azp` with the client IDs you sent to ABsmartly support |
-| The token was accepted earlier but now fails | It expired | Request a new token. MSAL does this for you. |
+| `idtyp` is `app` | The token comes from the client credentials flow, not OBO | Use the [OBO flow](#request-a-token-with-the-on-behalf-of-flow) with a signed-in user's token |
 | The OBO request fails with `AADSTS65001` | Admin consent wasn't granted to your backend app | Grant admin consent in **API permissions** |
 | The OBO request fails with `AADSTS50013` or `AADSTS50027` | The `assertion` isn't a valid access token for your backend app | Pass the user's access token for your backend app, not an ID token |
-| An MCP tool returns `HTTP 403` with *"Federated credentials cannot create or manage credentials."* | The tool tried to create an API key, a user, a password or an AI provider credential | This is expected. Federated callers can't create credentials. Use the Web Console instead. |
-
-To see the claims in a token, decode it with a local JWT tool. Don't paste
-production tokens into online decoders.
 
 ## Related
 
-- [Authentication](./authentication) — all ways to authenticate to the MCP
-  server
-- [OAuth & Client Registration](./oauth-clients) — interactive OAuth sign-in
-  for MCP clients
+- [Federated OIDC access tokens](./federated-oidc-tokens) — how the feature
+  works, calling `/mcp`, errors and security
 - [SAML SSO - Azure](/docs/Third-party-integrations/SSO/Azure%20SAML%20Setup)
   — set up Entra ID sign-in to the Web Console
-- [Tools Reference](./tools-reference) — what the MCP server can do
+- [Authentication](./authentication) — all ways to authenticate to the MCP
+  server
