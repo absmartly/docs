@@ -75,11 +75,11 @@ provider must issue tokens that meet them.
 | Issuer | `iss` | Exactly the issuer ABsmartly has for your provider, character for character |
 | Audience | `aud` | The API you registered for ABsmartly in your identity provider |
 | Calling app | `azp`, `appid`, `cid` or `client_id` | One of the client IDs you sent to ABsmartly |
-| Tenant (optional) | `tid` | One of the tenant IDs you sent to ABsmartly. Used for multi-tenant issuers such as Microsoft Entra ID. |
+| Tenant (optional) | `tid` | One of the tenant IDs you sent to ABsmartly. Used for multi-tenant issuers such as Microsoft Entra ID. If the user's link recorded a tenant at SAML sign-in, the token's `tid` must also match it. |
 | Scope | `scp` or `scope` | Includes the scope you agreed with ABsmartly, for example `mcp.access` |
 | Lifetime | `exp`, `nbf` | `exp` present and not passed, `nbf` (if present) already passed, with up to 60 seconds of clock skew allowed |
 | Token type | | An access token for a signed-in user. ID tokens, whose audience is the calling app itself, are rejected. With Entra ID, app-only tokens (`idtyp` is `app`) are rejected too. |
-| User identity | `oid` (Entra ID) or `sub` | The stable subject linked to an active ABsmartly user during SAML sign-in |
+| User identity | `oid` (Entra ID), `uid` (Okta) or `sub` | The stable subject linked to an active ABsmartly user during SAML sign-in |
 
 **Client ID.** ABsmartly reads the calling app's client ID from the first of
 these claims that the token has: `azp` (OpenID Connect, Entra ID v2), `appid`
@@ -101,31 +101,81 @@ enabled on request. Neither capability permits creating credentials.
 
 ABsmartly identifies users by a stable subject, not by email, `upn` or
 `preferred_username`. ABsmartly support associates your OIDC provider with
-your SAML SSO provider and selects the token subject claim: `oid` for Entra ID
-or `sub` for other providers.
+your SAML SSO provider and selects the token claim that holds the subject:
+`oid` for Entra ID, `uid` for Okta, or `sub` for other providers.
 
 The SAML assertion must carry the **same stable subject** in a single-valued
-attribute. A SAML Name ID and an OIDC `sub` are not necessarily the same:
-providers can issue different, application-specific identifiers. Configure a
-SAML assertion attribute that contains exactly the value your OIDC access
-tokens carry, and tell ABsmartly support its name. For Entra ID, see
+attribute. ABsmartly doesn't assume that a SAML Name ID equals an OIDC `sub`:
+providers often issue different identifiers to different applications, and
+some put a changeable login or email in `sub`. Configure a SAML assertion
+attribute that contains exactly the value your access tokens carry in the
+subject claim, and tell ABsmartly support its name. For Entra ID, see
 [the SAML attribute setup](./microsoft-entra-id#link-users-through-saml-sso).
 
-When a user signs in through that SAML provider, ABsmartly records the link.
-Every user must sign in once after the upgrade, even if they already have an
-ABsmartly account. Existing browser sessions don't create the link. There is
-no administrator backfill or email-based linking. If the subject attribute is
-missing, SAML sign-in can still succeed, but federated tokens won't work for
-that user.
+When a user signs in through that SAML provider, ABsmartly records the link,
+and the tenant from the assertion if it carries one. Every user must sign in
+once after federated tokens are enabled, even if they already have an
+ABsmartly account. Existing browser sessions don't create the link, and there
+is no bulk import or email-based linking. If the subject attribute is missing,
+SAML sign-in still succeeds, but federated tokens won't work for that user.
 
-Links are never silently reassigned: if a subject is already linked to another
-user, or a user already has a different subject for that SAML provider,
-ABsmartly keeps the original link. Contact support if you encounter a conflict.
+:::warning Check your user assignments before enabling
+The first SAML sign-in after federated tokens are enabled decides each link:
+the subject in the assertion is linked to whichever ABsmartly user that
+sign-in logs in as, matched by the email or Name ID it sends. Before you
+enable federated tokens, make sure every user's email in your identity
+provider maps to the right ABsmartly user, with no shared, recycled or
+swapped addresses.
+:::
 
-For example, an Okta custom authorization server can put the client ID in
-`cid` and delegated scopes in an array in `scp`. Its `sub` must also be sent
-as a stable attribute in the SAML assertion; don't assume that a login name or
-the default SAML Name ID is the same identifier.
+Links are never reassigned automatically. If a subject is already linked to
+another user, or a user already has a different subject for that SAML
+provider, ABsmartly keeps the original link.
+
+#### Fix a wrong or stuck link
+
+If a user is linked to the wrong identity, or their identity changed in your
+identity provider, contact ABsmartly support, or ask an ABsmartly admin to
+remove the link. The user's next SAML sign-in links them again.
+
+An admin can do this with the ABsmartly REST API, using an API key or session
+that has the **User** permissions shown:
+
+1. List the user's links (needs **User: Get**):
+
+   ```http
+   GET /v1/users/{user_id}/federated_identities
+   ```
+
+   Each link shows the SAML provider it was made through (`source`), its
+   `tenant_id`, `created_at` and `last_seen_at`. The linked subject itself is
+   never returned.
+
+2. Remove the link for one SAML provider (needs **User: Edit**):
+
+   ```http
+   DELETE /v1/users/{user_id}/federated_identities/{source}
+   ```
+
+   The response is `204 No Content`, or `404` with
+   *"Federated identity not found"* if the user has no link for that provider.
+
+3. Ask the user to sign in to the Web Console with SAML SSO again.
+
+Both endpoints refuse federated callers, so a federated token can't inspect or
+change links.
+
+#### Okta example
+
+With an Okta custom authorization server, the access token carries the calling
+app in `cid`, delegated scopes as an array in `scp`, and the Okta user ID
+(`00u…`) in `uid`. Okta's `sub` is the user's login, usually an email that can
+change, so ABsmartly links Okta users by `uid` instead. Add `mcp.access` as a
+scope on the authorization server. In the Okta SAML app, add an attribute
+statement that sends the same user ID, for example named `okta_user_id` with
+value `user.id`, and tell ABsmartly support the attribute name. Okta's org
+authorization server issues opaque access tokens, so use a custom
+authorization server.
 
 ### Providers that aren't supported
 
@@ -170,7 +220,7 @@ or by email:
 | **Client IDs** of your backend apps | The value of `azp`, `appid`, `cid` or `client_id` in your tokens |
 | **Scope name** | For example `mcp.access` |
 | **SAML SSO provider** | The existing SAML provider users sign in through |
-| **Stable subject claim and SAML attribute** | `oid` or `sub`, and the SAML assertion attribute carrying exactly the same value |
+| **Stable subject claim and SAML attribute** | `oid`, `uid` or `sub`, and the name of the SAML assertion attribute carrying exactly the same value |
 | **Your instance URL** | For example `https://your-instance.absmartly.com` |
 
 None of these values is secret. Never send a client secret or a token.
@@ -206,8 +256,11 @@ curl -i https://your-instance.absmartly.com/mcp \
 Most MCP client libraries let you pass custom headers to the Streamable HTTP
 transport, so you can set the `Authorization` header there instead.
 
-The `get_auth_status` tool returns the email of the user the call acts as,
-which is a quick way to confirm the mapping works.
+To confirm the token works, call a read-only tool, for example list
+experiments with `execute_command`. Commands that use ABsmartly's account
+endpoints, such as `auth whoami` and the API key commands, don't work with
+federated tokens, and `get_auth_status` doesn't show the user's email. That's
+by design.
 
 Federated tokens are accepted only on your instance's own `/mcp` endpoint.
 The hosted server at `mcp.absmartly.com` doesn't accept them. Access to the
@@ -258,7 +311,7 @@ interactive MCP clients. A backend app using federated tokens can ignore it.
 | `token signing key not recognized` | The key named in the token's `kid` isn't among your provider's published keys | Request a new token. If it keeps happening, check that the token comes from the issuer ABsmartly has for you. |
 | `issuer signing keys unavailable` | ABsmartly couldn't fetch your provider's signing keys | Retry after a short wait. If it persists, contact ABsmartly support. |
 | `signing algorithm not allowed` | The token is signed with an algorithm that isn't enabled for your provider | Use `RS256`, or ask ABsmartly support to enable the algorithm your provider uses |
-| `token malformed` | The token isn't a valid JWT | Send the access token itself, without a prefix, quotes or line breaks |
+| `token malformed` | The token isn't a valid JWT, for example its header can't be decoded | Send the access token itself, without a prefix, quotes or line breaks |
 | `token expired` | `exp` has passed | Request a new token |
 | `token not yet valid` | `nbf` is in the future | Check the clock on the machine that requests tokens, then request a new one |
 | `token has no expiry` | The token has no `exp` claim | Configure your provider to issue access tokens with an expiry |
@@ -272,7 +325,7 @@ interactive MCP clients. A backend app using federated tokens can ignore it.
 | `app-only tokens are not accepted` | The token has `idtyp=app` or only app roles instead of delegated scopes | Use the On-Behalf-Of flow or token exchange with a signed-in user's token |
 | `federated tokens are not accepted on this endpoint` | Federated tokens aren't enabled for this endpoint on your instance | Contact ABsmartly support |
 | `token subject claim missing` | The access token has no stable subject in the agreed `oid` or `sub` claim | Configure your provider to include the subject claim |
-| `no active ABsmartly user for this identity` | The identity has no usable link to an active ABsmartly user | Sign in with SAML SSO once after the upgrade. Check the assertion carries the stable subject, and ask an admin to check the user isn't archived. Contact support for linking conflicts. |
+| `no active ABsmartly user for this identity` | The token's subject isn't linked to an ABsmartly user, the token's `tid` doesn't match the tenant recorded with the link, or the linked user is archived. The response doesn't say which. | Have the user sign in with SAML SSO once after federated tokens are enabled, and check the assertion carries the subject attribute. If the user is linked wrongly, [fix the link](#fix-a-wrong-or-stuck-link). Ask an admin to check the user isn't archived. |
 | `required scope missing` (`403`) | The token doesn't carry the scope named in the header's `scope` | Request the scope and grant it to your backend app |
 
 When federation is enabled, a Bearer JWT from an unknown issuer gets
