@@ -72,20 +72,38 @@ provider must issue tokens that meet them.
 | Check | Token claim | Must be |
 | --- | --- | --- |
 | Format | | A signed JWT. Opaque (non-JWT) access tokens are rejected. |
-| Signature | header `alg`, `kid` | Signed with an asymmetric algorithm (`RS256` by default) by a key published at your provider's JWKS URI, found through its OIDC discovery document. Unsigned and `HS*` tokens are rejected. |
+| Signature | header `alg`, `kid` | Signed by a key published at your provider's JWKS URI, found through its OIDC discovery document. `RS256` is accepted by default; `RS384`, `RS512`, `PS256`, `PS384`, `PS512`, `ES256`, `ES384` and `ES512` can be enabled on request. Unsigned and `HS*` tokens are always rejected. |
 | Issuer | `iss` | Exactly the issuer ABsmartly has for your provider, character for character |
 | Audience | `aud` | The API you registered for ABsmartly in your identity provider |
-| Calling app | `azp`, `appid` or `client_id` | One of the client IDs you sent to ABsmartly |
-| Scope | `scp` or `scope` (or Entra `roles`) | Includes the scope you agreed with ABsmartly, for example `mcp.access` |
+| Calling app | `azp`, `appid`, `cid` or `client_id` | One of the client IDs you sent to ABsmartly |
+| Tenant (optional) | `tid` | One of the tenant IDs you sent to ABsmartly. Used for multi-tenant issuers such as Microsoft Entra ID. |
+| Scope | `scp`, `scope` or `roles` | Includes the scope you agreed with ABsmartly, for example `mcp.access` |
 | Lifetime | `exp`, `nbf` | `exp` present and not passed, `nbf` (if present) already passed, with up to 60 seconds of clock skew allowed |
-| Token type | | An access token for a signed-in user. ID tokens, whose audience is the calling app itself, are rejected. |
-| User | `email` by default, or another agreed claim such as `preferred_username` or `upn` | The email address of an existing, active ABsmartly user (not case-sensitive) |
+| Token type | | An access token for a signed-in user. ID tokens, whose audience is the calling app itself, are rejected. With Entra ID, app-only tokens (`idtyp` is `app`) are rejected too. |
+| User | `email` (default), `upn` or `preferred_username` | The email address of an existing, active ABsmartly user (not case-sensitive) |
 
-<!-- TODO(FT-2378): add `cid` to the client-ID claims and confirm the generic tenant check once they land on feat/FT-2378/oidc-federation-mcp. -->
+**Client ID.** ABsmartly reads the calling app's client ID from the first of
+these claims that the token has: `azp` (OpenID Connect, Entra ID v2), `appid`
+(Entra ID v1), `cid` (Okta) and `client_id`
+([RFC 9068](https://www.rfc-editor.org/rfc/rfc9068)). If your provider sends
+more than one of them with different values, ABsmartly support can pin your
+provider to a single claim.
 
-The user claim's value must be an email address, and it must be the same
-address the user signs in to ABsmartly with. If your provider puts something
-else in the claim, such as an employee number, the token is rejected.
+**Scopes.** ABsmartly reads granted scopes from `scp` and `scope`, either as a
+space-separated string or as an array, and from `roles`. The token only needs
+to carry the agreed scope among them.
+
+**User claim.** ABsmartly reads one claim, `email` unless you agree on `upn`
+or `preferred_username` instead. Its value must be an email address, and it
+must be the same address the user signs in to ABsmartly with. If the claim is
+missing or holds something else, such as an employee number, the token is
+rejected.
+
+For example, with Okta a custom authorization server issues access tokens with
+`iss` set to the authorization server's URL, `aud` set to the audience you
+configure for it, the calling app in `cid`, the granted scopes as an array in
+`scp`, and the user's login in `sub`. Add an `email` claim to the access token,
+and add `mcp.access` as a scope on the authorization server.
 
 ### Providers that aren't supported
 
@@ -175,21 +193,72 @@ for your instance on request.
 
 ## Errors
 
-<!-- TODO(FT-2378): fill this section from the final backend code. Planned: 401 with WWW-Authenticate error="invalid_token" and error_description=<reason> plus a JSON body; 403 insufficient_scope when the scope is missing. Reason strings pending. -->
+When ABsmartly rejects a federated token, `/mcp` answers with an
+[RFC 6750](https://www.rfc-editor.org/rfc/rfc6750#section-3) error. The error
+and a short reason are in both the `WWW-Authenticate` header and the JSON
+response body:
 
-When ABsmartly rejects a token, `/mcp` answers with one of these errors:
-
-| Status | Error | When |
+| Status | `error` | When |
 | --- | --- | --- |
-| `401 Unauthorized` | `invalid_token` | The token failed one of the [token requirements](#token-requirements) |
+| `401 Unauthorized` | `invalid_token` | The token failed one of the [token requirements](#token-requirements), or the user can't be found |
 | `403 Forbidden` | `insufficient_scope` | The token is valid but doesn't carry the agreed scope |
 
-The reason is in the `error_description` of the `WWW-Authenticate` header and
-in the JSON response body:
+For example, an expired token:
 
-| Reason | Meaning | Fix |
+```http
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer resource_metadata="https://your-instance.absmartly.com/.well-known/oauth-protected-resource/mcp", scope="mcp:access", error="invalid_token", error_description="token expired"
+Content-Type: application/json
+
+{"error": "invalid_token", "error_description": "token expired"}
+```
+
+A token without the agreed scope gets `403`, and the header names the scope
+it needs:
+
+```http
+HTTP/1.1 403 Forbidden
+WWW-Authenticate: Bearer resource_metadata="https://your-instance.absmartly.com/.well-known/oauth-protected-resource/mcp", scope="mcp.access", error="insufficient_scope", error_description="required scope missing"
+Content-Type: application/json
+
+{"error": "insufficient_scope", "error_description": "required scope missing"}
+```
+
+The `resource_metadata` part points to ABsmartly's own OAuth sign-in for
+interactive MCP clients. A backend app using federated tokens can ignore it.
+
+### Error reasons
+
+| `error_description` | Meaning | Fix |
 | --- | --- | --- |
-| | | |
+| `token signature invalid` | The signature doesn't match the token's contents | Send the token exactly as your identity provider issued it, without changing it |
+| `token signing key not recognized` | The key named in the token's `kid` isn't among your provider's published keys | Request a new token. If it keeps happening, check that the token comes from the issuer ABsmartly has for you. |
+| `issuer signing keys unavailable` | ABsmartly couldn't fetch your provider's signing keys | Retry after a short wait. If it persists, contact ABsmartly support. |
+| `signing algorithm not allowed` | The token is signed with an algorithm that isn't enabled for your provider | Use `RS256`, or ask ABsmartly support to enable the algorithm your provider uses |
+| `token malformed` | The token isn't a valid JWT | Send the access token itself, without a prefix, quotes or line breaks |
+| `token expired` | `exp` has passed | Request a new token |
+| `token not yet valid` | `nbf` is in the future | Check the clock on the machine that requests tokens, then request a new one |
+| `token has no expiry` | The token has no `exp` claim | Configure your provider to issue access tokens with an expiry |
+| `token claims invalid` | A standard claim has an invalid value | Request a new token. If it persists, contact ABsmartly support with the time of the request. |
+| `issuer not accepted` | `iss` isn't the issuer ABsmartly has for your provider | Send ABsmartly support the exact `iss` from a real token |
+| `audience not accepted` | `aud` isn't the ABsmartly API. This is the usual result of sending an ID token, a token for your own app or a token for another API. | Request an access token for the ABsmartly API, with the agreed scope |
+| `tenant not accepted` | `tid` isn't one of the tenant IDs ABsmartly has for you | Request the token from your own tenant |
+| `client id claim missing` | The token has none of the client ID claims | Configure your provider to include the calling app's client ID in access tokens |
+| `client not allowed` | The calling app's client ID isn't one you sent to ABsmartly | Use an allowed app, or send ABsmartly support the new client ID |
+| `ID tokens are not accepted` | The token's audience is the calling app itself, so it's an ID token | Send an access token issued for the ABsmartly API |
+| `app-only tokens are not accepted` | The token was issued to an app without a signed-in user (Entra ID client credentials flow) | Use the On-Behalf-Of flow or token exchange with a signed-in user's token |
+| `federated tokens are not accepted on this endpoint` | Federated tokens aren't enabled for this endpoint on your instance | Contact ABsmartly support |
+| `user claim missing or not an email` | The user claim is missing, or its value isn't an email address | Add the user claim to access tokens, or agree a different claim with ABsmartly support |
+| `no active ABsmartly user for this identity` | No ABsmartly user has the token's email address, or the user is archived | Ask the user to sign in to the Web Console with SSO once, or ask an ABsmartly admin to unarchive them |
+| `required scope missing` (`403`) | The token doesn't carry the scope named in the header's `scope` | Request the scope and grant it to your backend app |
+
+A token whose issuer ABsmartly doesn't know at all isn't treated as a
+federated token. It gets the plain `401 Unauthorized` that `/mcp` returns for
+any unrecognized credential, without an `error_description`. If you see that
+with a federated token, compare its `iss` with the issuer you sent to
+ABsmartly support.
+
+### Credential-creating actions
 
 Federated callers also get `403 Forbidden` with the message *"Federated
 credentials cannot create or manage credentials."* when an MCP tool tries to
@@ -229,15 +298,10 @@ with the [token requirements](#token-requirements).
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
+| Plain `401 Unauthorized` with no `error_description` | ABsmartly doesn't recognize the token's issuer, or federated tokens aren't enabled yet | Compare `iss` with the issuer you sent to ABsmartly support, character for character |
 | The token doesn't decode as a JWT | Your provider issues opaque access tokens | Configure the provider to issue JWT access tokens for the ABsmartly API, or use an [API key](./authentication#api-key) |
-| `aud` is your backend app's client ID | You sent an ID token or the token for your own backend app | Exchange it for a token issued for the ABsmartly API |
-| `aud` is another API, such as a user-info or Graph API | The token was requested for the wrong resource | Request it with the ABsmartly audience and scope |
-| `iss` differs from the issuer you sent, even by a trailing `/` | The issuer must match exactly | Send ABsmartly the exact `iss` from a real token |
-| The scope claim doesn't contain the agreed scope | The scope wasn't requested, or the app wasn't granted it | Request the scope and grant it to your backend app |
-| The token has no user claim, or its value isn't an email address | The claim isn't configured, or it holds a different identifier | Add the claim to access tokens, or agree a different claim with ABsmartly support |
-| The token looks right but is rejected for one user | No ABsmartly user has that email, or the user is archived | Ask the user to sign in to the Web Console with SSO once, or ask an ABsmartly admin to unarchive them |
-| Every token is rejected, even with the right claims | The calling app's client ID isn't on the list, or federated tokens aren't enabled yet | Compare the client ID claim with the IDs you sent to ABsmartly support |
-| A token that worked earlier now fails | It expired | Request a new token |
+| Any `401` with an `error_description` | See [Error reasons](#error-reasons) | Follow the fix for that reason |
+| `403` with `required scope missing` | The scope wasn't requested, or the app wasn't granted it | Request the scope named in the header and grant it to your backend app |
 | An MCP tool returns `HTTP 403` with *"Federated credentials cannot create or manage credentials."* | The tool tried to create an API key, a user, a password or an AI provider credential | This is expected. Use the Web Console instead. |
 
 For provider-specific problems, see the provider guide, for example
