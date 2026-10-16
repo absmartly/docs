@@ -71,10 +71,10 @@ common causes are:
   `mcp.access`).
 - **Issuer mismatch.** `iss` must match the issuer ABsmartly has exactly. With
   Entra ID, version 1 tokens (`https://sts.windows.net/…`) don't match.
-- **Missing scope or user claim.** The scope claim doesn't contain the agreed
-  scope, or the token has no `email` (or agreed user) claim.
-- **Unknown or archived user.** No active ABsmartly user has the token's
-  email address.
+- **Missing scope or subject.** The token must carry the agreed delegated
+  scope and a stable `oid` or `sub` claim.
+- **Unlinked or inactive user.** The user must sign in through SAML SSO once
+  after the upgrade to link their identity, and must not be archived.
 - **Calling app not allowed.** The client ID claim isn't one of the client IDs
   you sent to ABsmartly support.
 
