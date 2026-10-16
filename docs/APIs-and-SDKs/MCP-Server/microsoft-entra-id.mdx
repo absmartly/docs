@@ -119,12 +119,17 @@ match its `tid`. If you use different assertion attribute names, send those
 names to ABsmartly support so they can configure the mapping. Keep the existing
 SAML Name ID and other claims used for Web Console sign-in.
 
-Every user must sign in again through SAML after the upgrade, even if they
-already have an account or browser session. ABsmartly records the stable link
-at that login; there is no administrator backfill. Conflicting links are never
-reassigned automatically. See
+ABsmartly records the user's `oid` and tenant at their next SAML sign-in.
+After that, it only accepts tokens whose `tid` matches the recorded tenant.
+
+Every user must sign in once through SAML after federated tokens are enabled,
+even if they already have an account or browser session. There is no bulk
+import. The first sign-in decides the link, so check that every user's email
+in Entra ID maps to the right ABsmartly user before you enable it. Links are
+never reassigned automatically; see
 [Link users through SAML SSO](./federated-oidc-tokens#link-users-through-saml-sso)
-for details.
+for details and for how to
+[fix a wrong link](./federated-oidc-tokens#fix-a-wrong-or-stuck-link).
 
 ## Step 2: Give your backend app permission to call ABsmartly
 
@@ -278,7 +283,7 @@ problems are specific to Entra ID:
 | `tenant not accepted` | The token comes from another tenant, for example a guest user's home tenant | Request the token from your own tenant's endpoint |
 | `required scope missing` (`403`) | `scp` doesn't contain `mcp.access`: the scope wasn't requested, or consent wasn't granted | Request `api://<absmartly-app>/mcp.access` and [grant admin consent](#step-2-give-your-backend-app-permission-to-call-absmartly) |
 | `token subject claim missing` | The token has no `oid` | Send a delegated access token issued for the ABsmartly app |
-| `no active ABsmartly user for this identity` | The stable identity isn't linked to an active user | Sign in with SAML once after the upgrade and check the [SAML attributes](#link-users-through-saml-sso). Contact support if the link conflicts with an existing one. |
+| `no active ABsmartly user for this identity` | The user hasn't signed in with SAML since federated tokens were enabled, the SAML assertion lacks the [object ID attribute](#link-users-through-saml-sso), the linked user is archived, or the token is from a different tenant than the one recorded at SAML sign-in (or has no `tid`) | Have the user sign in with SAML SSO once, and request the token from the same tenant the user signs in to ABsmartly with. If the link is wrong, [fix it](./federated-oidc-tokens#fix-a-wrong-or-stuck-link). |
 | `app-only tokens are not accepted` | The token comes from the client credentials flow, not OBO | Use the [OBO flow](#request-a-token-with-the-on-behalf-of-flow) with a signed-in user's token |
 | The OBO request fails with `AADSTS65001` | Admin consent wasn't granted to your backend app | Grant admin consent in **API permissions** |
 | The OBO request fails with `AADSTS50013` or `AADSTS50027` | The `assertion` isn't a valid access token for your backend app | Pass the user's access token for your backend app, not an ID token |
