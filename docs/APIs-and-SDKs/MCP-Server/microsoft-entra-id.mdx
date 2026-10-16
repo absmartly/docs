@@ -1,0 +1,298 @@
+---
+title: Microsoft Entra ID
+sidebar_position: 7
+description: Set up Microsoft Entra ID so your backend agent can call your instance's /mcp endpoint on behalf of signed-in users, using the On-Behalf-Of flow.
+---
+
+# Microsoft Entra ID
+
+This guide sets up [federated OIDC access tokens](./federated-oidc-tokens)
+with Microsoft Entra ID. Your backend uses the Entra
+[On-Behalf-Of (OBO) flow](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-on-behalf-of-flow)
+to exchange a signed-in user's token for an access token issued for ABsmartly,
+and calls your instance's `/mcp` endpoint with it. Each call acts as the
+matching ABsmartly user, with exactly that user's permissions.
+
+Read [Federated OIDC access tokens](./federated-oidc-tokens) first for how the
+feature works, how to call `/mcp`, the errors and the security model. This page
+covers only the Entra ID setup.
+
+:::info Enabled on request
+Federated tokens are off by default. ABsmartly support turns them on for your
+instance after you complete the setup on this page and send the
+[details we need](#step-4-send-the-details-to-absmartly-support).
+:::
+
+## Prerequisites
+
+- **SAML SSO with Entra ID is already set up** for your instance, in the same
+  tenant. See [SAML SSO - Azure](/docs/Third-party-integrations/SSO/Azure%20SAML%20Setup).
+- **Each user signs in once with SAML SSO after the federation upgrade**,
+  including users who already exist in ABsmartly. This links their Entra
+  object ID to their ABsmartly user. The user must not be archived.
+- **Your backend application is registered in Entra ID** (or you can register
+  it) and can keep a client secret or certificate.
+- You can grant **admin consent** in the tenant.
+
+## Step 1: Register an app that represents ABsmartly
+
+This app registration is the "API" that your backend requests tokens for. It
+is separate from the enterprise application you created for SAML SSO.
+
+1. Go to the [Microsoft Entra admin center](https://entra.microsoft.com/) and
+   head to **Identity** > **Applications** > **App registrations** >
+   **New registration**.
+2. Name it, for example **ABsmartly MCP**.
+3. Under **Supported account types**, choose **Accounts in this
+   organizational directory only (Single tenant)**.
+4. Leave **Redirect URI** empty and click **Register**.
+5. On the **Overview** page, copy the **Application (client) ID** and the
+   **Directory (tenant) ID**. You send both to ABsmartly later.
+
+### Set the Application ID URI and expose a scope
+
+6. In the inner left pane, click **Expose an API**.
+7. Next to **Application ID URI**, click **Add** and keep the suggested value
+   (`api://<application-client-id>`) or enter your own. Click **Save**.
+8. Click **+ Add a scope** and fill in:
+    - **Scope name**: `mcp.access`
+    - **Who can consent?**: **Admins only**
+    - **Admin consent display name**: `Access ABsmartly MCP as the signed-in user`
+    - **Admin consent description**: `Allows the app to use the ABsmartly MCP server on behalf of the signed-in user.`
+    - **State**: **Enabled**
+
+    Click **Add scope**.
+
+`mcp.access` is the scope name we use by convention. ABsmartly configures the
+scope for your instance, so if you need a different name, agree it with
+ABsmartly support and use it everywhere this page says `mcp.access`.
+
+### Use version 2 access tokens
+
+9. In the inner left pane, click **Manifest**.
+10. Set the access token version to `2` and click **Save**. The property
+    name depends on which manifest format the portal shows:
+
+    - **Microsoft Graph app manifest** (the current default): under `api`, set
+      `requestedAccessTokenVersion`.
+
+      ```json
+      "api": {
+        "requestedAccessTokenVersion": 2
+      }
+      ```
+
+    - **AAD Graph app manifest** (legacy): set the top-level
+      `accessTokenAcceptedVersion`.
+
+      ```json
+      "accessTokenAcceptedVersion": 2
+      ```
+
+ABsmartly checks the token's issuer exactly against the version 2 issuer,
+`https://login.microsoftonline.com/<tenant-id>/v2.0`. Version 1 tokens have a
+different issuer (`https://sts.windows.net/<tenant-id>/`) and are rejected.
+
+In version 2 access tokens, the audience (`aud`) is the ABsmartly app's
+**Application (client) ID**, a GUID, not its Application ID URI. ABsmartly
+expects that GUID, which is why you send it to support in
+[Step 4](#step-4-send-the-details-to-absmartly-support).
+
+### Link users through SAML SSO
+
+ABsmartly links the Entra `oid` claim (the user's stable object ID) to the user
+when they sign in through your existing SAML SSO provider. It does not match
+on email, `upn` or `preferred_username`. Entra access tokens already contain
+`oid` and `tid`, so you don't need an email optional claim on the API app.
+
+In the **enterprise application used for SAML SSO** (not the new API app),
+open **Single sign-on** > **Attributes & Claims**. Ensure these single-valued
+attributes are included in the assertion:
+
+| Attribute name | Source attribute |
+| --- | --- |
+| `http://schemas.microsoft.com/identity/claims/objectidentifier` | `user.objectid` |
+| `http://schemas.microsoft.com/identity/claims/tenantid` | Your Directory (tenant) ID |
+
+The objectidentifier must equal the access token's `oid`, and tenantid must
+match its `tid`. If you use different assertion attribute names, send those
+names to ABsmartly support so they can configure the mapping. Keep the existing
+SAML Name ID and other claims used for Web Console sign-in.
+
+ABsmartly records the user's `oid` and tenant at their next SAML sign-in.
+After that, it only accepts tokens whose `tid` matches the recorded tenant.
+
+Every user must sign in once through SAML after federated tokens are enabled,
+even if they already have an account or browser session. There is no bulk
+import. The first sign-in decides the link, so check that every user's email
+in Entra ID maps to the right ABsmartly user before you enable it. Links are
+never reassigned automatically; see
+[Link users through SAML SSO](./federated-oidc-tokens#link-users-through-saml-sso)
+for details and for how to
+[fix a wrong link](./federated-oidc-tokens#fix-a-wrong-or-stuck-link).
+
+## Step 2: Give your backend app permission to call ABsmartly
+
+1. In **App registrations**, open the app registration of your backend
+   application (or create one with **New registration**).
+2. Click **Certificates & secrets** and add a client secret or a certificate,
+   if the app doesn't have one yet. Your backend needs it for the OBO request.
+3. Click **API permissions** > **+ Add a permission** > **APIs my organization
+   uses**, and select the ABsmartly app from Step 1 (for example
+   **ABsmartly MCP**).
+4. Choose **Delegated permissions**, tick `mcp.access` and click **Add
+   permissions**.
+5. Click **Grant admin consent for &lt;your tenant&gt;** and confirm. The
+   permission's status changes to **Granted**.
+6. On the **Overview** page, copy the backend app's **Application (client)
+   ID**. ABsmartly only accepts tokens requested by the client IDs you send.
+
+:::tip
+You can also pre-authorize your backend app on the ABsmartly app registration:
+in **Expose an API** > **Authorized client applications**, add the backend
+app's client ID and tick the `mcp.access` scope. Users are then never asked to
+consent to it.
+:::
+
+## Step 3: Check who can use it
+
+Any user in your tenant that your backend can get a token for can reach
+ABsmartly, but only if they also exist and are active in ABsmartly. To limit
+this further, open the ABsmartly app's enterprise application (**Identity** >
+**Applications** > **Enterprise applications**), set **Assignment required?**
+to **Yes** under **Properties**, and assign the users or groups that may use
+it under **Users and groups**.
+
+## Step 4: Send the details to ABsmartly support
+
+Send these values to ABsmartly support, for example through your Slack channel
+or by email:
+
+| Value | Where to find it |
+| --- | --- |
+| **Directory (tenant) ID** | Overview page of either app registration |
+| **Application ID URI** of the ABsmartly app | **Expose an API** (for example `api://…`) |
+| **Application (client) ID** of the ABsmartly app | Overview page of the ABsmartly app |
+| **Application (client) ID** of your backend app (one or more) | Overview page of your backend app |
+| **Scope name** | The scope you added in Step 1, usually `mcp.access` |
+| **SAML SSO provider and assertion attributes** | The existing SAML application, its objectidentifier and tenantid attribute names; the token subject is `oid` |
+| **Your instance URL** | For example `https://your-instance.absmartly.com` |
+
+None of these values is secret. Never send a client secret or a token.
+
+ABsmartly confirms when federated tokens are enabled for your instance.
+
+## Request a token with the On-Behalf-Of flow
+
+Your backend exchanges the user's incoming access token (the one issued for
+your backend app) for a token issued for ABsmartly:
+
+```http
+POST https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer
+&client_id=<backend-app-client-id>
+&client_secret=<backend-app-client-secret>
+&assertion=<the user's access token for your backend app>
+&scope=api://<absmartly-app-client-id>/mcp.access
+&requested_token_use=on_behalf_of
+```
+
+Use your own **Application ID URI** in `scope` if you changed it in Step 1.
+The `access_token` in the response is the token you send to ABsmartly. It
+expires after 60 to 90 minutes, so request a new one when it expires.
+
+The same exchange with
+[MSAL for Python](https://learn.microsoft.com/en-us/entra/msal/python/):
+
+```python
+import msal
+
+app = msal.ConfidentialClientApplication(
+    client_id="<backend-app-client-id>",
+    client_credential="<backend-app-client-secret>",
+    authority="https://login.microsoftonline.com/<tenant-id>",
+)
+
+result = app.acquire_token_on_behalf_of(
+    user_assertion=incoming_user_access_token,
+    scopes=["api://<absmartly-app-client-id>/mcp.access"],
+)
+
+if "access_token" not in result:
+    raise RuntimeError(result.get("error_description"))
+
+absmartly_token = result["access_token"]
+```
+
+MSAL caches the token and returns the cached one until it is close to expiry,
+so you can call `acquire_token_on_behalf_of` before every request.
+
+:::note
+Don't send the user's ID token, the token for your own backend app, or a
+Microsoft Graph token. ABsmartly only accepts access tokens issued for the
+ABsmartly app registration.
+:::
+
+## Call `/mcp` with the token
+
+Send the `access_token` from the OBO response as
+`Authorization: Bearer <token>` on every request to
+`https://your-instance.absmartly.com/mcp`. See
+[Call `/mcp` with the token](./federated-oidc-tokens#call-mcp-with-the-token)
+for a full example.
+
+## What ABsmartly checks in Entra ID tokens
+
+ABsmartly applies all the
+[token requirements](./federated-oidc-tokens#token-requirements). For Entra ID
+they mean:
+
+| Check | Token claim | Must be |
+| --- | --- | --- |
+| Issuer | `iss` | Exactly `https://login.microsoftonline.com/<tenant-id>/v2.0` |
+| Audience | `aud` | The ABsmartly app's Application (client) ID |
+| Tenant | `tid` | Your Directory (tenant) ID. Tokens from other tenants are rejected. |
+| Calling app | `azp` | One of the backend app client IDs you sent to ABsmartly |
+| Scope | `scp` | Includes `mcp.access`. App roles alone are not accepted. |
+| User identity | `oid` | The object ID linked to an active ABsmartly user during SAML sign-in |
+| Token type | `idtyp` | Not `app`. App-only tokens from the client credentials flow are rejected, because they don't act for a user. |
+
+## Revoking access
+
+Entra ID access tokens can't be revoked early. To cut a user off, archive the
+user in ABsmartly (**Settings** > **Users**), which takes effect on the next
+request, and disable the user in Entra ID or remove their assignment so no new
+tokens are issued. A token that was already issued stays valid in Entra ID
+until it expires (60 to 90 minutes), but ABsmartly rejects it once the user is
+archived.
+
+## Troubleshooting
+
+Rejected tokens come back with an `error_description` that says why. See
+[Error reasons](./federated-oidc-tokens#error-reasons) for the full list. These
+problems are specific to Entra ID:
+
+| Symptom | Likely cause | Fix |
+| --- | --- | --- |
+| `audience not accepted`, and `aud` is your backend app's client ID | You sent the user's ID token or the token for your backend app. Sending an Entra ID token instead of the OBO result usually shows up this way. | Exchange it with the [OBO flow](#request-a-token-with-the-on-behalf-of-flow) and send the resulting access token |
+| `audience not accepted`, and `aud` is `00000003-0000-0000-c000-000000000000` or `https://graph.microsoft.com` | The token is a Microsoft Graph token | Request the token with scope `api://<absmartly-app>/mcp.access`, not `User.Read` or `.default` for Graph |
+| `audience not accepted`, and `aud` is `api://…` instead of a GUID | The ABsmartly app issues version 1 tokens | Set the access token version to `2` in the ABsmartly app's [manifest](#use-version-2-access-tokens), then request a new token |
+| `issuer not accepted`, and `iss` is `https://sts.windows.net/<tenant-id>/` | A version 1 token with the wrong issuer. | Set the access token version to `2` in the [manifest](#use-version-2-access-tokens), then request a new token |
+| `tenant not accepted` | The token comes from another tenant, for example a guest user's home tenant | Request the token from your own tenant's endpoint |
+| `required scope missing` (`403`) | `scp` doesn't contain `mcp.access`: the scope wasn't requested, or consent wasn't granted | Request `api://<absmartly-app>/mcp.access` and [grant admin consent](#step-2-give-your-backend-app-permission-to-call-absmartly) |
+| `token subject claim missing` | The token has no `oid` | Send a delegated access token issued for the ABsmartly app |
+| `no active ABsmartly user for this identity` | The user hasn't signed in with SAML since federated tokens were enabled, the SAML assertion lacks the [object ID attribute](#link-users-through-saml-sso), the linked user is archived, or the token is from a different tenant than the one recorded at SAML sign-in (or has no `tid`) | Have the user sign in with SAML SSO once, and request the token from the same tenant the user signs in to ABsmartly with. If the link is wrong, [fix it](./federated-oidc-tokens#fix-a-wrong-or-stuck-link). |
+| `app-only tokens are not accepted` | The token comes from the client credentials flow, not OBO | Use the [OBO flow](#request-a-token-with-the-on-behalf-of-flow) with a signed-in user's token |
+| The OBO request fails with `AADSTS65001` | Admin consent wasn't granted to your backend app | Grant admin consent in **API permissions** |
+| The OBO request fails with `AADSTS50013` or `AADSTS50027` | The `assertion` isn't a valid access token for your backend app | Pass the user's access token for your backend app, not an ID token |
+
+## Related
+
+- [Federated OIDC access tokens](./federated-oidc-tokens) — how the feature
+  works, calling `/mcp`, errors and security
+- [SAML SSO - Azure](/docs/Third-party-integrations/SSO/Azure%20SAML%20Setup)
+  — set up Entra ID sign-in to the Web Console
+- [Authentication](./authentication) — all ways to authenticate to the MCP
+  server

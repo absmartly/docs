@@ -1,0 +1,397 @@
+---
+title: Federated OIDC access tokens
+sidebar_position: 6
+description: Let your own backend agent call your instance's /mcp endpoint on behalf of signed-in users, with access tokens issued by your own OpenID Connect identity provider such as Microsoft Entra ID.
+---
+
+# Federated OIDC access tokens
+
+Your ABsmartly instance's `/mcp` endpoint can accept access tokens issued by
+your own OpenID Connect (OIDC) identity provider. This lets an application
+that you run, for example an internal AI agent, call ABsmartly **on behalf of
+each of your users**. Each call acts as the matching ABsmartly user, with
+exactly that user's permissions.
+
+Your application gets an access token for ABsmartly from your identity
+provider and sends it as a `Bearer` token. No ABsmartly API key or browser
+sign-in is needed.
+
+This page describes what works with any identity provider. For the
+step-by-step setup of a specific provider, see its guide:
+
+- [Microsoft Entra ID](./microsoft-entra-id)
+
+:::info Enabled on request
+Federated tokens are off by default. ABsmartly support turns them on for your
+instance after you set up your identity provider and send the
+[details we need](#what-to-send-to-absmartly-support).
+:::
+
+## When to use it
+
+| Method | Best for | Who the calls act as |
+| --- | --- | --- |
+| **Federated OIDC token** (this page) | Your own backend agent or app that serves many users who are already signed in to your identity provider | The signed-in user, with that user's permissions |
+| **[OAuth](./oauth-clients)** | Interactive MCP clients such as Claude, Cursor or VS Code | The person who approved the client in the browser |
+| **[API key](./authentication#api-key)** | Scripts, CI/CD and headless agents that act as one account | The account that owns the key |
+
+Use federated tokens when your application already holds a user's token from
+your identity provider and you want ABsmartly to apply that user's own
+permissions, instead of one shared API key for everyone.
+
+## How it works
+
+1. A user signs in to your application through your identity provider. Your
+   backend receives a token issued for your application.
+2. Your backend exchanges that token at your identity provider for a new
+   access token issued for ABsmartly. Depending on the provider, this is
+   called the On-Behalf-Of flow or token exchange.
+3. Your backend calls `https://your-instance.absmartly.com/mcp` with
+   `Authorization: Bearer <token>`.
+4. ABsmartly verifies the token, finds the matching ABsmartly user and runs the
+   MCP request as that user.
+
+## Prerequisites
+
+- **Your users sign in with SAML SSO** through the identity provider that
+  issues the tokens. Each user, including existing users, must sign in once
+  after your instance is upgraded to support federation. This links their
+  stable identity to their ABsmartly account. The user must not be archived.
+- **Your identity provider issues JWT access tokens** for an API that you
+  register for ABsmartly, and you can add a custom scope to that API.
+- **Your backend application is registered** in the identity provider as a
+  confidential client, so it can exchange a user's token for one issued for
+  ABsmartly.
+
+## Token requirements
+
+ABsmartly accepts a token only when all of these checks pass. Your identity
+provider must issue tokens that meet them.
+
+| Check | Token claim | Must be |
+| --- | --- | --- |
+| Format | | A signed JWT. Opaque (non-JWT) access tokens are rejected. |
+| Signature | header `alg`, `kid` | Signed by a key published at your provider's JWKS URI, found through its OIDC discovery document. `RS256` is accepted by default; `RS384`, `RS512`, `PS256`, `PS384`, `PS512`, `ES256`, `ES384` and `ES512` can be enabled on request. Unsigned and `HS*` tokens are always rejected. |
+| Issuer | `iss` | Exactly the issuer ABsmartly has for your provider, character for character |
+| Audience | `aud` | The API you registered for ABsmartly in your identity provider |
+| Calling app | `azp`, `appid`, `cid` or `client_id` | One of the client IDs you sent to ABsmartly |
+| Tenant (optional) | `tid` | One of the tenant IDs you sent to ABsmartly. Used for multi-tenant issuers such as Microsoft Entra ID. If the user's link recorded a tenant at SAML sign-in, the token's `tid` must also match it. |
+| Scope | `scp` or `scope` | Includes the scope you agreed with ABsmartly, for example `mcp.access` |
+| Lifetime | `exp`, `nbf` | `exp` present and not passed, `nbf` (if present) already passed, with up to 60 seconds of clock skew allowed |
+| Token type | | An access token for a signed-in user. ID tokens, whose audience is the calling app itself, are rejected. With Entra ID, app-only tokens (`idtyp` is `app`) are rejected too. |
+| User identity | `oid` (Entra ID), `uid` (Okta) or `sub` | The stable subject linked to an active ABsmartly user during SAML sign-in |
+
+**Client ID.** ABsmartly reads the calling app's client ID from the first of
+these claims that the token has: `azp` (OpenID Connect, Entra ID v2), `appid`
+(Entra ID v1), `cid` (Okta) and `client_id`
+([RFC 9068](https://www.rfc-editor.org/rfc/rfc9068)). If your provider sends
+more than one of them with different values, ABsmartly support can pin your
+provider to a single claim.
+
+**Scopes.** ABsmartly reads delegated scopes from `scp` and `scope`, either
+as a space-separated string or as an array. App roles (`roles`) do not grant
+access: a token with only app roles is rejected as an app-only token.
+
+The MCP scope (conventionally `mcp.access`) grants the user's own API
+permissions **through MCP only**. It doesn't allow direct REST API calls or
+access to `/auth/*`. Direct `/v1` access requires a separate API capability,
+enabled on request. Neither capability permits creating credentials.
+
+### Link users through SAML SSO
+
+ABsmartly identifies users by a stable subject, not by email, `upn` or
+`preferred_username`. ABsmartly support associates your OIDC provider with
+your SAML SSO provider and selects the token claim that holds the subject:
+`oid` for Entra ID, `uid` for Okta, or `sub` for other providers.
+
+The SAML assertion must carry the **same stable subject** in a single-valued
+attribute. ABsmartly doesn't assume that a SAML Name ID equals an OIDC `sub`:
+providers often issue different identifiers to different applications, and
+some put a changeable login or email in `sub`. Configure a SAML assertion
+attribute that contains exactly the value your access tokens carry in the
+subject claim, and tell ABsmartly support its name. For Entra ID, see
+[the SAML attribute setup](./microsoft-entra-id#link-users-through-saml-sso).
+
+When a user signs in through that SAML provider, ABsmartly records the link,
+and the tenant from the assertion if it carries one. Every user must sign in
+once after federated tokens are enabled, even if they already have an
+ABsmartly account. Existing browser sessions don't create the link, and there
+is no bulk import or email-based linking. If the subject attribute is missing,
+SAML sign-in still succeeds, but federated tokens won't work for that user.
+
+:::warning Check your user assignments before enabling
+The first SAML sign-in after federated tokens are enabled decides each link:
+the subject in the assertion is linked to whichever ABsmartly user that
+sign-in logs in as, matched by the email or Name ID it sends. Before you
+enable federated tokens, make sure every user's email in your identity
+provider maps to the right ABsmartly user, with no shared, recycled or
+swapped addresses.
+:::
+
+Links are never reassigned automatically. If a subject is already linked to
+another user, or a user already has a different subject for that SAML
+provider, ABsmartly keeps the original link.
+
+#### Fix a wrong or stuck link
+
+If a user is linked to the wrong identity, or their identity changed in your
+identity provider, contact ABsmartly support, or ask an ABsmartly admin to
+remove the link. The user's next SAML sign-in links them again.
+
+An admin can do this with the ABsmartly REST API, using an API key or session
+that has the **User** permissions shown:
+
+1. List the user's links (needs **User: Get**):
+
+   ```http
+   GET /v1/users/{user_id}/federated_identities
+   ```
+
+   Each link shows the SAML provider it was made through (`source`), its
+   `tenant_id`, `created_at` and `last_seen_at`. The linked subject itself is
+   never returned.
+
+2. Remove the link for one SAML provider (needs **User: Edit**):
+
+   ```http
+   DELETE /v1/users/{user_id}/federated_identities/{source}
+   ```
+
+   The response is `204 No Content`, or `404` with
+   *"Federated identity not found"* if the user has no link for that provider.
+
+3. Ask the user to sign in to the Web Console with SAML SSO again.
+
+Both endpoints refuse federated callers, so a federated token can't inspect or
+change links.
+
+#### Okta example
+
+With an Okta custom authorization server, the access token carries the calling
+app in `cid`, delegated scopes as an array in `scp`, and the Okta user ID
+(`00u…`) in `uid`. Okta's `sub` is the user's login, usually an email that can
+change, so ABsmartly links Okta users by `uid` instead. Add `mcp.access` as a
+scope on the authorization server. In the Okta SAML app, add an attribute
+statement that sends the same user ID, for example named `okta_user_id` with
+value `user.id`, and tell ABsmartly support the attribute name. Okta's org
+authorization server issues opaque access tokens, so use a custom
+authorization server.
+
+### Providers that aren't supported
+
+- **Google.** Google's OAuth access tokens are opaque strings, not JWTs, so
+  ABsmartly can't verify them locally. Google ID tokens are JWTs, but they're
+  issued for the client app rather than for ABsmartly, so they're rejected
+  too.
+- Any provider that issues only opaque access tokens, or that can't issue
+  tokens for a custom API audience.
+
+## Get a token for ABsmartly
+
+How your backend gets the token depends on your identity provider:
+
+- **Microsoft Entra ID** uses the On-Behalf-Of flow. See
+  [Request a token with the On-Behalf-Of flow](./microsoft-entra-id#request-a-token-with-the-on-behalf-of-flow).
+- **Providers that support OAuth 2.0 Token Exchange**
+  ([RFC 8693](https://www.rfc-editor.org/rfc/rfc8693)) exchange the user's
+  token at the token endpoint with
+  `grant_type=urn:ietf:params:oauth:grant-type:token-exchange`, the user's
+  token as `subject_token`, and the ABsmartly audience and scope.
+
+Whatever the flow, the result must be an access token that meets the
+[token requirements](#token-requirements). Tokens usually expire after about an
+hour, so request a new one when yours expires.
+
+:::note
+Don't send the user's ID token, the token for your own backend app, or a token
+issued for another API. ABsmartly only accepts access tokens issued for the
+ABsmartly API you registered.
+:::
+
+## What to send to ABsmartly support
+
+Send these values to ABsmartly support, for example through your Slack channel
+or by email:
+
+| Value | Example |
+| --- | --- |
+| **Issuer** | The exact `iss` of your tokens, for example `https://login.microsoftonline.com/<tenant-id>/v2.0` |
+| **Audience** | The exact `aud` of your tokens for the ABsmartly API |
+| **Client IDs** of your backend apps | The value of `azp`, `appid`, `cid` or `client_id` in your tokens |
+| **Scope name** | For example `mcp.access` |
+| **SAML SSO provider** | The existing SAML provider users sign in through |
+| **Stable subject claim and SAML attribute** | `oid`, `uid` or `sub`, and the name of the SAML assertion attribute carrying exactly the same value |
+| **Your instance URL** | For example `https://your-instance.absmartly.com` |
+
+None of these values is secret. Never send a client secret or a token.
+ABsmartly confirms when federated tokens are enabled for your instance.
+
+The easiest way to get the exact issuer, audience and client ID is to decode a
+token your backend received, using a local JWT tool. Don't paste production
+tokens into online decoders.
+
+## Call `/mcp` with the token
+
+Send the token in the `Authorization` header of every MCP request to your
+instance's `/mcp` endpoint (Streamable HTTP). For example, the MCP
+`initialize` request:
+
+```bash
+curl -i https://your-instance.absmartly.com/mcp \
+  -H "Authorization: Bearer $ABSMARTLY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "protocolVersion": "2025-06-18",
+      "capabilities": {},
+      "clientInfo": { "name": "my-backend-agent", "version": "1.0.0" }
+    }
+  }'
+```
+
+Most MCP client libraries let you pass custom headers to the Streamable HTTP
+transport, so you can set the `Authorization` header there instead.
+
+To confirm the token works, call a read-only tool, for example list
+experiments with `execute_command`. Commands that use ABsmartly's account
+endpoints, such as `auth whoami` and the API key commands, don't work with
+federated tokens, and `get_auth_status` doesn't show the user's email. That's
+by design.
+
+Federated tokens are accepted only on your instance's own `/mcp` endpoint.
+The hosted server at `mcp.absmartly.com` doesn't accept them. Access to the
+ABsmartly REST API with the same tokens is off by default and can be enabled
+for your instance on request.
+
+## Errors
+
+When ABsmartly rejects a federated token, `/mcp` answers with an
+[RFC 6750](https://www.rfc-editor.org/rfc/rfc6750#section-3) error. The error
+and a short reason are in both the `WWW-Authenticate` header and the JSON
+response body:
+
+| Status | `error` | When |
+| --- | --- | --- |
+| `401 Unauthorized` | `invalid_token` | The token failed one of the [token requirements](#token-requirements), or the user can't be found |
+| `403 Forbidden` | `insufficient_scope` | The token is valid but doesn't carry the agreed scope |
+
+For example, an expired token:
+
+```http
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer resource_metadata="https://your-instance.absmartly.com/.well-known/oauth-protected-resource/mcp", scope="mcp:access", error="invalid_token", error_description="token expired"
+Content-Type: application/json
+
+{"error": "invalid_token", "error_description": "token expired"}
+```
+
+A token without the agreed scope gets `403`, and the header names the scope
+it needs:
+
+```http
+HTTP/1.1 403 Forbidden
+WWW-Authenticate: Bearer resource_metadata="https://your-instance.absmartly.com/.well-known/oauth-protected-resource/mcp", scope="mcp.access", error="insufficient_scope", error_description="required scope missing"
+Content-Type: application/json
+
+{"error": "insufficient_scope", "error_description": "required scope missing"}
+```
+
+The `resource_metadata` part points to ABsmartly's own OAuth sign-in for
+interactive MCP clients. A backend app using federated tokens can ignore it.
+
+### Error reasons
+
+| `error_description` | Meaning | Fix |
+| --- | --- | --- |
+| `token signature invalid` | The signature doesn't match the token's contents | Send the token exactly as your identity provider issued it, without changing it |
+| `token signing key not recognized` | The key named in the token's `kid` isn't among your provider's published keys | Request a new token. If it keeps happening, check that the token comes from the issuer ABsmartly has for you. |
+| `issuer signing keys unavailable` | ABsmartly couldn't fetch your provider's signing keys | Retry after a short wait. If it persists, contact ABsmartly support. |
+| `signing algorithm not allowed` | The token is signed with an algorithm that isn't enabled for your provider | Use `RS256`, or ask ABsmartly support to enable the algorithm your provider uses |
+| `token malformed` | The token isn't a valid JWT, for example its header can't be decoded | Send the access token itself, without a prefix, quotes or line breaks |
+| `token expired` | `exp` has passed | Request a new token |
+| `token not yet valid` | `nbf` is in the future | Check the clock on the machine that requests tokens, then request a new one |
+| `token has no expiry` | The token has no `exp` claim | Configure your provider to issue access tokens with an expiry |
+| `token claims invalid` | A standard claim has an invalid value | Request a new token. If it persists, contact ABsmartly support with the time of the request. |
+| `issuer not accepted` | `iss` isn't the issuer ABsmartly has for your provider | Send ABsmartly support the exact `iss` from a real token |
+| `audience not accepted` | `aud` isn't the ABsmartly API. This is the usual result of sending an ID token, a token for your own app or a token for another API. | Request an access token for the ABsmartly API, with the agreed scope |
+| `tenant not accepted` | `tid` isn't one of the tenant IDs ABsmartly has for you | Request the token from your own tenant |
+| `client id claim missing` | The token has none of the client ID claims | Configure your provider to include the calling app's client ID in access tokens |
+| `client not allowed` | The calling app's client ID isn't one you sent to ABsmartly | Use an allowed app, or send ABsmartly support the new client ID |
+| `ID tokens are not accepted` | The token's audience is the calling app itself, so it's an ID token | Send an access token issued for the ABsmartly API |
+| `app-only tokens are not accepted` | The token has `idtyp=app` or only app roles instead of delegated scopes | Use the On-Behalf-Of flow or token exchange with a signed-in user's token |
+| `federated tokens are not accepted on this endpoint` | Federated tokens aren't enabled for this endpoint on your instance | Contact ABsmartly support |
+| `token subject claim missing` | The access token has no stable subject in the agreed `oid` or `sub` claim | Configure your provider to include the subject claim |
+| `no active ABsmartly user for this identity` | The token's subject isn't linked to an ABsmartly user, the token's `tid` doesn't match the tenant recorded with the link, or the linked user is archived. The response doesn't say which. | Have the user sign in with SAML SSO once after federated tokens are enabled, and check the assertion carries the subject attribute. If the user is linked wrongly, [fix the link](#fix-a-wrong-or-stuck-link). Ask an admin to check the user isn't archived. |
+| `required scope missing` (`403`) | The token doesn't carry the scope named in the header's `scope` | Request the scope and grant it to your backend app |
+
+When federation is enabled, a Bearer JWT from an unknown issuer gets
+`401 invalid_token` with `issuer not accepted`. A plain `401 Unauthorized`
+without an `error_description` can still occur when federation is off or the
+credential isn't a JWT.
+
+### Restricted actions
+
+Federated callers also get `403 Forbidden` with the message *"Federated
+credentials cannot create or manage credentials."* when an MCP tool tries to
+create an API key, a user, a password or an AI provider credential. See
+[Security](#security).
+
+Calls to `/auth/*` are also refused. A federated MCP credential used outside
+`/v1` gets `403` with *"Federated MCP credentials can only call /v1 endpoints."*
+The MCP scope permits those API operations only through MCP, not direct use
+of the token against `/v1`.
+
+## Security
+
+- **Your issuer only.** ABsmartly trusts only the exact issuer configured for
+  your instance and verifies every token's signature against that issuer's
+  published keys.
+- **Your apps only.** Only the client IDs you sent to ABsmartly can use the
+  tokens. Another app that was granted the same scope is still rejected.
+- **Same permissions as the user.** Calls act as the matching ABsmartly user,
+  with that user's roles and team permissions. There is no extra access.
+- **No credentials can be created.** A federated caller can't create or
+  manage API keys, create users, reset or change passwords, or create AI
+  provider credentials, not even through MCP tools. Those actions are refused
+  with `403 Forbidden` and the message *"Federated credentials cannot create
+  or manage credentials."*, even when the user would otherwise be allowed to
+  do them.
+- **No new users.** A token for a user who doesn't exist in ABsmartly is
+  rejected. Users are never created from a federated token.
+- **Revoking access.** Access tokens usually can't be revoked early. To cut a
+  user off, archive the user in ABsmartly (**Settings** > **Users**), which
+  takes effect on the next request, and disable the user in your identity
+  provider so no new tokens are issued. A token that was already issued stays
+  valid at your identity provider until it expires, but ABsmartly rejects it
+  once the user is archived.
+- **Keep tokens out of logs.** Treat the token like a password while it is
+  valid. ABsmartly never logs token contents.
+
+## Troubleshooting
+
+To see the claims in a token, decode it with a local JWT tool and compare them
+with the [token requirements](#token-requirements).
+
+| Symptom | Likely cause | Fix |
+| --- | --- | --- |
+| Plain `401 Unauthorized` with no `error_description` | Federated tokens aren't enabled, or the credential isn't a JWT | Confirm enablement with support and send a JWT access token |
+| The token doesn't decode as a JWT | Your provider issues opaque access tokens | Configure the provider to issue JWT access tokens for the ABsmartly API, or use an [API key](./authentication#api-key) |
+| Any `401` with an `error_description` | See [Error reasons](#error-reasons) | Follow the fix for that reason |
+| `403` with `required scope missing` | The scope wasn't requested, or the app wasn't granted it | Request the scope named in the header and grant it to your backend app |
+| An MCP tool returns `HTTP 403` with *"Federated credentials cannot create or manage credentials."* | The tool tried to create an API key, a user, a password or an AI provider credential | This is expected. Use the Web Console instead. |
+
+For provider-specific problems, see the provider guide, for example
+[Microsoft Entra ID troubleshooting](./microsoft-entra-id#troubleshooting).
+
+## Related
+
+- [Microsoft Entra ID](./microsoft-entra-id) — step-by-step setup for Entra ID
+- [Authentication](./authentication) — all ways to authenticate to the MCP
+  server
+- [OAuth & Client Registration](./oauth-clients) — interactive OAuth sign-in
+  for MCP clients
+- [Tools Reference](./tools-reference) — what the MCP server can do

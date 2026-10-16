@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-sidebar_position: 7
+sidebar_position: 9
 ---
 
 # Troubleshooting
@@ -57,6 +57,31 @@ If you use the **simple** or **`Api-Key`** form, you **must** send
 
 See [OAuth & Client Registration](./oauth-clients) for how clients are
 accepted.
+
+### Errors with a federated OIDC token (e.g. Microsoft Entra ID)
+
+If your backend calls `/mcp` with a federated token and the request is
+rejected, decode the token locally and compare its claims with the
+[token requirements](./federated-oidc-tokens#token-requirements). The most
+common causes are:
+
+- **Wrong token.** An ID token, the token for your own backend app, or a token
+  for another API (such as Microsoft Graph) is rejected. Send the access token
+  issued for the ABsmartly API, with the agreed scope (for example
+  `mcp.access`).
+- **Issuer mismatch.** `iss` must match the issuer ABsmartly has exactly. With
+  Entra ID, version 1 tokens (`https://sts.windows.net/…`) don't match.
+- **Missing scope or subject.** The token must carry the agreed delegated
+  scope and a stable `oid` or `sub` claim.
+- **Unlinked or inactive user.** The user must sign in through SAML SSO once
+  after the upgrade to link their identity, and must not be archived.
+- **Calling app not allowed.** The client ID claim isn't one of the client IDs
+  you sent to ABsmartly support.
+
+See [Federated OIDC access tokens](./federated-oidc-tokens#troubleshooting)
+for the full list, and
+[Microsoft Entra ID](./microsoft-entra-id#troubleshooting) for Entra-specific
+problems.
 
 ### MCP client loses access after I sign out
 
