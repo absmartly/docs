@@ -53,11 +53,10 @@ permissions, instead of one shared API key for everyone.
 
 ## Prerequisites
 
-- **Your users already exist in ABsmartly** and aren't archived. ABsmartly
-  doesn't create users from a federated token. A user is created in ABsmartly
-  the first time they sign in to the Web Console with SSO, so each user must
-  do that once before your backend can act for them. Usually the identity
-  provider that issues the tokens is the same one you use for SSO.
+- **Your users sign in with SAML SSO** through the identity provider that
+  issues the tokens. Each user, including existing users, must sign in once
+  after your instance is upgraded to support federation. This links their
+  stable identity to their ABsmartly account. The user must not be archived.
 - **Your identity provider issues JWT access tokens** for an API that you
   register for ABsmartly, and you can add a custom scope to that API.
 - **Your backend application is registered** in the identity provider as a
@@ -77,10 +76,10 @@ provider must issue tokens that meet them.
 | Audience | `aud` | The API you registered for ABsmartly in your identity provider |
 | Calling app | `azp`, `appid`, `cid` or `client_id` | One of the client IDs you sent to ABsmartly |
 | Tenant (optional) | `tid` | One of the tenant IDs you sent to ABsmartly. Used for multi-tenant issuers such as Microsoft Entra ID. |
-| Scope | `scp`, `scope` or `roles` | Includes the scope you agreed with ABsmartly, for example `mcp.access` |
+| Scope | `scp` or `scope` | Includes the scope you agreed with ABsmartly, for example `mcp.access` |
 | Lifetime | `exp`, `nbf` | `exp` present and not passed, `nbf` (if present) already passed, with up to 60 seconds of clock skew allowed |
 | Token type | | An access token for a signed-in user. ID tokens, whose audience is the calling app itself, are rejected. With Entra ID, app-only tokens (`idtyp` is `app`) are rejected too. |
-| User | `email` (default), `upn` or `preferred_username` | The email address of an existing, active ABsmartly user (not case-sensitive) |
+| User identity | `oid` (Entra ID) or `sub` | The stable subject linked to an active ABsmartly user during SAML sign-in |
 
 **Client ID.** ABsmartly reads the calling app's client ID from the first of
 these claims that the token has: `azp` (OpenID Connect, Entra ID v2), `appid`
@@ -89,21 +88,44 @@ these claims that the token has: `azp` (OpenID Connect, Entra ID v2), `appid`
 more than one of them with different values, ABsmartly support can pin your
 provider to a single claim.
 
-**Scopes.** ABsmartly reads granted scopes from `scp` and `scope`, either as a
-space-separated string or as an array, and from `roles`. The token only needs
-to carry the agreed scope among them.
+**Scopes.** ABsmartly reads delegated scopes from `scp` and `scope`, either
+as a space-separated string or as an array. App roles (`roles`) do not grant
+access: a token with only app roles is rejected as an app-only token.
 
-**User claim.** ABsmartly reads one claim, `email` unless you agree on `upn`
-or `preferred_username` instead. Its value must be an email address, and it
-must be the same address the user signs in to ABsmartly with. If the claim is
-missing or holds something else, such as an employee number, the token is
-rejected.
+The MCP scope (conventionally `mcp.access`) grants the user's own API
+permissions **through MCP only**. It doesn't allow direct REST API calls or
+access to `/auth/*`. Direct `/v1` access requires a separate API capability,
+enabled on request. Neither capability permits creating credentials.
 
-For example, with Okta a custom authorization server issues access tokens with
-`iss` set to the authorization server's URL, `aud` set to the audience you
-configure for it, the calling app in `cid`, the granted scopes as an array in
-`scp`, and the user's login in `sub`. Add an `email` claim to the access token,
-and add `mcp.access` as a scope on the authorization server.
+### Link users through SAML SSO
+
+ABsmartly identifies users by a stable subject, not by email, `upn` or
+`preferred_username`. ABsmartly support associates your OIDC provider with
+your SAML SSO provider and selects the token subject claim: `oid` for Entra ID
+or `sub` for other providers.
+
+The SAML assertion must carry the **same stable subject** in a single-valued
+attribute. A SAML Name ID and an OIDC `sub` are not necessarily the same:
+providers can issue different, application-specific identifiers. Configure a
+SAML assertion attribute that contains exactly the value your OIDC access
+tokens carry, and tell ABsmartly support its name. For Entra ID, see
+[the SAML attribute setup](./microsoft-entra-id#link-users-through-saml-sso).
+
+When a user signs in through that SAML provider, ABsmartly records the link.
+Every user must sign in once after the upgrade, even if they already have an
+ABsmartly account. Existing browser sessions don't create the link. There is
+no administrator backfill or email-based linking. If the subject attribute is
+missing, SAML sign-in can still succeed, but federated tokens won't work for
+that user.
+
+Links are never silently reassigned: if a subject is already linked to another
+user, or a user already has a different subject for that SAML provider,
+ABsmartly keeps the original link. Contact support if you encounter a conflict.
+
+For example, an Okta custom authorization server can put the client ID in
+`cid` and delegated scopes in an array in `scp`. Its `sub` must also be sent
+as a stable attribute in the SAML assertion; don't assume that a login name or
+the default SAML Name ID is the same identifier.
 
 ### Providers that aren't supported
 
@@ -145,9 +167,10 @@ or by email:
 | --- | --- |
 | **Issuer** | The exact `iss` of your tokens, for example `https://login.microsoftonline.com/<tenant-id>/v2.0` |
 | **Audience** | The exact `aud` of your tokens for the ABsmartly API |
-| **Client IDs** of your backend apps | The value of `azp`, `appid` or `client_id` in your tokens |
+| **Client IDs** of your backend apps | The value of `azp`, `appid`, `cid` or `client_id` in your tokens |
 | **Scope name** | For example `mcp.access` |
-| **User claim** | `email` (default), `preferred_username` or `upn` |
+| **SAML SSO provider** | The existing SAML provider users sign in through |
+| **Stable subject claim and SAML attribute** | `oid` or `sub`, and the SAML assertion attribute carrying exactly the same value |
 | **Your instance URL** | For example `https://your-instance.absmartly.com` |
 
 None of these values is secret. Never send a client secret or a token.
@@ -246,24 +269,28 @@ interactive MCP clients. A backend app using federated tokens can ignore it.
 | `client id claim missing` | The token has none of the client ID claims | Configure your provider to include the calling app's client ID in access tokens |
 | `client not allowed` | The calling app's client ID isn't one you sent to ABsmartly | Use an allowed app, or send ABsmartly support the new client ID |
 | `ID tokens are not accepted` | The token's audience is the calling app itself, so it's an ID token | Send an access token issued for the ABsmartly API |
-| `app-only tokens are not accepted` | The token was issued to an app without a signed-in user (Entra ID client credentials flow) | Use the On-Behalf-Of flow or token exchange with a signed-in user's token |
+| `app-only tokens are not accepted` | The token has `idtyp=app` or only app roles instead of delegated scopes | Use the On-Behalf-Of flow or token exchange with a signed-in user's token |
 | `federated tokens are not accepted on this endpoint` | Federated tokens aren't enabled for this endpoint on your instance | Contact ABsmartly support |
-| `user claim missing or not an email` | The user claim is missing, or its value isn't an email address | Add the user claim to access tokens, or agree a different claim with ABsmartly support |
-| `no active ABsmartly user for this identity` | No ABsmartly user has the token's email address, or the user is archived | Ask the user to sign in to the Web Console with SSO once, or ask an ABsmartly admin to unarchive them |
+| `token subject claim missing` | The access token has no stable subject in the agreed `oid` or `sub` claim | Configure your provider to include the subject claim |
+| `no active ABsmartly user for this identity` | The identity has no usable link to an active ABsmartly user | Sign in with SAML SSO once after the upgrade. Check the assertion carries the stable subject, and ask an admin to check the user isn't archived. Contact support for linking conflicts. |
 | `required scope missing` (`403`) | The token doesn't carry the scope named in the header's `scope` | Request the scope and grant it to your backend app |
 
-A token whose issuer ABsmartly doesn't know at all isn't treated as a
-federated token. It gets the plain `401 Unauthorized` that `/mcp` returns for
-any unrecognized credential, without an `error_description`. If you see that
-with a federated token, compare its `iss` with the issuer you sent to
-ABsmartly support.
+When federation is enabled, a Bearer JWT from an unknown issuer gets
+`401 invalid_token` with `issuer not accepted`. A plain `401 Unauthorized`
+without an `error_description` can still occur when federation is off or the
+credential isn't a JWT.
 
-### Credential-creating actions
+### Restricted actions
 
 Federated callers also get `403 Forbidden` with the message *"Federated
 credentials cannot create or manage credentials."* when an MCP tool tries to
 create an API key, a user, a password or an AI provider credential. See
 [Security](#security).
+
+Calls to `/auth/*` are also refused. A federated MCP credential used outside
+`/v1` gets `403` with *"Federated MCP credentials can only call /v1 endpoints."*
+The MCP scope permits those API operations only through MCP, not direct use
+of the token against `/v1`.
 
 ## Security
 
@@ -298,7 +325,7 @@ with the [token requirements](#token-requirements).
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| Plain `401 Unauthorized` with no `error_description` | ABsmartly doesn't recognize the token's issuer, or federated tokens aren't enabled yet | Compare `iss` with the issuer you sent to ABsmartly support, character for character |
+| Plain `401 Unauthorized` with no `error_description` | Federated tokens aren't enabled, or the credential isn't a JWT | Confirm enablement with support and send a JWT access token |
 | The token doesn't decode as a JWT | Your provider issues opaque access tokens | Configure the provider to issue JWT access tokens for the ABsmartly API, or use an [API key](./authentication#api-key) |
 | Any `401` with an `error_description` | See [Error reasons](#error-reasons) | Follow the fix for that reason |
 | `403` with `required scope missing` | The scope wasn't requested, or the app wasn't granted it | Request the scope named in the header and grant it to your backend app |

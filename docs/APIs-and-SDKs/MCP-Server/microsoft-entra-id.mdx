@@ -27,10 +27,9 @@ instance after you complete the setup on this page and send the
 
 - **SAML SSO with Entra ID is already set up** for your instance, in the same
   tenant. See [SAML SSO - Azure](/docs/Third-party-integrations/SSO/Azure%20SAML%20Setup).
-- **Your users already exist in ABsmartly** and aren't archived. A user is
-  created in ABsmartly the first time they sign in to the Web Console with
-  SAML SSO, so each user must do that once before your backend can act for
-  them.
+- **Each user signs in once with SAML SSO after the federation upgrade**,
+  including users who already exist in ABsmartly. This links their Entra
+  object ID to their ABsmartly user. The user must not be archived.
 - **Your backend application is registered in Entra ID** (or you can register
   it) and can keep a client secret or certificate.
 - You can grant **admin consent** in the tenant.
@@ -99,23 +98,33 @@ In version 2 access tokens, the audience (`aud`) is the ABsmartly app's
 expects that GUID, which is why you send it to support in
 [Step 4](#step-4-send-the-details-to-absmartly-support).
 
-### Add the user's email to the access token
+### Link users through SAML SSO
 
-ABsmartly matches the token to a user by comparing one claim with the email
-address of an ABsmartly user. That address is the one your SAML setup sends as
-the Name ID (`user.mail` in [SAML SSO - Azure](/docs/Third-party-integrations/SSO/Azure%20SAML%20Setup)).
-By default the claim is **email**. Entra ID doesn't put it in access tokens
-unless you ask for it.
+ABsmartly links the Entra `oid` claim (the user's stable object ID) to the user
+when they sign in through your existing SAML SSO provider. It does not match
+on email, `upn` or `preferred_username`. Entra access tokens already contain
+`oid` and `tid`, so you don't need an email optional claim on the API app.
 
-11. In the inner left pane, click **Token configuration**.
-12. Click **+ Add optional claim**, choose **Access**, tick **email** and click
-    **Add**. If Entra asks to turn on the Microsoft Graph email permission,
-    accept.
+In the **enterprise application used for SAML SSO** (not the new API app),
+open **Single sign-on** > **Attributes & Claims**. Ensure these single-valued
+attributes are included in the assertion:
 
-If your SAML Name ID uses a different source, for example the user principal
-name, ABsmartly can match on `preferred_username` or `upn` instead. Tell
-ABsmartly support which claim to use. Whichever claim you pick, its value must
-be the same email address the user signs in to ABsmartly with.
+| Attribute name | Source attribute |
+| --- | --- |
+| `http://schemas.microsoft.com/identity/claims/objectidentifier` | `user.objectid` |
+| `http://schemas.microsoft.com/identity/claims/tenantid` | Your Directory (tenant) ID |
+
+The objectidentifier must equal the access token's `oid`, and tenantid must
+match its `tid`. If you use different assertion attribute names, send those
+names to ABsmartly support so they can configure the mapping. Keep the existing
+SAML Name ID and other claims used for Web Console sign-in.
+
+Every user must sign in again through SAML after the upgrade, even if they
+already have an account or browser session. ABsmartly records the stable link
+at that login; there is no administrator backfill. Conflicting links are never
+reassigned automatically. See
+[Link users through SAML SSO](./federated-oidc-tokens#link-users-through-saml-sso)
+for details.
 
 ## Step 2: Give your backend app permission to call ABsmartly
 
@@ -161,7 +170,7 @@ or by email:
 | **Application (client) ID** of the ABsmartly app | Overview page of the ABsmartly app |
 | **Application (client) ID** of your backend app (one or more) | Overview page of your backend app |
 | **Scope name** | The scope you added in Step 1, usually `mcp.access` |
-| **User claim** | `email` (default), or `preferred_username` or `upn` if your SAML Name ID uses that |
+| **SAML SSO provider and assertion attributes** | The existing SAML application, its objectidentifier and tenantid attribute names; the token subject is `oid` |
 | **Your instance URL** | For example `https://your-instance.absmartly.com` |
 
 None of these values is secret. Never send a client secret or a token.
@@ -241,8 +250,8 @@ they mean:
 | Audience | `aud` | The ABsmartly app's Application (client) ID |
 | Tenant | `tid` | Your Directory (tenant) ID. Tokens from other tenants are rejected. |
 | Calling app | `azp` | One of the backend app client IDs you sent to ABsmartly |
-| Scope | `scp` (or `roles`) | Includes `mcp.access` |
-| User | `email` (or the agreed `preferred_username` or `upn`) | The email address of an existing, active ABsmartly user |
+| Scope | `scp` | Includes `mcp.access`. App roles alone are not accepted. |
+| User identity | `oid` | The object ID linked to an active ABsmartly user during SAML sign-in |
 | Token type | `idtyp` | Not `app`. App-only tokens from the client credentials flow are rejected, because they don't act for a user. |
 
 ## Revoking access
@@ -265,10 +274,11 @@ problems are specific to Entra ID:
 | `audience not accepted`, and `aud` is your backend app's client ID | You sent the user's ID token or the token for your backend app. Sending an Entra ID token instead of the OBO result usually shows up this way. | Exchange it with the [OBO flow](#request-a-token-with-the-on-behalf-of-flow) and send the resulting access token |
 | `audience not accepted`, and `aud` is `00000003-0000-0000-c000-000000000000` or `https://graph.microsoft.com` | The token is a Microsoft Graph token | Request the token with scope `api://<absmartly-app>/mcp.access`, not `User.Read` or `.default` for Graph |
 | `audience not accepted`, and `aud` is `api://…` instead of a GUID | The ABsmartly app issues version 1 tokens | Set the access token version to `2` in the ABsmartly app's [manifest](#use-version-2-access-tokens), then request a new token |
-| Plain `401 Unauthorized` with no `error_description`, and `iss` is `https://sts.windows.net/<tenant-id>/` | A version 1 token. Its issuer isn't the v2 issuer ABsmartly has, so it isn't recognized as a federated token. | Set the access token version to `2` in the [manifest](#use-version-2-access-tokens), then request a new token |
+| `issuer not accepted`, and `iss` is `https://sts.windows.net/<tenant-id>/` | A version 1 token with the wrong issuer. | Set the access token version to `2` in the [manifest](#use-version-2-access-tokens), then request a new token |
 | `tenant not accepted` | The token comes from another tenant, for example a guest user's home tenant | Request the token from your own tenant's endpoint |
 | `required scope missing` (`403`) | `scp` doesn't contain `mcp.access`: the scope wasn't requested, or consent wasn't granted | Request `api://<absmartly-app>/mcp.access` and [grant admin consent](#step-2-give-your-backend-app-permission-to-call-absmartly) |
-| `user claim missing or not an email` | The `email` optional claim isn't configured, or the user has no email address in Entra ID | [Add the email optional claim](#add-the-users-email-to-the-access-token) and check the user's **Email** property |
+| `token subject claim missing` | The token has no `oid` | Send a delegated access token issued for the ABsmartly app |
+| `no active ABsmartly user for this identity` | The stable identity isn't linked to an active user | Sign in with SAML once after the upgrade and check the [SAML attributes](#link-users-through-saml-sso). Contact support if the link conflicts with an existing one. |
 | `app-only tokens are not accepted` | The token comes from the client credentials flow, not OBO | Use the [OBO flow](#request-a-token-with-the-on-behalf-of-flow) with a signed-in user's token |
 | The OBO request fails with `AADSTS65001` | Admin consent wasn't granted to your backend app | Grant admin consent in **API permissions** |
 | The OBO request fails with `AADSTS50013` or `AADSTS50027` | The `assertion` isn't a valid access token for your backend app | Pass the user's access token for your backend app, not an ID token |
