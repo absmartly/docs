@@ -89,8 +89,6 @@ Once all fields are mapped, click **Test & fetch rows** to validate the mapping.
 
 <Image maxWidth="40rem" centered img="warehouse-native/exposure-mapping-complete.png" alt="Completed exposure table mapping with sample data preview" />
 
-You'll also see a **"Forward native events to this table"** checkbox. Enable this if you want ABsmartly to write SDK-generated exposure events back into this warehouse table, keeping everything in one place.
-
 ### Goals table
 
 The goals table contains your conversion and metric events — the outcomes you're measuring in your experiments.
@@ -107,7 +105,7 @@ Map the following fields:
 
 <Image maxWidth="40rem" centered img="warehouse-native/goals-mapping-complete.png" alt="Completed goals table mapping" />
 
-As with the exposure table, click **Test & fetch rows** to validate, and optionally enable **"Forward native events to this table"** for SDK-generated goal events.
+As with the exposure table, click **Test & fetch rows** to validate.
 
 ### Attributes table _(optional)_
 
@@ -156,6 +154,10 @@ If you choose to map an existing table, you'll see the column mapping interface:
 Without this table, experiments will still work — but JSON-property auto-complete will be empty for goals and attributes on this data source, requiring manual entry when configuring metrics.
 :::
 
+:::note
+On BigQuery with a **Staging dataset** set, the `json_layouts` table lives in the staging dataset instead. With **Trust relationship** authentication, JSON layouts are turned off until you set one. See [Create the staging dataset](./connect/bigquery#4-create-the-staging-dataset).
+:::
+
 ---
 
 ## Step 3: Configure data freshness
@@ -201,6 +203,8 @@ The **Exposures import** section configures that storage location:
 | **Credentials** | The access needed to read and write that location — an access key/secret for ClickHouse, a stage name for Snowflake, an IAM role ARN for Redshift. Databricks needs no extra credentials. For BigQuery, pick the method in the section's own **Authentication** dropdown: **Access key (HMAC)** (the default, an access key/secret) or **Trust relationship**. |
 
 With **Trust relationship** on BigQuery, the access key and secret fields are replaced by ABsmartly's service account email: grant that service account **Storage Object User** (`roles/storage.objectUser`) on the staging bucket. This choice is independent of the data source's own **Authentication** setting. See [Trust relationship](./connect/bigquery#trust-relationship) for the grant steps.
+
+On BigQuery, the bucket must be in a location compatible with the data source's staging dataset and source datasets, because BigQuery reads the staged files through an external table. With **Trust relationship** as the data source's authentication, the import also needs a [staging dataset](./connect/bigquery#4-create-the-staging-dataset) to create that temporary external table in.
 
 :::note
 Staged files are cached and reused for a short window, then cleaned up automatically — no manual cleanup is required. For defense in depth, you can also add a bucket lifecycle rule (e.g. "delete objects older than 1 day") as a backstop.
