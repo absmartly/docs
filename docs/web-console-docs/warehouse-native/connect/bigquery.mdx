@@ -90,15 +90,21 @@ Enable the **BigQuery API** (`bigquery.googleapis.com`) and the **BigQuery Stora
 |---|---|---|
 | **BigQuery Job User** (`roles/bigquery.jobUser`) | On the job project | Allows running queries |
 | **BigQuery Read Session User** (`roles/bigquery.readSessionUser`) | On the job project | Allows reading large query results |
-| **Service Usage Consumer** (`roles/serviceusage.serviceUsageConsumer`) | On the job project | Allows billing queries and inserts to a separate job project |
-| **BigQuery Data Editor** (dataset role `WRITER`) | On the ABsmartly dataset (the **Dataset ID** in the form) | Allows reading your experiment tables and writing the tables ABsmartly manages |
+| **Service Usage Consumer** (`roles/serviceusage.serviceUsageConsumer`) | On the job project | Allows billing queries and inserts to the job project |
+| **BigQuery Data Viewer** (dataset role `READER`) | On the ABsmartly dataset (the **Dataset ID** in the form) | Allows reading your experiment tables |
 | **BigQuery Data Viewer** (dataset role `READER`) | On each other dataset your table mappings or SQL queries read from | Allows reading your source data |
 | **Storage Object User** (`roles/storage.objectUser`) | On the exposures staging bucket _(Hybrid only)_ | Allows staging exposures for your warehouse. See [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only). |
 
+The job project is the **Job / billing project ID** in the form, or the **Project ID** when that's empty.
+
+:::tip
+Only if you enable **"Forward native events to this table"** on your exposures or goals table: ABsmartly also needs to write data back. In that case, replace **BigQuery Data Viewer** with **BigQuery Data Editor** (dataset role `WRITER`) on the dataset that contains that table. In the gcloud script below, grant `"WRITER"` instead of `"READER"` on that dataset only.
+:::
+
 #### Using the Google Cloud Console
 
-- **Job project roles:** go to **IAM & Admin → IAM** in the job project, click **Grant access**, paste the service account email as the new principal, and assign **BigQuery Job User**, **BigQuery Read Session User** and **Service Usage Consumer**.
-- **Dataset roles:** open **BigQuery Studio**, select the dataset, click **Sharing → Permissions**, then **Add principal**. Paste the service account email and assign **BigQuery Data Editor** on the ABsmartly dataset, or **BigQuery Data Viewer** on each source dataset.
+- **Job project roles:** go to **IAM & Admin → IAM** in the job project (the **Job / billing project ID**, or the **Project ID** when that's empty), click **Grant access**, paste the service account email as the new principal, and assign **BigQuery Job User**, **BigQuery Read Session User** and **Service Usage Consumer**.
+- **Dataset roles:** open **BigQuery Studio**, select the dataset, click **Sharing → Permissions**, then **Add principal**. Paste the service account email and assign **BigQuery Data Viewer**. Repeat for the ABsmartly dataset and each source dataset.
 - **Staging bucket role (Hybrid only):** go to **Cloud Storage → Buckets**, open the bucket, go to the **Permissions** tab, click **Grant access**, paste the service account email and assign **Storage Object User**.
 
 #### Using gcloud and bq
@@ -117,15 +123,13 @@ gcloud projects add-iam-policy-binding <JOB_PROJECT> --member="serviceAccount:$S
 gcloud projects add-iam-policy-binding <JOB_PROJECT> --member="serviceAccount:$SA_EMAIL" --role=roles/bigquery.readSessionUser
 gcloud projects add-iam-policy-binding <JOB_PROJECT> --member="serviceAccount:$SA_EMAIL" --role=roles/serviceusage.serviceUsageConsumer
 
-# Read and write the ABsmartly dataset: append a WRITER access entry, keeping existing entries
-bq show --format=prettyjson <DATA_PROJECT>:<DATASET> > ds.json
-jq --arg sa "$SA_EMAIL" '.access += [{"role": "WRITER", "userByEmail": $sa}]' ds.json > ds.new.json && mv ds.new.json ds.json
-bq update --source ds.json <DATA_PROJECT>:<DATASET>
-
-# Read each source dataset (repeat per dataset)
-bq show --format=prettyjson <SOURCE_PROJECT>:<SOURCE_DATASET> > ds.json
-jq --arg sa "$SA_EMAIL" '.access += [{"role": "READER", "userByEmail": $sa}]' ds.json > ds.new.json && mv ds.new.json ds.json
-bq update --source ds.json <SOURCE_PROJECT>:<SOURCE_DATASET>
+# Read the ABsmartly dataset and each source dataset: append a READER access entry, keeping existing entries.
+# List one PROJECT:DATASET per source dataset after the ABsmartly dataset.
+for DS in <DATA_PROJECT>:<DATASET> <SOURCE_PROJECT>:<SOURCE_DATASET>; do
+  bq show --format=prettyjson "$DS" > ds.json
+  jq --arg sa "$SA_EMAIL" '.access += [{"role": "READER", "userByEmail": $sa}]' ds.json > ds.new.json && mv ds.new.json ds.json
+  bq update --source ds.json "$DS"
+done
 
 # Exposures staging bucket (Hybrid only)
 gcloud storage buckets add-iam-policy-binding gs://<BUCKET> --member="serviceAccount:$SA_EMAIL" --role=roles/storage.objectUser
@@ -152,6 +156,7 @@ Navigate to **Settings → Data Sources** and click **Add data source**. Give yo
 | Field | Description |
 |---|---|
 | **Project ID** | Your GCP project ID |
+| **Job / billing project ID** | _Optional._ Project that runs and is billed for queries and inserts. Leave empty to use the Project ID. The service account needs BigQuery Job User, BigQuery Read Session User and Service Usage Consumer on it. |
 | **Dataset ID** | The BigQuery dataset containing your experiment tables |
 | **Authentication** | How ABsmartly authenticates to BigQuery: **Service account key (JSON)** (the default) or **Trust relationship**. See [Choose an authentication method](#choose-an-authentication-method). |
 | **Service Account Credentials (JSON)** | _Service account key (JSON) only._ A GCP service account key in JSON format. You can paste the JSON directly into the editor or use the **Upload JSON file** button. This field is required. |
