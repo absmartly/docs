@@ -198,7 +198,9 @@ The **Exposures import** section configures that storage location:
 | Field | Description |
 |---|---|
 | **Object store URL** | The bucket/prefix ABsmartly uses to stage exposures for your warehouse. The accepted scheme depends on your warehouse (for example, `gs://` for BigQuery, `s3://` for Redshift, and `s3://`, `gs://`, or `azure://` for Snowflake). |
-| **Credentials** | The access needed to read and write that location — an access key/secret for BigQuery and ClickHouse, a stage name for Snowflake, an IAM role ARN for Redshift. Databricks needs no extra credentials. |
+| **Credentials** | The access needed to read and write that location — an access key/secret for ClickHouse, a stage name for Snowflake, an IAM role ARN for Redshift. Databricks needs no extra credentials. For BigQuery, pick the method in the section's own **Authentication** dropdown: **Access key (HMAC)** (the default, an access key/secret) or **Trust relationship**. |
+
+With **Trust relationship** on BigQuery, the access key and secret fields are replaced by ABsmartly's service account email: grant that service account **Storage Object User** (`roles/storage.objectUser`) on the staging bucket. This choice is independent of the data source's own **Authentication** setting. See [Trust relationship](./connect/bigquery#trust-relationship) for the grant steps.
 
 :::note
 Staged files are cached and reused for a short window, then cleaned up automatically — no manual cleanup is required. For defense in depth, you can also add a bucket lifecycle rule (e.g. "delete objects older than 1 day") as a backstop.

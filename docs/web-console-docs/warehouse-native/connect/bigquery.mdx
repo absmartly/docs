@@ -8,7 +8,22 @@ import Image from "../../../../src/components/Image";
 
 # Connect to BigQuery
 
+## Choose an authentication method
+
+ABsmartly can authenticate to BigQuery in one of two ways. Pick one before you start, because the Google Cloud setup differs:
+
+| Authentication | How it works | Setup |
+|---|---|---|
+| **Service account key (JSON)** | You create a service account in your Google Cloud project and give ABsmartly its JSON key. | [Google Cloud prerequisites](#google-cloud-prerequisites) |
+| **Trust relationship** | ABsmartly connects as its own Google service account, dedicated to your deployment. You grant that service account access to your projects and datasets; no key is created or shared. | [Trust relationship](#trust-relationship) |
+
+You select the method in the **Authentication** dropdown when you [add the data source](#add-the-data-source-in-absmartly).
+
 ## Google Cloud prerequisites
+
+:::note
+These steps apply to **Service account key (JSON)** only. If you're using **Trust relationship**, skip to [Trust relationship](#trust-relationship).
+:::
 
 Before connecting ABsmartly to BigQuery, you need a Google Cloud service account with the right permissions. The steps below walk through creating one from scratch.
 
@@ -47,6 +62,85 @@ This is the file you'll paste into the **Service Account Credentials** field in 
 
 ---
 
+## Trust relationship
+
+With **Trust relationship**, ABsmartly connects to BigQuery as its own Google service account, created for your ABsmartly deployment. You don't create a service account or upload a key: you grant ABsmartly's service account access to your projects, datasets and, in Hybrid mode, your exposures staging bucket.
+
+### 1. Copy the ABsmartly service account
+
+In the data source form, select **Trust relationship** in the **Authentication** dropdown. The **ABsmartly identity** block shows the service account's **email** and **unique ID**, each with a **Copy** button. The email looks like this:
+
+```
+abs-acme@absmartly-customer-identities.iam.gserviceaccount.com
+```
+
+Use this email as the principal in every grant below.
+
+:::note
+If **Trust relationship** is disabled and shows "Not available on this deployment. Contact ABsmartly support.", your deployment hasn't been set up for it yet. Contact ABsmartly support, or use **Service account key (JSON)** in the meantime.
+:::
+
+### 2. Enable the BigQuery APIs
+
+Enable the **BigQuery API** (`bigquery.googleapis.com`) and the **BigQuery Storage API** (`bigquerystorage.googleapis.com`) in your job project (the **Job / billing project ID**, or the **Project ID** if you leave that empty) and in the project that holds your ABsmartly dataset. In the [Google Cloud Console](https://console.cloud.google.com), open each project, navigate to **APIs & Services → Library**, search for each API and enable it if it isn't already.
+
+### 3. Grant the required permissions
+
+| Role | Where to grant it | Why |
+|---|---|---|
+| **BigQuery Job User** (`roles/bigquery.jobUser`) | On the job project | Allows running queries |
+| **BigQuery Read Session User** (`roles/bigquery.readSessionUser`) | On the job project | Allows reading large query results |
+| **Service Usage Consumer** (`roles/serviceusage.serviceUsageConsumer`) | On the job project | Allows billing queries and inserts to a separate job project |
+| **BigQuery Data Editor** (dataset role `WRITER`) | On the ABsmartly dataset (the **Dataset ID** in the form) | Allows reading your experiment tables and writing the tables ABsmartly manages |
+| **BigQuery Data Viewer** (dataset role `READER`) | On each other dataset your table mappings or SQL queries read from | Allows reading your source data |
+| **Storage Object User** (`roles/storage.objectUser`) | On the exposures staging bucket _(Hybrid only)_ | Allows staging exposures for your warehouse. See [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only). |
+
+#### Using the Google Cloud Console
+
+- **Job project roles:** go to **IAM & Admin → IAM** in the job project, click **Grant access**, paste the service account email as the new principal, and assign **BigQuery Job User**, **BigQuery Read Session User** and **Service Usage Consumer**.
+- **Dataset roles:** open **BigQuery Studio**, select the dataset, click **Sharing → Permissions**, then **Add principal**. Paste the service account email and assign **BigQuery Data Editor** on the ABsmartly dataset, or **BigQuery Data Viewer** on each source dataset.
+- **Staging bucket role (Hybrid only):** go to **Cloud Storage → Buckets**, open the bucket, go to the **Permissions** tab, click **Grant access**, paste the service account email and assign **Storage Object User**.
+
+#### Using gcloud and bq
+
+Run these as an administrator of your Google Cloud projects, with `gcloud`, `bq` and `jq` installed. Replace `SA_EMAIL` with the email from the **ABsmartly identity** block, and the placeholders in `<>` with your own values.
+
+```bash
+SA_EMAIL=abs-acme@absmartly-customer-identities.iam.gserviceaccount.com
+
+# Prerequisite APIs, in the job project and in the project holding the ABsmartly dataset
+gcloud services enable bigquery.googleapis.com bigquerystorage.googleapis.com --project=<JOB_PROJECT>
+gcloud services enable bigquery.googleapis.com bigquerystorage.googleapis.com --project=<DATA_PROJECT>
+
+# Run and bill queries in the job project
+gcloud projects add-iam-policy-binding <JOB_PROJECT> --member="serviceAccount:$SA_EMAIL" --role=roles/bigquery.jobUser
+gcloud projects add-iam-policy-binding <JOB_PROJECT> --member="serviceAccount:$SA_EMAIL" --role=roles/bigquery.readSessionUser
+gcloud projects add-iam-policy-binding <JOB_PROJECT> --member="serviceAccount:$SA_EMAIL" --role=roles/serviceusage.serviceUsageConsumer
+
+# Read and write the ABsmartly dataset: append a WRITER access entry, keeping existing entries
+bq show --format=prettyjson <DATA_PROJECT>:<DATASET> > ds.json
+jq --arg sa "$SA_EMAIL" '.access += [{"role": "WRITER", "userByEmail": $sa}]' ds.json > ds.new.json && mv ds.new.json ds.json
+bq update --source ds.json <DATA_PROJECT>:<DATASET>
+
+# Read each source dataset (repeat per dataset)
+bq show --format=prettyjson <SOURCE_PROJECT>:<SOURCE_DATASET> > ds.json
+jq --arg sa "$SA_EMAIL" '.access += [{"role": "READER", "userByEmail": $sa}]' ds.json > ds.new.json && mv ds.new.json ds.json
+bq update --source ds.json <SOURCE_PROJECT>:<SOURCE_DATASET>
+
+# Exposures staging bucket (Hybrid only)
+gcloud storage buckets add-iam-policy-binding gs://<BUCKET> --member="serviceAccount:$SA_EMAIL" --role=roles/storage.objectUser
+```
+
+:::tip
+BigQuery datasets don't support `bq add-iam-policy-binding`, which is why the dataset grants append an access entry instead. The `jq` step keeps every existing entry and authorized view on the dataset.
+:::
+
+:::note
+Switching an existing data source from **Service account key (JSON)** to **Trust relationship** deletes the stored key when you save. Revoke or delete the key in Google Cloud afterwards if you no longer need it.
+:::
+
+---
+
 ## Add the data source in ABsmartly
 
 Navigate to **Settings → Data Sources** and click **Add data source**. Give your data source a **name** and optional **description**, then select **BigQuery** from the **Database type** dropdown.
@@ -59,10 +153,12 @@ Navigate to **Settings → Data Sources** and click **Add data source**. Give yo
 |---|---|
 | **Project ID** | Your GCP project ID |
 | **Dataset ID** | The BigQuery dataset containing your experiment tables |
-| **Service Account Credentials (JSON)** | A GCP service account key in JSON format. You can paste the JSON directly into the editor or use the **Upload JSON file** button. This field is required. |
+| **Authentication** | How ABsmartly authenticates to BigQuery: **Service account key (JSON)** (the default) or **Trust relationship**. See [Choose an authentication method](#choose-an-authentication-method). |
+| **Service Account Credentials (JSON)** | _Service account key (JSON) only._ A GCP service account key in JSON format. You can paste the JSON directly into the editor or use the **Upload JSON file** button. This field is required. |
+| **ABsmartly identity** | _Trust relationship only._ The **email** and **unique ID** of the service account ABsmartly connects as, each with a **Copy** button, and a **Required permissions** link to [Trust relationship](#trust-relationship). There's nothing to enter here. |
 
 :::tip
-Create a dedicated service account with read-only access to the relevant dataset. Don't reuse a service account that has broader permissions than necessary.
+With **Service account key (JSON)**, create a dedicated service account with read-only access to the relevant dataset. Don't reuse a service account that has broader permissions than necessary.
 :::
 
 ## Test the connection
