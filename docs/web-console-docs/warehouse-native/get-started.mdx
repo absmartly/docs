@@ -200,7 +200,7 @@ The **Exposures staging** section configures that storage location:
 
 With **Trust relationship** on BigQuery, the access key and secret fields are replaced by ABsmartly's service account email: grant that service account **Storage Object User** (`roles/storage.objectUser`) on the staging bucket. The dropdown is independent of the data source's own **Authentication** setting, but BigQuery always reads the staged files with the data source's credentials. That service account needs access to the bucket too: **Storage Object User** for ABsmartly's service account under Trust relationship (see [Grant access to the exposures staging bucket](./connect/bigquery#5-grant-access-to-the-exposures-staging-bucket-hybrid-only)), or **Storage Object Viewer** (`roles/storage.objectViewer`) for your own service account under Service account key (JSON).
 
-With **Access key (HMAC)**, the bucket's organization policy `storage.restrictAuthTypes` must allow HMAC authentication.
+With **Access key (HMAC)**, the `storage.restrictAuthTypes` organization policy on the bucket's project must allow HMAC authentication.
 
 On BigQuery, Hybrid exposures import requires a [staging dataset](./connect/bigquery#4-create-the-staging-dataset) with either **Service account key (JSON)** or **Trust relationship** as the data source's authentication, regardless of the exposures staging **Authentication** choice. The import creates its temporary external table there. If you leave **Staging dataset** empty, **Test exposures import** and Hybrid metric queries on this data source fail. Put the bucket in the same location as the staging and source datasets, or, for a `US` or `EU` multi-region dataset, in a single region inside that multi-region (for example `europe-west1` for `EU`).
 

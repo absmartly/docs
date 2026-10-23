@@ -47,7 +47,7 @@ Grant your service account the following roles:
 | **BigQuery Job User** (`roles/bigquery.jobUser`) | On the job project (the **Job / billing project ID**, or the **Project ID** when that's empty) | Allows running queries |
 | **BigQuery Read Session User** (`roles/bigquery.readSessionUser`) | On the job project | Allows reading large query results |
 | **Service Usage Consumer** (`roles/serviceusage.serviceUsageConsumer`) | On the job project | Allows billing queries and inserts to the job project |
-| **Storage Object Viewer** (`roles/storage.objectViewer`) | On the exposures staging bucket _(Hybrid only)_ | Allows BigQuery to read staged exposures with your service account's credentials, regardless of the **Exposures staging** authentication choice |
+| **Storage Object Viewer** (`roles/storage.objectViewer`) | On the exposures staging bucket _(Hybrid only)_ | Allows BigQuery to read staged exposures with your service account's credentials, regardless of the **Exposures staging** authentication choice. If **Exposures staging** uses **Trust relationship**, also grant ABsmartly's service account **Storage Object User** (`roles/storage.objectUser`) on the bucket so it can write the staged files |
 
 For Hybrid exposures import, you must create a [staging dataset](#4-create-the-staging-dataset) even with a service account key. Grant this service account **BigQuery Data Editor** (`roles/bigquery.dataEditor`) on the staging dataset whenever you configure one.
 
