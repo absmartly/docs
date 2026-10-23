@@ -39,16 +39,21 @@ In the [Google Cloud Console](https://console.cloud.google.com), open the projec
 
 ### 3. Grant permissions
 
-ABsmartly needs two roles:
+Grant your service account the following roles:
 
 | Role | Where to grant it | Why |
 |---|---|---|
 | **BigQuery Data Viewer** (`roles/bigquery.dataViewer`) | On the dataset | Allows reading your experiment tables |
-| **BigQuery Job User** (`roles/bigquery.jobUser`) | On the project | Allows running queries |
+| **BigQuery Job User** (`roles/bigquery.jobUser`) | On the job project (the **Job / billing project ID**, or the **Project ID** when that's empty) | Allows running queries |
+| **BigQuery Read Session User** (`roles/bigquery.readSessionUser`) | On the job project | Allows reading large query results |
+| **Service Usage Consumer** (`roles/serviceusage.serviceUsageConsumer`) | On the job project | Allows billing queries and inserts to the job project |
+| **Storage Object Viewer** (`roles/storage.objectViewer`) | On the exposures staging bucket _(Hybrid only)_ | Allows BigQuery to read staged exposures with your service account's credentials, regardless of the **Exposures staging** authentication choice |
 
 For Hybrid exposures import, you must create a [staging dataset](#4-create-the-staging-dataset) even with a service account key. Grant this service account **BigQuery Data Editor** (`roles/bigquery.dataEditor`) on the staging dataset whenever you configure one.
 
-To grant dataset-level access, open **BigQuery Studio**, select the dataset, click **Sharing → Permissions**, and add the service account email with the appropriate role. To grant the project-level Job User role, go to **IAM & Admin → IAM**, click **Grant access**, paste the service account email, and assign `roles/bigquery.jobUser`.
+Without a staging dataset, JSON layouts use the ABsmartly dataset, so grant **BigQuery Data Editor** on it instead of Data Viewer if you want ABsmartly to create and maintain the `json_layouts` table.
+
+To grant dataset-level access, open **BigQuery Studio**, select the dataset, click **Sharing → Permissions**, and add the service account email with the appropriate role. To grant the project-level roles, go to **IAM & Admin → IAM** in the job project, click **Grant access**, paste the service account email, and assign **BigQuery Job User**, **BigQuery Read Session User** and **Service Usage Consumer**. For Hybrid, open the staging bucket in **Cloud Storage → Buckets**, go to **Permissions → Grant access**, and grant your service account **Storage Object Viewer**.
 
 ### 4. Create and download the service account key
 
@@ -77,6 +82,10 @@ abs-acme@absmartly-customer-identities.iam.gserviceaccount.com
 Use this email as the principal in every grant below.
 
 :::note
+If your organization restricts sharing to specific domains (`iam.allowedPolicyMemberDomains`) or uses VPC Service Controls, allow ABsmartly's service account there first, or the grants and queries fail.
+:::
+
+:::note
 If **Trust relationship** is disabled and shows "Not available on this deployment. Contact ABsmartly support.", your deployment hasn't been set up for it yet. Contact ABsmartly support, or use **Service account key (JSON)** in the meantime.
 :::
 
@@ -94,7 +103,7 @@ Enable the **BigQuery API** (`bigquery.googleapis.com`) and the **BigQuery Stora
 | **BigQuery Data Viewer** (dataset role `READER`) | On the ABsmartly dataset (the **Dataset ID** in the form) | Allows reading your experiment tables |
 | **BigQuery Data Viewer** (dataset role `READER`) | On each other dataset your table mappings or SQL queries read from | Allows reading your source data |
 | **BigQuery Data Editor** (dataset role `WRITER`) | On the staging dataset (the **Staging dataset** in the form) | Allows ABsmartly to create and maintain its own tables there. See [Create the staging dataset](#4-create-the-staging-dataset). |
-| **Storage Object User** (`roles/storage.objectUser`) | On the exposures staging bucket _(Hybrid only)_ | Allows staging exposures for your warehouse. See [Grant access to the exposures staging bucket](#5-grant-access-to-the-exposures-staging-bucket-hybrid-only). |
+| **Storage Object User** (`roles/storage.objectUser`) | On the exposures staging bucket _(Hybrid only)_ | Allows BigQuery to read staged exposures even when **Exposures staging** uses **Access key (HMAC)**; also allows ABsmartly to write them when exposures staging uses **Trust relationship**. See [Grant access to the exposures staging bucket](#5-grant-access-to-the-exposures-staging-bucket-hybrid-only). |
 
 The job project is the **Job / billing project ID** in the form, or the **Project ID** when that's empty. This step covers the job project and read-only dataset roles; steps 4 and 5 cover the staging dataset and the bucket.
 
@@ -105,10 +114,10 @@ The job project is the **Job / billing project ID** in the form, or the **Projec
 
 #### Using gcloud and bq
 
-Run these as an administrator of your Google Cloud projects, with `gcloud`, `bq` and `jq` installed. Replace `SA_EMAIL` with the email from the **ABsmartly identity** block, and the placeholders in `<>` with your own values.
+Run these as an administrator of your Google Cloud projects, with `gcloud`, `bq` and `jq` installed. Set `SA_EMAIL` to the **Service account email** from the **ABsmartly identity** block, and replace the other placeholders in `<>` with your own values. Run the commands in steps 4 and 5 in the same shell, since they reuse `$SA_EMAIL`.
 
 ```bash
-SA_EMAIL=abs-acme@absmartly-customer-identities.iam.gserviceaccount.com
+SA_EMAIL=<ABSMARTLY_SA_EMAIL>   # the Service account email from the ABsmartly identity block
 
 # Prerequisite APIs, in the job, data and staging projects (if staging is configured)
 gcloud services enable bigquery.googleapis.com bigquerystorage.googleapis.com --project=<JOB_PROJECT>
@@ -121,7 +130,7 @@ gcloud projects add-iam-policy-binding <JOB_PROJECT> --member="serviceAccount:$S
 gcloud projects add-iam-policy-binding <JOB_PROJECT> --member="serviceAccount:$SA_EMAIL" --role=roles/serviceusage.serviceUsageConsumer
 
 # Read the ABsmartly dataset and each source dataset: append a READER access entry, keeping existing entries.
-# List one PROJECT:DATASET per source dataset after the ABsmartly dataset.
+# List one PROJECT:DATASET per source dataset after the ABsmartly dataset (or remove the second entry if there are none).
 for DS in <DATA_PROJECT>:<DATASET> <SOURCE_PROJECT>:<SOURCE_DATASET>; do
   bq show --format=prettyjson "$DS" > ds.json
   jq --arg sa "$SA_EMAIL" '.access += [{"role": "READER", "userByEmail": $sa}]' ds.json > ds.new.json && mv ds.new.json ds.json
@@ -140,16 +149,18 @@ The staging dataset holds only objects ABsmartly owns: the `json_layouts` table 
 The staging dataset requirements depend on the feature:
 
 - **JSON layouts** (auto-complete for JSON properties in the metric editor) require a staging dataset under **Trust relationship**. They stay turned off until you set a **Staging dataset**. With **Service account key (JSON)**, a staging dataset is optional for JSON layouts: without one, they use the ABsmartly dataset. See [JSON layouts table](../get-started#json-layouts-table).
-- **Exposures import** _(Hybrid only)_ requires a staging dataset with either **Service account key (JSON)** or **Trust relationship** authentication. The import creates a temporary external table, so it needs a staging dataset to create it in. See [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only).
+- **Exposures import** _(Hybrid only)_ requires a staging dataset with either **Service account key (JSON)** or **Trust relationship** authentication. The import creates a temporary external table, so it needs a staging dataset to create it in. If you leave **Staging dataset** empty, **Test exposures import** and Hybrid metric queries on this data source fail. See [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only).
 
 Create the staging dataset **in the same location as your ABsmartly and source datasets**, because a single query reads from them. It must be a different dataset from the **Dataset ID** in the **Project ID** project. Then enter it in the form's **Staging dataset** field, and its project in **Staging project ID** if it isn't the **Project ID**. Enable both BigQuery APIs in the staging project as described in [Enable the BigQuery APIs](#2-enable-the-bigquery-apis).
+
+With **Service account key (JSON)**, grant **BigQuery Data Editor** on the staging dataset to your own service account instead: set `SA_EMAIL` to its email before running the commands below.
 
 **Using the Google Cloud Console:** in **BigQuery Studio**, open the staging project, click the **⋮** menu next to the project and choose **Create dataset**. Enter the dataset ID, set **Location type** and the location to match your source datasets, and click **Create dataset**. Then select the new dataset, click **Sharing → Permissions**, then **Add principal**, paste the service account email and assign **BigQuery Data Editor**.
 
 **Using bq:**
 
 ```bash
-# Staging dataset: the only dataset ABsmartly writes to (WRITER = BigQuery Data Editor).
+# Grant staging access to the data source's service account (WRITER = BigQuery Data Editor).
 # <LOCATION> must be your source datasets' location.
 bq --location=<LOCATION> mk --dataset <STAGING_PROJECT>:<STAGING_DATASET>
 bq show --format=prettyjson <STAGING_PROJECT>:<STAGING_DATASET> > ds.json
@@ -159,7 +170,9 @@ bq update --source ds.json <STAGING_PROJECT>:<STAGING_DATASET>
 
 ### 5. Grant access to the exposures staging bucket _(Hybrid only)_
 
-Skip this step unless you use [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only) with **Trust relationship** as its authentication. The bucket must be in a location compatible with the staging dataset and your source datasets: BigQuery reads the staged files through an external table, which can only read a bucket in a compatible location.
+Skip this step unless you use [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only). With a **Trust relationship** data source, BigQuery reads the staged files as ABsmartly's service account, so grant this role even if the **Exposures staging** section uses **Access key (HMAC)**. If **Exposures staging** also uses **Trust relationship**, the same role lets ABsmartly write the files.
+
+Put the bucket in the same location as your staging and source datasets. If those datasets are in the `US` or `EU` multi-region, the bucket can also be in a single region inside it (for example `europe-west1` for `EU`). BigQuery reads the staged files through an external table, which can't read a bucket outside the dataset's location.
 
 **Using the Google Cloud Console:** go to **Cloud Storage → Buckets**, open the bucket, go to the **Permissions** tab, click **Grant access**, paste the service account email and assign **Storage Object User**.
 
@@ -200,12 +213,14 @@ With **Service account key (JSON)**, create a dedicated service account with rea
 
 ## Test the connection
 
-Click **Test connection** at the bottom of the form. If everything is configured correctly, you'll see a green **"Connected"** confirmation.
+Click **Test connection** at the bottom of the form. If everything is configured correctly, you'll see a green **"Connection successful"** confirmation.
 
 <Image maxWidth="40rem" centered img="warehouse-native/datasource-bigquery-connected.png" alt="Successful BigQuery connection test" />
 
 :::note
 If the test fails, double-check your credentials and make sure ABsmartly's IP addresses are allowed through your BigQuery project's network policies.
+
+With **Trust relationship**, a failed test shows the missing role and resource (for example "Missing BigQuery Job User on `<project>`") with a **See permissions** link. **Test connection** doesn't exercise inserts, so a missing **Service Usage Consumer** grant on a separate job project shows up later as failed writes, not as a failed test.
 :::
 
 Once connected, save the data source and proceed to [map your tables](../get-started#step-2-map-your-tables).
