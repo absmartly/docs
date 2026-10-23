@@ -208,7 +208,7 @@ Navigate to **Settings → Data Sources** and click **Add data source**. Give yo
 | **ABsmartly identity** | _Trust relationship only._ The **Service account email** and **Unique ID** of the service account ABsmartly connects as, each with a **Copy** button, and a **Required permissions** link to [Trust relationship](#trust-relationship). There's nothing to enter here. |
 
 :::tip
-With **Service account key (JSON)**, create a dedicated service account with read-only access to the relevant dataset. Don't reuse a service account that has broader permissions than necessary.
+With **Service account key (JSON)**, create a dedicated service account with only the roles listed in [step 3](#3-grant-permissions). It reads your source and ABsmartly datasets, and writes only to the staging dataset (or to the ABsmartly dataset when you have no staging dataset and want ABsmartly to maintain `json_layouts`). Don't reuse a service account that has broader permissions than necessary.
 :::
 
 ## Test the connection
