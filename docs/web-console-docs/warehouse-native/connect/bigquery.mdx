@@ -46,7 +46,7 @@ ABsmartly needs two roles:
 | **BigQuery Data Viewer** (`roles/bigquery.dataViewer`) | On the dataset | Allows reading your experiment tables |
 | **BigQuery Job User** (`roles/bigquery.jobUser`) | On the project | Allows running queries |
 
-If you set a [staging dataset](#4-create-the-staging-dataset) (optional with a service account key), also grant this service account **BigQuery Data Editor** (`roles/bigquery.dataEditor`) on that dataset.
+For Hybrid exposures import, you must create a [staging dataset](#4-create-the-staging-dataset) even with a service account key. Grant this service account **BigQuery Data Editor** (`roles/bigquery.dataEditor`) on the staging dataset whenever you configure one.
 
 To grant dataset-level access, open **BigQuery Studio**, select the dataset, click **Sharing → Permissions**, and add the service account email with the appropriate role. To grant the project-level Job User role, go to **IAM & Admin → IAM**, click **Grant access**, paste the service account email, and assign `roles/bigquery.jobUser`.
 
@@ -68,7 +68,7 @@ ABsmartly only reads your own datasets. The only dataset it writes to is a separ
 
 ### 1. Copy the ABsmartly service account
 
-In the data source form, select **Trust relationship** in the **Authentication** dropdown. The **ABsmartly identity** block shows the service account's **email** and **unique ID**, each with a **Copy** button. The email looks like this:
+In the data source form, select **Trust relationship** in the **Authentication** dropdown. The **ABsmartly identity** block shows **Service account email** and **Unique ID**, each with a **Copy** button. The email looks like this:
 
 ```
 abs-acme@absmartly-customer-identities.iam.gserviceaccount.com
@@ -82,7 +82,7 @@ If **Trust relationship** is disabled and shows "Not available on this deploymen
 
 ### 2. Enable the BigQuery APIs
 
-Enable the **BigQuery API** (`bigquery.googleapis.com`) and the **BigQuery Storage API** (`bigquerystorage.googleapis.com`) in your job project (the **Job / billing project ID**, or the **Project ID** if you leave that empty) and in the project that holds your ABsmartly dataset. In the [Google Cloud Console](https://console.cloud.google.com), open each project, navigate to **APIs & Services → Library**, search for each API and enable it if it isn't already.
+Enable the **BigQuery API** (`bigquery.googleapis.com`) and the **BigQuery Storage API** (`bigquerystorage.googleapis.com`) in your job project (the **Job / billing project ID**, or the **Project ID** if you leave that empty), the project that holds your ABsmartly dataset, and the staging project if you configure a staging dataset. In the [Google Cloud Console](https://console.cloud.google.com), open each project, navigate to **APIs & Services → Library**, search for each API and enable it if it isn't already.
 
 ### 3. Grant the required permissions
 
@@ -110,9 +110,10 @@ Run these as an administrator of your Google Cloud projects, with `gcloud`, `bq`
 ```bash
 SA_EMAIL=abs-acme@absmartly-customer-identities.iam.gserviceaccount.com
 
-# Prerequisite APIs, in the job project and in the project holding the ABsmartly dataset
+# Prerequisite APIs, in the job, data and staging projects (if staging is configured)
 gcloud services enable bigquery.googleapis.com bigquerystorage.googleapis.com --project=<JOB_PROJECT>
 gcloud services enable bigquery.googleapis.com bigquerystorage.googleapis.com --project=<DATA_PROJECT>
+gcloud services enable bigquery.googleapis.com bigquerystorage.googleapis.com --project=<STAGING_PROJECT>
 
 # Run and bill queries in the job project
 gcloud projects add-iam-policy-binding <JOB_PROJECT> --member="serviceAccount:$SA_EMAIL" --role=roles/bigquery.jobUser
@@ -134,16 +135,14 @@ BigQuery datasets don't support `bq add-iam-policy-binding`, which is why the da
 
 ### 4. Create the staging dataset
 
-The staging dataset is the only dataset ABsmartly writes to. It holds only objects ABsmartly owns: the `json_layouts` table and the short-lived external tables that the Hybrid exposures import creates, which expire after 1 day. Under **Trust relationship**, ABsmartly never writes to your own datasets.
+The staging dataset holds only objects ABsmartly owns: the `json_layouts` table and the short-lived external tables that the Hybrid exposures import creates, which expire after 1 day. Under **Trust relationship**, it is the only dataset ABsmartly writes to; ABsmartly never writes to your own datasets.
 
-You need a staging dataset under **Trust relationship** if you use either of these:
+The staging dataset requirements depend on the feature:
 
-- **JSON layouts** (auto-complete for JSON properties in the metric editor). They stay turned off until you set a **Staging dataset**. See [JSON layouts table](../get-started#json-layouts-table).
-- **Exposures import** _(Hybrid only)_. The import creates a temporary external table, so it needs a staging dataset to create it in. See [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only).
+- **JSON layouts** (auto-complete for JSON properties in the metric editor) require a staging dataset under **Trust relationship**. They stay turned off until you set a **Staging dataset**. With **Service account key (JSON)**, a staging dataset is optional for JSON layouts: without one, they use the ABsmartly dataset. See [JSON layouts table](../get-started#json-layouts-table).
+- **Exposures import** _(Hybrid only)_ requires a staging dataset with either **Service account key (JSON)** or **Trust relationship** authentication. The import creates a temporary external table, so it needs a staging dataset to create it in. See [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only).
 
-With **Service account key (JSON)**, the staging dataset is optional: without one, JSON layouts keep working in the ABsmartly dataset.
-
-Create the staging dataset **in the same location as your source datasets**, because a single query reads from both. Its name must differ from the **Dataset ID**. Then enter it in the form's **Staging dataset** field, and its project in **Staging project ID** if it isn't the **Project ID**.
+Create the staging dataset **in the same location as your ABsmartly and source datasets**, because a single query reads from them. It must be a different dataset from the **Dataset ID** in the **Project ID** project. Then enter it in the form's **Staging dataset** field, and its project in **Staging project ID** if it isn't the **Project ID**. Enable both BigQuery APIs in the staging project as described in [Enable the BigQuery APIs](#2-enable-the-bigquery-apis).
 
 **Using the Google Cloud Console:** in **BigQuery Studio**, open the staging project, click the **⋮** menu next to the project and choose **Create dataset**. Enter the dataset ID, set **Location type** and the location to match your source datasets, and click **Create dataset**. Then select the new dataset, click **Sharing → Permissions**, then **Add principal**, paste the service account email and assign **BigQuery Data Editor**.
 
@@ -189,11 +188,11 @@ Navigate to **Settings → Data Sources** and click **Add data source**. Give yo
 | **Project ID** | Your GCP project ID |
 | **Job / billing project ID** | _Optional._ Project that runs and is billed for queries and inserts. Leave empty to use the Project ID. The service account needs BigQuery Job User, BigQuery Read Session User and Service Usage Consumer on it. |
 | **Dataset ID** | The BigQuery dataset containing your experiment tables |
-| **Staging dataset** | _Optional._ A dataset you create for ABsmartly's own tables (`json_layouts` and the Hybrid exposures import's temporary external tables). It must differ from the **Dataset ID** and be in the same location as your source datasets. Under **Trust relationship**, JSON layouts and the exposures import need it. See [Create the staging dataset](#4-create-the-staging-dataset). |
+| **Staging dataset** | Required for Hybrid exposures import with either authentication method, and for JSON layouts under **Trust relationship**; otherwise optional. A dataset you create for ABsmartly's own tables (`json_layouts` and the Hybrid exposures import's temporary external tables). It must be different from the ABsmartly dataset and in the same location as your ABsmartly and source datasets. See [Create the staging dataset](#4-create-the-staging-dataset). |
 | **Staging project ID** | _Optional._ The project that holds the staging dataset. Leave empty to use the **Project ID** (not the Job / billing project ID). |
 | **Authentication** | How ABsmartly authenticates to BigQuery: **Service account key (JSON)** (the default) or **Trust relationship**. See [Choose an authentication method](#choose-an-authentication-method). |
 | **Service Account Credentials (JSON)** | _Service account key (JSON) only._ A GCP service account key in JSON format. You can paste the JSON directly into the editor or use the **Upload JSON file** button. This field is required. |
-| **ABsmartly identity** | _Trust relationship only._ The **email** and **unique ID** of the service account ABsmartly connects as, each with a **Copy** button, and a **Required permissions** link to [Trust relationship](#trust-relationship). There's nothing to enter here. |
+| **ABsmartly identity** | _Trust relationship only._ The **Service account email** and **Unique ID** of the service account ABsmartly connects as, each with a **Copy** button, and a **Required permissions** link to [Trust relationship](#trust-relationship). There's nothing to enter here. |
 
 :::tip
 With **Service account key (JSON)**, create a dedicated service account with read-only access to the relevant dataset. Don't reuse a service account that has broader permissions than necessary.

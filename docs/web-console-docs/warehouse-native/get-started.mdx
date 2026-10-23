@@ -153,7 +153,7 @@ Without this table, experiments will still work — but JSON-property auto-compl
 :::
 
 :::note
-On BigQuery with a **Staging dataset** set, the `json_layouts` table lives in the staging dataset instead. With **Trust relationship** authentication, JSON layouts are turned off until you set one. See [Create the staging dataset](./connect/bigquery#4-create-the-staging-dataset).
+On BigQuery with a **Staging dataset** set, the `json_layouts` table lives in the staging dataset instead. With **Trust relationship** authentication, JSON layouts are turned off until you set one. With **Service account key (JSON)** and no staging dataset, JSON layouts use the ABsmartly dataset. See [Create the staging dataset](./connect/bigquery#4-create-the-staging-dataset).
 :::
 
 ---
@@ -193,7 +193,7 @@ This step only applies to **external** (non-default) data sources — the setup 
 
 In Hybrid mode, a goal can live in an external warehouse, but exposures come from the default data source (managed by ABsmartly). To compute metrics for such a goal, ABsmartly needs to make those exposures available to your external warehouse. It does this through an object store that you provide - you point ABsmartly at a storage location it can use, and your warehouse reads the exposures from there.
 
-The **Exposures import** section configures that storage location:
+The **Exposures staging** section configures that storage location:
 
 | Field | Description |
 |---|---|
@@ -202,7 +202,7 @@ The **Exposures import** section configures that storage location:
 
 With **Trust relationship** on BigQuery, the access key and secret fields are replaced by ABsmartly's service account email: grant that service account **Storage Object User** (`roles/storage.objectUser`) on the staging bucket. This choice is independent of the data source's own **Authentication** setting. See [Trust relationship](./connect/bigquery#trust-relationship) for the grant steps.
 
-On BigQuery, the bucket must be in a location compatible with the data source's staging dataset and source datasets, because BigQuery reads the staged files through an external table. With **Trust relationship** as the data source's authentication, the import also needs a [staging dataset](./connect/bigquery#4-create-the-staging-dataset) to create that temporary external table in.
+On BigQuery, Hybrid exposures import requires a [staging dataset](./connect/bigquery#4-create-the-staging-dataset) with either **Service account key (JSON)** or **Trust relationship** as the data source's authentication, regardless of the exposures staging **Authentication** choice. The import creates its temporary external table there. The bucket must be in a location compatible with the data source's staging dataset and source datasets, because BigQuery reads the staged files through that external table.
 
 :::note
 Staged files are cached and reused for a short window, then cleaned up automatically — no manual cleanup is required. For defense in depth, you can also add a bucket lifecycle rule (e.g. "delete objects older than 1 day") as a backstop.
