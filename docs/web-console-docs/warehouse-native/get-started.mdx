@@ -87,10 +87,6 @@ Column names don't have to match exactly — ABsmartly lets you map any column (
 
 Once all fields are mapped, click **Test & fetch rows** to validate the mapping. ABsmartly will fetch a sample of 10 rows so you can verify the data looks right.
 
-<Image maxWidth="40rem" centered img="warehouse-native/exposure-mapping-complete.png" alt="Completed exposure table mapping with sample data preview" />
-
-You'll also see a **"Forward native events to this table"** checkbox. Enable this if you want ABsmartly to write SDK-generated exposure events back into this warehouse table, keeping everything in one place.
-
 ### Goals table
 
 The goals table contains your conversion and metric events — the outcomes you're measuring in your experiments.
@@ -105,9 +101,7 @@ Map the following fields:
 | **achieved_at** | Timestamp when the goal was achieved | `INT64` (milliseconds) |
 | **properties** | Additional goal properties as a JSON string | `STRING` |
 
-<Image maxWidth="40rem" centered img="warehouse-native/goals-mapping-complete.png" alt="Completed goals table mapping" />
-
-As with the exposure table, click **Test & fetch rows** to validate, and optionally enable **"Forward native events to this table"** for SDK-generated goal events.
+As with the exposure table, click **Test & fetch rows** to validate.
 
 ### Attributes table _(optional)_
 
@@ -156,6 +150,10 @@ If you choose to map an existing table, you'll see the column mapping interface:
 Without this table, experiments will still work — but JSON-property auto-complete will be empty for goals and attributes on this data source, requiring manual entry when configuring metrics.
 :::
 
+:::note
+On BigQuery with a **Staging dataset** set, the `json_layouts` table lives in the staging dataset instead. With **Trust relationship** authentication, JSON layouts are turned off until you set one. With **Service account key (JSON)** and no staging dataset, JSON layouts use the ABsmartly dataset. See [Create the staging dataset](./connect/bigquery#4-create-the-staging-dataset).
+:::
+
 ---
 
 ## Step 3: Configure data freshness
@@ -193,12 +191,18 @@ This step only applies to **external** (non-default) data sources — the setup 
 
 In Hybrid mode, a goal can live in an external warehouse, but exposures come from the default data source (managed by ABsmartly). To compute metrics for such a goal, ABsmartly needs to make those exposures available to your external warehouse. It does this through an object store that you provide - you point ABsmartly at a storage location it can use, and your warehouse reads the exposures from there.
 
-The **Exposures import** section configures that storage location:
+The **Exposures staging** section configures that storage location:
 
 | Field | Description |
 |---|---|
 | **Object store URL** | The bucket/prefix ABsmartly uses to stage exposures for your warehouse. The accepted scheme depends on your warehouse (for example, `gs://` for BigQuery, `s3://` for Redshift, and `s3://`, `gs://`, or `azure://` for Snowflake). |
-| **Credentials** | The access needed to read and write that location — an access key/secret for BigQuery and ClickHouse, a stage name for Snowflake, an IAM role ARN for Redshift. Databricks needs no extra credentials. |
+| **Credentials** | The access needed to read and write that location — an access key/secret for ClickHouse, a stage name for Snowflake, an IAM role ARN for Redshift. Databricks needs no extra credentials. For BigQuery, pick the method in the section's own **Authentication** dropdown: **Access key (HMAC)** (the default, an access key/secret) or **Trust relationship**. |
+
+With **Trust relationship** on BigQuery, the access key and secret fields are replaced by ABsmartly's service account email: grant that service account **Storage Object User** (`roles/storage.objectUser`) on the staging bucket. The dropdown is independent of the data source's own **Authentication** setting, but BigQuery always reads the staged files with the data source's credentials. That service account needs access to the bucket too: **Storage Object User** for ABsmartly's service account under Trust relationship (see [Grant access to the exposures staging bucket](./connect/bigquery#5-grant-access-to-the-exposures-staging-bucket-hybrid-only)), or **Storage Object Viewer** (`roles/storage.objectViewer`) for your own service account under Service account key (JSON).
+
+With **Access key (HMAC)**, the `storage.restrictAuthTypes` organization policy on the bucket's project must allow HMAC authentication.
+
+On BigQuery, Hybrid exposures import requires a [staging dataset](./connect/bigquery#4-create-the-staging-dataset) with either **Service account key (JSON)** or **Trust relationship** as the data source's authentication, regardless of the exposures staging **Authentication** choice. The import creates its temporary external table there. If you leave **Staging dataset** empty, **Test exposures import** and Hybrid metric queries on this data source fail. Put the bucket in the same location as the staging and source datasets, or, for a `US` or `EU` multi-region dataset, in a single region inside that multi-region (for example `europe-west1` for `EU`).
 
 :::note
 Staged files are cached and reused for a short window, then cleaned up automatically — no manual cleanup is required. For defense in depth, you can also add a bucket lifecycle rule (e.g. "delete objects older than 1 day") as a backstop.
