@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # Troubleshooting
@@ -38,6 +38,32 @@ If you use the **simple** or **`Api-Key`** form, you **must** send
   cookies aren't fully blocked for the SAML/SSO callback.
 - **Stale session.** Sign out of ABsmartly in the browser tab, then restart
   the OAuth flow from the MCP client.
+- **Different browser.** The consent page and your ABsmartly sign-in must
+  happen in the same browser. If your MCP client opens a different browser
+  from the one you use for ABsmartly, sign in there too.
+
+### OAuth errors
+
+| Error | Cause | Fix |
+| --- | --- | --- |
+| `invalid_client` — *"This MCP client is not supported by this server"* | The client identifies itself with a metadata-document URL that isn't on the trusted list. | Use an API key, or [ask for the client to be added](./oauth-clients#your-client-isnt-on-the-list). |
+| `invalid_redirect_uri` — *"One or more redirect_uris are not allowed"* | The client tried to register with a redirect URI that isn't on the [allowlist](./oauth-clients#allowed-redirect-uris). | Use an API key, or ask for the client to be added. |
+| `invalid_client` for a client that used to work | The client's registration expired after 90 days without use. | Remove the connector and add it again so it registers again. |
+| *"PKCE with code_challenge_method=S256 is required"* | The client sent no PKCE challenge, or used `plain`. | Update the client. If it can't use `S256`, use an API key. |
+| *"Authorization request expired or invalid, please restart the connection from your MCP client"* | The consent page was left open for more than 10 minutes, or was submitted twice. | Start the connection again from the MCP client. |
+| *"This login was started in a different browser…"* | The sign-in finished in a different browser from the one that started it. | Copy the authorization link into the browser where you're signed in to ABsmartly, or restart the connection. |
+| `invalid_grant` — *"The ABsmartly session has ended, please sign in again"* | You signed out of ABsmartly, or your session expired. | Reconnect the client and sign in again. |
+| `access_denied` | You clicked **Deny** on the consent page. | Reconnect and click **Approve**. |
+
+See [OAuth & Client Registration](./oauth-clients) for how clients are
+accepted.
+
+### MCP client loses access after I sign out
+
+When you connect to your instance's own `/mcp` endpoint, the client's access
+is tied to the browser session you approved it from. Signing out of ABsmartly
+in that browser ends access for every MCP client approved from it. Reconnect
+the client to sign in again.
 
 ### "API key sessions can't use OAuth"
 
@@ -63,7 +89,9 @@ the new auth method.
 
 - For **remote**: check that `https://mcp.absmartly.com/sse` (or `/mcp` for
   Streamable HTTP) is reachable from your machine — corporate proxies and
-  VPNs occasionally block it.
+  VPNs occasionally block it. If you use your instance's own endpoint
+  (`https://your-instance.absmartly.com/mcp`), remember it supports
+  Streamable HTTP only — SSE clients must use `mcp.absmartly.com/sse`.
 - For **local stdio (`npx @absmartly/mcp`)**: make sure Node.js 22+ is on
   your PATH and that the ABsmartly CLI profile you reference exists (run
   `absmartly profile list` to check).
@@ -82,9 +110,16 @@ for compatibility.
 ### "Command requires confirmation"
 
 This is expected behavior for destructive operations — `start`, `stop`,
-`archive` and `delete` all pause for confirmation. Re-call `execute_command`
-with the same parameters plus `"confirmed": true` to actually perform the
-action.
+`archive` and `delete` always ask you to confirm before they run.
+
+- If your client supports MCP **elicitation**, it shows a prompt asking you to
+  type `yes`. Any other answer cancels the action.
+- Otherwise, the assistant asks you in the chat. Only after you confirm does
+  it call `execute_command` again with the same parameters plus
+  `"confirmed": true`.
+
+If the assistant runs a destructive command without asking you, report it —
+the server instructs it never to set `confirmed` on its own.
 
 ### `createExperimentFromTemplate` returned a preview, not a created experiment
 

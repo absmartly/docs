@@ -68,9 +68,10 @@ A typical interaction looks like this:
                     params: { state: "running" })
 ```
 
-Destructive operations (`start`, `stop`, `archive`, `delete`) always require an
-explicit confirmation step before they run. Experiment creation from templates
-returns a preview first.
+Destructive operations (`start`, `stop`, `archive`, `delete`) always ask you to
+confirm before they run — through an in-client prompt where the client
+supports it, or in the chat. Experiment creation from templates returns a
+preview first.
 
 See the [Tools Reference](./tools-reference) for the full surface.
 
@@ -78,18 +79,31 @@ See the [Tools Reference](./tools-reference) for the full surface.
 
 | Method | Best for | How it works |
 | --- | --- | --- |
-| **OAuth** | Interactive use in Claude Desktop, Cursor, the web | Browser-based login via your ABsmartly SAML/SSO flow |
-| **API Key** | Programmatic access, CI/CD, headless | Pass the key in HTTP headers or via the URL |
+| **OAuth** | Interactive use in Claude Desktop, Cursor, VS Code, ChatGPT and cloud agent platforms | Browser-based login via your ABsmartly SAML/SSO or password |
+| **API Key** | Programmatic access, CI/CD, headless, or clients that can't use OAuth | Pass the key in HTTP headers or via the URL |
 
 Both methods are documented in detail in [Authentication](./authentication).
+[OAuth & Client Registration](./oauth-clients) explains the OAuth flow, the
+endpoints involved and which clients are accepted.
+
+## Where to connect
+
+| URL | Transports | Notes |
+| --- | --- | --- |
+| `https://mcp.absmartly.com/mcp` | Streamable HTTP | Hosted server. Works with every ABsmartly instance. |
+| `https://mcp.absmartly.com/sse` | SSE | Hosted server, legacy transport for older clients. |
+| `https://your-instance.absmartly.com/mcp` | Streamable HTTP | Served by your own ABsmartly instance. |
+| `npx @absmartly/mcp` | stdio | Runs locally with your ABsmartly CLI credentials. |
 
 ## What's next
 
 - **[Quick Start](./quick-start)** — connect Claude Desktop with OAuth and run
   your first command in under five minutes
 - **[Setup](./setup)** — per-client setup for every supported MCP client
-- **[Authentication](./authentication)** — API key formats, OAuth flow,
+- **[Authentication](./authentication)** — API key formats, OAuth,
   security model
+- **[OAuth & Client Registration](./oauth-clients)** — the OAuth flow with
+  diagrams, endpoints, and how MCP clients are registered and accepted
 - **[Usage Examples](./usage-examples)** — natural-language prompts that work
   today
 - **[Tools Reference](./tools-reference)** — full list of tools, command groups,

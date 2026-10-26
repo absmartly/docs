@@ -30,10 +30,12 @@ export const CursorInstallLink = () => (
 
 The ABsmartly MCP server can be added to any MCP-compatible client. This page
 covers Claude Desktop, Claude Code, Cursor, Windsurf, VS Code (Copilot), Gemini
-(CLI and Code Assist), ChatGPT and the DXT extension.
+(CLI, Code Assist and Enterprise), ChatGPT, Goose, GitHub Copilot CLI, cloud
+agent platforms and the DXT extension.
 
-For details on API keys, the OAuth flow and supported `Authorization` header
-formats, see [Authentication](./authentication).
+For details on API keys and supported `Authorization` header formats, see
+[Authentication](./authentication). For how OAuth clients are registered and
+which ones are accepted, see [OAuth & Client Registration](./oauth-clients).
 
 ## Transports
 
@@ -46,6 +48,24 @@ The server is reachable on two HTTP endpoints:
 
 The MCP spec deprecated SSE in March 2025, but `/sse` continues to be supported
 for compatibility.
+
+### Your instance's own `/mcp` endpoint
+
+Your ABsmartly instance also serves MCP directly:
+
+```text
+https://your-instance.absmartly.com/mcp
+```
+
+It uses **Streamable HTTP** only, and accepts OAuth through your instance's own
+login, or an API key sent as `Authorization: Api-Key YOUR_API_KEY`. Because the
+URL already identifies your instance, no `absmartly-endpoint` parameter or
+`x-absmartly-endpoint` header is needed. Use this URL in place of
+`https://mcp.absmartly.com/mcp` in any of the Streamable HTTP examples below.
+See [OAuth & Client Registration](./oauth-clients#two-ways-to-connect-with-oauth)
+for how the two differ.
+
+### Local stdio
 
 You can also run the server locally over stdio with `npx @absmartly/mcp`, which
 reuses your ABsmartly CLI config and macOS Keychain credentials.
@@ -70,12 +90,15 @@ into **Remote MCP server URL**:
 **URL:**
 
 ```text
-https://mcp.absmartly.com/sse?absmartly-endpoint=https://your-instance.absmartly.com
+https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com
 ```
 
-Click **Add**, then **Connect**. Claude Desktop will open your browser for
-ABsmartly login (SAML/credentials). After authentication, the MCP connection is
-established automatically.
+Click **Add**, then **Connect**. Claude Desktop will open your browser. Approve
+the consent page, then sign in to ABsmartly (SAML/credentials). After
+authentication, the MCP connection is established automatically.
+
+You can also use your instance's own endpoint,
+`https://your-instance.absmartly.com/mcp`, as the URL.
 
 :::tip
 The `absmartly-endpoint` query parameter is optional. If omitted, the OAuth flow
@@ -541,14 +564,26 @@ Streamable HTTP transport — use the `/mcp` endpoint:
 1. Google Cloud Console → **Gemini Enterprise** → **Data stores** →
    **Create data store**.
 2. Search "Custom MCP Server" → **Add MCP server**.
-3. **Server URL:** `https://mcp.absmartly.com/mcp`
-4. **Authentication:** OAuth — register Gemini Enterprise as an OAuth client
-   against your identity provider, then provide the `client_id` /
-   `client_secret`. Grant the `mcp:access` scope.
+3. **Server URL:**
+   `https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com`
+4. **Authentication:** OAuth. Gemini Enterprise registers itself
+   automatically through dynamic client registration, using the callback
+   `https://vertexaisearch.cloud.google.com/oauth-redirect`. Grant the
+   `mcp:access` scope.
 5. Save and wait for the connector status to become **Active**.
 
+When you first authorize, the consent page shows a warning that the Google
+callback is shared by all Gemini Enterprise customers. Approve only if you just
+started the connection yourself.
+
+:::tip If Gemini Enterprise asks for a client ID and secret
+If the console asks you for a `client_id` and `client_secret` instead of
+registering automatically, register a client yourself once and paste the
+values in. See [Manual registration](./oauth-clients#manual-registration).
+:::
+
 :::caution
-SSE transport (`/sse`) is **not** supported by this connector. The legacy Gemini
+SSE transport (`/sse`) is **not** supported by this connector. The Gemini
 CLI / Code Assist sections above continue to use `/sse` until those clients add
 Streamable HTTP support.
 
@@ -571,8 +606,9 @@ Edu plan, and Developer Mode enabled (Settings → **Connectors** →
 2. Fill in:
    - **Name:** `ABsmartly`
    - **MCP Server URL:**
-     `https://mcp.absmartly.com/sse?absmartly-endpoint=https://your-instance.absmartly.com`
-   - **Authentication:** OAuth
+     `https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com`
+   - **Authentication:** OAuth (ChatGPT registers itself automatically through
+     dynamic client registration)
 3. Save. In a new chat, click **+** → **Developer mode** → select the
    **ABsmartly** connector to add it as a tool source.
 
@@ -580,6 +616,87 @@ Edu plan, and Developer Mode enabled (Settings → **Connectors** →
 Workspace admins must first enable **Custom MCP connectors** in
 **Workspace Settings → Permissions & Roles → Connected Data**.
 :::
+
+---
+
+## Goose
+
+Goose identifies itself with a trusted client metadata document, so no
+registration step is needed. Run `goose configure` (or open **Extensions** in
+Goose Desktop), choose **Add Extension → Remote Extension (Streamable HTTP)**,
+skip custom headers, and use the URL:
+
+```text
+https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com
+```
+
+Goose opens your browser to sign in the first time it connects.
+
+---
+
+## GitHub Copilot CLI
+
+GitHub Copilot CLI also uses a trusted client metadata document. Add the
+server from the terminal:
+
+```bash
+copilot mcp add --transport http absmartly \
+  "https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com"
+```
+
+Or add it to **`~/.copilot/mcp-config.json`**:
+
+```json
+{
+  "mcpServers": {
+    "absmartly": {
+      "type": "http",
+      "url": "https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com",
+      "tools": ["*"]
+    }
+  }
+}
+```
+
+Copilot CLI opens your browser to sign in the first time it uses the server.
+
+---
+
+## Cloud agent platforms
+
+Hosted agent platforms connect to the MCP server from their own cloud, and
+register themselves through dynamic client registration. Point them at the
+hosted Streamable HTTP endpoint and choose OAuth:
+
+```text
+https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com
+```
+
+| Platform | Notes |
+| --- | --- |
+| **Amazon Bedrock AgentCore** | Add an OAuth outbound credential provider for the MCP target. Its callback (`https://bedrock-agentcore.<region>.amazonaws.com/identities/oauth2/callback/<uuid>`) is accepted in every region. |
+| **Microsoft Copilot Studio / Azure AI Foundry** | Add an MCP tool with OAuth 2.0 and dynamic discovery. Callbacks on `https://global.consent.azure-apim.net/redirect` are accepted. |
+| **Perplexity** | Add a custom connector with OAuth. Both `www.perplexity.ai` and `enterprise.perplexity.ai` are accepted. |
+| **Gemini Enterprise** | See [Gemini Enterprise](#gemini-enterprise-google-cloud-console) above. |
+
+These platforms use callback URLs shared by all their customers, so the consent
+page shows an extra warning. If a platform asks you for a client ID and secret
+instead of registering itself, see
+[Manual registration](./oauth-clients#manual-registration). If it can't use
+OAuth at all, use an [API key](./authentication#api-key).
+
+---
+
+## Other clients
+
+Any MCP client that supports OAuth with dynamic client registration or a
+trusted client metadata document, and uses an
+[allowed redirect URI](./oauth-clients#allowed-redirect-uris), works with the
+same URL as above. Local clients that sign in through a `localhost` callback,
+such as Zed, Kiro, OpenCode or MCP Inspector, are accepted automatically.
+
+If your client is rejected, connect with an API key instead, or see
+[Your client isn't on the list?](./oauth-clients#your-client-isnt-on-the-list).
 
 ---
 
