@@ -128,6 +128,12 @@ abs experiments restart 123 --hypothesis "New iteration"
 abs experiments create --name test --field "Hypothesis=We believe X"
 ```
 
+Custom field values are sent to the API as an object keyed by each field's numeric id (not an array) — the CLI builds this automatically. If you're integrating directly against the REST API and want to see the exact request the CLI sends for a given custom field update, use the global [`--show-request`](./configuration#debugging-api-traffic) flag:
+
+```bash
+abs experiments update 123 --field "Hypothesis=Updated hypothesis" --show-request
+```
+
 ## Cloning
 
 ```bash

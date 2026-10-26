@@ -554,3 +554,24 @@ visible on the experiment form.
 - **Move Down**: Clicking this button will move the section or field down in the list of sections or fields.
 
 You can use these action buttons to edit, archive, or reorder your sections and fields.
+
+#### Setting Custom Field Values via the API
+
+When creating or updating an experiment through the API rather than the Web Console, `custom_section_field_values`
+must be sent as an object keyed by each field's numeric id, not as an array:
+
+```json
+{
+  "data": {
+    "custom_section_field_values": {
+      "75": { "type": "boolean", "value": "false" },
+      "79": { "type": "number", "value": "414" }
+    }
+  }
+}
+```
+
+The [ABSmartly CLI](/docs/APIs-and-SDKs/CLI-Documentation) builds this shape for you automatically — see
+[custom field options](/docs/APIs-and-SDKs/CLI-Documentation/experiments-and-feature-flags#custom-field-options) and
+[`--show-request`](/docs/APIs-and-SDKs/CLI-Documentation/configuration#debugging-api-traffic) if you want to inspect
+the exact payload for a working request.
