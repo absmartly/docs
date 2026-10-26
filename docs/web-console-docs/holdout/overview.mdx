@@ -1,0 +1,253 @@
+---
+sidebar_position: 1
+title: "Overview"
+description: "Holdouts measure the combined impact of your experiments by keeping a small group of visitors out of them."
+---
+
+import Image from "../../../src/components/Image";
+
+# Overview
+
+## What is a holdout
+
+Individual experiments tell you the impact of a single change. A **holdout** tells you the
+impact of everything you shipped, together.
+
+A holdout keeps a small, randomly selected group of visitors out of the experiments it covers.
+Their behaviour becomes a baseline. By comparing that baseline with visitors who are exposed to
+your experiments as normal, you can measure the cumulative effect of your experimentation
+programme over a period of months rather than the effect of one change at a time.
+
+This answers questions that individual experiment results cannot:
+
+- Do the wins we recorded across dozens of experiments add up at the aggregate level?
+- Are the effects of our changes still present months after launch, or did they decay?
+- Is there an interaction between our experiments that no single test would reveal?
+
+<Image maxWidth="48rem" centered img="holdout/holdouts-list.png" alt="The Holdouts page listing holdout groups" />
+
+## Tracking units and teams
+
+Every holdout has a **tracking unit** and is owned by one or more **teams**.
+
+The tracking unit mirrors how experiments work. An experiment that randomises on Device ID can
+only be held out from a group defined by Device ID, so a holdout only covers experiments that share
+its tracking unit. The tracking unit is chosen when the holdout is created and cannot be changed
+afterwards.
+
+A holdout's teams play two roles. They own it, so their Team Admins manage it. They also decide
+which experiments it covers: a holdout holds out the experiments of its teams and of their child
+teams. Holdouts are always owned by teams, never by individual users, even where user-level
+ownership is enabled for other assets.
+
+A **general holdout** is owned by your top-level team, the team named after your organisation.
+Every other team sits under it, so a general holdout covers experiments from all teams. Only
+`FullAdmin` users can create a general holdout.
+
+A team can only own one holdout per tracking unit. There is therefore at most one general holdout
+per tracking unit. For example, you could run a general User ID holdout for the whole
+organisation and a separate User ID holdout for the landing pages team, but not two User ID holdouts
+for the landing pages team.
+
+Holdouts can overlap. An experiment from the Development team, a child of Engineering, can be
+covered on the same tracking unit by a Development holdout, an Engineering holdout and the general
+holdout. A visitor can be held out by more than one of them.
+
+:::info
+To understand how tracking units are defined on your platform, see
+[Tracking Unit](/docs/web-console-docs/experiments/creating-an-experiment#tracking-unit).
+:::
+
+## Simple and advanced holdouts
+
+A holdout is either **simple** or **advanced**.
+
+A **simple holdout** (the default) keeps one group of visitors out of all experiments and compares
+it with everyone else. It is the best way to measure the total cumulative impact of your
+experimentation programme.
+
+An **advanced holdout** adds a second held-out group. This group is also kept out of experiments,
+but it does see the features that have already been shipped to 100% of traffic. This separates two
+effects which a simple holdout measures together: the impact of what you shipped, and the impact of
+being exposed to experiments which were tested but not kept.
+
+An advanced holdout needs a second held-out group of the same size, so it takes more of your
+traffic. Fewer visitors remain available for experiments, which may then need to run longer to
+collect enough participants for reliable results.
+
+## How the comparison works
+
+A holdout report compares groups of equal size. Every variant is compared with the control.
+
+| Group | Role | What it sees | Holdout type |
+| --- | --- | --- | --- |
+| **Holdout** | Control | No experiments. The baseline experience. | Simple and advanced |
+| **No Holdout** | Variant 1 | Experiments as normal, exactly like the rest of your population. | Simple and advanced |
+| **Full on only** | Variant 2 | No experiments, but features already shipped to 100% of traffic. | Advanced only |
+
+The **No Holdout** group is not simply "everyone else". It is a sample drawn from the full
+experiment-exposed population and sized to match the holdout group. Comparing a 3% holdout against
+the remaining 97% directly would put a small group next to a very large one, and the imbalance
+costs you statistical power. Sampling an equal-size comparison group keeps the two sides balanced
+and the comparison fair.
+
+The relative impact of **No Holdout** therefore reads as: how much the experiment-exposed group
+differs from the holdout baseline. In an advanced holdout, the relative impact of **Full on only**
+reads as: how much the features you shipped, on their own, changed behaviour compared with the
+baseline.
+
+## Traffic allocation
+
+The traffic allocation is the share of the tracking unit's traffic kept out of experiments. It can
+be set between **1% and 10%**.
+
+| Holdout type | Default allocation |
+| --- | --- |
+| Simple | **3%**, all of it in the holdout group |
+| Advanced | **6%**, with 3% in each of the two held-out groups |
+
+The **No Holdout** comparison group is not part of the allocation. It is sampled from the
+experiment-exposed population to match the size of the holdout group.
+
+The size of the allocation is a trade-off. A larger holdout detects smaller cumulative effects, but
+it also means more visitors are kept away from the improvements you have shipped.
+
+## Which experiments are included
+
+Each holdout has an **experiment inclusion** setting, which decides how experiments join it. Like
+the rest of the holdout's configuration, a change to this setting applies from the next period.
+
+**Opt-out** (the default): every experiment on the holdout's tracking unit, from its teams
+and their child teams, is included automatically. An experiment's owners can request to exclude it,
+and the people who can edit the holdout decide whether to grant the exclusion. Grant exclusions
+sparingly. Each exclusion means the holdout group has seen that experiment after all, so the
+baseline drifts a little further from "the product as it was". Reserve exclusions for cases where
+withholding a change is not acceptable, such as a legal or compliance requirement, or a fix that
+must reach all visitors.
+
+**Opt-in**: experimenters add their experiment to the holdout from the experiment form. Only
+experiments on the holdout's tracking unit, from its teams and their child teams, can be
+added, and anyone who can edit such an experiment can add it. Only opted-in experiments take part.
+
+## Periods and resets
+
+A holdout runs for a **duration** chosen at setup: **3 months**, **6 months**, **12 months**, or
+**until stopped**.
+
+When a fixed duration ends, the holdout can restart automatically: a new period begins immediately
+with the same configuration, and visitors are randomised again from scratch. A holdout set to run
+until stopped has no end date, so it runs as a single period and does not restart automatically.
+
+Fresh randomisation matters. A visitor who was held out during one period is unlikely to be held out
+in the next, which stops the same people from being excluded from your product improvements
+indefinitely, and prevents the holdout group from slowly diverging into an unrepresentative
+population.
+
+Each period is an **independent dataset** with its own results. Periods are not merged or averaged.
+When a period ends its results are archived and stay accessible, so you can look back at how the
+cumulative impact of your experimentation changed from one period to the next.
+
+## Reading results before the period ends
+
+You do not have to wait for the period to end to learn something. Holdouts are analysed once per
+day using **Fully Sequential testing**, so results are valid whenever you look at them and can be
+checked at any point during the period.
+
+## Metrics
+
+The metrics used to evaluate a holdout (max 5 of them) are selected from your existing metric
+catalogue, filtered to those compatible with the holdout's tracking unit. A metric defined on User
+ID cannot be computed for a Device ID holdout, so it is not offered.
+
+Because a holdout measures broad, long-run impact rather than the effect of one change, favour your
+top-line business metrics over narrow, feature-specific ones.
+
+## Permissions
+
+Holdouts are Experiment Assets, like experiments and metrics, and follow the
+[ownership model](/docs/web-console-docs/users-teams-permissions/ownership-and-permissions). They
+are always owned by one or more teams, and can be shared with other users and teams. They have
+their own permissions, separate from those for experiments.
+
+A holdout takes traffic from every experiment of the teams that own it, so some rules differ from
+other assets. These are described below.
+
+### Team roles
+
+The built-in team roles grant the following on holdouts owned by the team:
+
+| Team role | On the team's holdouts |
+| --- | --- |
+| **Team Admin** | Create, edit, start, stop, archive and view |
+| **Team Contributor** | View only |
+| **Team Viewer** | View only |
+
+If a holdout is owned by several teams, the Team Admins of each of them can manage it.
+
+As with other assets, team roles cascade down the team hierarchy, and members of a team with no team
+role cannot see its holdouts. This includes implicit members of parent teams: a member of the
+Development team does not see a holdout owned by Engineering, even if it covers their experiments,
+unless it is shared with them.
+
+### Owning teams
+
+You can only add a team to a holdout if you are a Team Admin of that team. Adding a team gives its
+Team Admins control of the holdout and holds out its experiments, so this stops one team from
+taking traffic from teams it does not manage.
+
+The general holdout is owned by your top-level team. By default, only `FullAdmin` users can create
+and manage it, along with anyone it is shared with using **Can Edit**.
+
+### Sharing a holdout
+
+A holdout can be shared with users and teams:
+
+- **Can View**: find the holdout and view its results. Unlike other assets, Can View does not let
+  anyone use the holdout. Adding an experiment to a holdout is controlled by the experiment, see
+  below.
+- **Can Edit**: manage the holdout, as its Team Admins do. Only users who can edit a holdout can share it
+  with Can Edit.
+
+The general holdout is not visible to everyone by default. To let everyone see its results, share it
+with your top-level team with **Can View**.
+
+### Adding and excluding experiments
+
+- **Adding** an experiment to an opt-in holdout: anyone who can edit the experiment, as long as the
+  experiment belongs to one of the holdout's teams or their child teams.
+- **Excluding** an experiment from an opt-out holdout: the experiment's owners request the exclusion,
+  and the people who can edit the holdout grant or refuse it.
+
+Excluding an experiment weakens the holdout's baseline, so the decision sits with the holdout's
+owning teams rather than with the experiment's owners.
+
+### Holdout permissions
+
+The following permissions can be granted to users through custom global roles.
+
+| Permission | Description |
+| --- | --- |
+| **Create a holdout** | Allows creating a new holdout. |
+| **Edit a holdout** | Allows changing a holdout's configuration and deciding on requests to exclude experiments. Configuration changes apply from the next period. |
+| **Start a holdout** | Allows starting a holdout. |
+| **Stop a holdout** | Allows stopping a running holdout. Stopping a holdout manually disables its automatic restart. |
+| **List holdouts** | Allows finding holdouts in the list of holdouts. |
+| **Get a holdout** | Allows viewing a specific holdout and its configuration. |
+| **Get holdout metrics** | Allows viewing a holdout's results. |
+| **Archive a holdout** | Allows archiving a holdout. |
+| **Unarchive a holdout** | Allows restoring an archived holdout. |
+| **Holdout admin** | Grants all holdout permissions. |
+
+Holdouts cannot be put into development, put Full on or recomputed, so there are no permissions for
+those actions.
+
+:::info
+As with other Experiment Assets, holdout permissions granted through a global role apply to every
+holdout, whichever team owns it. Prefer the team-based model where possible. See
+[Roles](/docs/web-console-docs/users-teams-permissions/roles).
+:::
+
+## Next steps
+
+- [Setting up a holdout](./setting-up-a-holdout) walks through the configuration.
+- [Reading holdout results](./reading-holdout-results) explains the report and the period history.
