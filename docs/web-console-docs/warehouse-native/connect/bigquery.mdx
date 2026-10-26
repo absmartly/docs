@@ -51,7 +51,7 @@ Grant your service account the following roles:
 
 For Hybrid exposures import, you must create a [staging dataset](#4-create-the-staging-dataset) even with a service account key. Grant this service account **BigQuery Data Editor** (`roles/bigquery.dataEditor`) on the staging dataset whenever you configure one.
 
-Without a staging dataset, JSON layouts use the ABsmartly dataset, so grant **BigQuery Data Editor** on it instead of Data Viewer if you want ABsmartly to create and maintain the `json_layouts` table.
+Without a staging dataset (allowed only when this data source has no Hybrid exposures import), JSON layouts use the ABsmartly dataset, so grant **BigQuery Data Editor** on it instead of Data Viewer if you want ABsmartly to create and maintain the `json_layouts` table.
 
 To grant dataset-level access, open **BigQuery Studio**, select the dataset, click **Sharing → Permissions**, and add the service account email with the appropriate role. To grant the project-level roles, go to **IAM & Admin → IAM** in the job project, click **Grant access**, paste the service account email, and assign **BigQuery Job User**, **BigQuery Read Session User** and **Service Usage Consumer**. For Hybrid, open the staging bucket in **Cloud Storage → Buckets**, go to **Permissions → Grant access**, and grant your service account **Storage Object Viewer**.
 
@@ -149,7 +149,7 @@ The staging dataset holds only objects ABsmartly owns: the `json_layouts` table 
 The staging dataset requirements depend on the feature:
 
 - **JSON layouts** (auto-complete for JSON properties in the metric editor) require a staging dataset under **Trust relationship**. They stay turned off until you set a **Staging dataset**. With **Service account key (JSON)**, a staging dataset is optional for JSON layouts: without one, they use the ABsmartly dataset. See [JSON layouts table](../get-started#json-layouts-table).
-- **Exposures import** _(Hybrid only)_ requires a staging dataset with either **Service account key (JSON)** or **Trust relationship** authentication. The import creates a temporary external table, so it needs a staging dataset to create it in. If you leave **Staging dataset** empty, **Test exposures import** and Hybrid metric queries on this data source fail. See [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only).
+- **Exposures import** _(Hybrid only)_ requires a staging dataset with either **Service account key (JSON)** or **Trust relationship** authentication. The import creates a temporary external table, so it needs a staging dataset to create it in. ABsmartly won't save a data source with an exposures import, or run **Test exposures import**, until you set a **Staging dataset**. A data source saved earlier without a staging dataset keeps failing Hybrid metric queries until you add one, and its next save requires it. See [Exposures import](../get-started#step-4-configure-exposures-import-hybrid-only).
 
 Create the staging dataset **in the same location as your ABsmartly and source datasets**, because a single query reads from them. It must be a different dataset from the **Dataset ID** in the **Project ID** project. Then enter it in the form's **Staging dataset** field, and its project in **Staging project ID** if it isn't the **Project ID**. Enable both BigQuery APIs in the staging project as described in [Enable the BigQuery APIs](#2-enable-the-bigquery-apis).
 
