@@ -60,6 +60,9 @@ yarn gen:api
   static files; the function also normalises `/foo/index.md` and `/foo/.md` to `/foo.md`, sends
   `.md` URLs of redirected pages to the Markdown of the redirect target, and sends `/index.md` to
   `/llms.txt`. Tests: `yarn build && deno test --no-check --allow-read netlify/edge-functions-tests/`.
+- Discovery: every docs page has `<link rel="alternate" type="text/markdown" href="<route>.md">` in
+  its `<head>` (`src/theme/DocItem/Metadata/index.js`, a swizzle wrapper), and the `/llms.txt`
+  header explains the `.md` suffix and `Accept: text/markdown` options.
 - API reference pages render schemas client-side, so their Markdown has only the endpoint and
   description; the raw specs are published at `/openapi/*.yaml` and linked from `/llms.txt`.
 

@@ -90,7 +90,10 @@ const config = {
       "@signalwire/docusaurus-plugin-llms-txt",
       {
         siteDescription:
-          "ABsmartly product documentation: experimentation platform, SDKs and APIs.",
+          "ABsmartly product documentation: experimentation platform, SDKs and APIs.\n\n" +
+          "Every page is available as Markdown: append `.md` to the page URL " +
+          "(e.g. https://docs.absmartly.com/docs/glossary.md), or request the normal URL " +
+          "with `Accept: text/markdown`. /llms-full.txt contains all pages in one file.",
         depth: 2,
         optionalLinks: [
           {
