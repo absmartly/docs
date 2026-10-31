@@ -56,7 +56,10 @@ yarn gen:api
   `<details>` into plain HTML first so they survive the conversion.
 - `netlify/edge-functions/markdown-negotiation.js` serves the `.md` at the normal page URL when the
   request's `Accept` header prefers `text/markdown`, and adds `Vary: Accept` plus a
-  `Link: <...md>; rel="alternate"` header to HTML responses.
+  `Link: <...md>; rel="alternate"` header to HTML responses. Explicit `.md` URLs are served as
+  static files; the function also normalises `/foo/index.md` and `/foo/.md` to `/foo.md`, sends
+  `.md` URLs of redirected pages to the Markdown of the redirect target, and sends `/index.md` to
+  `/llms.txt`.
 - API reference pages render schemas client-side, so their Markdown has only the endpoint and
   description; the raw specs are published at `/openapi/*.yaml` and linked from `/llms.txt`.
 

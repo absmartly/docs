@@ -51,8 +51,54 @@ function appendVary(headers) {
   }
 }
 
+// Canonical Markdown path for a URL that already asks for Markdown by
+// extension: "/docs/foo/index.md", "/docs/foo/.md", "/docs/foo.md/" all map
+// to "/docs/foo.md". Returns null when the path is not a .md request.
+export function canonicalMarkdownPath(pathname) {
+  const m = pathname.match(/^(.*?)(?:\/index)?\/?\.md\/?$/);
+  if (!m) return null;
+  const base = m[1].replace(/\/+$/, "");
+  return base ? `${base}.md` : null;
+}
+
+// Handles explicit `.md` URLs. The static file is served directly when it
+// exists; otherwise normalise odd spellings and follow page redirects (e.g.
+// renamed sections in _redirects) to the Markdown of the target page.
+async function handleMarkdownUrl(request, context, url) {
+  const canonical = canonicalMarkdownPath(url.pathname);
+  if (!canonical) {
+    // "/index.md" or "/.md": the landing page has no Markdown; send the index.
+    return Response.redirect(new URL("/llms.txt", url.origin), 302);
+  }
+  if (canonical !== url.pathname) {
+    return Response.redirect(new URL(canonical + url.search, url.origin), 301);
+  }
+
+  const response = await context.next();
+  if (response.status !== 404) return response;
+
+  // Ask what the HTML page URL does; if it redirects, redirect to the .md of
+  // the destination.
+  const pagePath = canonical.replace(/\.md$/, "");
+  for (const candidate of [pagePath, `${pagePath}/`]) {
+    const probe = await fetch(new URL(candidate, url.origin), { redirect: "manual" });
+    const location = probe.headers.get("location");
+    if (probe.status >= 300 && probe.status < 400 && location) {
+      const target = new URL(location, url.origin);
+      const targetMd = target.origin === url.origin && markdownPathFor(target.pathname);
+      if (targetMd && targetMd !== canonical) {
+        return Response.redirect(new URL(targetMd, url.origin), probe.status === 301 ? 301 : 302);
+      }
+    }
+  }
+  return response;
+}
+
 export default async function handler(request, context) {
   const url = new URL(request.url);
+  if (/\.md\/?$/.test(url.pathname)) {
+    return handleMarkdownUrl(request, context, url);
+  }
   const mdPath = markdownPathFor(url.pathname);
 
   if (mdPath && prefersMarkdown(request.headers.get("accept"))) {
@@ -89,6 +135,6 @@ export default async function handler(request, context) {
 }
 
 export const config = {
-  path: "/docs/*",
-  excludedPath: ["/docs/*.md", "/docs/*.json"],
+  path: ["/docs/*", "/index.md", "/.md"],
+  excludedPath: ["/docs/*.json"],
 };
