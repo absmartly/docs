@@ -61,7 +61,7 @@ yarn gen:api
   `.md` URLs of redirected pages to the Markdown of the redirect target, and sends `/index.md` to
   `/llms.txt`. Tests: `yarn build && deno test --no-check --allow-read netlify/edge-functions-tests/`.
 - API reference pages render schemas client-side, so their Markdown has only the endpoint and
-  description; the raw specs are published at `/openapi/*.yaml` and linked from `/llms.txt`. Tests: `yarn build && deno test --no-check --allow-read netlify/edge-functions-tests/`.
+  description; the raw specs are published at `/openapi/*.yaml` and linked from `/llms.txt`.
 
 ## Notes
 
