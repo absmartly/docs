@@ -1,2 +1,23 @@
 [[plugins]]
   package = "./plugins/trigger-algolia-scraper"
+
+# Markdown versions of every docs page (see netlify/edge-functions/markdown-negotiation.js)
+[[headers]]
+  for = "/*.md"
+  [headers.values]
+    Content-Type = "text/markdown; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/llms*.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+# Page URLs return HTML or Markdown depending on the Accept header. Netlify
+# rewrites a Vary header set by the edge function on 200 responses, so declare
+# it here as well so downstream caches keep the two variants apart.
+[[headers]]
+  for = "/docs/*"
+  [headers.values]
+    Vary = "Accept-Encoding, Accept"

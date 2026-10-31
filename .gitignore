@@ -46,3 +46,6 @@ openapi_console_bk/
 .gradle/
 .project
 .settings/
+
+# Local Netlify folder
+.netlify
