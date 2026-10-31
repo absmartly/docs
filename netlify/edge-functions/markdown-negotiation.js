@@ -75,13 +75,20 @@ async function handleMarkdownUrl(request, context, url) {
   }
 
   const response = await context.next();
-  if (response.status !== 404) return response;
+  if (response.ok) return response;
 
-  // Ask what the HTML page URL does; if it redirects, redirect to the .md of
-  // the destination.
+  // No static file here (404), or a broad splat rule in _redirects matched the
+  // .md URL itself. Either way, the redirect the HTML page URL gets is the
+  // authoritative one (a specific rule may win over the splat), so follow it
+  // to the .md of its destination.
   const pagePath = canonical.replace(/\.md$/, "");
   for (const candidate of [pagePath, `${pagePath}/`]) {
-    const probe = await fetch(new URL(candidate, url.origin), { redirect: "manual" });
+    let probe;
+    try {
+      probe = await fetch(new URL(candidate, url.origin), { redirect: "manual" });
+    } catch {
+      continue;
+    }
     const location = probe.headers.get("location");
     if (probe.status >= 300 && probe.status < 400 && location) {
       const target = new URL(location, url.origin);
@@ -94,6 +101,17 @@ async function handleMarkdownUrl(request, context, url) {
   return response;
 }
 
+// Fetches the Markdown version of a page; null on any failure so the caller
+// falls back to HTML instead of the edge function erroring.
+async function fetchMarkdown(mdPath, origin) {
+  try {
+    const res = await fetch(new URL(mdPath, origin), { headers: { accept: "text/markdown" } });
+    return res.ok ? res : null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function handler(request, context) {
   const url = new URL(request.url);
   if (/\.md\/?$/.test(url.pathname)) {
@@ -102,10 +120,8 @@ export default async function handler(request, context) {
   const mdPath = markdownPathFor(url.pathname);
 
   if (mdPath && prefersMarkdown(request.headers.get("accept"))) {
-    const mdResponse = await fetch(new URL(mdPath, url.origin), {
-      headers: { accept: "text/markdown" },
-    });
-    if (mdResponse.ok) {
+    const mdResponse = await fetchMarkdown(mdPath, url.origin);
+    if (mdResponse) {
       const headers = new Headers(mdResponse.headers);
       headers.set("Content-Type", "text/markdown; charset=utf-8");
       headers.set("Content-Location", mdPath);
