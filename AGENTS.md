@@ -48,6 +48,18 @@ yarn install
 yarn gen:api
 ```
 
+## Markdown for AI agents
+
+- `@signalwire/docusaurus-plugin-llms-txt` converts every built page to Markdown at `<route>.md`
+  (e.g. `/docs/glossary/` -> `/docs/glossary.md`) and writes `/llms.txt` and `/llms-full.txt`.
+- `plugins/llms-markdown/rehype-docusaurus-cleanup.js` rewrites tabs, code blocks, admonitions and
+  `<details>` into plain HTML first so they survive the conversion.
+- `netlify/edge-functions/markdown-negotiation.js` serves the `.md` at the normal page URL when the
+  request's `Accept` header prefers `text/markdown`, and adds `Vary: Accept` plus a
+  `Link: <...md>; rel="alternate"` header to HTML responses.
+- API reference pages render schemas client-side, so their Markdown has only the endpoint and
+  description; the raw specs are published at `/openapi/*.yaml` and linked from `/llms.txt`.
+
 ## Notes
 
 - The Web Console API spec uses placeholder metadata (`sandbox.example.com/v1`, `api@example.com`) from the api-mocks package; this is intentional.

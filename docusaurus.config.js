@@ -84,6 +84,51 @@ const config = {
   plugins: [
     "docusaurus-plugin-sass",
     [
+      // Emits a .md copy of every page (e.g. /docs/foo/ -> /docs/foo.md) plus
+      // /llms.txt and /llms-full.txt. Netlify edge function `markdown-negotiation`
+      // serves the .md when an agent asks for text/markdown.
+      "@signalwire/docusaurus-plugin-llms-txt",
+      {
+        siteDescription:
+          "ABsmartly product documentation: experimentation platform, SDKs and APIs.",
+        depth: 2,
+        optionalLinks: [
+          {
+            title: "Web Console API OpenAPI spec",
+            url: "https://docs.absmartly.com/openapi/web-console-api.yaml",
+            description:
+              "Full request/response schemas for the Web Console API reference pages",
+          },
+          {
+            title: "Collector API OpenAPI spec",
+            url: "https://docs.absmartly.com/openapi/collector-api.yaml",
+            description:
+              "Full request/response schemas for the SDK Collector API reference pages",
+          },
+        ],
+        content: {
+          enableMarkdownFiles: true,
+          enableLlmsFullTxt: true,
+          relativePaths: false,
+          includeBlog: false,
+          includePages: false,
+          beforeDefaultRehypePlugins: [
+            require("./plugins/llms-markdown/rehype-docusaurus-cleanup"),
+          ],
+        },
+      },
+    ],
+    [
+      require.resolve("./plugins/llms-markdown/publish-openapi-specs"),
+      {
+        specs: {
+          "collector-api.yaml": "api-spec.yaml",
+          "web-console-api.yaml":
+            "node_modules/@absmartly/api-mocks/openapi/openapi.bundle.yaml",
+        },
+      },
+    ],
+    [
       "@docusaurus/plugin-ideal-image",
       {
         quality: 70,
