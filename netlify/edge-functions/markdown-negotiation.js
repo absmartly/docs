@@ -44,9 +44,10 @@ export function markdownPathFor(pathname) {
   return `${path}.md`;
 }
 
-function appendVary(headers) {
+export function appendVary(headers) {
   const vary = headers.get("Vary");
-  if (!vary || !/\baccept\b/i.test(vary)) {
+  const tokens = (vary || "").split(",").map((t) => t.trim().toLowerCase());
+  if (!tokens.includes("accept") && !tokens.includes("*")) {
     headers.set("Vary", vary ? `${vary}, Accept` : "Accept");
   }
 }

@@ -1,6 +1,7 @@
 // Run: deno test --no-check --allow-read netlify/edge-functions-tests/
 // Requires a built site (`yarn build`); static serving and _redirects are mocked.
 import handler, {
+  appendVary,
   canonicalMarkdownPath,
   markdownPathFor,
   prefersMarkdown,
@@ -66,6 +67,19 @@ Deno.test("path mapping", () => {
   eq(canonicalMarkdownPath("/docs/foo"), null);
 });
 
+Deno.test("appendVary matches whole tokens", () => {
+  const vary = (v) => {
+    const h = new Headers(v === undefined ? {} : { vary: v });
+    appendVary(h);
+    return h.get("vary");
+  };
+  eq(vary(undefined), "Accept");
+  eq(vary("Accept-Encoding"), "Accept-Encoding, Accept");
+  eq(vary("Accept-Encoding, Accept"), "Accept-Encoding, Accept");
+  eq(vary("accept"), "accept");
+  eq(vary("*"), "*");
+});
+
 const PAGE = "/docs/APIs-and-SDKs/SDK-Documentation/getting-started/";
 
 Deno.test("negotiation: agent gets Markdown, browser gets HTML", async () => {
@@ -81,6 +95,26 @@ Deno.test("negotiation: agent gets Markdown, browser gets HTML", async () => {
 
   r = await call("/docs/nope/", "text/markdown");
   eq(r.status, 404);
+});
+
+Deno.test("negotiation adds Accept to an upstream Vary: Accept-Encoding", async () => {
+  const withVary = async (p) => {
+    const r = await serve(p);
+    const h = new Headers(r.headers);
+    h.set("vary", "Accept-Encoding");
+    return new Response(r.body, { status: r.status, headers: h });
+  };
+  globalThis.fetch = (u) => withVary(new URL(u).pathname);
+  try {
+    for (const accept of ["text/markdown", "text/html"]) {
+      const r = await handler(new Request("https://x" + PAGE, { headers: { accept } }), {
+        next: () => withVary(PAGE),
+      });
+      eq(r.headers.get("vary"), "Accept-Encoding, Accept");
+    }
+  } finally {
+    globalThis.fetch = (u) => serve(new URL(u).pathname);
+  }
 });
 
 Deno.test("negotiation falls back to HTML when the Markdown fetch throws", async () => {
