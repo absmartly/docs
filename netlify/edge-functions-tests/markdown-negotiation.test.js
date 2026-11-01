@@ -117,6 +117,24 @@ Deno.test("negotiation adds Accept to an upstream Vary: Accept-Encoding", async 
   }
 });
 
+Deno.test("negotiated Markdown drops upstream encoding/length headers", async () => {
+  globalThis.fetch = async (u) => {
+    const r = await serve(new URL(u).pathname);
+    const h = new Headers(r.headers);
+    h.set("content-encoding", "gzip");
+    h.set("content-length", "49");
+    return new Response(r.body, { status: r.status, headers: h });
+  };
+  try {
+    const r = await call(PAGE, "text/markdown");
+    eq(r.headers.get("content-encoding"), null);
+    eq(r.headers.get("content-length"), null);
+    eq((await r.text()).startsWith("# Getting Started"), true);
+  } finally {
+    globalThis.fetch = (u) => serve(new URL(u).pathname);
+  }
+});
+
 Deno.test("negotiation falls back to HTML when the Markdown fetch throws", async () => {
   globalThis.fetch = () => Promise.reject(new TypeError("network"));
   try {

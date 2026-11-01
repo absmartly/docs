@@ -84,9 +84,7 @@ const config = {
   plugins: [
     "docusaurus-plugin-sass",
     [
-      // Emits a .md copy of every page (e.g. /docs/foo/ -> /docs/foo.md) plus
-      // /llms.txt and /llms-full.txt. Netlify edge function `markdown-negotiation`
-      // serves the .md when an agent asks for text/markdown.
+      // .md per page + /llms.txt; see netlify/edge-functions/markdown-negotiation.js.
       "@signalwire/docusaurus-plugin-llms-txt",
       {
         siteDescription:
@@ -95,6 +93,8 @@ const config = {
           "(e.g. https://docs.absmartly.com/docs/glossary.md), or request the normal URL " +
           "with `Accept: text/markdown`. /llms-full.txt contains all pages in one file.",
         depth: 2,
+        // A page that fails to convert would still advertise a .md that 404s.
+        onRouteError: "throw",
         optionalLinks: [
           {
             title: "Web Console API OpenAPI spec",
@@ -115,6 +115,8 @@ const config = {
           relativePaths: false,
           includeBlog: false,
           includePages: false,
+          excludeRoutes: ["/search"],
+          remarkPlugins: [require("./plugins/llms-markdown/remark-fix-md-links")],
           beforeDefaultRehypePlugins: [
             require("./plugins/llms-markdown/rehype-docusaurus-cleanup"),
           ],

@@ -1,9 +1,5 @@
-// Publishes the raw OpenAPI specs at /openapi/*.yaml.
-//
-// The API reference pages render their schemas client-side, so the
-// generated Markdown for those pages contains only the endpoint and
-// description. Agents get the full request/response schemas from these
-// spec files instead (linked from /llms.txt).
+// Publishes the OpenAPI specs at /openapi/*.yaml: API pages render schemas
+// client-side, so their Markdown lacks them.
 
 const fs = require("fs/promises");
 const path = require("path");

@@ -1,7 +1,6 @@
 [[plugins]]
   package = "./plugins/trigger-algolia-scraper"
 
-# Markdown versions of every docs page (see netlify/edge-functions/markdown-negotiation.js)
 [[headers]]
   for = "/*.md"
   [headers.values]

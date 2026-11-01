@@ -1,10 +1,5 @@
-// Rehype plugin for @signalwire/docusaurus-plugin-llms-txt.
-//
-// The llms-txt plugin converts the *rendered* Docusaurus HTML to Markdown.
-// Theme components lose meaning in that conversion (tab labels become a
-// detached bullet list, code fences lose their language, admonition titles
-// become stray words). This plugin rewrites those components into plain,
-// semantic HTML before the HTML -> Markdown step runs.
+// Rewrites Docusaurus theme markup (tabs, code blocks, admonitions, details)
+// into plain HTML so the llms-txt HTML -> Markdown conversion keeps its meaning.
 
 const el = (tagName, properties, children) => ({
   type: "element",

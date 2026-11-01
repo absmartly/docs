@@ -1,10 +1,5 @@
-// Content negotiation for AI agents.
-//
-// Every docs page also exists as Markdown at `<route>.md` (generated at build
-// time by @signalwire/docusaurus-plugin-llms-txt). When a client asks for
-// Markdown via the Accept header (e.g. `Accept: text/markdown`), serve that
-// file at the normal page URL instead of the HTML. Browsers never send
-// text/markdown, so human visitors are unaffected.
+// Serves the build-time `<route>.md` at the page URL when the Accept header
+// prefers text/markdown (browsers never send it), and handles `.md` URLs.
 
 export function parseAccept(header) {
   return (header || "")
@@ -78,16 +73,15 @@ async function handleMarkdownUrl(request, context, url) {
   const response = await context.next();
   if (response.ok) return response;
 
-  // No static file here (404), or a broad splat rule in _redirects matched the
-  // .md URL itself. Either way, the redirect the HTML page URL gets is the
-  // authoritative one (a specific rule may win over the splat), so follow it
-  // to the .md of its destination.
+  // A splat in _redirects can match the .md URL before a page-specific rule,
+  // so follow the redirect of the HTML page URL instead.
   const pagePath = canonical.replace(/\.md$/, "");
   for (const candidate of [pagePath, `${pagePath}/`]) {
     let probe;
     try {
       probe = await fetch(new URL(candidate, url.origin), { redirect: "manual" });
-    } catch {
+    } catch (err) {
+      console.warn(`markdown-negotiation: probe ${candidate} failed: ${err}`);
       continue;
     }
     const location = probe.headers.get("location");
@@ -102,15 +96,16 @@ async function handleMarkdownUrl(request, context, url) {
   return response;
 }
 
-// Fetches the Markdown version of a page; null on any failure so the caller
-// falls back to HTML instead of the edge function erroring.
+// Returns null on any failure so the caller falls back to HTML.
 async function fetchMarkdown(mdPath, origin) {
   try {
     const res = await fetch(new URL(mdPath, origin), { headers: { accept: "text/markdown" } });
-    return res.ok ? res : null;
-  } catch {
-    return null;
+    if (res.ok) return res;
+    console.warn(`markdown-negotiation: ${mdPath} returned ${res.status}; serving HTML`);
+  } catch (err) {
+    console.warn(`markdown-negotiation: fetching ${mdPath} failed: ${err}; serving HTML`);
   }
+  return null;
 }
 
 export default async function handler(request, context) {
@@ -124,6 +119,10 @@ export default async function handler(request, context) {
     const mdResponse = await fetchMarkdown(mdPath, url.origin);
     if (mdResponse) {
       const headers = new Headers(mdResponse.headers);
+      // fetch() hands back a decoded body; the upstream encoding/length no
+      // longer describe it.
+      headers.delete("Content-Encoding");
+      headers.delete("Content-Length");
       headers.set("Content-Type", "text/markdown; charset=utf-8");
       headers.set("Content-Location", mdPath);
       appendVary(headers);
@@ -135,8 +134,6 @@ export default async function handler(request, context) {
   const response = await context.next();
   const contentType = response.headers.get("content-type") || "";
   if (mdPath && contentType.includes("text/html")) {
-    // Caches must not serve the HTML to an agent that asked for Markdown (or
-    // vice versa), and agents can discover the Markdown version.
     const headers = new Headers(response.headers);
     appendVary(headers);
     if (response.ok) {
