@@ -566,21 +566,18 @@ Streamable HTTP transport — use the `/mcp` endpoint:
 2. Search "Custom MCP Server" → **Add MCP server**.
 3. **Server URL:**
    `https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com`
-4. **Authentication:** OAuth. Gemini Enterprise registers itself
-   automatically through dynamic client registration, using the callback
-   `https://vertexaisearch.cloud.google.com/oauth-redirect`. Grant the
-   `mcp:access` scope.
+4. **Authentication:** OAuth. The connector form asks for an existing OAuth
+   client. First [register a client manually](./oauth-clients#manual-registration)
+   with the redirect URI
+   `https://vertexaisearch.cloud.google.com/oauth-redirect`, then enter its
+   `client_id` and `client_secret`, the authorization and token URLs from the
+   [endpoint table](./oauth-clients#endpoints), and the `mcp:access` scope.
 5. Save and wait for the connector status to become **Active**.
 
 When you first authorize, the consent page shows a warning that the Google
 callback is shared by all Gemini Enterprise customers. Approve only if you just
 started the connection yourself.
 
-:::tip If Gemini Enterprise asks for a client ID and secret
-If the console asks you for a `client_id` and `client_secret` instead of
-registering automatically, register a client yourself once and paste the
-values in. See [Manual registration](./oauth-clients#manual-registration).
-:::
 
 :::caution
 SSE transport (`/sse`) is **not** supported by this connector. The Gemini
@@ -674,7 +671,7 @@ https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly
 
 | Platform | Notes |
 | --- | --- |
-| **Amazon Bedrock AgentCore** | Add an OAuth outbound credential provider for the MCP target. Its callback (`https://bedrock-agentcore.<region>.amazonaws.com/identities/oauth2/callback/<uuid>`) is accepted in every region. |
+| **Amazon Bedrock AgentCore** | Add an OAuth outbound credential provider for the MCP target. It needs an existing OAuth client: [register one manually](./oauth-clients#manual-registration) with the provider's callback (`https://bedrock-agentcore.<region>.amazonaws.com/identities/oauth2/callback/<uuid>`, accepted in every region), then enter its `client_id`, `client_secret`, the authorization and token URLs and the `mcp:access` scope. |
 | **Microsoft Copilot Studio / Azure AI Foundry** | Add an MCP tool with OAuth 2.0 and dynamic discovery. Callbacks on `https://global.consent.azure-apim.net/redirect` are accepted. |
 | **Perplexity** | Add a custom connector with OAuth. Both `www.perplexity.ai` and `enterprise.perplexity.ai` are accepted. |
 | **Gemini Enterprise** | See [Gemini Enterprise](#gemini-enterprise-google-cloud-console) above. |

@@ -60,9 +60,11 @@ OAuth uses your existing ABsmartly login (SAML, SSO or email and password).
 This is the recommended method for interactive clients like Claude Desktop,
 Cursor, VS Code or ChatGPT.
 
-The first time the client connects, it opens a browser window. You sign in to
-your ABsmartly instance, review the **Authorize Access** consent page, and click
-**Approve**. The client then receives a token and the MCP connection is
+The first time the client connects, it opens a browser window. On the hosted
+server, you first review the **Authorize Access** consent page for your
+instance URL and click **Approve**, then sign in to your ABsmartly instance. On
+your instance's own `/mcp` endpoint, you sign in first and then approve the
+consent page. The client then receives a token and the MCP connection is
 established. Later connections reuse the token until it expires or your
 ABsmartly session ends.
 

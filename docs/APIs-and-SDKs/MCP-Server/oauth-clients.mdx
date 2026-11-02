@@ -85,10 +85,12 @@ it from:
   browser session alive.
 - **Signing out of ABsmartly in that browser ends access for every MCP client
   you approved from it.** Reconnect from the client to sign in again.
-- **Disconnecting or revoking the token from an MCP client signs that browser
-  out of ABsmartly.** Because the token is the browser session, revoking it
-  ends the session, and with it the access of every other MCP client you
-  approved from that browser.
+- **Revoking the token signs that browser out of ABsmartly.** Because the
+  token is the browser session, a revocation request
+  (`POST /auth/oauth/revoke`) ends the session, and with it the access of
+  every other MCP client you approved from that browser. Disconnecting a client
+  without revoking the token leaves the session active until it expires or you
+  sign out.
 - There is no refresh token. When the token expires, the client starts the
   flow again.
 
@@ -174,9 +176,9 @@ with `invalid_client`, remove and re-add the connector so it registers again.
 ### Manual registration
 
 Some platforms can't register themselves and ask you for a **client ID** and
-**client secret** instead. Gemini Enterprise is one example when its automatic
-registration isn't available. In that case, register the client yourself once,
-then paste the result into the platform:
+**client secret** instead, for example Gemini Enterprise and Amazon Bedrock
+AgentCore. In that case, register the client yourself once, then paste the
+result into the platform:
 
 ```bash
 curl -X POST https://mcp.absmartly.com/register \
@@ -222,8 +224,10 @@ fragment (`#…`) or embedded credentials are always rejected.
 | **Microsoft** | `https://global.consent.azure-apim.net/redirect` and `https://global.consent.azure-apim.net/redirect/<connector-id>` | Microsoft Copilot Studio, Azure AI Foundry |
 | **Amazon** | `https://bedrock-agentcore.<region>.amazonaws.com/identities/oauth2/callback/<uuid>` | Amazon Bedrock AgentCore |
 
-HTTPS redirect URIs must match the listed scheme, host and path. The query
-string isn't checked. Entries shown with `…`, `<connector-id>`, `<region>` or
+HTTPS redirect URIs must match the listed scheme, host and path. The
+allowlist check ignores the query string. However, when the client starts
+sign-in, the redirect URI it sends must match the one it registered exactly,
+query string included, or authorization fails. Entries shown with `…`, `<connector-id>`, `<region>` or
 `<uuid>` accept any value in that position. Plain `http://` is only accepted
 for the loopback addresses.
 
@@ -254,8 +258,9 @@ API key for these.
 
 ## The consent page
 
-After you sign in, ABsmartly shows an **Authorize Access** page before any
-client receives access. It shows:
+ABsmartly shows an **Authorize Access** page before any client receives
+access. On the hosted server it appears before you sign in to your instance;
+on your instance's own `/mcp` endpoint it appears after you sign in. It shows:
 
 - the name of the client asking for access,
 - the ABsmartly account that will be shared (on the hosted server, the
