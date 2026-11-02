@@ -195,6 +195,18 @@ real callback URL as the redirect URI, and it must be on the
 [allowlist](#allowed-redirect-uris). Keep the client secret private, and
 register again if the client expires.
 
+The token endpoint accepts the client secret either in an HTTP Basic
+`Authorization` header or in the request body, whichever method you
+registered, so you can keep the platform's default setting (for example
+`CLIENT_SECRET_BASIC` in Amazon Bedrock AgentCore). The client must use PKCE
+with `S256`; enable PKCE in the platform if it's optional there.
+
+Some platforms, such as Amazon Bedrock AgentCore, only generate their callback
+URL when you create the connection. Create the connection first with
+placeholder credentials, copy the callback URL it returns, register a client
+with that URL, then update the connection with the new `client_id` and
+`client_secret`.
+
 ### API key
 
 If your client can't use OAuth at all, or isn't on the allowlist, connect with
