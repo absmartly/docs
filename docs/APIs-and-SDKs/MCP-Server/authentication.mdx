@@ -109,9 +109,14 @@ for example through the On-Behalf-Of flow or token exchange. Each call acts as
 the matching ABsmartly user, with that user's permissions. This is enabled per
 instance by ABsmartly support.
 
-- [Federated OIDC access tokens](./federated-oidc-tokens) — how it works, the
-  token requirements, calling `/mcp` and the errors
-- [Microsoft Entra ID](./microsoft-entra-id) — step-by-step setup for Entra ID
+For `/mcp`, the token must carry the MCP scope, by convention `mcp.access`.
+Federated tokens work only on your instance's own `/mcp` endpoint, not on the
+hosted server at `mcp.absmartly.com`. The same kind of token can also be
+enabled for direct REST API calls, with a separate scope.
+
+- [Federated OIDC access tokens](/docs/APIs-and-SDKs/Federated-Authentication/federated-oidc-tokens) — how it works, the
+  token requirements, calling `/mcp` and `/v1`, and the errors
+- [Microsoft Entra ID](/docs/APIs-and-SDKs/Federated-Authentication/microsoft-entra-id) — step-by-step setup for Entra ID
 
 ## Local stdio (CLI credentials)
 

@@ -86,3 +86,10 @@ You can use the ABsmartly logo by uploading [this image](/img/logo.png).
 9. Click `Finish`.
 10. Lastly, send your metadata file to us via email or on Slack and your employees should be able to log
     in to the ABsmartly Web Console using their Google Workspace accounts!
+
+:::info
+Google Workspace SAML SSO works for signing in to the Web Console, but
+[federated OIDC access tokens](/docs/APIs-and-SDKs/Federated-Authentication/federated-oidc-tokens#providers-that-arent-supported)
+aren't supported with Google: Google's access tokens are opaque, not JWTs, so
+ABsmartly can't verify them. Use an API key for programmatic access instead.
+:::

@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-sidebar_position: 9
+sidebar_position: 7
 ---
 
 # Troubleshooting
@@ -65,25 +65,27 @@ accepted.
 
 If your backend calls `/mcp` with a federated token and the request is
 rejected, decode the token locally and compare its claims with the
-[token requirements](./federated-oidc-tokens#token-requirements). The most
+[token requirements](/docs/APIs-and-SDKs/Federated-Authentication/federated-oidc-tokens#token-requirements). The most
 common causes are:
 
 - **Wrong token.** An ID token, the token for your own backend app, or a token
   for another API (such as Microsoft Graph) is rejected. Send the access token
-  issued for the ABsmartly API, with the agreed scope (for example
+  issued for the ABsmartly API, with the MCP scope (for example
   `mcp.access`).
 - **Issuer mismatch.** `iss` must match the issuer ABsmartly has exactly. With
   Entra ID, version 1 tokens (`https://sts.windows.net/…`) don't match.
-- **Missing scope or subject.** The token must carry the agreed delegated
-  scope and a stable `oid` or `sub` claim.
+- **Missing scope or subject.** The token must carry the MCP scope and a
+  stable `oid`, `uid` or `sub` claim. A token with only the REST API scope is
+  rejected on `/mcp` with `403`.
 - **Unlinked or inactive user.** The user must sign in through SAML SSO once
-  after the upgrade to link their identity, and must not be archived.
+  after federated tokens are enabled to link their identity, and must not be
+  archived. Until then, tool calls return a message with the sign-in link.
 - **Calling app not allowed.** The client ID claim isn't one of the client IDs
   you sent to ABsmartly support.
 
-See [Federated OIDC access tokens](./federated-oidc-tokens#troubleshooting)
+See [Federated OIDC access tokens](/docs/APIs-and-SDKs/Federated-Authentication/federated-oidc-tokens#troubleshooting)
 for the full list, and
-[Microsoft Entra ID](./microsoft-entra-id#troubleshooting) for Entra-specific
+[Microsoft Entra ID](/docs/APIs-and-SDKs/Federated-Authentication/microsoft-entra-id#troubleshooting) for Entra-specific
 problems.
 
 ### MCP client loses access after I sign out
