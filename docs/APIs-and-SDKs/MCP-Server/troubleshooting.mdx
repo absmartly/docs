@@ -44,15 +44,18 @@ If you use the **simple** or **`Api-Key`** form, you **must** send
 
 ### OAuth errors
 
+Some messages differ between the hosted server (`mcp.absmartly.com`) and your
+instance's own `/mcp` endpoint. Where they differ, both are listed.
+
 | Error | Cause | Fix |
 | --- | --- | --- |
-| `invalid_client` — *"This MCP client is not supported by this server"* | The client identifies itself with a metadata-document URL that isn't on the trusted list. | Use an API key, or [ask for the client to be added](./oauth-clients#your-client-isnt-on-the-list). |
+| `invalid_client` — *"This MCP client is not supported by this server"* (hosted server) or *"Unknown client"* (your instance) | The client identifies itself with a metadata-document URL that isn't on the trusted list. | Use an API key, or [ask for the client to be added](./oauth-clients#your-client-isnt-on-the-list). |
 | `invalid_redirect_uri` — *"One or more redirect_uris are not allowed"* | The client tried to register with a redirect URI that isn't on the [allowlist](./oauth-clients#allowed-redirect-uris). | Use an API key, or ask for the client to be added. |
-| `invalid_client` for a client that used to work | The client's registration expired after 90 days without use. | Remove the connector and add it again so it registers again. |
-| *"PKCE with code_challenge_method=S256 is required"* | The client sent no PKCE challenge, or used `plain`. | Update the client. If it can't use `S256`, use an API key. |
-| *"Authorization request expired or invalid, please restart the connection from your MCP client"* | The consent page was left open for more than 10 minutes, or was submitted twice. | Start the connection again from the MCP client. |
-| *"This login was started in a different browser…"* | The sign-in finished in a different browser from the one that started it. | Copy the authorization link into the browser where you're signed in to ABsmartly, or restart the connection. |
-| `invalid_grant` — *"The ABsmartly session has ended, please sign in again"* | You signed out of ABsmartly, or your session expired. | Reconnect the client and sign in again. |
+| `invalid_client` for a client that used to work | The client's registration expired. On the hosted server, registrations expire 90 days after they are created. On your instance, they expire after 90 days without use. | Remove the connector and add it again so it registers again. |
+| *"PKCE with code_challenge_method=S256 is required"* (hosted server) or `invalid_request` — *"PKCE is required. Supported code_challenge_method: S256"* (your instance) | The client sent no PKCE challenge, or used `plain`. | Update the client. If it can't use `S256`, use an API key. |
+| *"Authorization request expired or invalid, please restart the connection from your MCP client"* | The consent page was left open for more than 10 minutes, or was approved in a different browser from the one that started it. On the hosted server, it also appears if the page was submitted twice. | Start the connection again from the MCP client, and complete it in one browser. |
+| *"This login was started in a different browser…"* (hosted server only) | The sign-in to your instance finished in a different browser from the one that approved the consent page. | Copy the authorization link into the browser where you're signed in to ABsmartly, or restart the connection. |
+| `invalid_grant` — *"The ABsmartly session has ended, please sign in again"* (hosted server) or *"The session that approved this request has ended"* (your instance) | You signed out of ABsmartly, or your session expired. | Reconnect the client and sign in again. |
 | `access_denied` | You clicked **Deny** on the consent page. | Reconnect and click **Approve**. |
 
 See [OAuth & Client Registration](./oauth-clients) for how clients are
@@ -64,6 +67,11 @@ When you connect to your instance's own `/mcp` endpoint, the client's access
 is tied to the browser session you approved it from. Signing out of ABsmartly
 in that browser ends access for every MCP client approved from it. Reconnect
 the client to sign in again.
+
+The same happens the other way round. If an MCP client disconnects and revokes
+its token, that browser is signed out of ABsmartly, and other MCP clients
+approved from it lose access too. The token also expires after 24 hours
+without use.
 
 ### "API key sessions can't use OAuth"
 
@@ -112,11 +120,12 @@ for compatibility.
 This is expected behavior for destructive operations — `start`, `stop`,
 `archive` and `delete` always ask you to confirm before they run.
 
-- If your client supports MCP **elicitation**, it shows a prompt asking you to
+- On the hosted server (`mcp.absmartly.com`) and the local stdio server, if
+  your client supports MCP **elicitation**, it shows a prompt asking you to
   type `yes`. Any other answer cancels the action.
-- Otherwise, the assistant asks you in the chat. Only after you confirm does
-  it call `execute_command` again with the same parameters plus
-  `"confirmed": true`.
+- Otherwise, and always on your instance's own `/mcp` endpoint, the assistant
+  asks you in the chat. Only after you confirm does it call `execute_command`
+  again with the same parameters plus `"confirmed": true`.
 
 If the assistant runs a destructive command without asking you, report it —
 the server instructs it never to set `confirmed` on its own.

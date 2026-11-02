@@ -71,7 +71,7 @@ There are two OAuth-enabled MCP URLs:
 | URL | How OAuth works |
 | --- | --- |
 | `https://mcp.absmartly.com/mcp` (hosted) | The hosted server signs you in through your instance and issues its own access token (1 hour) and refresh token (30 days) to the client. |
-| `https://your-instance.absmartly.com/mcp` | Your instance is the OAuth server. The client receives a token tied to your browser session; signing out of ABsmartly ends its access. |
+| `https://your-instance.absmartly.com/mcp` | Your instance is the OAuth server. The client receives a token tied to your browser session, which expires after 24 hours without use. Signing out of ABsmartly ends its access. |
 
 Every OAuth connection uses the authorization code flow with PKCE (`S256`). For
 the full sequence, the endpoints involved and the ways an MCP client can be
@@ -113,9 +113,10 @@ profile with `--profile=<name>` (for example, `--profile=production`).
   URIs can receive OAuth access, and every new client is shown on a consent
   page first (see [OAuth & Client Registration](./oauth-clients)).
 - **PKCE required** — OAuth requests must use PKCE with `S256`.
-- **Destructive action confirmation** — `start`, `stop`, `archive` and
-  `delete` operations ask you to confirm before they run, on every transport
-  (see the [Tools Reference](./tools-reference#execute_command)).
+- **Destructive action confirmation** — destructive operations such as
+  `start`, `stop`, `archive` and `delete` ask you to confirm before they run,
+  on every transport (see the
+  [Tools Reference](./tools-reference#execute_command)).
 - **API error surfacing** — validation errors from the API are returned with
   full detail so the assistant can correct them.
 

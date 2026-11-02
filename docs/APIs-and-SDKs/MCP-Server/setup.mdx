@@ -57,7 +57,7 @@ Your ABsmartly instance also serves MCP directly:
 https://your-instance.absmartly.com/mcp
 ```
 
-It uses **Streamable HTTP** only, and accepts OAuth through your instance's own
+It uses **Streamable HTTP** only (there is no `/sse` endpoint), and accepts OAuth through your instance's own
 login, or an API key sent as `Authorization: Api-Key YOUR_API_KEY`. Because the
 URL already identifies your instance, no `absmartly-endpoint` parameter or
 `x-absmartly-endpoint` header is needed. Use this URL in place of

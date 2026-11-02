@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 1040 998" width="1040" height="998" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="oauth-in-product-flow-title oauth-in-product-flow-desc">
       <title id="oauth-in-product-flow-title">OAuth via your instance's /mcp endpoint</title>
-      <desc id="oauth-in-product-flow-desc">Sequence diagram of the in-product OAuth flow in 10 steps: the MCP client gets a 401 from your ABsmartly instance's /mcp endpoint, discovers its OAuth metadata, registers by Dynamic Client Registration or a trusted metadata-document client ID, and sends you through the browser to /auth/oauth/authorize, where you sign in if needed and always see a consent page; the client then exchanges the code for your ABsmartly session token, with no refresh token, and calls /mcp with it as a Bearer token.</desc>
+      <desc id="oauth-in-product-flow-desc">Sequence diagram of the in-product OAuth flow in 10 steps: the MCP client gets a 401 from your ABsmartly instance's /mcp endpoint, discovers its OAuth metadata, registers by Dynamic Client Registration or a trusted metadata-document client ID, and sends you through the browser to /auth/oauth/authorize, where you sign in if needed and always see a consent page; the client then exchanges the code for your ABsmartly session token, which expires after 24 hours without use and has no refresh token, and calls /mcp with it as a Bearer token.</desc>
       <defs>
         <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
         <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#9296a6"/></marker>
@@ -69,7 +69,7 @@
       <path d="M 811,788 H 181" fill="none" stroke="#5b7fff" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-link)"/>
       <rect x="188" y="748" width="266" height="34" rx="2" fill="#16171e"/>
       <text x="192" y="761" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">Access token: your ABsmartly session token</text>
-      <text x="192" y="777" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">(no refresh token)</text>
+      <text x="192" y="777" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">(24 h idle expiry, no refresh token)</text>
       <path d="M 181,854 H 811" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
       <rect x="188" y="814" width="205" height="34" rx="2" fill="#111219"/>
       <text x="192" y="827" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">POST /mcp</text>

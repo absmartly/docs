@@ -23,7 +23,7 @@ authorization code flow and PKCE, but the parties involved are different.
 | **MCP URL** | `https://mcp.absmartly.com/mcp` (or `/sse`) | `https://your-instance.absmartly.com/mcp` |
 | **Transports** | Streamable HTTP and SSE | Streamable HTTP |
 | **OAuth authorization server** | `mcp.absmartly.com`, which in turn signs you in through your instance | Your ABsmartly instance |
-| **Token the client holds** | An MCP access token (1 hour) plus a refresh token (30 days) | Your ABsmartly session token (no refresh token) |
+| **Token the client holds** | An MCP access token (1 hour) plus a refresh token (30 days) | Your ABsmartly session token, which expires after 24 hours without use (no refresh token) |
 | **Consent page** | Shown once per client and instance, then remembered in that browser for 30 days | Shown on every authorization |
 | **Instance URL** | Passed as `?absmartly-endpoint=…`, or entered in the browser | Implied by the URL |
 
@@ -81,9 +81,14 @@ server and the OAuth authorization server, so there is only one flow.
 The token your MCP client receives is tied to the browser session you approved
 it from:
 
-- It lasts as long as that session. Using it keeps the session alive.
+- It expires after 24 hours without use. Each use extends it, and keeps that
+  browser session alive.
 - **Signing out of ABsmartly in that browser ends access for every MCP client
   you approved from it.** Reconnect from the client to sign in again.
+- **Disconnecting or revoking the token from an MCP client signs that browser
+  out of ABsmartly.** Because the token is the browser session, revoking it
+  ends the session, and with it the access of every other MCP client you
+  approved from that browser.
 - There is no refresh token. When the token expires, the client starts the
   flow again.
 
@@ -102,6 +107,7 @@ yourself when you [register a client manually](#manual-registration).
 | Dynamic client registration ([RFC 7591](https://www.rfc-editor.org/rfc/rfc7591)) | `POST /register` | `POST /auth/oauth/register` |
 | Authorization and consent | `GET /authorize` | `GET /auth/oauth/authorize` |
 | Token | `POST /token` | `POST /auth/oauth/token` |
+| Token revocation ([RFC 7009](https://www.rfc-editor.org/rfc/rfc7009)) | `POST /token` | `POST /auth/oauth/revoke` |
 | User info | Not available | `GET /auth/oauth/userinfo` |
 
 Both servers support:
@@ -110,7 +116,7 @@ Both servers support:
 | --- | --- |
 | Grant type | `authorization_code` (the hosted server also issues `refresh_token`) |
 | PKCE | Required, `S256` only. `plain` and missing challenges are rejected. |
-| Client authentication | `none` (public clients), `client_secret_basic`, `client_secret_post` |
+| Client authentication | `none` (public clients), `client_secret_basic`, `client_secret_post`. A client that registers without choosing one gets `client_secret_basic`. |
 | Scopes | `mcp:access` (default) and `user:info` |
 | Client ID metadata documents | Supported, for [trusted clients](#client-id-metadata-documents) only |
 
@@ -142,10 +148,11 @@ document only if the URL is on this trusted list:
 | Goose | `https://goose-docs.ai/oauth/client-metadata.json` |
 | GitHub Copilot CLI | `https://github.com/copilot/cli/client-metadata.json` |
 
-Any other URL used as a `client_id` is rejected without being fetched, with
-`invalid_client` and the message *"This MCP client is not supported by this
-server"*. Redirect URIs listed in a trusted document are still checked against
-the [redirect URI allowlist](#allowed-redirect-uris).
+Any other URL used as a `client_id` is rejected with `invalid_client`, without
+being fetched. The hosted server returns the message *"This MCP client is not
+supported by this server"*, and your instance returns *"Unknown client"*.
+Redirect URIs listed in a trusted document are still checked against the
+[redirect URI allowlist](#allowed-redirect-uris).
 
 ### Dynamic client registration
 
@@ -159,9 +166,10 @@ Registration succeeds only if **every** redirect URI is on the
 `invalid_redirect_uri` and the message *"One or more redirect_uris are not
 allowed"*.
 
-Registered clients that go unused expire after 90 days. If a client that used
-to work starts failing with `invalid_client`, remove and re-add the connector so
-it registers again.
+Registered clients expire after 90 days. On the hosted server the 90 days
+count from registration, whether or not the client is used. On your instance
+they count from the last use. If a client that used to work starts failing
+with `invalid_client`, remove and re-add the connector so it registers again.
 
 ### Manual registration
 
@@ -214,8 +222,10 @@ fragment (`#…`) or embedded credentials are always rejected.
 | **Microsoft** | `https://global.consent.azure-apim.net/redirect` and `https://global.consent.azure-apim.net/redirect/<connector-id>` | Microsoft Copilot Studio, Azure AI Foundry |
 | **Amazon** | `https://bedrock-agentcore.<region>.amazonaws.com/identities/oauth2/callback/<uuid>` | Amazon Bedrock AgentCore |
 
-HTTPS redirect URIs must match the listed scheme, host and path exactly. Plain
-`http://` is only accepted for the loopback addresses.
+HTTPS redirect URIs must match the listed scheme, host and path. The query
+string isn't checked. Entries shown with `…`, `<connector-id>`, `<region>` or
+`<uuid>` accept any value in that position. Plain `http://` is only accepted
+for the loopback addresses.
 
 :::info Cloud agent platforms
 The Perplexity, Google, Microsoft and Amazon callbacks are shared by every
@@ -223,9 +233,8 @@ customer of those platforms, so they don't identify whose connector will
 receive the access. The consent page shows a warning for these hosts. Only
 approve when you have just started the connection yourself.
 
-These platform callbacks are accepted by the hosted server at
-`mcp.absmartly.com`. Use the hosted server URL when you connect from these
-platforms.
+These platforms connect from their own cloud. Connect them to the hosted
+server URL, as shown in [Setup](./setup#cloud-agent-platforms).
 :::
 
 ### Your client isn't on the list?
@@ -249,8 +258,8 @@ After you sign in, ABsmartly shows an **Authorize Access** page before any
 client receives access. It shows:
 
 - the name of the client asking for access,
-- which ABsmartly account will be shared and the site the access will be sent
-  to,
+- the ABsmartly account that will be shared (on the hosted server, the
+  instance URL), and the site the access will be sent to,
 - what the client will be able to do, and
 - **Approve** and **Deny** buttons.
 
