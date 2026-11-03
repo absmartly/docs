@@ -65,6 +65,13 @@ URL already identifies your instance, no `absmartly-endpoint` parameter or
 See [OAuth & Client Registration](./oauth-clients#two-ways-to-connect-with-oauth)
 for how the two differ.
 
+:::info Availability
+The instance `/mcp` endpoint ships with ABsmartly platform releases from
+October 2026 onwards. If `https://your-instance.absmartly.com/mcp` returns
+`404`, your instance hasn't been updated yet: use the hosted server, and ask
+ABsmartly support when your instance will be upgraded.
+:::
+
 ### Local stdio
 
 You can also run the server locally over stdio with `npx @absmartly/mcp`, which
@@ -678,6 +685,15 @@ https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly
 | **Microsoft Copilot Studio / Azure AI Foundry** | Add an MCP tool with OAuth 2.0 and dynamic discovery. Callbacks on `https://global.consent.azure-apim.net/redirect` are accepted. |
 | **Perplexity** | Add a custom connector with OAuth. Both `www.perplexity.ai` and `enterprise.perplexity.ai` are accepted. |
 | **Gemini Enterprise** | See [Gemini Enterprise](#gemini-enterprise-google-cloud-console) above. |
+
+:::caution Not tested end to end
+ABsmartly accepts these platforms' callback URLs, and the steps above follow
+each vendor's public documentation, but we haven't yet completed a full
+connection test with AgentCore, Copilot Studio / Azure AI Foundry or
+Perplexity. Each must support the authorization-code flow with PKCE (`S256`).
+If a connection fails, use an [API key](./authentication#api-key) and let
+ABsmartly support know.
+:::
 
 These platforms use callback URLs shared by all their customers, so the consent
 page shows an extra warning. If a platform asks you for a client ID and secret
