@@ -572,7 +572,9 @@ Streamable HTTP transport — use the `/mcp` endpoint:
    `https://vertexaisearch.cloud.google.com/oauth-redirect`, then enter its
    `client_id` and `client_secret`, the authorization and token URLs from the
    [endpoint table](./oauth-clients#endpoints), and the `mcp:access` scope.
-   Select **Enable PKCE Support**: ABsmartly requires PKCE with `S256`.
+   Select **Enable PKCE Support**: ABsmartly requires PKCE with `S256`. Keep
+   **Use HTTP Basic Authentication** selected, to match the
+   `client_secret_basic` method in the registration example.
 5. Save and wait for the connector status to become **Active**.
 
 When you first authorize, the consent page shows a warning that the Google
@@ -672,7 +674,7 @@ https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly
 
 | Platform | Notes |
 | --- | --- |
-| **Amazon Bedrock AgentCore** | Add an OAuth outbound credential provider for the MCP target. It needs an existing OAuth client, and AgentCore only generates the callback URL when you create the provider: 1. Create the provider with placeholder client credentials, the authorization and token URLs and the `mcp:access` scope. 2. Copy the `callbackUrl` it returns (`https://bedrock-agentcore.<region>.amazonaws.com/identities/oauth2/callback/<uuid>`, accepted in every region). 3. [Register a client manually](./oauth-clients#manual-registration) with that URL. 4. Update the provider with the new `client_id` and `client_secret`. The default `CLIENT_SECRET_BASIC` method works. |
+| **Amazon Bedrock AgentCore** | Add an OAuth outbound credential provider for the MCP target. It needs an existing OAuth client, and AgentCore only generates the callback URL when you create the provider: 1. Create the provider with placeholder client credentials, the authorization and token URLs and the `mcp:access` scope. 2. Copy the `callbackUrl` it returns (`https://bedrock-agentcore.<region>.amazonaws.com/identities/oauth2/callback/<uuid>`, accepted in every region). 3. [Register a client manually](./oauth-clients#manual-registration) with that URL. 4. Update the provider with the new `client_id` and `client_secret`, keeping the default `CLIENT_SECRET_BASIC` method. 5. On the gateway target, set `grantType` to `AUTHORIZATION_CODE` (the user consents in the browser) and `defaultReturnUrl` to the page the browser opens after consent. |
 | **Microsoft Copilot Studio / Azure AI Foundry** | Add an MCP tool with OAuth 2.0 and dynamic discovery. Callbacks on `https://global.consent.azure-apim.net/redirect` are accepted. |
 | **Perplexity** | Add a custom connector with OAuth. Both `www.perplexity.ai` and `enterprise.perplexity.ai` are accepted. |
 | **Gemini Enterprise** | See [Gemini Enterprise](#gemini-enterprise-google-cloud-console) above. |

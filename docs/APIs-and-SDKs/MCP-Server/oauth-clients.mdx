@@ -186,7 +186,7 @@ curl -X POST https://mcp.absmartly.com/register \
   -d '{
     "client_name": "Gemini Enterprise",
     "redirect_uris": ["https://vertexaisearch.cloud.google.com/oauth-redirect"],
-    "token_endpoint_auth_method": "client_secret_post"
+    "token_endpoint_auth_method": "client_secret_basic"
   }'
 ```
 
@@ -195,10 +195,12 @@ real callback URL as the redirect URI, and it must be on the
 [allowlist](#allowed-redirect-uris). Keep the client secret private, and
 register again if the client expires.
 
-The token endpoint accepts the client secret either in an HTTP Basic
-`Authorization` header or in the request body, whichever method you
-registered, so you can keep the platform's default setting (for example
-`CLIENT_SECRET_BASIC` in Amazon Bedrock AgentCore). The client must use PKCE
+The example registers `client_secret_basic`, which matches the default of
+most platforms (for example **Use HTTP Basic Authentication** in Gemini
+Enterprise and `CLIENT_SECRET_BASIC` in Amazon Bedrock AgentCore). If your
+platform sends the secret in the request body instead, register
+`client_secret_post`. Keep the registered method and the platform's setting
+the same. The client must use PKCE
 with `S256`; enable PKCE in the platform if it's optional there.
 
 Some platforms, such as Amazon Bedrock AgentCore, only generate their callback
