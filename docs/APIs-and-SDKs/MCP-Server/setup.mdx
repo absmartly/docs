@@ -66,8 +66,8 @@ See [OAuth & Client Registration](./oauth-clients#two-ways-to-connect-with-oauth
 for how the two differ.
 
 :::info Availability
-The instance `/mcp` endpoint ships with ABsmartly platform releases from
-October 2026 onwards. If `https://your-instance.absmartly.com/mcp` returns
+The instance `/mcp` endpoint ships with ABsmartly platform release
+v2026-09.24 and later. If `https://your-instance.absmartly.com/mcp` returns
 `404`, your instance hasn't been updated yet: use the hosted server, and ask
 ABsmartly support when your instance will be upgraded.
 :::
@@ -688,9 +688,23 @@ https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly
 
 :::caution Not tested end to end
 ABsmartly accepts these platforms' callback URLs, and the steps above follow
-each vendor's public documentation, but we haven't yet completed a full
-connection test with AgentCore, Copilot Studio / Azure AI Foundry or
-Perplexity. Each must support the authorization-code flow with PKCE (`S256`).
+each vendor's public documentation, but we haven't completed a full connection
+test with AgentCore, Copilot Studio / Azure AI Foundry or Perplexity. ABsmartly
+requires the authorization-code flow with PKCE (`S256`). What we know about
+each platform:
+
+- **Amazon Bedrock AgentCore** sends an `S256` challenge, but one
+  [user report](https://github.com/awslabs/agentcore-samples/issues/620) says
+  it left out the `code_verifier` when it exchanged the code. ABsmartly then
+  rejects the exchange with *"code_verifier is required for PKCE"*.
+- **Copilot Studio** sends an `S256` challenge, as
+  [seen in practice](https://learn.microsoft.com/en-us/answers/questions/6011085/copilot-studio-mcp-connector-omits-the-rfc-8707-re).
+  Microsoft's documentation doesn't mention PKCE.
+- **Perplexity** doesn't document PKCE support. If it reports that dynamic
+  registration *"did not return a client_secret"*,
+  [register a client manually](./oauth-clients#manual-registration) and enter
+  its client ID and secret.
+
 If a connection fails, use an [API key](./authentication#api-key) and let
 ABsmartly support know.
 :::
