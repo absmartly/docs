@@ -671,49 +671,24 @@ Copilot CLI opens your browser to sign in the first time it uses the server.
 
 ## Cloud agent platforms
 
-Hosted agent platforms connect to the MCP server from their own cloud, and
-register themselves through dynamic client registration. Point them at the
-hosted Streamable HTTP endpoint and choose OAuth:
+Hosted agent platforms connect to the MCP server from their own cloud. Point
+them at the hosted Streamable HTTP endpoint and choose OAuth:
 
 ```text
 https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com
 ```
 
-| Platform | Notes |
-| --- | --- |
-| **Amazon Bedrock AgentCore** | Add an OAuth outbound credential provider for the MCP target. It needs an existing OAuth client, and AgentCore only generates the callback URL when you create the provider: 1. Create the provider with placeholder client credentials and set its OAuth discovery `discoveryUrl` to `https://mcp.absmartly.com/.well-known/oauth-authorization-server`. 2. Copy the `callbackUrl` it returns (`https://bedrock-agentcore.<region>.amazonaws.com/identities/oauth2/callback/<uuid>`, accepted in every region). 3. [Register a client manually](./oauth-clients#manual-registration) with that URL. 4. Update the provider with the new `client_id` and `client_secret`, keeping the default `CLIENT_SECRET_BASIC` method. 5. On the gateway target's `oauthCredentialProvider`, set the `mcp:access` scope, `grantType` to `AUTHORIZATION_CODE` (the user consents in the browser) and `defaultReturnUrl`. If authorization starts outside the AWS Console, the page at `defaultReturnUrl` must sign the returning user in and call `CompleteResourceTokenAuth` with their identity and session URI, or you can use an AgentCore consent portal callback instead; the AWS Console handles this step for you. See AWS's [OAuth session binding](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/oauth2-authorization-url-session-binding.html) guidance. |
-| **Microsoft Copilot Studio / Azure AI Foundry** | Add an MCP tool with OAuth 2.0 and dynamic discovery. Callbacks on `https://global.consent.azure-apim.net/redirect` are accepted. |
-| **Perplexity** | Add a custom connector with OAuth. Both `www.perplexity.ai` and `enterprise.perplexity.ai` are accepted. |
-| **Gemini Enterprise** | See [Gemini Enterprise](#gemini-enterprise-google-cloud-console) above. |
-
-:::caution Not tested end to end
-ABsmartly accepts these platforms' callback URLs, and the steps above follow
-each vendor's public documentation, but we haven't completed a full connection
-test with AgentCore, Copilot Studio / Azure AI Foundry or Perplexity. ABsmartly
-requires the authorization-code flow with PKCE (`S256`). What we know about
-each platform:
-
-- **Amazon Bedrock AgentCore** sends an `S256` challenge, but one
-  [user report](https://github.com/awslabs/agentcore-samples/issues/620) says
-  it left out the `code_verifier` when it exchanged the code. ABsmartly then
-  rejects the exchange with *"code_verifier is required for PKCE"*.
-- **Copilot Studio** sends an `S256` challenge, as
-  [seen in practice](https://learn.microsoft.com/en-us/answers/questions/6011085/copilot-studio-mcp-connector-omits-the-rfc-8707-re).
-  Microsoft's documentation doesn't mention PKCE.
-- **Perplexity** doesn't document PKCE support. If it reports that dynamic
-  registration *"did not return a client_secret"*,
-  [register a client manually](./oauth-clients#manual-registration) and enter
-  its client ID and secret.
-
-If a connection fails, use an [API key](./authentication#api-key) and let
-ABsmartly support know.
-:::
+[Gemini Enterprise](#gemini-enterprise-google-cloud-console) is covered above.
+Other platforms whose callbacks are on the
+[allowlist](./oauth-clients#allowed-redirect-uris) may work, but we haven't
+tested them yet, so they have no setup guide here. ABsmartly requires the
+authorization-code flow with PKCE (`S256`). If a platform asks you for a client
+ID and secret instead of registering itself, see
+[Manual registration](./oauth-clients#manual-registration). If it can't connect,
+use an [API key](./authentication#api-key).
 
 These platforms use callback URLs shared by all their customers, so the consent
-page shows an extra warning. If a platform asks you for a client ID and secret
-instead of registering itself, see
-[Manual registration](./oauth-clients#manual-registration). If it can't use
-OAuth at all, use an [API key](./authentication#api-key).
+page shows an extra warning.
 
 ---
 

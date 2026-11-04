@@ -176,8 +176,7 @@ with `invalid_client`, remove and re-add the connector so it registers again.
 ### Manual registration
 
 Some platforms can't register themselves and ask you for a **client ID** and
-**client secret** instead, for example Gemini Enterprise and Amazon Bedrock
-AgentCore. In that case, register the client yourself once, then paste the
+**client secret** instead, for example Gemini Enterprise. In that case, register the client yourself once, then paste the
 result into the platform:
 
 ```bash
@@ -197,14 +196,14 @@ register again if the client expires.
 
 The example registers `client_secret_basic`, which matches the default of
 most platforms (for example **Use HTTP Basic Authentication** in Gemini
-Enterprise and `CLIENT_SECRET_BASIC` in Amazon Bedrock AgentCore). If your
+Enterprise). If your
 platform sends the secret in the request body instead, register
 `client_secret_post`. Keep the registered method and the platform's setting
 the same. The client must use PKCE
 with `S256`; enable PKCE in the platform if it's optional there.
 
-Some platforms, such as Amazon Bedrock AgentCore, only generate their callback
-URL when you create the connection. Create the connection first with
+Some platforms only generate their callback URL when you create the
+connection. Create the connection first with
 placeholder credentials, copy the callback URL it returns, register a client
 with that URL, then update the connection with the new `client_id` and
 `client_secret`.
