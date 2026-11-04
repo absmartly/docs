@@ -38,7 +38,9 @@ issues the client's tokens. Toward your ABsmartly instance it is itself an OAuth
 client: it sends you to your instance to sign in, then keeps the resulting
 ABsmartly session token on the server side.
 
-![Sequence diagram of the hosted OAuth flow. The MCP client calls /mcp and receives a 401 with a WWW-Authenticate header, discovers the protected-resource and authorization-server metadata, registers with POST /register or uses a trusted client metadata URL, and opens /authorize in the browser. mcp.absmartly.com asks for the instance URL if needed and shows the consent page, then redirects the browser to the instance's /auth/oauth/authorize, where the user signs in. The instance redirects back to /oauth/callback; mcp.absmartly.com exchanges the code at /auth/oauth/token, reads /auth/oauth/userinfo, and redirects the browser to the client with its own code. The client exchanges that code at /token for an MCP access token and refresh token, then calls /mcp with a Bearer token, and mcp.absmartly.com calls the instance's /v1 API with the ABsmartly session token.](/img/mcp/oauth-hosted-flow.svg)
+[![Sequence diagram of the hosted OAuth flow. The MCP client calls /mcp and receives a 401 with a WWW-Authenticate header, discovers the protected-resource and authorization-server metadata, registers with POST /register or uses a trusted client metadata URL, and opens /authorize in the browser. mcp.absmartly.com asks for the instance URL if needed and shows the consent page, then redirects the browser to the instance's /auth/oauth/authorize, where the user signs in. The instance redirects back to /oauth/callback; mcp.absmartly.com exchanges the code at /auth/oauth/token, reads /auth/oauth/userinfo, and redirects the browser to the client with its own code. The client exchanges that code at /token for an MCP access token and refresh token, then calls /mcp with a Bearer token, and mcp.absmartly.com calls the instance's /v1 API with the ABsmartly session token.](/img/mcp/oauth-hosted-flow.svg)](/img/mcp/oauth-hosted-flow.svg)
+
+*Select the diagram to open it full size.*
 
 Step by step:
 
@@ -76,7 +78,9 @@ Your ABsmartly instance also serves MCP directly at
 `https://your-instance.absmartly.com/mcp`. Here the instance is both the MCP
 server and the OAuth authorization server, so there is only one flow.
 
-![Sequence diagram of the in-product OAuth flow. The MCP client calls the instance's /mcp and receives a 401, reads the discovery documents, registers with POST /auth/oauth/register or uses a trusted client metadata URL, and opens /auth/oauth/authorize in the browser. If the user isn't signed in, the instance shows its login page (SAML, SSO or password) and then returns to the authorization request. The consent page is shown, and on approval the browser is redirected to the client with a code. The client exchanges it at /auth/oauth/token for an access token and calls /mcp with a Bearer token.](/img/mcp/oauth-in-product-flow.svg)
+[![Sequence diagram of the in-product OAuth flow. The MCP client calls the instance's /mcp and receives a 401, reads the discovery documents, registers with POST /auth/oauth/register or uses a trusted client metadata URL, and opens /auth/oauth/authorize in the browser. If the user isn't signed in, the instance shows its login page (SAML, SSO or password) and then returns to the authorization request. The consent page is shown, and on approval the browser is redirected to the client with a code. The client exchanges it at /auth/oauth/token for an access token and calls /mcp with a Bearer token.](/img/mcp/oauth-in-product-flow.svg)](/img/mcp/oauth-in-product-flow.svg)
+
+*Select the diagram to open it full size.*
 
 The token your MCP client receives is tied to the browser session you approved
 it from:
@@ -133,7 +137,9 @@ you trust.
 An MCP client can be accepted in one of four ways. The client picks the first
 one it supports. Most clients need no setup from you.
 
-![Decision flowchart. A client that uses an API key needs no OAuth registration. A client whose client_id is a URL is accepted only if the URL is on the trusted list of client metadata documents, otherwise it is rejected with invalid_client. Any other client registers with POST /register and is accepted only if all its redirect URIs are on the allowlist, otherwise it is rejected with invalid_redirect_uri. A client that can't register itself can use a client ID and secret registered manually. Rejected clients can fall back to an API key or ask ABsmartly support to add the client. Accepted clients continue to the authorization code flow with PKCE and the consent page.](/img/mcp/oauth-client-registration.svg)
+[![Decision flowchart. A client that uses an API key needs no OAuth registration. A client whose client_id is a URL is accepted only if the URL is on the trusted list of client metadata documents, otherwise it is rejected with invalid_client. Any other client registers with POST /register and is accepted only if all its redirect URIs are on the allowlist, otherwise it is rejected with invalid_redirect_uri. A client that can't register itself can use a client ID and secret registered manually. Rejected clients can fall back to an API key or ask ABsmartly support to add the client. Accepted clients continue to the authorization code flow with PKCE and the consent page.](/img/mcp/oauth-client-registration.svg)](/img/mcp/oauth-client-registration.svg)
+
+*Select the diagram to open it full size.*
 
 ### Client ID metadata documents
 
