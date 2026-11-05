@@ -90,6 +90,11 @@ That timestamp is the reference point for all time-based filters.
 A time filter lets you include only the goal events that happen within a defined window after that first exposure. 
 This ensures your metric measures behavior in a controlled, meaningful period (for example, `purchases within the first hour` or `engagement in the first 7 days`).
 
+:::caution
+If your metric uses [CUPED](variance-reduction-cuped), the lookback window must incorporate the time filter.
+For example, if your metric measure `conversions achieved 2 weeks after exposure` then the CUPED lookback window must be at least 2 weeks.
+:::
+
 ### Outliers
 
 Outlier limits help control the influence of extreme metric values. 
@@ -113,6 +118,10 @@ Use this option when you want full fidelity of raw data and are not concerned ab
 This method filters values based on chosen quantiles. 
 You define a lower quantile and an upper quantile (for example, 0.05 and 0.95). 
 Values below the lower quantile or above the upper quantile are capped to the limit.
+
+:::info
+Ouliers capping is done using the full experiment population, so all variants have the same capping limits.
+:::
 
 How it behaves with the sample purchase event:
 ```
@@ -141,6 +150,10 @@ The limits are calculated as:
 ```
 
 Any value outside these limits is capped to the value of the boundary.
+
+:::info
+Ouliers capping is done using the full experiment population so all variants have the same capping limits.
+:::
 
 Example with the sample purchase event:
 Suppose across all purchases:
@@ -328,6 +341,12 @@ There are five options:
 | Maximum          | The maximum value of all foreign goal achievements will be used to update the value of the current goal. |
 
 Replacement relations allow the metric to reflect up-to-date values when items are swapped or reissued.
+
+
+## Variance reduction
+
+If applicable, you can enable [CUPED](variance-reduction-cuped) for this metric to help reduce variance. 
+Enable [CUPED](variance-reduction-cuped) for this metric by checking the checkbox and choose a lookback period which matches the user behaviour.
 
 ## Format, scale and precisions
 
