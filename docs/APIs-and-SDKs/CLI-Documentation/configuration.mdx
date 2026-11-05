@@ -32,16 +32,18 @@ These flags write to **stderr** (so they don't pollute piped stdout) and respect
 |---|---|
 | `--show-request` | Print outgoing HTTP requests as a readable HTTP-style block. |
 | `--show-response` | Print HTTP responses (success and error) as an HTTP-style block. |
-| `--curl` | Print outgoing requests as runnable curl commands. |
+| `--curl` | Print outgoing requests as curl commands for inspection. `Authorization` is redacted unless you add `--show-secrets`. |
 | `--show-secrets` | Don't redact `Authorization` / `Set-Cookie` / sensitive body fields. Use with care. |
 | `--headers-only` | Omit request and response bodies from `--show-request` / `--show-response` / `--curl` output. |
 | `--status-only` | Print only the response status line, e.g. `← 200 OK (175ms)`. Implies `--show-response`. |
 
 ```bash
 abs experiments get 1816 --show-request --show-response
-abs experiments list --curl                            # paste-runnable curl
+abs experiments list --curl                            # inspectable curl (Authorization redacted)
 abs experiments update 123 --field "Hypothesis=Updated hypothesis" --show-request
 ```
+
+`--curl` output is redacted by default, so it is safe to share but won't authenticate if you paste it into a shell. Add `--show-secrets` to get a replayable, authenticated command; this prints your API key in plain text, so don't paste that output into tickets, chat or logs. `--headers-only` strips request bodies, so combining it with `--curl` won't give a complete, replayable command for requests that send a body (`POST`, `PUT`, `PATCH`).
 
 `--show-request` is the fastest way to see the exact payload shape the CLI sends for a given command — useful when integrating directly against the REST API and you want to confirm a field's wire format, such as [custom field values](./experiments-and-feature-flags#custom-field-options).
 
