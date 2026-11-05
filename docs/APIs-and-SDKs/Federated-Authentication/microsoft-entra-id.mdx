@@ -251,8 +251,10 @@ if "access_token" not in result:
 absmartly_token = result["access_token"]
 ```
 
-MSAL caches the token and returns the cached one until it is close to expiry,
-so you can call `acquire_token_on_behalf_of` before every request.
+`acquire_token_on_behalf_of` always calls Entra ID for a new token. It
+doesn't return a cached one. Keep the token for each user and scope set, and
+use it again until it is close to the time given in `expires_in`. Then request
+a new one. Don't send one user's token on another user's requests.
 
 :::note
 Don't send the user's ID token, the token for your own backend app, or a

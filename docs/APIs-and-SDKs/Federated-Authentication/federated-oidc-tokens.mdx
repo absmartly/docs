@@ -207,7 +207,8 @@ app in `cid`, delegated scopes as an array in `scp`, and the Okta user ID
 change, so ABsmartly links Okta users by `uid` instead. Add `mcp.access`, and
 `api.access` if you want REST API access, as scopes on the authorization
 server. In the Okta SAML app, add an attribute statement that sends the same
-user ID, for example named `okta_user_id` with value `user.id`, and tell
+user ID, for example named `okta_user_id` with value
+`user.getInternalProperty("id")`, and tell
 ABsmartly support the attribute name. Okta's org authorization server issues
 opaque access tokens, so use a custom authorization server.
 
