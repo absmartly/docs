@@ -43,7 +43,7 @@ abs experiments list --curl                            # inspectable curl (Autho
 abs experiments update 123 --field "Hypothesis=Updated hypothesis" --show-request
 ```
 
-`--curl` output is redacted by default, so it is safe to share but won't authenticate if you paste it into a shell. Add `--show-secrets` to get a replayable, authenticated command; this prints your API key in plain text, so don't paste that output into tickets, chat or logs. `--headers-only` strips request bodies, so combining it with `--curl` won't give a complete, replayable command for requests that send a body (`POST`, `PUT`, `PATCH`).
+`--curl` output redacts the `Authorization` header and known sensitive body fields by default. That makes it safer to share, but other headers, query parameters, paths or body fields can still contain credentials or user data, so check the output before sharing it. Redacted output won't authenticate if you paste it into a shell. Add `--show-secrets` to get a replayable, authenticated command; this prints your API key in plain text, so don't paste that output into tickets, chat or logs. `--headers-only` strips request bodies, so combining it with `--curl` won't give a complete, replayable command for requests that send a body (`POST`, `PUT`, `PATCH`).
 
 `--show-request` is the fastest way to see the exact payload shape the CLI sends for a given command — useful when integrating directly against the REST API and you want to confirm a field's wire format, such as [custom field values](./experiments-and-feature-flags#custom-field-options).
 
