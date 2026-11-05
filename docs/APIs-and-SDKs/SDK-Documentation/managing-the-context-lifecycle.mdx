@@ -41,8 +41,12 @@ Javascript SDK's delay, because `publishDelay` is in milliseconds in Javascript.
 
 To send events sooner, do one of these:
 
-- Call `context.publish()` (or `context.close()`) when you need the events sent, for
-  example at the end of a request or before the process exits.
+- Call `context.publish()` when you need the events sent, for example at the end of a
+  request. `publish()` only sends queued events: the context stays open and keeps
+  refreshing.
+- Call `context.close()` before the process exits. `close()` sends queued events and also
+  stops automatic refresh. With the default configuration, the refresh timer keeps a
+  Python process running after `publish()` returns, so use `close()` to shut down.
 - Set a shorter delay, for example `context_config.publish_delay = 1` (1 second). A value
   of `0` sends each batch immediately, on a background thread.
 

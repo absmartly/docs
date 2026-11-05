@@ -44,6 +44,9 @@ Without an explicit `publish()`, the Python SDK sends queued events after
 `ContextConfig.publish_delay` **seconds**, which defaults to **50 seconds**. Set a
 smaller value (in seconds) to publish sooner, or `0` to publish immediately.
 
+Before the process exits, call `close()` instead of `publish()`. `close()` also stops
+automatic refresh, whose timer otherwise keeps the Python process running.
+
 <CodeBlock language="py">{PythonPublish}</CodeBlock>
 
 </TabItem>
