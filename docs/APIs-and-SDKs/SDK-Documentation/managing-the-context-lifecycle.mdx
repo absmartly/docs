@@ -37,7 +37,7 @@ events are sent and the context is cleaned up before the request ends.
 In the Python SDK, `ContextConfig.publish_delay` is in **seconds**, not milliseconds,
 and it **defaults to 50**. That means a Python context waits up to 50 seconds after the
 first queued exposure or goal before it sends the batch. This is much longer than the
-Javascript SDK, where `publishDelay` is in milliseconds.
+Javascript SDK's delay, because `publishDelay` is in milliseconds in Javascript.
 
 To send events sooner, do one of these:
 
