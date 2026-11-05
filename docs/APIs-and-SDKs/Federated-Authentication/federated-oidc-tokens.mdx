@@ -201,6 +201,9 @@ change links.
 
 #### Okta example
 
+Custom authorization servers need Okta API Access Management. In production
+orgs this is a separate paid add-on, so check you have it before you start.
+
 With an Okta custom authorization server, the access token carries the calling
 app in `cid`, delegated scopes as an array in `scp`, and the Okta user ID
 (`00u…`) in `uid`. Okta's `sub` is the user's login, usually an email that can
