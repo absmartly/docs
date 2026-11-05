@@ -7,11 +7,11 @@
   window.absmartlyConfig = {
     endpoint: 'https://your-company.absmartly.io/v1',
     apiKey: 'YOUR-API-KEY',
-    application: '{{ shop.name }}',
+    application: {{ shop.name | json }},
     environment: 'production',
     units: {
-      session_id: '{{ request.cookie.session_id }}',
-      {% if customer %}customer_id: {{ customer.id }}{% endif %}
+      session_id: {{ request.cookie.session_id | json }}{% if customer %},
+      customer_id: {{ customer.id | json }}{% endif %}
     }
   };
 </script>
