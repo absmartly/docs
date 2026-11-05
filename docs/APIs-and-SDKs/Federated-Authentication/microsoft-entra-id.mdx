@@ -209,7 +209,7 @@ grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer
 &client_id=<backend-app-client-id>
 &client_secret=<backend-app-client-secret>
 &assertion=<the user's access token for your backend app>
-&scope=api://<absmartly-app-client-id>/mcp.access
+&scope=api://<absmartly-app-client-id>/mcp.access profile
 &requested_token_use=on_behalf_of
 ```
 
@@ -223,6 +223,8 @@ Request the scope for the endpoint you call:
 
 Both scopes belong to the same ABsmartly app, so the token's audience is the
 same either way, and a token requested with both scopes carries both in `scp`.
+Add `profile` to whichever scope you request, as in the example above, so the
+token carries the `oid` and `tid` claims ABsmartly needs. MSAL adds it for you.
 Use your own **Application ID URI** in `scope` if you changed it in Step 1.
 The `access_token` in the response is the token you send to ABsmartly. It
 expires after 60 to 90 minutes, so request a new one when it expires.
