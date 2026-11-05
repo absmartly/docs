@@ -77,9 +77,11 @@ common causes are:
 - **Missing scope or subject.** The token must carry the MCP scope and a
   stable `oid`, `uid` or `sub` claim. A token with only the REST API scope is
   rejected on `/mcp` with `403`.
-- **Unlinked or inactive user.** The user must sign in through SAML SSO once
-  after federated tokens are enabled to link their identity, and must not be
-  archived. Until then, tool calls return a message with the sign-in link.
+- **Unlinked user.** The user must sign in through SAML SSO once after
+  federated tokens are enabled to link their identity. Until then, tool calls
+  return a message with the sign-in link. Follow it and sign in.
+- **Archived user.** Signing in again doesn't help a linked user who has been
+  archived. Ask an ABsmartly administrator to unarchive them.
 - **Calling app not allowed.** The client ID claim isn't one of the client IDs
   you sent to ABsmartly support.
 
