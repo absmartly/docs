@@ -40,6 +40,11 @@ Then the metric counts users who satisfy:
 - they completed the initial purchase
 - and they completed another purchase after 7 days, within the configured retention window
 
+
+:::caution
+If your metric uses [CUPED](../variance-reduction-cuped), the lookback window must be equal or larger than the retention period.
+:::
+
 **More examples**
 
 - `Checkout Recovery (24 hours)`:

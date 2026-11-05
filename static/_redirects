@@ -1,34 +1,128 @@
-# Netlify Redirects - Server-side 302 redirects for URL structure changes (temporary for testing)
+# Netlify Redirects - Server-side 302 redirects for URL structure changes
 # Format: from to [status-code]
 # NOTE: Change to 301 (permanent) once verified all redirects work correctly
-# Anchor redirects are handled client-side via JavaScript
+# Using splat (*) patterns where possible to reduce duplication
 
-# Base path redirects (browser should preserve matching anchors)
-# Note: Adding trailing slashes to match Docusaurus URL normalization
-
-# SDK Documentation moves (docs/SDK-Documentation/* → docs/APIs-and-SDKs/SDK-Documentation/*)
-/docs/SDK-Documentation/Advanced/code-as-a-variant-variable /docs/APIs-and-SDKs/SDK-Documentation/Advanced/code-as-a-variant-variable/ 302
-/docs/SDK-Documentation/Advanced/context-attributes /docs/APIs-and-SDKs/SDK-Documentation/Advanced/context-attributes/ 302
-/docs/SDK-Documentation/Advanced/custom-assignments /docs/APIs-and-SDKs/SDK-Documentation/Advanced/custom-assignments/ 302
-/docs/SDK-Documentation/Advanced/finalize /docs/APIs-and-SDKs/SDK-Documentation/Advanced/finalize/ 302
-/docs/SDK-Documentation/Advanced/publish /docs/APIs-and-SDKs/SDK-Documentation/Advanced/publish/ 302
-/docs/SDK-Documentation/Advanced/tracking-goals /docs/APIs-and-SDKs/SDK-Documentation/Advanced/tracking-goals/ 302
-/docs/SDK-Documentation/Advanced/using-custom-fields-in-your-code /docs/APIs-and-SDKs/SDK-Documentation/Advanced/using-custom-fields-in-your-code/ 302
-/docs/SDK-Documentation/basic-usage /docs/APIs-and-SDKs/SDK-Documentation/basic-usage/ 302
-/docs/SDK-Documentation/getting-started /docs/APIs-and-SDKs/SDK-Documentation/getting-started/ 302
+# =============================================================================
+# SDK Documentation (docs/SDK-Documentation/* → docs/APIs-and-SDKs/SDK-Documentation/*)
+# =============================================================================
+# Explicit base path redirects (splats don't match bare paths without trailing slash)
+/docs/SDK-Documentation/Advanced /docs/APIs-and-SDKs/SDK-Documentation/Advanced/ 302
 /docs/SDK-Documentation /docs/APIs-and-SDKs/SDK-Documentation/ 302
+/docs/sdk-documentation/advanced /docs/APIs-and-SDKs/SDK-Documentation/Advanced/ 302
+/docs/sdk-documentation /docs/APIs-and-SDKs/SDK-Documentation/ 302
 
-# Examples moves (docs/Examples/* → docs/APIs-and-SDKs/Web-Console-API/Examples/*)
-/docs/Examples/Slack-Integration /docs/APIs-and-SDKs/Web-Console-API/Examples/Slack-Integration/ 302
+# Splat patterns handle all subpaths - both PascalCase and lowercase
+/docs/SDK-Documentation/Advanced/* /docs/APIs-and-SDKs/SDK-Documentation/Advanced/:splat 302
+/docs/SDK-Documentation/* /docs/APIs-and-SDKs/SDK-Documentation/:splat 302
+/docs/sdk-documentation/advanced/* /docs/APIs-and-SDKs/SDK-Documentation/Advanced/:splat 302
+/docs/sdk-documentation/* /docs/APIs-and-SDKs/SDK-Documentation/:splat 302
 
+# Old root-level getting-started
+/docs/getting-started /docs/APIs-and-SDKs/SDK-Documentation/getting-started/ 302
+
+# =============================================================================
+# Examples (docs/Examples/* → docs/APIs-and-SDKs/Web-Console-API/Examples/*)
+# =============================================================================
+/docs/Examples /docs/APIs-and-SDKs/Web-Console-API/Examples/ 302
+/docs/examples /docs/APIs-and-SDKs/Web-Console-API/Examples/ 302
+/docs/Examples/* /docs/APIs-and-SDKs/Web-Console-API/Examples/:splat 302
+/docs/examples/* /docs/APIs-and-SDKs/Web-Console-API/Examples/:splat 302
+
+# =============================================================================
+# Onboarding/SSO → Third-party-integrations/SSO
+# (Cannot use splats due to different naming patterns)
+# =============================================================================
+/docs/onboarding/google%20saml%20setup /docs/Third-party-integrations/SSO/Google%20SAML%20Setup/ 302
+/docs/onboarding/azure%20saml%20setup /docs/Third-party-integrations/SSO/Azure%20SAML%20Setup/ 302
+/docs/onboarding/okta%20saml%20setup /docs/Third-party-integrations/SSO/Okta%20SAML%20Setup/ 302
+/docs/onboarding/google-saml-setup /docs/Third-party-integrations/SSO/Google%20SAML%20Setup/ 302
+/docs/onboarding/azure-saml-setup /docs/Third-party-integrations/SSO/Azure%20SAML%20Setup/ 302
+/docs/onboarding/okta-saml-setup /docs/Third-party-integrations/SSO/Okta%20SAML%20Setup/ 302
+/docs/Onboarding/Google%20SAML%20Setup /docs/Third-party-integrations/SSO/Google%20SAML%20Setup/ 302
+/docs/Onboarding/Azure%20SAML%20Setup /docs/Third-party-integrations/SSO/Azure%20SAML%20Setup/ 302
+/docs/Onboarding/Okta%20SAML%20Setup /docs/Third-party-integrations/SSO/Okta%20SAML%20Setup/ 302
+/docs/web-console-docs/SSO/* /docs/Third-party-integrations/SSO/:splat 302
+
+# =============================================================================
+# API paths → APIs-and-SDKs/SDK-API
+# =============================================================================
+/docs/API /docs/APIs-and-SDKs/SDK-API/ 302
+/docs/sdk-api /docs/APIs-and-SDKs/SDK-API/ 302
+/docs/SDK-API /docs/APIs-and-SDKs/SDK-API/ 302
+/docs/API/* /docs/APIs-and-SDKs/SDK-API/:splat 302
+/docs/sdk-api/* /docs/APIs-and-SDKs/SDK-API/:splat 302
+/docs/SDK-API/* /docs/APIs-and-SDKs/SDK-API/:splat 302
+
+# =============================================================================
+# Web Console API (docs/web-console-api/* → docs/APIs-and-SDKs/Web-Console-API/*)
+# =============================================================================
+# IMPORTANT: Specific rules must come BEFORE splat rules (first match wins)
+
+# Old naming convention (get-*, list-* → *-get, *-list) - must be before splat
+/docs/web-console-api/get-api-key /docs/APIs-and-SDKs/Web-Console-API/api-key-get/ 302
+/docs/web-console-api/get-application /docs/APIs-and-SDKs/Web-Console-API/application-get/ 302
+/docs/web-console-api/get-cors-allowed-origin /docs/APIs-and-SDKs/Web-Console-API/cors-allowed-origin-get/ 302
+/docs/web-console-api/get-environment /docs/APIs-and-SDKs/Web-Console-API/environment-get/ 302
+/docs/web-console-api/get-experiment /docs/APIs-and-SDKs/Web-Console-API/experiment-get/ 302
+/docs/web-console-api/get-experiment-activity /docs/APIs-and-SDKs/Web-Console-API/experiment-activity-get/ 302
+/docs/web-console-api/get-experiment-annotation /docs/APIs-and-SDKs/Web-Console-API/experiment-annotation-get/ 302
+/docs/web-console-api/get-experiment-tag /docs/APIs-and-SDKs/Web-Console-API/experiment-tag-get/ 302
+/docs/web-console-api/get-goal /docs/APIs-and-SDKs/Web-Console-API/goal-get/ 302
+/docs/web-console-api/get-goal-tag /docs/APIs-and-SDKs/Web-Console-API/goal-tag-get/ 302
+/docs/web-console-api/get-metric /docs/APIs-and-SDKs/Web-Console-API/metric-get/ 302
+/docs/web-console-api/get-metric-tag /docs/APIs-and-SDKs/Web-Console-API/metric-tag-get/ 302
+/docs/web-console-api/get-role /docs/APIs-and-SDKs/Web-Console-API/role-get/ 302
+/docs/web-console-api/get-segment /docs/APIs-and-SDKs/Web-Console-API/segment-get/ 302
+/docs/web-console-api/get-team /docs/APIs-and-SDKs/Web-Console-API/team-get/ 302
+/docs/web-console-api/get-unit /docs/APIs-and-SDKs/Web-Console-API/unit-get/ 302
+/docs/web-console-api/get-user /docs/APIs-and-SDKs/Web-Console-API/user-get/ 302
+/docs/web-console-api/get-user-api-keys /docs/APIs-and-SDKs/Web-Console-API/user-api-keys-get/ 302
+/docs/web-console-api/get-webhook /docs/APIs-and-SDKs/Web-Console-API/webhook-get/ 302
+/docs/web-console-api/list-api-keys /docs/APIs-and-SDKs/Web-Console-API/api-keys-list/ 302
+/docs/web-console-api/list-applications /docs/APIs-and-SDKs/Web-Console-API/applications-list/ 302
+/docs/web-console-api/list-cors-allowed-origins /docs/APIs-and-SDKs/Web-Console-API/cors-allowed-origins-list/ 302
+/docs/web-console-api/list-environments /docs/APIs-and-SDKs/Web-Console-API/environments-list/ 302
+/docs/web-console-api/list-experiment-annotations /docs/APIs-and-SDKs/Web-Console-API/experiment-annotations-list/ 302
+/docs/web-console-api/list-experiment-tags /docs/APIs-and-SDKs/Web-Console-API/experiment-tags-list/ 302
+/docs/web-console-api/list-experiments /docs/APIs-and-SDKs/Web-Console-API/experiments-list/ 302
+/docs/web-console-api/list-goal-tags /docs/APIs-and-SDKs/Web-Console-API/goal-tags-list/ 302
+/docs/web-console-api/list-goals /docs/APIs-and-SDKs/Web-Console-API/goals-list/ 302
+/docs/web-console-api/list-metric-tags /docs/APIs-and-SDKs/Web-Console-API/metric-tags-list/ 302
+/docs/web-console-api/list-metrics /docs/APIs-and-SDKs/Web-Console-API/metrics-list/ 302
+/docs/web-console-api/list-permission-categories /docs/APIs-and-SDKs/Web-Console-API/permission-categories-list/ 302
+/docs/web-console-api/list-permissions /docs/APIs-and-SDKs/Web-Console-API/permissions-list/ 302
+/docs/web-console-api/list-roles /docs/APIs-and-SDKs/Web-Console-API/roles-list/ 302
+/docs/web-console-api/list-segments /docs/APIs-and-SDKs/Web-Console-API/segments-list/ 302
+/docs/web-console-api/list-teams /docs/APIs-and-SDKs/Web-Console-API/teams-list/ 302
+/docs/web-console-api/list-units /docs/APIs-and-SDKs/Web-Console-API/units-list/ 302
+/docs/web-console-api/list-users /docs/APIs-and-SDKs/Web-Console-API/users-list/ 302
+/docs/web-console-api/list-webhook-events /docs/APIs-and-SDKs/Web-Console-API/webhook-events-list/ 302
+/docs/web-console-api/list-webhooks /docs/APIs-and-SDKs/Web-Console-API/webhooks-list/ 302
+
+# Base path redirects (splats don't match bare paths)
+/docs/web-console-api /docs/APIs-and-SDKs/Web-Console-API/ 302
+/docs/Web-Console-API /docs/APIs-and-SDKs/Web-Console-API/ 302
+
+# General splat rule (catches all other paths that don't need transformation)
+/docs/web-console-api/* /docs/APIs-and-SDKs/Web-Console-API/:splat 302
+/docs/Web-Console-API/* /docs/APIs-and-SDKs/Web-Console-API/:splat 302
+
+# =============================================================================
 # Web Console - Configuration
+# =============================================================================
 /docs/web-console-docs/settings /docs/web-console-docs/Configuration/settings/ 302
 
+# =============================================================================
 # Web Console - Users, Teams & Permissions
+# =============================================================================
 /docs/web-console-docs/creating-and-managing-teams /docs/web-console-docs/Users-teams-Permissions/Teams/ 302
+/docs/web-console-docs/managing-teams /docs/web-console-docs/Users-teams-Permissions/Teams/ 302
 /docs/web-console-docs/ownership-and-permissions /docs/web-console-docs/Users-teams-Permissions/ownership-and-permissions/ 302
 
+# =============================================================================
 # Web Console - Experiments
+# =============================================================================
 /docs/web-console-docs/Aborting-experiments /docs/web-console-docs/experiments/Aborting-experiments/ 302
 /docs/web-console-docs/Experiment-health-checks /docs/web-console-docs/experiments/Experiment-health-checks/ 302
 /docs/web-console-docs/Experiment-reports /docs/web-console-docs/experiments/Experiment-reports/ 302
@@ -38,9 +132,29 @@
 /docs/web-console-docs/setting-up-a-gst-experiment /docs/web-console-docs/experiments/setting-up-a-gst-experiment/ 302
 /docs/web-console-docs/templates /docs/web-console-docs/experiments/templates/ 302
 
+# Old pages that no longer exist - redirect to overview
+/docs/web-console-docs/dashboard /docs/web-console-docs/overview/ 302
+/docs/web-console-docs/tutorial /docs/web-console-docs/overview/ 302
+/docs/web-console-docs/product-docs /docs/web-console-docs/overview/ 302
+
+# Types of analysis
+/docs/web-console-docs/types-of-analysis /docs/web-console-docs/experiments/overview/ 302
+/docs/web-console-docs/type-of-analysis /docs/web-console-docs/experiments/overview/#analysis-methods 302
+
+# =============================================================================
 # Web Console - Feature Flags
+# =============================================================================
 /docs/web-console-docs/creating-a-feature /docs/web-console-docs/feature-flags/creating-a-feature/ 302
 
-# Wildcards and special cases
+# =============================================================================
+# Web Console - Goals and Metrics
+# =============================================================================
 /docs/web-console-docs/understanding-experimentation-metrics/* /docs/web-console-docs/goals-and-metrics/metrics/overview/ 302
-/docs/web-console-docs/type-of-analysis /docs/web-console-docs/experiments/overview/#analysis-methods 302
+/docs/web-console-docs/understanding-experimentation-metrics /docs/web-console-docs/goals-and-metrics/metrics/overview/ 302
+/docs/web-console-docs/Understanding-experimentation-metrics /docs/web-console-docs/goals-and-metrics/metrics/overview/ 302
+/docs/web-console-docs/goals-and-metrics/Understanding-experimentation-metrics /docs/web-console-docs/goals-and-metrics/metrics/overview/ 302
+
+# =============================================================================
+# APIs-and-SDKs overview rename
+# =============================================================================
+/docs/APIs-and-SDKs/apis-and-sdks /docs/APIs-and-SDKs/overview/ 302
