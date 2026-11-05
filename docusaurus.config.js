@@ -84,6 +84,56 @@ const config = {
   plugins: [
     "docusaurus-plugin-sass",
     [
+      // .md per page + /llms.txt; see netlify/edge-functions/markdown-negotiation.js.
+      "@signalwire/docusaurus-plugin-llms-txt",
+      {
+        siteDescription:
+          "ABsmartly product documentation: experimentation platform, SDKs and APIs.\n\n" +
+          "Every page is available as Markdown: append `.md` to the page URL " +
+          "(e.g. https://docs.absmartly.com/docs/glossary.md), or request the normal URL " +
+          "with `Accept: text/markdown`. /llms-full.txt contains all pages in one file.",
+        depth: 2,
+        // A page that fails to convert would still advertise a .md that 404s.
+        onRouteError: "throw",
+        optionalLinks: [
+          {
+            title: "Web Console API OpenAPI spec",
+            url: "https://docs.absmartly.com/openapi/web-console-api.yaml",
+            description:
+              "Full request/response schemas for the Web Console API reference pages",
+          },
+          {
+            title: "Collector API OpenAPI spec",
+            url: "https://docs.absmartly.com/openapi/collector-api.yaml",
+            description:
+              "Full request/response schemas for the SDK Collector API reference pages",
+          },
+        ],
+        content: {
+          enableMarkdownFiles: true,
+          enableLlmsFullTxt: true,
+          relativePaths: false,
+          includeBlog: false,
+          includePages: false,
+          excludeRoutes: ["/search"],
+          remarkPlugins: [require("./plugins/llms-markdown/remark-fix-md-links")],
+          beforeDefaultRehypePlugins: [
+            require("./plugins/llms-markdown/rehype-docusaurus-cleanup"),
+          ],
+        },
+      },
+    ],
+    [
+      require.resolve("./plugins/llms-markdown/publish-openapi-specs"),
+      {
+        specs: {
+          "collector-api.yaml": "api-spec.yaml",
+          "web-console-api.yaml":
+            "node_modules/@absmartly/api-mocks/openapi/openapi.bundle.yaml",
+        },
+      },
+    ],
+    [
       "@docusaurus/plugin-ideal-image",
       {
         quality: 70,

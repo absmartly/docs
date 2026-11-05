@@ -1,0 +1,99 @@
+# SAML SSO - Assigning Roles
+
+If you sign in to ABsmartly with SAML SSO, your identity provider (IdP) can decide which
+[global roles](/docs/web-console-docs/users-teams-permissions/roles#global-roles) each user gets. You manage
+role membership in Okta, Azure or Google Workspace, and ABsmartly reads it when the user signs in.
+
+This only works for global roles. [Team-based roles](/docs/web-console-docs/users-teams-permissions/roles#team-based-roles)
+are still assigned in ABsmartly.
+
+## Example
+
+Say you want everyone whose job title in Okta is `Product Manager` to get a custom global role called `Product Team`.
+
+1. In ABsmartly, create the `Product Team` role.
+2. In your Okta SAML app, add a `roles` attribute that sends the user's job title.
+3. Because the job title and the role name are different, add a `roleMapping` attribute that sends
+   `Product Manager:Product Team`.
+
+The next time a new product manager signs in, their account is created with `Base User` and `Product Team`.
+
+The rest of this page explains each of those pieces.
+
+## The `roles` attribute
+
+ABsmartly looks for an attribute called exactly `roles`. Each value in it is compared with the names of your
+global roles, and every match is assigned to the user. The attribute can hold one value or several, so sending a
+user's group memberships works as well as sending a single field like a job title.
+
+Users always get your default role (usually `Base User`) as well, even if nothing in `roles` matches.
+
+A few things that catch people out:
+
+- Matching is case-sensitive. `product team` won't match a role called `Product Team`.
+- Values that don't match a role are skipped without an error.
+- The attribute name must not have a namespace in front of it. An attribute called
+  `http://schemas.microsoft.com/ws/2008/06/identity/claims/role` is ignored, it needs to be just `roles`.
+
+## Translating values with `roleMapping`
+
+Often the values your IdP has (job titles, group names) don't line up with the role names you want in ABsmartly.
+Rather than renaming either side, add a second attribute called `roleMapping` with a fixed value that maps one to
+the other:
+
+```
+Product Manager:Product Team,Engineer:Developer
+```
+
+Each pair is `IdP value:ABsmartly role name`, separated by commas. A JSON object works too:
+
+```json
+{"Product Manager": "Product Team", "Engineer": "Developer"}
+```
+
+Anything not listed in `roleMapping` is matched against role names as-is, so you only need to list the values
+that differ.
+
+## Setting it up in your IdP
+
+Add `roles` (and `roleMapping` if you need it) in the same place you added `firstName`, `lastName` and
+`department` when setting up SSO. The exact screens depend on your IdP, so check its own documentation for the
+details.
+
+### Okta
+
+Add the attributes alongside the others in **Attribute Statements** (see [the Okta setup guide](./Okta%20SAML%20Setup)).
+For `roles`, use an Okta expression that returns the values you want, such as `user.title` for the job title.
+Okta also supports group attribute statements if you'd rather send group memberships. See Okta's guide to
+[defining attribute statements](https://help.okta.com/en-us/content/topics/apps/define-attribute-statements.htm)
+and the [Okta Expression Language reference](https://developer.okta.com/docs/reference/okta-expression-language/).
+
+### Azure
+
+In **Attributes & Claims**, click **Add new claim** and leave **Namespace** empty so the claim name is just
+`roles` or `roleMapping` (see [the Azure setup guide](./Azure%20SAML%20Setup)). Microsoft lets you use either a
+user attribute or a fixed value as the claim's source. See Microsoft's guide to
+[customising SAML token claims](https://learn.microsoft.com/en-us/entra/identity-platform/saml-claims-customization).
+
+### Google Workspace
+
+Google maps directory fields and group memberships to SAML attributes. To send groups, add them under
+**Group membership** in the app's attribute mapping and set **App attribute** to `roles`. Only the groups the
+user belongs to are sent, so naming the groups after your ABsmartly roles keeps things simple. See Google's
+guide to [setting up a custom SAML app](https://knowledge.workspace.google.com/admin/apps/set-up-your-own-custom-saml-app)
+and [the Google setup guide](./Google%20SAML%20Setup).
+
+## When roles are applied
+
+Out of the box, roles from the IdP are only applied once: when a user signs in for the first time and their
+ABsmartly account is created. If you later change someone's job title or groups in the IdP, their roles in
+ABsmartly stay as they were.
+
+If you want ABsmartly to follow the IdP on every sign-in, ask us to turn on **Sync SAML roles on login** for
+your account. With it on, each sign-in replaces the user's global roles with your default role plus whatever
+the IdP sends.
+
+:::caution
+With syncing on, any global role you add to a user by hand in ABsmartly is removed the next time they sign in,
+unless the IdP also sends it. Sign-ins with no `roles` attribute at all leave the user's roles alone.
+:::
