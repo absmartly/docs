@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1040 1032" width="1040" height="1032" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="oauth-client-registration-title oauth-client-registration-desc">
+      <title id="oauth-client-registration-title">How an MCP client gets accepted</title>
+      <desc id="oauth-client-registration-desc">Decision flowchart: a client that uses an API key is accepted without OAuth registration; otherwise a client whose client_id is a Client ID Metadata Document URL is accepted only if it is on the trusted list (Claude, Claude Code, VS Code, VS Code Insiders, Goose, GitHub Copilot CLI) and rejected with invalid_client if not, while any other client registers with Dynamic Client Registration at POST /register and is accepted only if all its redirect URIs are allowed (loopback, cursor://, claude://, or allowlisted HTTPS callbacks), else rejected with invalid_redirect_uri; clients that cannot self-register can have POST /register called for them manually, rejected clients can fall back to an API key or ask ABsmartly support, and every accepted OAuth client continues to the authorization code flow with PKCE S256 and the consent page.</desc>
+      <defs>
+        <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#9296a6"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#F4665C"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5b7fff"/></marker>
+        <marker id="arrow-accent-start" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0, 0 3, 8 6" fill="#F4665C"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#111219"/>
+
+      <!-- Connectors -->
+      <path d="M 220,78 V 114" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 340,168 H 388" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 220,220 V 298" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 340,352 H 418" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 660,352 H 738" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 540,404 V 462" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 220,404 V 470" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 220,536 V 602" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 340,656 H 398" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 220,708 V 806" fill="none" stroke="#9296a6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 680,504 H 852 Q 860,504 860,512 V 538" fill="none" stroke="#9296a6" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+      <path d="M 680,656 H 852 Q 860,656 860,648 V 622" fill="none" stroke="#9296a6" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+      <path d="M 400,840 H 342" fill="none" stroke="#9296a6" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+      <path d="M 220,880 V 946" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <path d="M 980,352 H 1000 Q 1008,352 1008,360 V 968 Q 1008,976 1000,976 H 982" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- Arrow labels -->
+      <rect x="350" y="146" width="31" height="16" rx="2" fill="#111219"/>
+      <text x="365" y="158" fill="#9296a6" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">YES</text>
+      <rect x="227" y="252" width="24" height="16" rx="2" fill="#111219"/>
+      <text x="232" y="264" fill="#9296a6" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="start" letter-spacing="0.06em">NO</text>
+      <rect x="364" y="330" width="31" height="16" rx="2" fill="#111219"/>
+      <text x="380" y="342" fill="#9296a6" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">YES</text>
+      <rect x="684" y="330" width="31" height="16" rx="2" fill="#111219"/>
+      <text x="700" y="342" fill="#9296a6" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">YES</text>
+      <rect x="547" y="426" width="24" height="16" rx="2" fill="#111219"/>
+      <text x="552" y="438" fill="#9296a6" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="start" letter-spacing="0.06em">NO</text>
+      <rect x="227" y="430" width="24" height="16" rx="2" fill="#111219"/>
+      <text x="232" y="442" fill="#9296a6" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="start" letter-spacing="0.06em">NO</text>
+      <rect x="358" y="634" width="24" height="16" rx="2" fill="#111219"/>
+      <text x="370" y="646" fill="#9296a6" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">NO</text>
+      <rect x="227" y="750" width="31" height="16" rx="2" fill="#111219"/>
+      <text x="232" y="762" fill="#9296a6" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="start" letter-spacing="0.06em">YES</text>
+      <rect x="344" y="818" width="52" height="16" rx="2" fill="#111219"/>
+      <text x="370" y="830" fill="#9296a6" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">MANUAL</text>
+      <!-- Nodes -->
+      <rect x="110" y="34" width="220" height="44" rx="22" fill="#111219"/>
+      <rect x="110" y="34" width="220" height="44" rx="22" fill="rgba(146,150,166,0.10)" stroke="#6f7487" stroke-width="1"/>
+      <text x="220" y="60" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">MCP client connects</text>
+      <polygon points="220,116 340,168 220,220 100,168" fill="#111219"/>
+      <polygon points="220,116 340,168 220,220 100,168" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1" stroke-linejoin="round"/>
+      <text x="220" y="164" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Uses an</text>
+      <text x="220" y="180" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">API key?</text>
+      <rect x="390" y="128" width="300" height="80" rx="6" fill="#111219"/>
+      <rect x="390" y="128" width="300" height="80" rx="6" fill="rgba(79,178,134,0.10)" stroke="#4fb286" stroke-width="1"/>
+      <text x="540" y="156" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">API key auth</text>
+      <text x="540" y="172" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">no OAuth registration needed</text>
+      <text x="540" y="188" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">Authorization header or ?api_key=</text>
+      <polygon points="220,300 340,352 220,404 100,352" fill="#111219"/>
+      <polygon points="220,300 340,352 220,404 100,352" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1" stroke-linejoin="round"/>
+      <text x="220" y="340" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">client_id</text>
+      <text x="220" y="356" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">is a URL?</text>
+      <text x="220" y="372" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">metadata document</text>
+      <polygon points="540,300 660,352 540,404 420,352" fill="#111219"/>
+      <polygon points="540,300 660,352 540,404 420,352" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1" stroke-linejoin="round"/>
+      <text x="540" y="348" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">On the</text>
+      <text x="540" y="364" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">trusted list?</text>
+      <rect x="740" y="312" width="240" height="80" rx="6" fill="#111219"/>
+      <rect x="740" y="312" width="240" height="80" rx="6" fill="rgba(79,178,134,0.10)" stroke="#4fb286" stroke-width="1"/>
+      <text x="860" y="340" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Accepted</text>
+      <text x="860" y="356" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">metadata fetched, redirect</text>
+      <text x="860" y="372" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">URIs filtered to the allowlist</text>
+      <rect x="100" y="472" width="240" height="64" rx="6" fill="#111219"/>
+      <rect x="100" y="472" width="240" height="64" rx="6" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1"/>
+      <text x="220" y="500" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Dynamic Client Registration</text>
+      <text x="220" y="516" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle">POST /register</text>
+      <rect x="400" y="464" width="280" height="80" rx="6" fill="#111219"/>
+      <rect x="400" y="464" width="280" height="80" rx="6" fill="rgba(229,72,77,0.10)" stroke="#e5484d" stroke-width="1"/>
+      <text x="540" y="492" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle">Rejected: invalid_client</text>
+      <text x="540" y="508" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">“This MCP client is not</text>
+      <text x="540" y="524" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">supported by this server”</text>
+      <polygon points="220,604 340,656 220,708 100,656" fill="#111219"/>
+      <polygon points="220,604 340,656 220,708 100,656" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1" stroke-linejoin="round"/>
+      <text x="220" y="652" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">All redirect_uris</text>
+      <text x="220" y="668" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">allowed?</text>
+      <rect x="400" y="624" width="280" height="64" rx="6" fill="#111219"/>
+      <rect x="400" y="624" width="280" height="64" rx="6" fill="rgba(229,72,77,0.10)" stroke="#e5484d" stroke-width="1"/>
+      <text x="540" y="652" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Rejected:</text>
+      <text x="540" y="668" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle">invalid_redirect_uri</text>
+      <rect x="740" y="540" width="240" height="80" rx="6" fill="#111219"/>
+      <rect x="740" y="540" width="240" height="80" rx="6" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="860" y="568" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Fallback</text>
+      <text x="860" y="584" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">use an API key, or ask</text>
+      <text x="860" y="600" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">ABsmartly support to add the client</text>
+      <rect x="100" y="808" width="240" height="64" rx="6" fill="#111219"/>
+      <rect x="100" y="808" width="240" height="64" rx="6" fill="rgba(79,178,134,0.10)" stroke="#4fb286" stroke-width="1"/>
+      <text x="220" y="836" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Accepted</text>
+      <text x="220" y="852" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">client_id (+ client_secret) issued</text>
+      <rect x="400" y="792" width="280" height="96" rx="6" fill="#111219"/>
+      <rect x="400" y="792" width="280" height="96" rx="6" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="540" y="812" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Client can’t self-register?</text>
+      <text x="540" y="828" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">e.g. Gemini Enterprise asks for</text>
+      <text x="540" y="844" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">a client ID/secret: call POST /register</text>
+      <text x="540" y="860" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif" text-anchor="middle">yourself once and paste the returned</text>
+      <text x="540" y="876" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">client_id / client_secret</text>
+      <rect x="100" y="948" width="880" height="56" rx="6" fill="#111219"/>
+      <rect x="100" y="948" width="880" height="56" rx="6" fill="rgba(91,127,255,0.12)" stroke="#5b7fff" stroke-width="1"/>
+      <text x="540" y="972" fill="#f5f5f4" font-size="12.5" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Every accepted OAuth client continues to the authorization flow</text>
+      <text x="540" y="990" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">authorization code + PKCE S256 → consent page</text>
+      <!-- Notes -->
+      <text x="532" y="232" fill="#9296a6" font-size="10" font-family="'Geist Mono', monospace" letter-spacing="0.14em">TRUSTED LIST</text>
+      <text x="532" y="248" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">Claude · Claude Code · VS Code</text>
+      <text x="532" y="263" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">VS Code Insiders · Goose</text>
+      <text x="532" y="278" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">GitHub Copilot CLI</text>
+      <text x="400" y="708" fill="#9296a6" font-size="10" font-family="'Geist Mono', monospace" letter-spacing="0.14em">ALLOWED REDIRECT_URIS</text>
+      <text x="400" y="724" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">loopback http://localhost, 127.0.0.1</text>
+      <text x="400" y="739" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">or [::1], any port</text>
+      <text x="400" y="754" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">cursor:// · claude://</text>
+      <text x="400" y="769" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">allowlisted HTTPS callbacks</text>
+</svg>

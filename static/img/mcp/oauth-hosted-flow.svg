@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1040 1512" width="1040" height="1512" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="oauth-hosted-flow-title oauth-hosted-flow-desc">
+      <title id="oauth-hosted-flow-title">OAuth via mcp.absmartly.com</title>
+      <desc id="oauth-hosted-flow-desc">Sequence diagram of the hosted OAuth flow in 15 steps: the MCP client gets a 401 from mcp.absmartly.com, discovers its OAuth metadata, registers by Dynamic Client Registration or a trusted metadata-document client ID, and sends you through the browser to authorize; mcp.absmartly.com then runs a second OAuth flow against your ABsmartly instance, where you sign in, exchanges the code for an ABsmartly session JWT that stays on the server, and finally issues the client its own MCP access and refresh tokens, so MCP calls carry the MCP token while the server calls your instance's API with the session JWT.</desc>
+      <defs>
+        <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#9296a6"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#F4665C"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5b7fff"/></marker>
+        <marker id="arrow-accent-start" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0, 0 3, 8 6" fill="#F4665C"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#111219"/>
+
+      <!-- Step bands -->
+      <rect x="16" y="112" width="1008" height="50" rx="4" fill="#16171e"/>
+      <rect x="16" y="260" width="1008" height="66" rx="4" fill="#16171e"/>
+      <rect x="16" y="440" width="1008" height="50" rx="4" fill="#16171e"/>
+      <rect x="16" y="604" width="1008" height="124" rx="4" fill="#16171e"/>
+      <rect x="16" y="794" width="1008" height="76" rx="4" fill="#16171e"/>
+      <rect x="16" y="994" width="1008" height="76" rx="4" fill="#16171e"/>
+      <rect x="16" y="1152" width="1008" height="92" rx="4" fill="#16171e"/>
+      <rect x="16" y="1326" width="1008" height="50" rx="4" fill="#16171e"/>
+      <!-- Lifelines -->
+      <line x1="176" y1="80" x2="176" y2="1396" stroke="rgba(245,245,244,0.22)" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="416" y1="80" x2="416" y2="1396" stroke="rgba(245,245,244,0.22)" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="656" y1="80" x2="656" y2="1396" stroke="rgba(245,245,244,0.22)" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="896" y1="80" x2="896" y2="1396" stroke="rgba(245,245,244,0.22)" stroke-width="1" stroke-dasharray="3,3"/>
+      <!-- Messages -->
+      <path d="M 181,154 H 651" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <rect x="188" y="114" width="72" height="34" rx="2" fill="#16171e"/>
+      <text x="192" y="127" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">POST /mcp</text>
+      <text x="192" y="143" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">no token</text>
+      <path d="M 651,236 H 181" fill="none" stroke="#5b7fff" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-link)"/>
+      <rect x="188" y="180" width="396" height="50" rx="2" fill="#111219"/>
+      <text x="192" y="193" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">401 Unauthorized</text>
+      <text x="192" y="209" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">WWW-Authenticate: Bearer resource_metadata=…/.well-known/</text>
+      <text x="192" y="225" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">  oauth-protected-resource/mcp, scope=&quot;mcp:access&quot;</text>
+      <path d="M 181,318 H 651" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <rect x="188" y="262" width="328" height="50" rx="2" fill="#16171e"/>
+      <text x="192" y="275" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">Discovery</text>
+      <text x="192" y="291" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">GET /.well-known/oauth-protected-resource/mcp</text>
+      <text x="192" y="307" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">GET /.well-known/oauth-authorization-server</text>
+      <path d="M 181,416 H 651" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <rect x="188" y="344" width="396" height="66" rx="2" fill="#111219"/>
+      <text x="192" y="357" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">Register, either:</text>
+      <text x="192" y="373" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">POST /register</text>
+      <text x="192" y="389" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">Dynamic Client Registration (DCR)</text>
+      <text x="192" y="405" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">or client_id is a trusted metadata-document URL (CIMD, no call)</text>
+      <path d="M 181,482 H 413" fill="none" stroke="#5b7fff" stroke-width="1.2"/>
+      <path d="M 421,482 H 651" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <circle cx="416" cy="482" r="3" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <rect x="188" y="442" width="286" height="34" rx="2" fill="#16171e"/>
+      <text x="192" y="455" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">GET /authorize?client_id&amp;redirect_uri</text>
+      <text x="192" y="471" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">  &amp;code_challenge (S256)&amp;state&amp;resource</text>
+      <path d="M 651,580 H 421" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <rect x="428" y="508" width="346" height="66" rx="2" fill="#111219"/>
+      <text x="432" y="521" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">“Connect to ABsmartly”: asks for your instance URL</text>
+      <text x="432" y="537" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">(only if absmartly-endpoint was not given)</text>
+      <text x="432" y="553" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">then consent page: Approve / Deny</text>
+      <text x="432" y="569" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">skipped if approved in this browser in the last 30 days</text>
+      <path d="M 651,630 H 421" fill="none" stroke="#F4665C" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="428" y="606" width="162" height="18" rx="2" fill="#16171e"/>
+      <text x="432" y="619" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">Redirect to your instance</text>
+      <path d="M 421,720 H 891" fill="none" stroke="#F4665C" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="428" y="648" width="369" height="66" rx="2" fill="#16171e"/>
+      <text x="432" y="661" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">GET /auth/oauth/authorize</text>
+      <text x="432" y="677" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">client_id=mcp-absmartly-universal</text>
+      <text x="432" y="693" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">redirect_uri=https://mcp.absmartly.com/oauth/callback</text>
+      <text x="432" y="709" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">scope=mcp:access · PKCE S256</text>
+      <path d="M 421,770 H 891" fill="none" stroke="#F4665C" stroke-width="1.2" marker-start="url(#arrow-accent-start)" marker-end="url(#arrow-accent)"/>
+      <rect x="428" y="746" width="223" height="18" rx="2" fill="#111219"/>
+      <text x="432" y="759" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">You sign in (SAML / SSO / password)</text>
+      <path d="M 891,820 H 421" fill="none" stroke="#F4665C" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="428" y="796" width="149" height="18" rx="2" fill="#16171e"/>
+      <text x="432" y="809" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">Redirect back with code</text>
+      <path d="M 421,862 H 651" fill="none" stroke="#F4665C" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="428" y="838" width="221" height="18" rx="2" fill="#16171e"/>
+      <text x="432" y="851" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">GET /oauth/callback?code&amp;state</text>
+      <path d="M 661,928 H 891" fill="none" stroke="#F4665C" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="668" y="888" width="164" height="34" rx="2" fill="#111219"/>
+      <text x="672" y="901" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">POST /auth/oauth/token</text>
+      <text x="672" y="917" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">code + code_verifier</text>
+      <path d="M 891,970 H 661" fill="none" stroke="#F4665C" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-accent)"/>
+      <rect x="668" y="946" width="272" height="18" rx="2" fill="#111219"/>
+      <text x="672" y="959" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">ABsmartly session JWT (stays on the server)</text>
+      <path d="M 661,1020 H 891" fill="none" stroke="#F4665C" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="668" y="996" width="179" height="18" rx="2" fill="#16171e"/>
+      <text x="672" y="1009" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">GET /auth/oauth/userinfo</text>
+      <path d="M 891,1062 H 661" fill="none" stroke="#F4665C" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-accent)"/>
+      <rect x="668" y="1038" width="75" height="18" rx="2" fill="#16171e"/>
+      <text x="672" y="1051" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">email, name</text>
+      <path d="M 651,1128 H 419" fill="none" stroke="#5b7fff" stroke-width="1.2"/>
+      <path d="M 411,1128 H 181" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <circle cx="416" cy="1128" r="3" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <rect x="188" y="1088" width="235" height="34" rx="2" fill="#111219"/>
+      <text x="192" y="1101" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">Redirect to the client’s redirect_uri</text>
+      <text x="192" y="1117" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">?code&amp;state</text>
+      <path d="M 181,1194 H 651" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <rect x="188" y="1154" width="131" height="34" rx="2" fill="#16171e"/>
+      <text x="192" y="1167" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">POST /token</text>
+      <text x="192" y="1183" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">code + code_verifier</text>
+      <path d="M 651,1236 H 181" fill="none" stroke="#5b7fff" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-link)"/>
+      <rect x="188" y="1212" width="303" height="18" rx="2" fill="#16171e"/>
+      <text x="192" y="1225" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">MCP access token (1 h) + refresh token (30 days)</text>
+      <path d="M 181,1302 H 651" fill="none" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <rect x="188" y="1262" width="233" height="34" rx="2" fill="#111219"/>
+      <text x="192" y="1275" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">POST /mcp</text>
+      <text x="192" y="1291" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">Authorization: Bearer &lt;MCP token&gt;</text>
+      <path d="M 661,1368 H 891" fill="none" stroke="#F4665C" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="668" y="1328" width="226" height="34" rx="2" fill="#16171e"/>
+      <text x="672" y="1341" fill="#f5f5f4" font-size="11.5" font-weight="500" font-family="'Geist Mono', monospace">/v1/… API calls</text>
+      <text x="672" y="1357" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace">Authorization: JWT &lt;session JWT&gt;</text>
+      <!-- Step numbers -->
+      <circle cx="36" cy="137" r="11" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <text x="36" y="141" fill="#5b7fff" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">1</text>
+      <circle cx="36" cy="211" r="11" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <text x="36" y="215" fill="#5b7fff" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">2</text>
+      <circle cx="36" cy="293" r="11" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <text x="36" y="297" fill="#5b7fff" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">3</text>
+      <circle cx="36" cy="383" r="11" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <text x="36" y="387" fill="#5b7fff" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">4</text>
+      <circle cx="36" cy="465" r="11" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <text x="36" y="469" fill="#5b7fff" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">5</text>
+      <circle cx="36" cy="547" r="11" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <text x="36" y="551" fill="#5b7fff" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">6</text>
+      <circle cx="36" cy="666" r="11" fill="#111219" stroke="#F4665C" stroke-width="1.2"/>
+      <text x="36" y="670" fill="#F4665C" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">7</text>
+      <circle cx="36" cy="761" r="11" fill="#111219" stroke="#F4665C" stroke-width="1.2"/>
+      <text x="36" y="765" fill="#F4665C" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">8</text>
+      <circle cx="36" cy="832" r="11" fill="#111219" stroke="#F4665C" stroke-width="1.2"/>
+      <text x="36" y="836" fill="#F4665C" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">9</text>
+      <circle cx="36" cy="932" r="11" fill="#111219" stroke="#F4665C" stroke-width="1.2"/>
+      <text x="36" y="936" fill="#F4665C" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">10</text>
+      <circle cx="36" cy="1032" r="11" fill="#111219" stroke="#F4665C" stroke-width="1.2"/>
+      <text x="36" y="1036" fill="#F4665C" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">11</text>
+      <circle cx="36" cy="1111" r="11" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <text x="36" y="1115" fill="#5b7fff" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">12</text>
+      <circle cx="36" cy="1198" r="11" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <text x="36" y="1202" fill="#5b7fff" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">13</text>
+      <circle cx="36" cy="1285" r="11" fill="#111219" stroke="#5b7fff" stroke-width="1.2"/>
+      <text x="36" y="1289" fill="#5b7fff" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">14</text>
+      <circle cx="36" cy="1351" r="11" fill="#111219" stroke="#F4665C" stroke-width="1.2"/>
+      <text x="36" y="1355" fill="#F4665C" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">15</text>
+      <!-- Actors -->
+      <rect x="74" y="24" width="204" height="56" rx="6" fill="#111219"/>
+      <rect x="74" y="24" width="204" height="56" rx="6" fill="#ffffff" fill-opacity="0.04" stroke="#f5f5f4" stroke-width="1"/>
+      <text x="176" y="48" fill="#f5f5f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">MCP client</text>
+      <text x="176" y="66" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">Claude · Cursor · VS Code</text>
+      <rect x="316" y="24" width="200" height="56" rx="6" fill="#111219"/>
+      <rect x="316" y="24" width="200" height="56" rx="6" fill="rgba(146,150,166,0.10)" stroke="#6f7487" stroke-width="1"/>
+      <text x="416" y="48" fill="#f5f5f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Browser</text>
+      <text x="416" y="66" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">you</text>
+      <rect x="556" y="24" width="200" height="56" rx="6" fill="#111219"/>
+      <rect x="556" y="24" width="200" height="56" rx="6" fill="rgba(91,127,255,0.12)" stroke="#5b7fff" stroke-width="1"/>
+      <text x="656" y="48" fill="#f5f5f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">mcp.absmartly.com</text>
+      <text x="656" y="66" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">hosted MCP server</text>
+      <rect x="790" y="24" width="212" height="56" rx="6" fill="#111219"/>
+      <rect x="790" y="24" width="212" height="56" rx="6" fill="rgba(244,102,92,0.10)" stroke="#F4665C" stroke-width="1"/>
+      <text x="896" y="48" fill="#f5f5f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Your ABsmartly instance</text>
+      <text x="896" y="66" fill="#9296a6" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">your-company.absmartly.com</text>
+      <!-- Legend -->
+      <line x1="16" y1="1412" x2="1024" y2="1412" stroke="rgba(245,245,244,0.10)" stroke-width="0.8"/>
+      <text x="24" y="1432" fill="#9296a6" font-size="10" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+      <path d="M 112,1428 H 140" stroke="#5b7fff" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <text x="150" y="1432" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">Client ↔ MCP server leg</text>
+      <path d="M 326,1428 H 354" stroke="#F4665C" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <text x="364" y="1432" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">MCP server ↔ your instance leg</text>
+      <path d="M 585,1428 H 613" stroke="#5b7fff" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-link)"/>
+      <text x="623" y="1432" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">Response</text>
+      <circle cx="706" cy="1428" r="3" fill="#111219" stroke="#9296a6" stroke-width="1.2"/>
+      <text x="716" y="1432" fill="#9296a6" font-size="11.5" font-family="'Geist', sans-serif">redirect through the browser</text>
+      <text x="24" y="1472" fill="#9296a6" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">On refresh, the MCP server re-checks your ABsmartly session via <tspan font-family="'Geist Mono', monospace" font-style="normal" font-size="11.5">/auth/oauth/userinfo</tspan>;</text>
+      <text x="24" y="1488" fill="#9296a6" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">if it has ended you sign in again.</text>
+</svg>
