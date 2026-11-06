@@ -7,12 +7,16 @@ sidebar_position: 4
 
 The ABsmartly MCP server supports two authentication methods. Both are
 configured per client — there are no server-side secrets, so credentials are
-always provided by your MCP client and isolated per connection.
+always provided by your MCP client and isolated per connection. Your
+instance's `/mcp` endpoint can also accept
+[federated OIDC tokens](#federated-oidc-tokens-eg-microsoft-entra-id), for
+example from Microsoft Entra ID, sent by your own backend applications.
 
 | Method | Best for | How it works |
 | --- | --- | --- |
 | **API Key** | Programmatic access, CI/CD, headless agents | Pass the key in HTTP headers or via the URL |
 | **OAuth** | Interactive use in Claude Desktop, Cursor, the web, etc. | Browser-based login via your ABsmartly SAML/SSO or password |
+| **Federated OIDC token** | Your own backend agent acting for users signed in to your identity provider (e.g. Microsoft Entra ID) | Your backend sends an access token from your identity provider as a `Bearer` token (enabled on request) |
 
 ## API key
 
@@ -97,6 +101,24 @@ Most MCP clients are accepted automatically, either through a trusted client
 metadata document or through dynamic client registration with an allowlisted
 redirect URI. If your client is rejected, use an API key instead, or see
 [Your client isn't on the list?](./oauth-clients#your-client-isnt-on-the-list).
+
+## Federated OIDC tokens (e.g. Microsoft Entra ID)
+
+If you run your own backend agent or application for users who are signed in
+to your OpenID Connect identity provider, it can call your instance's `/mcp`
+endpoint with an access token issued by that provider for ABsmartly, obtained
+for example through the On-Behalf-Of flow or token exchange. Each call acts as
+the matching ABsmartly user, with that user's permissions. This is enabled per
+instance by ABsmartly support.
+
+For `/mcp`, the token must carry the MCP scope, by convention `mcp.access`.
+Federated tokens work only on your instance's own `/mcp` endpoint, not on the
+hosted server at `mcp.absmartly.com`. The same kind of token can also be
+enabled for direct REST API calls, with a separate scope.
+
+- [Federated OIDC access tokens](/docs/APIs-and-SDKs/Federated-Authentication/federated-oidc-tokens) — how it works, the
+  token requirements, calling `/mcp` and `/v1`, and the errors
+- [Microsoft Entra ID](/docs/APIs-and-SDKs/Federated-Authentication/microsoft-entra-id) — step-by-step setup for Entra ID
 
 ## Local stdio (CLI credentials)
 
