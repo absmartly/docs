@@ -31,13 +31,33 @@ function render(template, vars) {
     });
 }
 
-function configFrom(template, vars) {
+// Mirrors the browser bundle's `absmartly` global: an SDK class whose
+// createContext returns a Context that exposes a ready() promise.
+function fakeAbsmartly() {
+  const calls = { sdkOptions: null, contextParams: null, context: null };
+  class SDK {
+    constructor(options) {
+      calls.sdkOptions = options;
+    }
+    createContext(params) {
+      calls.contextParams = params;
+      calls.context = { ready: () => Promise.resolve() };
+      return calls.context;
+    }
+  }
+  return { absmartly: { SDK }, calls };
+}
+
+async function runSnippet(template, vars) {
   const html = render(template, vars);
-  const script = html.match(/<script>([\s\S]*?window\.absmartlyConfig[\s\S]*?)<\/script>/);
-  assert.ok(script, 'absmartlyConfig <script> block not found');
-  const sandbox = { window: {} };
-  vm.runInNewContext(script[1], sandbox);
-  return sandbox.window.absmartlyConfig;
+  const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  assert.strictEqual(scripts.length, 2, 'expected config and initialization <script> blocks');
+  const { absmartly, calls } = fakeAbsmartly();
+  const window = {};
+  const sandbox = vm.createContext({ window, absmartly });
+  for (const script of scripts) vm.runInContext(script, sandbox);
+  await calls.context.ready();
+  return { config: window.absmartlyConfig, window, calls };
 }
 
 const template = fs.readFileSync(SNIPPET, 'utf8');
@@ -56,17 +76,27 @@ const cases = [
   },
 ];
 
-let failed = 0;
-for (const { name, vars, expected } of cases) {
-  try {
-    const config = configFrom(template, vars);
-    assert.strictEqual(config.application, hostile);
-    assert.deepStrictEqual({ ...config.units }, expected);
-    console.log(`✓ ${name}`);
-  } catch (err) {
-    failed++;
-    console.error(`✗ ${name}: ${err.message}`);
+(async () => {
+  let failed = 0;
+  for (const { name, vars, expected } of cases) {
+    try {
+      const { config, window, calls } = await runSnippet(template, vars);
+      assert.strictEqual(config.application, hostile);
+      assert.deepStrictEqual({ ...config.units }, expected);
+      assert.deepStrictEqual({ ...calls.sdkOptions }, {
+        endpoint: config.endpoint,
+        apiKey: config.apiKey,
+        application: config.application,
+        environment: config.environment,
+      });
+      assert.strictEqual(calls.contextParams.units, config.units);
+      assert.strictEqual(window.absmartlyContext, calls.context);
+      console.log(`✓ ${name}`);
+    } catch (err) {
+      failed++;
+      console.error(`✗ ${name}: ${err.message}`);
+    }
   }
-}
 
-process.exit(failed ? 1 : 0);
+  process.exit(failed ? 1 : 0);
+})();
