@@ -16,7 +16,7 @@ class CustomEventLogger extends EventLogger {
         println("Context refreshed")
       case "publish" =>
         println("Events published")
-      case "close" =>
+      case "finalize" =>
         println("Context finalized")
       case _ =>
         println(s"Unknown event: $eventType")

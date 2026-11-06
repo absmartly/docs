@@ -1,1 +1,1 @@
-context.publish()
+context.publish().join()
