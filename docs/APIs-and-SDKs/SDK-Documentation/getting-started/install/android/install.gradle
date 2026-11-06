@@ -1,5 +1,3 @@
 dependencies {
-    implementation 'com.absmartly.sdk:android-sdk:{VERSION}'
-    // The Java SDK provides the classes used to initialize and use the SDK
-    implementation 'com.absmartly.sdk:core-api:{JAVA_SDK_VERSION}'
+    implementation 'com.absmartly.sdk:core-api:{VERSION}'
 }

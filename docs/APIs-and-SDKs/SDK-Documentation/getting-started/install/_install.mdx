@@ -298,16 +298,34 @@ To install the ABSmartly SDK, place the following in your `pubspec.yaml` and rep
 <TabItem value="android" label="Android">
 
 :::info Compatibility
-The ABsmartly Android SDK is compatible with Android 4.4 and later (API level 19+).
+Android applications use the ABsmartly [Java SDK](https://github.com/absmartly/java-sdk)
+(`com.absmartly.sdk:core-api`) directly. It is compatible with Android 4.4 and
+later (API level 19+).
+
+The `android.permission.INTERNET` permission is required. To add this permission
+to your application ensure the following line is present in the
+`AndroidManifest.xml` file:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+```
 :::
 
 **Gradle**
 
-The Android SDK uses the [Java SDK](https://github.com/absmartly/java-sdk) for
-its API, so add both to your `build.gradle`, replacing \{VERSION\} and
-\{JAVA_SDK_VERSION\} with the latest versions available in MavenCentral.
+Place the following in your `build.gradle` and replace \{VERSION\} with the
+latest `core-api` version available in MavenCentral.
 
 <CodeBlock language="gradle">{AndroidInstall}</CodeBlock>
+
+:::caution Android 6.0 or earlier
+When targeting Android 6.0 or earlier, the default Java Security
+Provider will not work.
+Using <a href="https://github.com/google/conscrypt" target="_blank">Conscrypt</a>
+is recommended.
+Follow <a href="https://github.com/google/conscrypt/blob/master/README.md" target="_blank">these instructions</a>
+to install it as dependency.
+:::
 
 </TabItem>
 
