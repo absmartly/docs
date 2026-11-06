@@ -6,13 +6,17 @@ sidebar_position: 6
 
 ## Overview
 
-A `Goal Retention` metric measures how many users return to complete a goal again after a defined period of time.
+A `Goal Retention` metric measures how many users come back to complete a goal at or after a defined period of time has passed since a reference point.
 It tells you whether users continue performing the same action after a delay, rather than only measuring their initial behavior.
 
-You can track retention either:
+The reference point is set with the `Retention Time Reference` and can be either:
 
-- from the moment a user is first exposed to the experiment, or
-- from the moment the user first completes the goal itself
+- **First exposure**: the moment the user is first exposed to the experiment. The user does not need to have completed the goal before.
+A user is retained if they complete the goal at or after `first exposure + retention period`.
+- **First achievement**: the moment the user first completes the goal. Only users who have completed the goal at least once can be retained.
+A user is retained if they complete the goal again at or after `first achievement + retention period`.
+
+The retention period is a minimum delay, not a window: any matching goal event from that point onwards counts, up to the end of the experiment's analysis period.
 
 This makes it possible to measure longer-term engagement and whether your experiment influences users’ likelihood to come back and repeat an action.
 
@@ -27,19 +31,20 @@ context.track("purchase", {
 });
 ```
 
-Imagine you want to measure how many users who first purchased **make another purchase within 7 days**.
+Imagine you want to measure how many users **purchase again 7 or more days after their first purchase**.
 
 You can create a `Purchase Retention (7 days)` metric by:
 - Selecting the `purchase` goal
 - Setting the `Retention Period` to 7 days
-- Choosing whether the retention window starts from:
-    - the user's first exposure, or
-    - the user's first purchase
+- Setting the `Retention Time Reference` to the user's first achievement (their first purchase)
 
 Then the metric counts users who satisfy:
-- they completed the initial purchase
-- and they completed another purchase after 7 days, within the configured retention window
+- they completed a first purchase
+- and they completed another purchase at least 7 days after that first purchase
 
+If you set the `Retention Time Reference` to the user's first exposure instead, the metric counts users who
+made a purchase at least 7 days after they were first exposed to the experiment. No earlier purchase is needed:
+a user whose only purchase happens 10 days after exposure is retained, while a user who only purchased 2 days after exposure is not.
 
 :::caution
 If your metric uses [CUPED](../variance-reduction-cuped), the lookback window must be equal or larger than the retention period.
@@ -47,21 +52,24 @@ If your metric uses [CUPED](../variance-reduction-cuped), the lookback window mu
 
 **More examples**
 
-- `Checkout Recovery (24 hours)`:
-Users who returned to complete a purchase within 24 hours after first adding to cart.
+- `Checkout Return (24 hours)`:
+Users who completed a purchase 24 hours or more after their first exposure to the experiment.
 
 - `Content Return (3 days)`:
-Users who read an article again within 3 days after their first reading.
+Users who read an article again 3 or more days after their first reading.
 
 - `Subscription Renewal (30 days)`:
-Users who returned to perform a renewal action after a 30-day cycle
+Users who performed a renewal action again 30 or more days after their first renewal.
 
 ## Good to know
 
+- A user who only returns before the retention period has elapsed is not counted as retained.
+- Retention can only be observed while the experiment is running. Users exposed close to the end of the experiment have less time to qualify,
+so long retention periods need experiments that run well beyond the retention period.
 - Great for measuring long-term impact rather than immediate conversions.
 - Helps identify behaviors such as repeat purchases, content revisits, subscription renewals, or delayed engagement.
 - The metric counts users, not events — a user either meets retention criteria or does not.
-- Filters on the goal event apply before evaluating retention (for example: “retention among users who purchased category ZYZ123”).
+- Filters on the goal event apply to the qualifying event (for example: “retention among users who purchased category ZYZ123”).
 - Retention metrics are often more stable and less noisy than total repeated activations, since each user contributes at most once.
-- Changing the retention period alters the meaning of the metric and will requires a new version.
+- Changing the retention period alters the meaning of the metric and requires a new version.
 - Useful for experiments where the impact is delayed: onboarding experiences, notifications, emails, recommendations, reminders, etc.
