@@ -35,7 +35,6 @@ import ElixirAttributes from "!!raw-loader!./elixir/setAttributes.ex";
 import DartAttributes from "!!raw-loader!./dart/setAttributes.dart";
 import RustAttributes from "!!raw-loader!./rust/setAttributes.rs";
 import LiquidAttributes from "!!raw-loader!./liquid/setAttributes.rb";
-import Vue3Attributes from "!!raw-loader!./vue3/setAttributes.js";
 
 Attributes are used to pass meta-data about the user and/or the request. They
 can be used later in the Web Console to create segments or audiences. They can
@@ -98,7 +97,16 @@ component.
 </TabItem>
 
 <TabItem value="vue3" label="Vue3">
-<CodeBlock language="javascript">{Vue3Attributes}</CodeBlock>
+
+Attributes can be set in script.
+
+<CodeBlock language="js">{VueSetAttributesScript}</CodeBlock>
+
+Or directly in templates with the `:attributes` property of the `Treatment`
+component.
+
+<CodeBlock language="html">{VueSetAttributesTemplate}</CodeBlock>
+
 </TabItem>
 
 <TabItem value="java" label="Java">

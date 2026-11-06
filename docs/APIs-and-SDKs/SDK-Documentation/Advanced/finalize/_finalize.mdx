@@ -33,7 +33,6 @@ import ElixirFinalize from "!!raw-loader!./elixir/finalize.ex";
 import DartFinalize from "!!raw-loader!./dart/finalize.dart";
 import RustFinalize from "!!raw-loader!./rust/finalize.rs";
 import LiquidFinalize from "!!raw-loader!./liquid/finalize.rb";
-import Vue3Finalize from "!!raw-loader!./vue3/finalize.js";
 
 Finalizing (or closing) a context publishes any unpublished events before 
 "sealing" it. Any `track` calls after a context has been finalized will throw 
@@ -115,11 +114,11 @@ throwing an error if any method that could generate an event is called.
 
 <TabItem value="vue3" label="Vue3">
 
-The `finalize()` method will ensure all events have been published to the
+The `finalize()` method will ensure all events have been published to the 
 ABsmartly collector, like `publish()`, and will also "seal" the context,
 throwing an error if any method that could generate an event is called.
 
-<CodeBlock language="javascript">{Vue3Finalize}</CodeBlock>
+<CodeBlock language="js">{VueFinalize}</CodeBlock>
 
 </TabItem>
 
