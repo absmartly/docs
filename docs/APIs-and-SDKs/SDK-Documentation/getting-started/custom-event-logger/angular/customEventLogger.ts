@@ -7,10 +7,10 @@ provideABSmartly({
   eventLogger: (context, eventName, data) => {
     switch (eventName) {
       case 'exposure':
-        console.log('Exposed to experiment:', data.name);
+        console.log('Exposed to experiment:', (data as { name: string }).name);
         break;
       case 'goal':
-        console.log('Goal tracked:', data.name);
+        console.log('Goal tracked:', (data as { name: string }).name);
         break;
       case 'error':
         console.error('SDK error:', data);
