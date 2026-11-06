@@ -473,33 +473,11 @@ final sdk = ABSmartly(sdkConfig);
 
 **SDK Options**
 
-| Config      | Type                                 | Required? |                                Default                                | Description                                                                                                                                                                   |
-| :---------- | :----------------------------------- | :-------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| endpoint    | `&str` or `String`                   |  &#9989;  |                              `undefined`                              | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
-| api_key     | `&str` or `String`                   |  &#9989;  |                              `undefined`                              | Your API key which can be found on the Web Console.                                                                                                                           |
-| environment | `&str` or `String`                   |  &#9989;  |                              `undefined`                              | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
-| application | `&str` or `String`                   |  &#9989;  |                              `undefined`                              | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
-| retries     | `u32`                                | &#10060;  |                                  `5`                                  | The number of retries before the SDK stops trying to connect.                                                                                                                 |
-| timeout_ms  | `u64`                                | &#10060;  |                                `3000`                                 | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
-| agent       | `String`                             | &#10060;  |                                `None`                                 | Custom user agent string for HTTP requests.                                                                                                                                   |
+| Config | Type             | Required? | Default | Description                                  |
+| :----- | :--------------- | :-------: | :-----: | :------------------------------------------- |
+| agent  | `Option<String>` | &#10060;  | `None`  | Custom user agent string for the SDK.        |
 
-**Builder Pattern**
-
-The Rust SDK supports a fluent builder pattern for optional configuration:
-
-```rust
-let config = SDKConfig::new(
-    "https://your-company.absmartly.io/v1",
-    "YOUR-API-KEY",
-    "website",
-    "development",
-)
-.with_timeout(5000)
-.with_retries(3)
-.with_agent("my-app/1.0");
-
-let sdk = ABsmartly::new(config)?;
-```
+The Rust SDK 0.1 does not connect to the ABsmartly collector itself, so it takes no endpoint or API key. See [Create a New Context Request](#create-a-new-context-request) for how to provide context data.
 
 </TabItem>
 

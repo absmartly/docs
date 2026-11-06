@@ -121,7 +121,6 @@ import RustSync from "!!raw-loader!./rust/sync.rs";
 import RustAsync from "!!raw-loader!./rust/async.rs";
 import RustExtraUnits from "!!raw-loader!./rust/extraUnits.rs";
 import RustRefreshData from "!!raw-loader!./rust/refreshWithFreshData.rs";
-import RustRefreshMethod from "!!raw-loader!./rust/refreshWithRefreshMethod.rs";
 
 import LiquidSync from "!!raw-loader!./liquid/sync.rb";
 import LiquidPrefetched from "!!raw-loader!./liquid/prefetchedData.rb";
@@ -854,11 +853,13 @@ create a new context instead. The `setUnit()` and
 
 <TabItem value="rust" label="Rust">
 
-#### Synchronously
+The Rust SDK 0.1 does not fetch context data itself. Fetch it from the ABsmartly collector API in your application, then create the context with it.
+
+#### With Pre-fetched Data
 
 <CodeBlock language="rust">{RustSync}</CodeBlock>
 
-#### Asynchronously
+#### With Context Options
 
 <CodeBlock language="rust">{RustAsync}</CodeBlock>
 
@@ -869,10 +870,6 @@ create a new context instead. The `setUnit()` and
 #### Refreshing the Context with Fresh Experiment Data
 
 <CodeBlock language="rust">{RustRefreshData}</CodeBlock>
-
-#### Refreshing the Context with the refresh method
-
-<CodeBlock language="rust">{RustRefreshMethod}</CodeBlock>
 
 </TabItem>
 
