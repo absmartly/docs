@@ -1,4 +1,4 @@
-class CustomEventHandler : public absmartly::ContextEventHandler {
+class CustomEventHandler : public absmartly::ContextEventLogger {
 public:
     void handle_event(absmartly::Context& context,
                       const std::string& event_type,
