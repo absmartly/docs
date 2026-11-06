@@ -1,14 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Liquid Snippet Testing Script
- * Renders the Liquid initialize snippet with hostile values and checks that the
- * generated config is valid JavaScript and round-trips those values unchanged.
- *
  * Only the Liquid features used by the snippet are supported:
  * {% comment %}, {% if x %}...{% endif %} and {{ path | json }}.
- *
- * Usage: node test-liquid-snippets.js
  */
 
 const fs = require('fs');
