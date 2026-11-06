@@ -1,26 +1,28 @@
-event_logger = ->(context, event_name, data) {
-  case event_name
-  when 'exposure'
-    Rails.logger.info "ABsmartly exposure: #{data[:name]}"
-  when 'goal'
-    Rails.logger.info "ABsmartly goal: #{data[:name]}"
-  when 'error'
-    Rails.logger.error "ABsmartly error: #{data}"
-  when 'ready'
-    Rails.logger.info "ABsmartly context ready"
-  when 'refresh'
-    Rails.logger.info "ABsmartly context refreshed"
-  when 'publish'
-    Rails.logger.info "ABsmartly events published"
-  when 'close'
-    Rails.logger.info "ABsmartly context closed"
+class LiquidEventLogger < ContextEventLogger
+  def handle_event(event, data)
+    case event
+    when EVENT_TYPE::EXPOSURE
+      Rails.logger.info "ABsmartly exposure: #{data.name}"
+    when EVENT_TYPE::GOAL
+      Rails.logger.info "ABsmartly goal: #{data.name}"
+    when EVENT_TYPE::ERROR
+      Rails.logger.error "ABsmartly error: #{data}"
+    when EVENT_TYPE::READY
+      Rails.logger.info "ABsmartly context ready"
+    when EVENT_TYPE::REFRESH
+      Rails.logger.info "ABsmartly context refreshed"
+    when EVENT_TYPE::PUBLISH
+      Rails.logger.info "ABsmartly events published"
+    when EVENT_TYPE::CLOSE
+      Rails.logger.info "ABsmartly context closed"
+    end
   end
-}
+end
 
-sdk = ABSmartly::SDK.new(
-  endpoint: ENV['ABSMARTLY_ENDPOINT'],
-  api_key: ENV['ABSMARTLY_API_KEY'],
-  application: 'my-store',
-  environment: Rails.env,
-  event_logger: event_logger
-)
+Absmartly.configure_client do |config|
+  config.endpoint = ENV['ABSMARTLY_ENDPOINT']
+  config.api_key = ENV['ABSMARTLY_API_KEY']
+  config.application = 'my-store'
+  config.environment = Rails.env
+  config.event_logger = LiquidEventLogger.new
+end

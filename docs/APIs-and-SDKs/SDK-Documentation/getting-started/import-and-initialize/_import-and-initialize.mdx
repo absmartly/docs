@@ -497,17 +497,12 @@ The Rust SDK 0.1 does not connect to the ABsmartly collector itself, so it takes
 
 **Server-Side Rendering**
 
-For Shopify Liquid templates, ABsmartly can be integrated server-side to pre-fetch context data:
+To evaluate experiments in your Liquid templates on the server, wrap a Ruby SDK context in an `ABsmartly::Liquid::Drop` and pass it to the template as `absmartly` (see [Create a New Context Request](#create-a-new-context-request)):
 
-```liquid
-{% comment %}
-  Render the ABsmartly initialization snippet
-  This can be used to embed pre-fetched context data
-{% endcomment %}
-{% render 'absmartly-init',
-  session_id: request.cookie.session_id,
-  customer_id: customer.id
-%}
+```ruby
+require 'absmartly/liquid'
+
+html = Liquid::Template.parse(template_source).render('absmartly' => drop)
 ```
 
 **Using ABsmartly in Templates**
@@ -515,7 +510,9 @@ For Shopify Liquid templates, ABsmartly can be integrated server-side to pre-fet
 Once initialized, you can use ABsmartly treatments in your Liquid templates:
 
 ```liquid
-{% if absmartly.treatment.banner_color == 1 %}
+{% assign banner_variant = 'banner_color' | absmartly_treatment %}
+
+{% if banner_variant == 1 %}
   <div class="banner banner-red">Special Offer!</div>
 {% else %}
   <div class="banner banner-blue">Special Offer!</div>
