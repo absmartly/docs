@@ -63,7 +63,6 @@ import PHPExtraUnits from "!!raw-loader!./php/extraUnits.php";
 import PHPPrefetchedData from "!!raw-loader!./php/prefetchedData.php";
 
 import RubyContext from "!!raw-loader!./ruby/createContext.rb";
-import RubyAsync from "!!raw-loader!./ruby/async.rb";
 import RubyPreFetchedData from "!!raw-loader!./ruby/prefetchedData.rb";
 import RubyExtraUnits from "!!raw-loader!./ruby/extraUnits.rb";
 import RubyExtraUnitsAlt from "!!raw-loader!./ruby/extraUnitsAlt.rb";
@@ -599,15 +598,9 @@ Please note, you cannot override an already set unit type as that would be a cha
 
 <TabItem value="ruby" label="Ruby">
 
-**Create A New Context Synchronously**
+**Create A New Context**
 
 <CodeBlock language="ruby">{RubyContext}</CodeBlock>
-
-**Create A New Context Asynchronously**
-
-`create_context_async` returns immediately and fetches experiment data in a background thread. Call `wait_until_ready` to block until the data is available.
-
-<CodeBlock language="ruby">{RubyAsync}</CodeBlock>
 
 **Create A Context With Prefetched Data**
 
