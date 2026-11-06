@@ -12,10 +12,10 @@
     section-matter "^1.0.0"
     strip-bom-string "^1.0.0"
 
-"@absmartly/api-mocks@1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@absmartly/api-mocks/-/api-mocks-1.0.10.tgz#adf341f28f1cf2270b600ab81923f9b3c10a72c6"
-  integrity sha512-iDwDyvd4DRUxa2VjLNfuIDGaumxz3mCIgAMTJuTH0k7S3KQkjTjCLjedBr61WPahUzhlNLKZjYzV53MkGZEwbw==
+"@absmartly/api-mocks@1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@absmartly/api-mocks/-/api-mocks-1.0.11.tgz#a9c4ff0f3c61ca54ddd93eabbab10f5125a00217"
+  integrity sha512-TadRn2wnTBspGlOFvzZF6uHxPlxO9PM3ffaUKYFPWfPw5k8WlRcJIzac6eVlUS7Sb6k/giZZEucbYIMZy+T2kQ==
   dependencies:
     "@apidevtools/json-schema-ref-parser" "^15.2.2"
     "@faker-js/faker" "^10.2.0"
