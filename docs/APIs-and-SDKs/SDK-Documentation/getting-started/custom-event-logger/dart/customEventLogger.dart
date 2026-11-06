@@ -13,10 +13,7 @@ class CustomEventLogger implements ContextEventLogger {
       case EventType.error:
         print("error: $data");
         break;
-      case EventType.publish:
-      case EventType.ready:
-      case EventType.refresh:
-      case EventType.close:
+      default:
         break;
     }
   }
