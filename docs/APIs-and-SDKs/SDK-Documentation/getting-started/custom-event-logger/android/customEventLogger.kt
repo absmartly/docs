@@ -1,3 +1,7 @@
+import com.absmartly.sdk.*
+import com.absmartly.sdk.json.Exposure
+import com.absmartly.sdk.json.GoalAchievement
+
 class CustomEventLogger : ContextEventLogger {
     override fun handleEvent(context: Context, event: ContextEventLogger.EventType, data: Any?) {
         when (event) {
@@ -20,7 +24,7 @@ class CustomEventLogger : ContextEventLogger {
     }
 }
 
-val sdkConfig = ABsmartlyConfig.create()
+val sdkConfig = ABSmartlyConfig.create()
 sdkConfig.setContextEventLogger(CustomEventLogger())
 
 val contextConfig = ContextConfig.create()
