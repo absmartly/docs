@@ -40,6 +40,7 @@ import LiquidImport from "!!raw-loader!./liquid/initialize.liquid";
 import AngularImport from "!!raw-loader!./angular/import.ts";
 
 import AndroidImport from "!!raw-loader!./android/import.kt";
+import AndroidImportAndroid6 from "!!raw-loader!./android/importAndroid6.kt";
 
 import KotlinImport from "!!raw-loader!./kotlin/import.kt";
 
@@ -541,18 +542,28 @@ Once initialized, you can use ABsmartly treatments in your Liquid templates:
 
 <TabItem value="android" label="Android">
 
+The Android SDK uses the [Java SDK](https://github.com/absmartly/java-sdk) to
+create and use the SDK, so the classes below come from `com.absmartly.sdk`.
+
 <CodeBlock language="kotlin">{AndroidImport}</CodeBlock>
+
+:::caution Android 6.0 or Earlier
+When targeting Android 6.0 or earlier, set the default Java Security Provider
+for SSL to Conscrypt by creating the Client instance as follows:
+
+<CodeBlock language="kotlin">{AndroidImportAndroid6}</CodeBlock>
+:::
 
 **SDK Options**
 
-| Config      | Type                              | Required? |   Default   | Description                                                                                                                                                                   |
-| :---------- | :-------------------------------- | :-------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| endpoint    | `String`                          |  &#9989;  | `null`      | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
-| apiKey      | `String`                          |  &#9989;  | `null`      | Your API key which can be found on the Web Console.                                                                                                                           |
-| environment | `String`                          |  &#9989;  | `null`      | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
-| application | `String`                          |  &#9989;  | `null`      | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
-| retries     | `int`                             | &#10060;  | `5`         | The number of retries before the SDK stops trying to connect.                                                                                                                 |
-| timeout     | `int`                             | &#10060;  | `3000`      | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
+| Config      | Method                                            | Required? | Default | Description                                                                                                                                                                   |
+| :---------- | :------------------------------------------------ | :-------: | :-----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| endpoint    | `ClientConfig.setEndpoint(String)`                |  &#9989;  |  `null` | The URL to your API endpoint. Most commonly `"your-company.absmartly.io"`                                                                                                     |
+| apiKey      | `ClientConfig.setAPIKey(String)`                  |  &#9989;  |  `null` | Your API key which can be found on the Web Console.                                                                                                                           |
+| environment | `ClientConfig.setEnvironment(String)`             |  &#9989;  |  `null` | The environment of the platform where the SDK is installed. Environments are created on the Web Console and should match the available environments in your infrastructure.   |
+| application | `ClientConfig.setApplication(String)`             |  &#9989;  |  `null` | The name of the application where the SDK is installed. Applications are created on the Web Console and should match the applications where your experiments will be running. |
+| retries     | `DefaultHTTPClientConfig.setMaxRetries(int)`      |  &#10060; |   `5`   | The number of retries before the SDK stops trying to connect.                                                                                                                 |
+| timeout     | `DefaultHTTPClientConfig.setConnectTimeout(long)` |  &#10060; |  `3000` | An amount of time, in milliseconds, before the SDK will stop trying to connect.                                                                                               |
 
 </TabItem>
 
