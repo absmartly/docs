@@ -1,0 +1,5 @@
+val contextConfig = ContextConfig.create()
+    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8")
+
+val context = sdk.createContext(contextConfig)
+    .waitUntilReady()

@@ -1,0 +1,3 @@
+dependencies {
+    implementation 'com.absmartly.sdk:core-api:{VERSION}'
+}
