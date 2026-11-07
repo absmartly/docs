@@ -1,0 +1,56 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import JsSystemAttributes from "!!raw-loader!./js/systemAttributes.js";
+
+You can opt-in to automatically include system attributes in every publish
+payload. These attributes provide metadata about the SDK and environment that
+generated the event, which can be useful for debugging and filtering in the Web
+Console.
+
+To enable this, set the `includeSystemAttributes` option to `true` when creating
+the context:
+
+<Tabs groupId="language">
+
+<TabItem value="js" label="Javascript">
+
+<CodeBlock language="js">{JsSystemAttributes}</CodeBlock>
+
+</TabItem>
+
+</Tabs>
+
+When enabled, the following attributes are automatically prepended before any
+user-defined attributes in every publish payload:
+
+| Attribute | Description |
+|:---|---|
+| `sdk_name` | The SDK agent name (e.g. `"absmartly-javascript-sdk"`) |
+| `sdk_version` | The SDK version (e.g. `"1.13.4"`) |
+| `application` | The application name from the SDK configuration |
+| `environment` | The environment from the SDK configuration |
+| `app_version` | The application version, only included if set (number greater than `0` or non-empty string) |
+
+:::note
+The `app_version` attribute is derived from the `application` option passed
+during SDK initialization. To set it, pass `application` as an object instead
+of a string. The version can be a number or a semver string:
+
+```javascript
+const sdk = new absmartly.SDK({
+  // ...
+  application: { name: "your-app", version: "1.2.3" },
+});
+```
+
+If `application` is passed as a plain string, the version defaults to `0` and
+`app_version` will not be included.
+:::
+
+:::info
+System attributes are disabled by default to avoid adding extra data to the
+payload for existing integrations. You must explicitly opt-in by setting
+`includeSystemAttributes: true`.
+:::
