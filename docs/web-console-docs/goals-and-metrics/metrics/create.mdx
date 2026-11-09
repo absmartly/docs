@@ -97,50 +97,60 @@ For example, if your metric measure `conversions achieved 2 weeks after exposure
 
 ### Outliers
 
-Outlier limits help control the influence of extreme metric values. 
-They reduce noise and variance by **capping values that sit outside a defined range to the value of the boundary**. 
+Outlier limits help control the influence of extreme metric values.
+They reduce noise and variance by **capping each participant's metric value to a defined range**.
+The value capped is the participant's value for the metric, for example their total purchase revenue, not the value of each individual event.
+
+Only participants with at least one counted event are capped, and only they are used to work out the limits.
+Participants with no counted events keep a value of 0.
+For `Goal Property` metrics, an event whose property is 0 or missing doesn't count.
+Neither does an event that has been cancelled.
+
+Limits are available for `Goal Count`, `Goal Property`, `Goal Property Unique Count`, `Goal Time To Achievement` and `Goal Activity Period Count` metrics, and for the numerator and denominator of `Ratio` metrics when they use one of these types.
+`Custom SQL` metrics with a **Metric distribution type** of `Continuous` have their own **Outliers limit method**.
 
 You can choose one of four methods to manage outliers:
 
 :::caution
-Outlier limits can reduce variance and make metrics more stable, but they also change the underlying data. 
-When used incorrectly, they may hide meaningful effects or introduce bias in experiment results. 
-Always ensure your limits reflect real-world constraints rather than engineering convenience, and avoid tuning them in response to specific experiment outcomes. 
+Outlier limits can reduce variance and make metrics more stable, but they also change the underlying data.
+When used incorrectly, they may hide meaningful effects or introduce bias in experiment results.
+Always ensure your limits reflect real-world constraints rather than engineering convenience, and avoid tuning them in response to specific experiment outcomes.
 :::
 
 #### Unlimited
 
-This is the default. This option applies no outlier treatment. All values are kept exactly as they appear in the event data.
+This is the default. This option applies no outlier treatment. All values are kept exactly as they are.
 Use this option when you want full fidelity of raw data and are not concerned about extreme values skewing results.
 
 #### Quantile
 
-This method filters values based on chosen quantiles. 
-You define a lower quantile and an upper quantile (for example, 0.05 and 0.95). 
+This method caps values based on chosen quantiles.
+You enter a **Lower limit quantile** and an **Upper limit quantile** as percentages between 0 and 100 (for example, 5 and 95). At least one of them is required. If you enter both, the lower must be less than the upper.
 Values below the lower quantile or above the upper quantile are capped to the limit.
 
 :::info
 Outliers capping is done using the full experiment population, so all variants have the same capping limits.
+The limits only apply once more than 50 participants have at least one matching event.
 :::
 
-How it behaves with the sample purchase event:
+How it behaves with the sample purchase event, for a metric summing `price`:
 ```
 If you set:
-- Lower quantile: `0.05`
-- Upper quantile: `0.95`
+- Lower limit quantile: 5
+- Upper limit quantile: 95
 
 Then:
-- If `1000` falls between the 5th and 95th percentile of all purchase prices, it is kept as it is.
-- If `1000` is higher than the 95th percentile (for example if most prices are between 10 and 300), 
-it is capped to the upper quantile boundary's value.
+- A participant whose total spend falls between the 5th and 95th percentile keeps their value.
+- A participant whose total spend is above the 95th percentile (for example 1000, when most participants spend between 10 and 300)
+is capped to the 95th percentile value.
 ```
 
-Quantile filtering is useful when your data contains long tails or rare extreme highs.
+Quantile limits are useful when your data contains long tails or rare extreme highs.
 
 #### Standard Deviation
 
-This method caps values based on the mean and standard deviation of all observed values. 
-You enter multipliers that determine how far from the mean the lower and upper limits should be.
+This method caps values based on the mean and standard deviation of participants' values.
+You enter a **Lower limit multiplier** and an **Upper limit multiplier**. Both are required and must be 0 or more.
 
 The limits are calculated as:
 
@@ -153,57 +163,49 @@ Any value outside these limits is capped to the value of the boundary.
 
 :::info
 Outliers capping is done using the full experiment population so all variants have the same capping limits.
+The limits only apply once more than 50 participants have at least one matching event.
 :::
 
-Example with the sample purchase event:
-Suppose across all purchases:
+Example with the sample purchase event, for a metric summing `price`:
 
 ```
-- mean price = 200
+Suppose across participants who purchased:
+- mean total spend = 200
 - standard deviation = 150
 
 If you set:
-- Lower multiplier = 1
-- Upper multiplier = 2
+- Lower limit multiplier = 1
+- Upper limit multiplier = 2
 
 Then:
 - Lower limit = 200 − (150 × 1) = 50
 - Upper limit = 200 + (150 × 2) = 500
 
-Our event's price:
-- 1000 > 500 → it is capped to 500.
-
-Setting multipliers to 0 effectively disables trimming on that side:
-- Lower multiplier 0 → lower limit = mean → keeps all values below the mean
-- Upper multiplier 0 → upper limit = mean → keeps all values above the mean
-
-Setting both to 0 is the equivalent of setting no outlier limit.
+A participant who spent 1000 in total:
+- 1000 > 500 → capped to 500.
 ```
+
+A multiplier of 0 puts that limit at the mean, so every value on that side of the mean is capped to the mean.
 
 Standard deviation limits are helpful when extreme values are several standard deviations from the average.
 
 #### Fixed
 
-This option lets you define explicit numeric boundaries. Any value below the lower limit or above the upper limit **is removed**.
+This option lets you define explicit numeric boundaries with a **Lower limit value** and an **Upper limit value**. Both are required, and the lower limit must be less than the upper limit.
+Any value below the lower limit or above the upper limit is capped to the limit.
 
-Example with the sample purchase event:
+Example with the sample purchase event, for a metric summing `price`:
 
 ```
-- Lower limit value: −1000
-- Upper limit value: 1000
-
-Then:
-- price = 1000 → exactly at the upper limit → kept
-
-If you change to:
 - Lower limit value: 0
 - Upper limit value: 500
 
 Then:
-- price = 1000 → above 500 → capped to 500
+- A participant who spent 1000 in total → above 500 → capped to 500
+- A participant who spent 300 in total → kept
 ```
 
-Fixed limits are useful when you already know the acceptable bounds for your metric (e.g., price can never be negative or above a business-defined maximum).
+Fixed limits are useful when you already know the acceptable bounds for your metric (e.g., total spend can never be negative or above a business-defined maximum).
 
 ### Goal Relations
 

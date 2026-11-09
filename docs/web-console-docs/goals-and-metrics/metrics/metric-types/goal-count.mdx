@@ -6,29 +6,73 @@ sidebar_position: 1
 
 ## Overview
 
-Counts how many times a specific goal event is triggered, even if the same user fires it multiple times.
+A `Goal Count` metric answers the question: **how many times did each user do this?**
 
-## Examples
+Every goal event counts. A user who buys three times adds 3, a user who buys once adds 1. This makes it a measure of **volume**, not of how many users converted.
+
+## How it's calculated
+
+Say you track a `purchase` goal and create a `Goal Count` metric on it.
 
 ```javascript
-context.track("purchase", {
-  price: 1000,
-  order_number: "0000982532",
-  product_id: "ABC123",
-  category_id: "ZYZ123"
-});
+context.track("purchase", { category_id: "ZYZ123" });
 ```
 
-Given a `purchase` event shown above, a `Total purchases` metric could be created. 
-This metric would simply **count all the purchases** made by participants in the experiment.
+Three users in the same variant are exposed to the experiment:
 
-Using a metric's filter it is also possible to create `Total purchases Category ZYZ123` from such events.
-In this case, the metric would count all the purchases of product from category ZYZ123.
+| User | `purchase` events after exposure | Value |
+|------|----------------------------------|-------|
+| Ana  | 2                                | **2** |
+| Ben  | 9                                | **9** |
+| Cara | none                             | **0** |
+
+In the experiment results, this variant would show a **Value** of 11 (2 + 9 + 0 purchases in total) and a **Mean** of 11 / 3 = **3.6667** purchases per participant.
+
+Compare that with a [`Goal Unique Count`](./goal-unique-count) on the same goal, which only asks whether each user purchased: Ana 1, Ben 1 and Cara 0, so a **Value** of 2 and a **Mean** of **66.67%**. The unique count says two out of three users bought something. The goal count says how much buying happened, and most of it came from Ben.
+
+## Creating the metric
+
+When [creating a metric](../create), choose `Goal Count` as the **Metric type**, then:
+
+1. Select the **Goal** you want to count, for example `purchase`.
+2. Optionally set an **Outliers limit method** to cap heavy users (see below).
+3. Optionally add **Metric property filters** to count only matching events, for example purchases where `category_id` is `ZYZ123`.
+4. Optionally use **Add time filters** to count only events within a time range relative to exposure.
+5. Optionally use **Add cancellation** under **Goal relations** so that cancelled events stop counting. The goal and the cancellation event need a shared key property, such as an order number. See [Cancellation](../create#cancellation).
+
+The goal is the only required field. `Add refund` and `Add replacement` are not available for this metric type.
+
+## Capping heavy users
+
+A few very active users can dominate a count and make the results noisy. [Outlier limits](../create#outliers) cap each user's total count, not individual events.
+
+In the example above, with the `Fixed` method, a **Lower limit value** of 0 and an **Upper limit value** of 5:
+
+| User | Purchases | Value after capping |
+|------|-----------|---------------------|
+| Ana  | 2         | **2**               |
+| Ben  | 9         | **5**               |
+| Cara | none      | **0**               |
+
+The results would show a **Value** of 7 and a **Mean** of 7 / 3 = **2.3333**. Value and Mean show the capped numbers.
+
+Users with no events are never raised to the lower limit. They stay at 0.
+
+## Reading the results
+
+In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the total number of events across all participants in the variant, and **Mean** is that total divided by the number of participants. The impact is calculated on the Mean, as a continuous metric. If the metric uses CUPED, both Value and Mean are CUPED-adjusted. Value is still shown rounded to a whole number.
+
+A change in the Mean can come from more users doing the action, or from the same users doing it more often. To tell those apart, look at a `Goal Unique Count` on the same goal next to it.
+
+## More examples
+
+- `Total purchases`: goal `purchase`. How many orders users placed.
+- `Purchases in category ZYZ123`: goal `purchase` with a property filter on `category_id`. How many orders in one category.
+- `Searches`: goal `search`. How often users searched.
+- `Purchases per visit`: a [Ratio](./ratio) metric with a `Goal Count` of `purchase` as the numerator and a `Goal Count` of `session_start` as the denominator.
 
 ## Good to know
 
-What you need to know about `Goal Count` metrics. 
-
-- Good for measuring total activity volume.
-- Simple to understand and compute.
-- Can be skewed by heavy users who trigger the event repeatedly.
+- Good for **volume** questions: did users buy, search or share more often?
+- Sensitive to heavy users. Consider an outlier limit if a small group triggers the goal far more than everyone else.
+- Each cancelled event takes 1 off the user's count. If Ana cancels one of her two purchases, her value drops to 1. A `Goal Unique Count` would still count her as 1 until both were cancelled.
