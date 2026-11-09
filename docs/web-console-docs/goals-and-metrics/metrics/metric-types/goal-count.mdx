@@ -38,7 +38,7 @@ When [creating a metric](../create), choose `Goal Count` as the **Metric type**,
 2. Optionally set an **Outliers limit method** to cap heavy users (see below).
 3. Optionally add **Metric property filters** to count only matching events, for example purchases where `category_id` is `ZYZ123`.
 4. Optionally use **Add time filters** to count only events within a time range relative to exposure.
-5. Optionally use **Add cancellation** under **Goal relations** so that cancelled events stop counting.
+5. Optionally use **Add cancellation** under **Goal relations** so that cancelled events stop counting. The goal and the cancellation event need a shared key property, such as an order number. See [Cancellation](../create#cancellation).
 
 The goal is the only required field. `Add refund` and `Add replacement` are not available for this metric type.
 
