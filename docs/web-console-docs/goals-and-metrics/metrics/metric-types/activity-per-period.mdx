@@ -44,13 +44,15 @@ The activity interval can be at most 4 weeks (28 days, or 672 hours).
 
 ## How periods are defined
 
-Periods are currently **fixed time slots in UTC**, the same for every user. For example, a `1 day` interval means UTC calendar days, from 00:00 to 24:00 UTC.
+Periods are currently **fixed time slots in UTC**, the same for every user. For example, a `1 day` interval means UTC calendar days, from 00:00 to 24:00 UTC. A `1 week` interval currently runs from Thursday 00:00 UTC to the following Thursday, so a goal event on Wednesday and another on Thursday count as two active weeks.
 
 Because the slots don't start at the user's exposure, a user's first period can be partly over by the time they are exposed. With a 1-day interval, a user exposed at 23:50 UTC who triggers the goal at 23:55 and again at 00:05 has two active days, even though only ten minutes passed.
 
 ## Reading the results
 
-In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the total number of active periods across all participants in the variant, and **Mean** is that total divided by the number of participants. The impact is calculated on the Mean, as with other continuous metrics such as `Goal Count`. If the metric uses CUPED, the Mean shown is the CUPED-adjusted mean.
+In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the total number of active periods across all participants in the variant, and **Mean** is that total divided by the number of participants. The impact is calculated on the Mean, as with other continuous metrics such as `Goal Count`.
+
+If CUPED is active for the metric, both Value and Mean are CUPED-adjusted, so they won't match the raw count of active periods and can be fractional. Configuring CUPED isn't always enough: if the pre-exposure covariate doesn't correlate well enough with the metric, or the adjustment wouldn't reduce variance, ABsmartly falls back to the unadjusted values.
 
 Because the value counts periods rather than dividing by them, it grows the longer users stay in the experiment. A user exposed on day one has more chances to be active than a user exposed yesterday. That's fine for comparing variants, since both groups have the same mix of exposure times, but don't read the raw number as "days active per week".
 
