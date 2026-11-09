@@ -44,7 +44,7 @@ The activity interval can be at most 4 weeks (28 days, or 672 hours).
 
 ## How periods are defined
 
-Periods are currently **fixed time slots in UTC**, the same for every user. For example, a `1 day` interval means UTC calendar days, from 00:00 to 24:00 UTC. A `1 week` interval currently runs from Thursday 00:00 UTC to the following Thursday, so a goal event on Wednesday and another on Thursday count as two active weeks.
+Periods are currently **fixed time slots in UTC**, the same for every user. For example, a `1 day` interval means UTC calendar days, from 00:00 to 24:00 UTC. A `1 week` interval currently runs from Thursday 00:00 UTC to the following Thursday, so a goal event on Wednesday and another on Thursday count as two active weeks. Longer intervals are counted from 1 January 1970 UTC, so a `2 weeks` interval starts on alternate Thursdays, and an hourly interval that doesn't divide a day evenly, such as `5 hours`, won't always start at midnight.
 
 Because the slots don't start at the user's exposure, a user's first period can be partly over by the time they are exposed. With a 1-day interval, a user exposed at 23:50 UTC who triggers the goal at 23:55 and again at 00:05 has two active days, even though only ten minutes passed.
 
