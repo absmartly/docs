@@ -2,26 +2,121 @@
 sidebar_position: 4
 ---
 
-# Property
+# Goal Property
 
 ## Overview
 
-Aggregates a numerical value included in the event payload, such as price, quantity, or duration.
+A `Goal Property` metric answers the question: **how much of this did each user generate?**
 
-## Examples
+You pick a goal and one of its numeric properties, such as `price`, `quantity` or `duration`. For each user, ABsmartly adds up that property across all of their goal events. Two orders of 40 and 25 give that user a value of 65.
+
+This is the metric type behind revenue, items sold, time watched and any other amount carried in the event. It's also the only type that supports [refunds and replacements](#refunds-and-replacements), including when it's used as the numerator or denominator of a [Ratio](./ratio). That lets you measure net revenue rather than gross.
+
+## How it's calculated
+
+Say you track a `purchase` goal with the order's price, and create a metric on the `price` property.
 
 ```javascript
 context.track("purchase", {
-  price: 1000,
-  order_number: "0000982532",
-  product_id: "ABC123",
-  category_id: "ZYZ123"
+  order_id: "A1",
+  price: 40
 });
 ```
 
-A common example is `Revenue`, which would sum the `price` for all `purchase` events.
+Three users are exposed to the experiment:
+
+| User | `purchase` events after exposure | Value |
+|------|----------------------------------|-------|
+| Ana  | price 40, price 25               | **65** |
+| Ben  | price 115                        | **115** |
+| Cara | none                             | **0** |
+
+In the experiment results, this group would show a **Value** of 180 (65 + 115 + 0) and a **Mean** of 180 / 3 = **60** per participant.
+
+Compare that with a [`Goal Count`](./goal-count) on the same goal, which counts orders instead of adding up their price: Ana 2, Ben 1 and Cara 0, so a **Value** of 3 and a **Mean** of 1. Ana places more orders, but Ben spends more. A change that gets people to buy more often and a change that gets them to spend more per order can look very different on these two metrics.
+
+If the property is missing on an event, or isn't a number, that event adds 0. Numbers sent as strings, such as `"12.50"`, are converted and counted.
+
+## Creating the metric
+
+When [creating a metric](../create), choose `Goal Property` as the metric type, then:
+
+1. Select the goal you want to measure, for example `purchase`.
+2. In **Property**, enter the name of the numeric property, for example `price`. The field suggests properties as you type. For a nested property, separate the levels with `/`, for example `cart/total`.
+3. Optionally set an **Outliers limit method**, **Metric property filters** and a **Time filter**, as with other goal-based metrics.
+4. Optionally, under **Goal relations**, click **Add refund** or **Add replacement** to adjust the value when orders are refunded or replaced. See [Refunds and replacements](#refunds-and-replacements).
+
+The property is required and can be up to 256 characters long.
+
+To show amounts as money, set the **Format** fields in the [Format, Scale & Precision](../create#format-scale-and-precisions) section, for example `€{}` or `${}`. The Value and the Mean each have their own Format.
+
+## Refunds and replacements
+
+A refund or replacement relation links each goal event to later events of another goal that share the same key, such as an order ID. It changes the value of the original event, not just whether it counts.
+
+Say refunds are tracked as their own goal:
+
+```javascript
+context.track("refund", {
+  order_id: "A2",
+  amount: 15
+});
+```
+
+To subtract refunds from revenue, click **Add refund** and set:
+
+- **Current goal relation key property**: `order_id`, the key on the `purchase` event.
+- **Refund operation**: `Subtract`.
+- **Foreign goal**: `refund`.
+- **Foreign goal relation key property**: `order_id`, the key on the `refund` event.
+- **Foreign goal relation value property**: `amount`.
+- **Duplicated foreign goal aggregation**: `Sum`, the default, so that several partial refunds of one order are all subtracted.
+
+If Ana's 25 order (`A2`) is partly refunded for 15, her value drops from 65 to 50. The group's **Value** becomes 165 and its **Mean** 165 / 3 = 55.
+
+A **replacement** works the same way, but the value from the foreign event replaces the original value instead of being added or subtracted. A metric can have one refund or one replacement relation, plus a cancellation, so replacements need a metric of their own. Say Ben's order `B1` is swapped for a cheaper item:
+
+```javascript
+context.track("replacement", {
+  order_id: "B1",
+  price: 90
+});
+```
+
+With **Add replacement**, the same key properties and `price` as the **Foreign goal relation value property**, Ben's value becomes 90 instead of 115.
+
+**Duplicated foreign goal aggregation** decides what happens when several foreign events match the same order:
+
+| Option     | Refund                                      | Replacement                       |
+|------------|---------------------------------------------|-----------------------------------|
+| Pick first | Only the earliest refund is applied         | The earliest replacement is used  |
+| Pick last  | Only the latest refund is applied           | The latest replacement is used    |
+| Sum        | Every refund is added or subtracted         | The order is worth the sum of all replacements |
+| Minimum    | Only the smallest refund is applied         | The smallest replacement is used  |
+| Maximum    | Only the largest refund is applied          | The largest replacement is used   |
+
+Choose **Add** as the refund operation if your refund events already carry negative amounts, for example `amount: -15`. In that case Minimum applies the largest refund and Maximum the smallest, because the amounts are negative.
+
+You can combine a refund or replacement with a cancellation. If an order is cancelled, it no longer counts at all, including any refunds applied to it before the cancellation.
+
+## Reading the results
+
+In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the total of the property across all participants in the variant, after any refunds, replacements and cancellations. **Mean** is that total divided by the number of participants. The impact is calculated on the Mean. If CUPED is applied to the metric, the Value and Mean shown are CUPED-adjusted.
+
+Because every participant counts in the Mean, including those who never bought anything, a revenue metric's Mean is revenue per participant, not revenue per order. To measure average order value, use a [Ratio](./ratio) metric instead.
+
+## More examples
+
+- `Revenue`: goal `purchase`, property `price`.
+- `Net revenue`: the same, with a refund relation that subtracts the `amount` of matching `refund` events.
+- `Items sold`: goal `purchase`, property `quantity`.
+- `Shipping revenue`: goal `purchase`, property `cart/shipping`.
+- `Time watched`: goal `video_progress`, property `seconds_watched`.
+- `Average order value`: a [Ratio](./ratio) metric with a `Goal Property` of `price` as the numerator and a `Goal Count` of `purchase` as the denominator.
 
 ## Good to know
 
-- Essential for money- or quantity-based metrics.
-- Sensitive to outliers; clipping or CUPED may help.
+- Values can be negative, for example when the property itself is negative or when an order is refunded for more than it cost.
+- Refunds and replacements only apply if they're recorded at or after the original event. If any refund or replacement with the same key was recorded before the event, none of them apply to it.
+- Refund and replacement events only count if they're tracked for a participant in the experiment, such as the user who placed the order. Check this if refunds are sent from your backend under a different ID.
+- A refund lowers the value when it arrives, so a variant's revenue can go down even if no new orders come in.
