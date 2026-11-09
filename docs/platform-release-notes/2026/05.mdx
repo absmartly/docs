@@ -4,7 +4,7 @@ import Image from "../../../src/components/Image";
 
 ## Overview
 
-This release brings a long-awaited **Metric Changelog**, introduces the new **activity_per_period** metric type, 
+This release brings a long-awaited **Metric Changelog**, introduces the new **Goal Activity Period Count** metric type, 
 and ships several quality-of-life improvements across the Explore Metrics tab, experiment list, and Events dashboard.
 
 ---
@@ -30,12 +30,12 @@ The same change log will soon be available for other assets like **experiments**
 
 ---
 
-### New Metric Type: `activity_per_period`
+### New Metric Type: Goal Activity Period Count
 
-We've added a new metric type, **[activity_per_period](/docs/web-console-docs/goals-and-metrics/metrics/metric-types/activity-per-period)**, that measures user activity over a configurable time window (for example, _sessions per week_ or _orders per month_). 
-It's designed for cases where you care about the **frequency** of an action per user across a rolling period, rather than a single count or ratio.
+We've added a new metric type, **[Goal Activity Period Count](/docs/web-console-docs/goals-and-metrics/metrics/metric-types/activity-per-period)**, that counts how many separate periods (hours, days or weeks) each user completed a goal in (for example, _active days_ or _weeks with a purchase_). 
+It's designed for cases where you care about how **regularly** users perform an action, rather than how many times they perform it.
 
-See the [Activity per Period documentation](/docs/web-console-docs/goals-and-metrics/metrics/metric-types/activity-per-period) for more information.
+See the [Goal Activity Period Count documentation](/docs/web-console-docs/goals-and-metrics/metrics/metric-types/activity-per-period) for more information.
 
 ### Improved Metrics Discoverability
 
@@ -56,18 +56,18 @@ The **Event Details** dialog now supports keyboard arrow navigation, so you can 
 
 ### Custom Assignments (Early Beta)
 
-We're opening up an **early beta** of **Custom Assignments** — a new way to define who should be **excluded from an experiment** and always served a specific variant instead.
+We're opening up an **early beta** of **Custom Assignments**, a new way to define who should be **excluded from an experiment** and always served a specific variant instead.
 
 Custom Assignments (also known as **exclusion rules**) are useful for:
 
-- **Testing & QA** — force yourself or your team into a specific variant to verify the experience, without being counted as a participant.
-- **Internal or beta users** — ensure groups like internal employees or beta testers always see a chosen variant, without polluting experiment data.
+- **Testing & QA**: force yourself or your team into a specific variant to verify the experience, without being counted as a participant.
+- **Internal or beta users**: ensure groups like internal employees or beta testers always see a chosen variant, without polluting experiment data.
 
 Excluded visitors see the configured variant but **are not tracked as participants**, so the experiment statistics stay clean.
 
 See the [Custom Assignments documentation](/docs/web-console-docs/experiments/creating-an-experiment#custom-assignments-exclusion-rules) for details on how to configure them.
 
-:::caution Early Beta — JavaScript SDK Only
+:::caution Early Beta: JavaScript SDK Only
 Custom Assignments are currently in **early beta** and are **only available for the JavaScript SDK**. The feature is behind a flag and requires an **SDK update** before it can be used. 
 If you'd like to enable it for your account, please **[reach out to our team](mailto:support@absmartly.com)** and we'll help you get set up.
 :::
