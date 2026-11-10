@@ -2,66 +2,70 @@
 sidebar_position: 6
 ---
 
-# Retention
+# Goal Retention
 
 ## Overview
 
-A `Goal Retention` metric measures how many users return to complete a goal again after a defined period of time.
-It tells you whether users continue performing the same action after a delay, rather than only measuring their initial behavior.
+A `Goal Retention` metric answers the question: **what share of users did this again after a set amount of time?**
 
-You can track retention either:
+You pick a goal and a **retention period**, for example 7 days. A user counts as retained if they trigger the goal at least once **at or after** the end of that period. The period starts either when the user was first exposed to the experiment or when they first triggered the goal.
 
-- from the moment a user is first exposed to the experiment, or
-- from the moment the user first completes the goal itself
+There is no end to the window. While the experiment is running, a user who comes back on day 8 or on day 40 is retained just the same, and coming back many times counts no more than coming back once.
 
-This makes it possible to measure longer-term engagement and whether your experiment influences users’ likelihood to come back and repeat an action.
+## How it's calculated
 
-## Examples
+Say you track a `purchase` goal and create a metric with a retention period of **7 days** after **First exposure**.
 
 ```javascript
-context.track("purchase", {
-  price: 1000,
-  order_number: "0000982532",
-  product_id: "ABC123",
-  category_id: "ZYZ123"
-});
+context.track("purchase", { price: 1000 });
 ```
 
-Imagine you want to measure how many users who first purchased **make another purchase within 7 days**.
+Three users are exposed to the experiment on 1 June at 09:00:
 
-You can create a `Purchase Retention (7 days)` metric by:
-- Selecting the `purchase` goal
-- Setting the `Retention Period` to 7 days
-- Choosing whether the retention window starts from:
-    - the user's first exposure, or
-    - the user's first purchase
+| User | `purchase` events | Retained after First exposure | Retained after First achievement |
+|------|-------------------|-------------------------------|----------------------------------|
+| Ana  | 2 June, 10 June   | **1** (10 June is after 8 June 09:00) | **1** (10 June is after 9 June) |
+| Ben  | 2 June, 4 June    | **0** (no purchase from 8 June 09:00) | **0** (no purchase from 9 June) |
+| Cara | 12 June           | **1** (12 June is after 8 June 09:00) | **0** (her first purchase is the reference, no purchase from 19 June) |
 
-Then the metric counts users who satisfy:
-- they completed the initial purchase
-- and they completed another purchase after 7 days, within the configured retention window
+With **First exposure**, this group would show a **Value** of 2 (Ana and Cara) and a **Mean** of 2 / 3, about **67%**. Cara counts even though she only bought once, because measuring from exposure doesn't need an earlier purchase.
 
+With **First achievement**, the **Value** is 1 (Ana only) and the **Mean** is 1 / 3, about **33%**. Here the question becomes "did they buy again at least 7 days after their first purchase?".
 
-:::caution
-If your metric uses [CUPED](../variance-reduction-cuped), the lookback window must be equal or larger than the retention period.
-:::
+Compare that with a [`Goal Unique Count`](./goal-unique-count) on the same goal, which counts anyone who purchased at all: a **Value** of 3 and a **Mean** of **100%**. Retention leaves out Ben, who bought twice but only in the first week.
 
-**More examples**
+## Creating the metric
 
-- `Checkout Recovery (24 hours)`:
-Users who returned to complete a purchase within 24 hours after first adding to cart.
+When [creating a metric](../create), choose `Goal Retention` as the metric type, then:
 
-- `Content Return (3 days)`:
-Users who read an article again within 3 days after their first reading.
+1. Select the goal you want to measure, for example `purchase`.
+2. Set the **Retention period**: a number from 1 to 30 and a unit (`Seconds`, `Minutes`, `Hours`, `Days`, `Weeks` or `Months`). A month is 30 days. The default is 1 day.
+3. Choose what the period is measured from, in the dropdown after the word **after**: `First exposure` (the default) or `First achievement`.
+4. Optionally add **Metric property filters**.
 
-- `Subscription Renewal (30 days)`:
-Users who returned to perform a renewal action after a 30-day cycle
+## Choosing the reference time
+
+- **First exposure** measures from the moment the user was first exposed to the experiment. Any goal event from the end of the retention period onwards counts, whether or not the user triggered the goal before then. Use it for "were users still doing this a week after they saw the change?".
+- **First achievement** measures from the user's first goal event after exposure. Only a later event, at least one retention period after that first one, counts. Use it for "did users who did this once come back and do it again?".
+
+With **First achievement**, users who never trigger the goal can't be retained, but they still count as participants. The Mean is the share of all participants who came back, not the share of first-time achievers.
+
+If you add property filters, only matching events count, both for the first achievement and for the return.
+
+## Reading the results
+
+In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the number of retained participants in the variant, and **Mean** is that number divided by the number of participants, shown as a percentage. It's analysed as a binomial metric, like `Goal Unique Count`. If the metric uses CUPED, Value and Mean are CUPED-adjusted, so Value is no longer a whole number of users.
+
+Users exposed less than one retention period ago haven't had the chance to be retained yet, but they still count as participants with a value of 0. So the Mean starts low and tends to rise as the experiment runs, and it reads lower than the true retention rate while recent users are still in their retention period. Both variants have the same mix of exposure times, so the comparison stays fair, but read the raw percentage with that in mind. The longer the retention period, the stronger the effect.
+
+## More examples
+
+- `Purchase retention (7 days)`: goal `purchase`, `7 Days` after `First exposure`. The share of users who bought something a week or more after seeing the experiment.
+- `Repeat purchase (30 days)`: goal `purchase`, `30 Days` after `First achievement`. The share of users who bought again at least 30 days after their first purchase.
+- `App return (1 day)`: goal `app_open`, `1` `Days` after `First exposure`. The share of users who opened the app at any point from 24 hours after exposure, whether that's day 2 or day 30.
+- `Returned in week 2`: goal `app_open`, `7 Days` after `First exposure`, with a [time filter](../create#time-filters) of `At most` 14 days. Adding the time filter caps the window, so only returns between day 7 and day 14 count.
 
 ## Good to know
 
-- Great for measuring long-term impact rather than immediate conversions.
-- Helps identify behaviors such as repeat purchases, content revisits, subscription renewals, or delayed engagement.
-- The metric counts users, not events — a user either meets retention criteria or does not.
-- Filters on the goal event apply before evaluating retention (for example: “retention among users who purchased category ZYZ123”).
-- Retention metrics are often more stable and less noisy than total repeated activations, since each user contributes at most once.
-- Changing the retention period alters the meaning of the metric and will requires a new version.
-- Useful for experiments where the impact is delayed: onboarding experiences, notifications, emails, recommendations, reminders, etc.
+- With `First exposure`, you can count only returns within a window by adding an `At most` [time filter](../create#time-filters), as in `Returned in week 2` above.
+- If you use [CUPED](../variance-reduction-cuped), the lookback window must be longer than the retention period, not equal to it. A 7-day retention period needs a lookback of at least 2 weeks, and since the longest lookback is 4 weeks, retention periods of 4 weeks or more can't use CUPED.
