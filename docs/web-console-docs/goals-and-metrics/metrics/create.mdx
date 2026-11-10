@@ -219,6 +219,7 @@ Goal relations define how one goal (the current one) is linked to another goal (
 This identifier is provided through a property in both events (for example **order_number**, **purchase_id**, or **transaction_id**).
 
 Each relation type has its own behaviour and additional fields.
+Refund and replacement relations are only available for [`Goal Property`](metric-types/property#refunds-and-replacements) metrics, including a Goal Property numerator or denominator in a Ratio.
 
 #### Cancellation
 
@@ -244,13 +245,13 @@ context.track("purchase_cancelled", {
 ```
 To configure a cancellation relation, you need to provide:
 
-- Current goal key property
+- Current goal relation key property
 This is the property on the current goal event that identifies the item.
 Example for a **purchase** event: **order_number**.
 - Foreign goal
 This is the goal event that represents the cancellation.
 Example: **purchase_cancelled**.
-- Foreign goal key property
+- Foreign goal relation key property
 This is the property on the cancellation event that refers to the same item.
 Example: also **order_number**.
 
@@ -281,15 +282,15 @@ context.track("refund", {
 
 To configure a refund relation, you define:
 
-- Current goal key property
+- Current goal relation key property
 The identifier on the current goal (**order_number**).
 - Refund operation
-How the refund should affect the metric (for example, subtracting refunded value, replacing value, or another supported operation).
+Whether the refund value is subtracted from or added to the value of the current goal: **Subtract** or **Add**.
 - Foreign goal
 The goal event representing the refund (**refund**).
-- Foreign goal key property
+- Foreign goal relation key property
 Identifier on the refund event used to match the purchase.
-- Foreign goal value property
+- Foreign goal relation value property
 The numeric value to use for the refund adjustment, such as **refund_amount**.
 - Duplicated foreign goal aggregation
 Determines how to combine multiple refund events referring to the same item (sum, max, last, etc.).
@@ -320,14 +321,14 @@ context.track("replacement", {
 
 Configuration includes:
 
-- **Current goal key property**
+- **Current goal relation key property**
 Identifier on the current event (e.g., **order_number**).
 - **Foreign goal**
 The event representing the replacement (e.g., **replacement**).
-- **Foreign goal key property**
+- **Foreign goal relation key property**
 The matching identifier on the replacement event (e.g., **order_number**).
-- **Foreign goal value property**
-Value from the replacement event that should override or adjust the original. For example, **replacement_price**.
+- **Foreign goal relation value property**
+Value from the replacement event that replaces the original value. For example, **replacement_price**.
 - **Duplicated foreign goal aggregation**
 How the value of the foreign goal achievement will be aggregated
 when there are multiple foreign goal achievements that match the **Foreign goal relation key property**.
