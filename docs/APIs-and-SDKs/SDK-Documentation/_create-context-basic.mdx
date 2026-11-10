@@ -198,6 +198,117 @@ final Context? context = sdk.createContext(contextConfig)
 
 </TabItem>
 
+<TabItem value="angular" label="Angular">
+
+`provideABSmartly()` already created a context for the configured `units`. Inject
+`ABSmartlyService` to use it; its `loading()` and `failed()` signals tell you
+whether the context is ready:
+
+```ts
+import { Component, inject } from "@angular/core";
+import { ABSmartlyService } from "@absmartly/angular-sdk";
+
+@Component({
+  selector: "app-root",
+  template: `
+    @if (absmartly.loading()) {
+      <p>Loading experiments...</p>
+    } @else {
+      <app-main-content />
+    }
+  `,
+})
+export class AppComponent {
+  absmartly = inject(ABSmartlyService);
+}
+```
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+```kotlin
+val contextConfig = ContextConfig.create()
+    .setUnit("user_id", "user-12345")
+
+val context = sdk.createContext(contextConfig)
+    .waitUntilReady()
+```
+
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+
+`createContext` returns a `Future` that completes once the context data is loaded:
+
+```scala
+import scala.concurrent.Await
+import scala.concurrent.duration._
+
+val context = Await.result(
+  sdk.createContext(Map("user_id" -> "user-12345")),
+  5.seconds
+)
+```
+
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+
+```elixir
+alias ABSmartly.{SDK, Context}
+
+{:ok, context} = SDK.create_context(sdk, %{"user_id" => "user-12345"})
+```
+
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+
+```cpp
+#include <absmartly/context_config.h>
+
+absmartly::ContextConfig context_config;
+context_config.units = {{"user_id", "user-12345"}};
+
+auto context = sdk->create_context(context_config);
+context->wait_until_ready();
+```
+
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+
+Fetch the context data from the ABsmartly API in your application, then create the
+context with it. The context is ready immediately:
+
+```rust
+use absmartly_sdk::ContextData;
+
+let context_data: ContextData = serde_json::from_str(&api_response)?;
+
+let mut context = sdk.create_context_with([("user_id", "user-12345")], context_data, None);
+```
+
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+Create a Ruby SDK context for the request and wrap it in a drop, which you pass to
+your templates as `absmartly`:
+
+```ruby
+context_config = Absmartly.create_context_config
+context_config.set_unit("user_id", "user-12345")
+
+context = Absmartly.create_context(context_config)
+
+drop = ABsmartly::Liquid::Drop.new(context)
+html = Liquid::Template.parse(template_source).render("absmartly" => drop)
+```
+
+</TabItem>
+
 </Tabs>
 
 :::info

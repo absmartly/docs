@@ -26,6 +26,14 @@ import RubySetAttributes from "!!raw-loader!./ruby/setAttributes.rb";
 
 import FlutterSetAttributes from "!!raw-loader!./flutter/setAttributes.dart";
 
+import AngularAttributes from "!!raw-loader!./angular/setAttributes.ts";
+import KotlinAttributes from "!!raw-loader!./kotlin/setAttributes.kt";
+import CppAttributes from "!!raw-loader!./cpp/setAttributes.cpp";
+import ScalaAttributes from "!!raw-loader!./scala/setAttributes.scala";
+import ElixirAttributes from "!!raw-loader!./elixir/setAttributes.ex";
+import RustAttributes from "!!raw-loader!./rust/setAttributes.rs";
+import LiquidAttributes from "!!raw-loader!./liquid/setAttributes.rb";
+
 Set attributes using the `attribute()` or `attributes()` methods, before or
 after the context is ready.
 
@@ -132,6 +140,34 @@ component.
 
 <CodeBlock language="dart">{FlutterSetAttributes}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustAttributes}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="ruby">{LiquidAttributes}</CodeBlock>
 </TabItem>
 
 </Tabs>

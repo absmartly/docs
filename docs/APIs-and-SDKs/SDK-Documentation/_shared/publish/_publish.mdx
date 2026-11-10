@@ -24,6 +24,14 @@ import RubyPublish from "!!raw-loader!./ruby/publish.rb";
 
 import FlutterPublish from "!!raw-loader!./flutter/publish.dart";
 
+import AngularPublish from "!!raw-loader!./angular/publish.ts";
+import KotlinPublish from "!!raw-loader!./kotlin/publish.kt";
+import CppPublish from "!!raw-loader!./cpp/publish.cpp";
+import ScalaPublish from "!!raw-loader!./scala/publish.scala";
+import ElixirPublish from "!!raw-loader!./elixir/publish.ex";
+import RustPublish from "!!raw-loader!./rust/publish.rs";
+import LiquidPublish from "!!raw-loader!./liquid/publish.rb";
+
 Call `publish()` before page navigations, server responses, or any point where
 the process might exit before the SDK's auto-flush fires. This ensures exposure
 and goal data is sent to the collector before the context is lost.
@@ -115,6 +123,34 @@ Go also provides `PublishAsync()` for non-blocking use.
 
 <CodeBlock language="dart">{FlutterPublish}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustPublish}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="ruby">{LiquidPublish}</CodeBlock>
 </TabItem>
 
 </Tabs>

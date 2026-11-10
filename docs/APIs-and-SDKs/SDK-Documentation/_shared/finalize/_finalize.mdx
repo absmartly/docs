@@ -24,6 +24,14 @@ import RubyFinalize from "!!raw-loader!./ruby/finalize.rb";
 
 import FlutterFinalize from "!!raw-loader!./flutter/finalize.dart";
 
+import AngularFinalize from "!!raw-loader!./angular/finalize.ts";
+import KotlinFinalize from "!!raw-loader!./kotlin/finalize.kt";
+import CppFinalize from "!!raw-loader!./cpp/finalize.cpp";
+import ScalaFinalize from "!!raw-loader!./scala/finalize.scala";
+import ElixirFinalize from "!!raw-loader!./elixir/finalize.ex";
+import RustFinalize from "!!raw-loader!./rust/finalize.rs";
+import LiquidFinalize from "!!raw-loader!./liquid/finalize.rb";
+
 Finalizing (or closing) a context flushes any unpublished events and then
 seals it. Any `track()` calls after finalization will throw an error.
 
@@ -167,6 +175,34 @@ an error if any method that could generate an event is called.
 
 <CodeBlock language="dart">{FlutterFinalize}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularFinalize}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinFinalize}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppFinalize}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaFinalize}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirFinalize}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustFinalize}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="ruby">{LiquidFinalize}</CodeBlock>
 </TabItem>
 
 </Tabs>

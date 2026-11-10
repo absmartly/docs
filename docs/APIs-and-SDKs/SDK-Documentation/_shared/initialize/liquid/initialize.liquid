@@ -1,0 +1,41 @@
+{% comment %}
+  Initialize the ABsmartly SDK in your Shopify theme
+  Add this to your theme.liquid layout file, typically in the <head> section
+{% endcomment %}
+
+<script>
+  window.absmartlyConfig = {
+    endpoint: 'https://your-company.absmartly.io/v1',
+    apiKey: 'YOUR-API-KEY',
+    application: {{ shop.name | json }},
+    environment: 'production',
+    units: {
+      session_id: {{ request.cookie.session_id | json }}{% if customer %},
+      customer_id: {{ customer.id | json }}{% endif %}
+    }
+  };
+</script>
+
+{% comment %}
+  Include the ABsmartly client-side SDK
+  This should be loaded before any code that uses the ABsmartly context
+{% endcomment %}
+<script src="https://unpkg.com/@absmartly/javascript-sdk/dist/absmartly.min.js"></script>
+
+<script>
+  (function() {
+    var config = window.absmartlyConfig;
+    var sdk = new absmartly.SDK({
+      endpoint: config.endpoint,
+      apiKey: config.apiKey,
+      application: config.application,
+      environment: config.environment
+    });
+
+    var context = sdk.createContext({ units: config.units });
+
+    context.ready().then(function() {
+      window.absmartlyContext = context;
+    });
+  })();
+</script>

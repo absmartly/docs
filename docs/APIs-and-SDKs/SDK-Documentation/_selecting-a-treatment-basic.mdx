@@ -18,6 +18,14 @@ import PHPSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment
 import RubySelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/ruby/selectingATreatment.rb";
 import FlutterSelectingATreatment from "!!raw-loader!./_shared/selecting-a-treatment/flutter/selectingATreatment.dart";
 
+import AngularTreatment from "!!raw-loader!./_shared/selecting-a-treatment/angular/selectingATreatment.ts";
+import KotlinTreatment from "!!raw-loader!./_shared/selecting-a-treatment/kotlin/selectingATreatment.kt";
+import CppTreatment from "!!raw-loader!./_shared/selecting-a-treatment/cpp/selectingATreatment.cpp";
+import ScalaTreatment from "!!raw-loader!./_shared/selecting-a-treatment/scala/selectingATreatment.scala";
+import ElixirTreatment from "!!raw-loader!./_shared/selecting-a-treatment/elixir/selectingATreatment.ex";
+import RustTreatment from "!!raw-loader!./_shared/selecting-a-treatment/rust/selectingATreatment.rs";
+import LiquidTreatment from "!!raw-loader!./_shared/selecting-a-treatment/liquid/selectingATreatment.liquid";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -135,6 +143,34 @@ with the `treatment`, `ready`, and `failed` scoped properties:
 
 <CodeBlock language="dart">{FlutterSelectingATreatment}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustTreatment}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="liquid">{LiquidTreatment}</CodeBlock>
 </TabItem>
 
 </Tabs>

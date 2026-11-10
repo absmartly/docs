@@ -34,6 +34,16 @@ import RubyGemInstall from "!!raw-loader!./ruby/gem.sh";
 
 import FlutterInstall from "!!raw-loader!./flutter/install.yaml";
 
+import AngularInstall from "!!raw-loader!./angular/install.bash";
+import KotlinInstall from "!!raw-loader!./kotlin/install.gradle";
+import CppInstall from "!!raw-loader!./cpp/install.bash";
+import CppCMake from "!!raw-loader!./cpp/CMakeLists.txt";
+import ScalaInstall from "!!raw-loader!./scala/build.sbt";
+import ElixirInstall from "!!raw-loader!./elixir/install.ex";
+import RustInstall from "!!raw-loader!./rust/install.toml";
+import LiquidGemfile from "!!raw-loader!./liquid/gemfile.rb";
+import LiquidBundle from "!!raw-loader!./liquid/bundle.bash";
+
 Once your Web Console is setup and you have created some experiments, you can
 install our SDKs through your package manager, a CDN or by directly importing
 it.
@@ -281,6 +291,84 @@ ensure it is compatible with the latest Ruby version.
 The ABsmartly Flutter SDK is compatible with Dart versions 2.18.6 and later.
 
 </details>
+
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+
+:::info Compatibility
+The ABsmartly Angular SDK is compatible with Angular 16 and later and wraps the
+[Javascript SDK](https://www.github.com/absmartly/javascript-sdk).
+:::
+
+The Angular SDK is not yet published to npm. Build the package from source and
+install the resulting tarball:
+
+<CodeBlock language="bash">{AngularInstall}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+:::info Compatibility
+The ABsmartly Kotlin SDK requires Kotlin 1.9 or later and runs on JVM 11+.
+:::
+
+**Gradle**
+
+Replace \{VERSION\} with the latest SDK version available in MavenCentral.
+
+<CodeBlock language="gradle">{KotlinInstall}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+
+**Build from Source**
+
+<CodeBlock language="bash">{CppInstall}</CodeBlock>
+
+**CMake Integration**
+
+<CodeBlock language="cmake">{CppCMake}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+
+**SBT**
+
+<CodeBlock language="scala">{ScalaInstall}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+
+:::info Compatibility
+The ABsmartly Elixir SDK is compatible with Elixir 1.17+ and Erlang/OTP 25+.
+:::
+
+Add to your `mix.exs` dependencies:
+
+<CodeBlock language="elixir">{ElixirInstall}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+
+Add to your `Cargo.toml`:
+
+<CodeBlock language="toml" title="Cargo.toml">{RustInstall}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+**Gemfile**
+
+<CodeBlock language="ruby">{LiquidGemfile}</CodeBlock>
+
+<CodeBlock language="bash">{LiquidBundle}</CodeBlock>
 
 </TabItem>
 
