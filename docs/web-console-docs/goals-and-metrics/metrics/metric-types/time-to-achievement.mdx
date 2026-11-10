@@ -2,27 +2,91 @@
 sidebar_position: 3
 ---
 
-# Time to Achievement
+# Goal Time To Achievement
 
 ## Overview
 
-Measures how long it takes a user to reach a specific goal after entering an experiment.
+A `Goal Time To Achievement` metric answers the question: **how long did users wait between entering the experiment and doing this for the first time?**
 
-## Examples
+For each user, ABsmartly measures the time from their first exposure to the experiment until the first time they trigger the goal after that. Later events of the same goal don't change the value.
+
+Users who never trigger the goal get a value of **0**, the same as a user who triggered it at the moment of exposure, and they still count as participants. This makes the metric behave differently from an average "time to first purchase", so read [Reading the results](#reading-the-results) before you rely on it.
+
+## How it's calculated
+
+Say you track a `purchase` goal and create a `Goal Time To Achievement` metric on it.
 
 ```javascript
-context.track("purchase", {
-  price: 1000,
-  order_number: "0000982532",
-  product_id: "ABC123",
-  category_id: "ZYZ123"
-});
+context.track("purchase", { price: 1000 });
 ```
 
-A possible `Time to Achievement` metric created from this event could be `Time to first purchase`.
+Three users are exposed to the experiment on Monday at 09:00:
+
+| User | `purchase` events after exposure | First purchase | Value |
+|------|----------------------------------|----------------|-------|
+| Ana  | Monday 11:00, Wednesday 15:00    | Monday 11:00   | **2 hours** |
+| Ben  | Thursday 09:00                   | Thursday 09:00 | **3 days** |
+| Cara | none                             | none           | **0** |
+
+In the experiment results, this group would show a **Value** of `3 days, 2 hrs` (the sum of the three values) and a **Mean** of `3 days, 2 hrs` / 3 = **`1 day, 40 mins`** per participant.
+
+Ana's second purchase on Wednesday adds nothing, and Cara pulls the Mean down even though she never bought anything.
+
+Compare that with a [`Goal Unique Count`](./goal-unique-count) on the same goal, which counts whether each user purchased at all: Ana 1, Ben 1 and Cara 0, so a **Value** of 2 and a **Mean** of 66.67%. The unique count tells you how many users got there. The time to achievement adds how long they took, mixed with how many got there.
+
+## Creating the metric
+
+When [creating a metric](../create), choose `Goal Time To Achievement` as the metric type, then:
+
+1. Choose the **Impact**. It defaults to `Positive`. See [Choosing the impact](#choosing-the-impact) below.
+2. Select the **Goal** you want to measure, for example `purchase`.
+3. Optionally add **Metric property filters** or time filters (**Add time filters**), as with other goal-based metrics.
+
+There are no settings specific to this metric type.
+
+Values and means are shown as durations, such as `1 day, 40 mins`, using the two largest units. Values are measured in whole seconds, so leave **Scale** at `1` in both the **Value** and **Mean** format settings, otherwise the durations will be wrong.
+
+## Reading the results
+
+In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the total time to first achievement across all participants in the variant, and **Mean** is that total divided by the number of participants, including those who never reached the goal. The impact is calculated on the Mean, as with other continuous metrics. If the metric uses CUPED, both Value and Mean are CUPED-adjusted.
+
+Because users who never reach the goal count as 0, the Mean goes **up** when more users reach the goal, even if nobody got there any faster. In the example above, if Cara had also bought on Friday at 09:00 (4 days after exposure), the Value would rise to `1 wk, 2 hrs` and the Mean to `2 days, 8 hrs`. The variant converted more users, but its Mean looks slower.
+
+So a change in the Mean can come from two things:
+
+- users reaching the goal faster or slower, or
+- more or fewer users reaching the goal at all.
+
+Always read it next to a `Goal Unique Count` on the same goal. If the unique count hasn't changed, a lower Mean means users got there faster. If it has, the Mean alone can't tell you which effect you're seeing.
+
+### Average time for users who reached the goal
+
+To measure the average wait only for users who reached the goal, create a [Ratio](./ratio) metric with:
+
+- a `Goal Time To Achievement` numerator on your goal, and
+- a `Goal Unique Count` denominator on the same goal, with the same property filters, time filters and cancellation.
+
+If the two sides don't match, the denominator counts a different set of users and the Mean is no longer the average wait.
+
+Its Mean is the total time to first achievement divided by the number of users who reached the goal. For Ana, Ben and Cara that's 266,400 seconds / 2 = **133,200 seconds**, or 37 hours.
+
+Ratio metrics don't format their values as durations, so the result is a number of seconds. By default the Mean is shown as a percentage, so in the **Mean** format settings set **Format** to `{} secs` and **Scale** to `1`.
+
+### Choosing the impact
+
+**Impact** defaults to `Positive`, meaning a higher Mean is good. For this metric a lower Mean usually looks better, but as explained above, a lower Mean can also mean fewer users reached the goal. If you can't say in advance which direction is good, `Unknown` describes that case.
+
+## More examples
+
+- `Time to first purchase`: goal `purchase`. How long users take to buy after entering the experiment.
+- `Time to first search`: goal `search`. How quickly users find and use search.
+- `Time to activation`: goal `onboarding_completed`. How long users take to finish onboarding.
+- `Average time to first purchase for buyers`: a [Ratio](./ratio) with a `Goal Time To Achievement` numerator and a `Goal Unique Count` denominator, both on `purchase`.
 
 ## Good to know
 
-- Great for understanding friction and delays in the user journey.
-- Can be skewed by users who never reach the goal.
-- Can have a very long tail. 
+- Time is measured from the user's **first** exposure, even if they are exposed again later.
+- Property filters and time filters decide which events can count as the first one, but the time is still measured from exposure. With a time filter of `Goal is achieved At least 4 days after first exposure`, a user who buys on day 3 and on day 6 has a value of 6 days.
+- If you add a cancellation (**Add cancellation** under **Goal relations**), a cancelled event no longer counts. The value becomes the time to the earliest event that hasn't been cancelled, so it can increase. If all of a user's events are cancelled, they go back to 0. Refunds and replacements aren't available for this metric type.
+- The values can have a very long tail, with a few users who took weeks. To limit their influence, set the **Outliers limit method**, for example to `Fixed` with a **Lower limit value** of `0` and an **Upper limit value** of `604800` (7 days, in seconds). Outlier limits only apply to users who reached the goal, so users who never did stay at 0.
+- If you use [CUPED](../variance-reduction-cuped), the pre-exposure covariate is the time from the start of the lookback window (the experiment start minus the lookback period) to the user's first goal event before exposure, or 0 if there was none.

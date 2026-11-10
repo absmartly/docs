@@ -2,34 +2,69 @@
 sidebar_position: 5
 ---
 
-# Unique Property Count
+# Goal Property Unique Count
 
 ## Overview
 
-Counts how many unique values of a specific property appear in the goal events triggered by users.
-Instead of counting users, this metric measures the variety or diversity within a property, such as the number of different products purchased, 
-the number of distinct categories reached, etc.
+A `Goal Property Unique Count` metric answers the question: **how many different values of this property did each user reach?**
 
-This metric helps you understand breadth rather than volume or frequency.
+You pick a goal and one of its properties, for example `product_id` on a `product_view` goal. For each user, ABsmartly counts how many distinct values of that property appear in their goal events. Viewing the same product once or ten times counts the same: one product.
 
-## Examples
+This makes it a good fit for questions about **breadth** rather than volume, such as "did this change make people look at more different products?"
+
+## How it's calculated
+
+Say you track a `product_view` goal with a `product_id` property, and create a metric on that property.
 
 ```javascript
-context.track("purchase", {
-  price: 1000,
-  order_number: "0000982532",
-  product_id: "ABC123",
-  category_id: "ZYZ123"
-});
+context.track("product_view", { product_id: "P1" });
 ```
 
-From this event, a `Unique products purchased` metric could be created by selecting the **product_id** property.
+Three users are exposed to the experiment:
+
+| User | `product_view` events after exposure | Distinct products | Value |
+|------|--------------------------------------|-------------------|-------|
+| Ana  | P1, P1, P2, P3                       | P1, P2, P3        | **3** |
+| Ben  | P1 (5 times)                         | P1                | **1** |
+| Cara | none                                 | none              | **0** |
+
+In the experiment results, this group would show a **Value** of 4 (3 + 1 + 0) and a **Mean** of 4 / 3 = **1.3333** distinct products per participant.
+
+Values are distinct per user, not across the whole experiment. Ana and Ben both viewed P1, so it counts once for each of them. The group viewed only three different products, but the Value is 4.
+
+Compare that with a [`Goal Count`](./goal-count) on the same goal, which counts every event: Ana 4, Ben 5 and Cara 0, so a **Value** of 9 and a **Mean** of 3.0000. Ben's repeat views make him look like the more active user, while the unique count shows that Ana looked at more products.
+
+## Creating the metric
+
+When [creating a metric](../create), choose `Goal Property Unique Count` as the metric type, then:
+
+1. Select the **Goal** you want to measure, for example `product_view`.
+2. In **Property**, type the event property whose distinct values you want to count, for example `product_id`. This field is required.
+3. Optionally set an **Outliers limit method**, add **Metric property filters**, or **Add time filters**, as with other goal-based metrics.
+
+Under **Goal relations**, you can **Add cancellation**. Unlike `Goal Property`, this type can't use **Add refund** or **Add replacement**.
+
+## How values are compared
+
+- Values are case-sensitive, so `"abc123"` and `"ABC123"` count as two different values.
+- The number `123` and the string `"123"` count as the same value.
+- Events where the property is missing or `null` add nothing to the count.
+
+## Reading the results
+
+In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the sum of every participant's distinct count in the variant, and **Mean** is that total divided by the number of participants. The impact is calculated on the Mean, as with other continuous metrics such as `Goal Count`.
+
+Because each user's values are counted separately, Value is not the number of different values seen in the variant. If every user viewed the same single product, the Value would equal the number of users who viewed it.
+
+## More examples
+
+- `Products viewed`: goal `product_view`, property `product_id`. How many different products users looked at.
+- `Categories purchased from`: goal `purchase`, property `category_id`. How many different categories users bought from.
+- `Articles read`: goal `article_read`, property `article_id`. How many different articles users opened.
+- `Products per purchaser`: a [Ratio](./ratio) metric with a `Goal Property Unique Count` of `purchase` on `product_id` as the numerator and a [`Goal Unique Count`](./goal-unique-count) of `purchase` as the denominator. How many different products buyers bought, on average.
 
 ## Good to know
 
-- Great for understanding variety, breadth, and coverage within your goals.
-- Useful for marketplaces, catalog browsing, search, merchandising, and content variety analyses.
-- Each property value is counted once, regardless of how many times it appears.
-- Filtering the goal event first (e.g., to a category or price range) affects which values contribute to the unique count.
-- Outlier settings do not apply here since the metric counts distinct strings or identifiers, not numeric values.
-- Can complement total count or user-based metrics by revealing diversity even when volume is stable.
+- Great for **discovery and variety** experiments: recommendations, search, catalogue navigation or content feeds.
+- If you cancel goal events, a value stops counting only when every event with that value has been cancelled.
+- Outlier limits apply to each participant's distinct count. For example, `Fixed` limits of 0 and 50 count a user who viewed 200 different products as 50.

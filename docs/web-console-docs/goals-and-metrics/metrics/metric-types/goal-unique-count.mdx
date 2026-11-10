@@ -1,31 +1,61 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 # Goal Unique Count
 
 ## Overview
 
-Counts how many unique users triggered a goal event at least once.
+A `Goal Unique Count` metric answers the question: **what share of users did this at least once?**
 
-## Examples
+Each user either converted or didn't. A user who triggers the goal once and a user who triggers it twenty times both count as one conversion. This makes it a natural fit for conversion rates, such as "did this change get more people to buy?"
+
+## How it's calculated
+
+Say you track a `purchase` goal and create a `Goal Unique Count` metric on it.
 
 ```javascript
-context.track("purchase", {
-  price: 1000,
-  order_number: "0000982532",
-  product_id: "ABC123",
-  category_id: "ZYZ123"
-});
+context.track("purchase", { category_id: "ZYZ123" });
 ```
 
-From this event, a `Unique purchasers` metric could be created.
-This metric counts how many distinct users triggered the purchase event, regardless of how many times they purchased.
+Four users are exposed to the experiment:
 
-A filtered version such as `Unique purchasers (Category ZYZ123)` would count only users who purchased from category ZYZ123.
+| User | `purchase` events after exposure | Value |
+|------|----------------------------------|-------|
+| Ana  | 3                                | **1** |
+| Ben  | 1                                | **1** |
+| Cara | 0                                | **0** |
+| Dan  | 0                                | **0** |
+
+In the experiment results, this group would show a **Value** of 2 (two users purchased) and a **Mean** of 2 / 4 = **50.00%**, the conversion rate.
+
+Compare that with a [`Goal Count`](./goal-count) on the same goal, which counts every event: Ana 3, Ben 1, Cara 0 and Dan 0, so a **Value** of 4 and a **Mean** of 1.0000 purchases per participant. The goal count tells you how much people bought. The unique count tells you how many people bought at all.
+
+## Creating the metric
+
+When [creating a metric](../create), choose `Goal Unique Count` as the **Metric type**, then:
+
+1. Select the **Goal** you want to measure, for example `purchase`.
+2. Optionally add **Metric property filters**, for example on `category_id`. A user then converts only if at least one of their events matches.
+
+The **Outliers limit method** can't be changed for this metric type, since each user's value is already either 0 or 1.
+
+## Reading the results
+
+In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the number of participants in the variant who triggered the goal at least once, and **Mean** is that number divided by the number of participants: the conversion rate. When CUPED is applied in an analysis, both columns show CUPED-adjusted values, so **Value** is no longer an exact count of converters.
+
+By default the Mean is shown as a percentage with two decimals, for example `50.00%`. You can change this with the **Format**, **Scale** and **Precision** fields under **Mean**.
+
+## More examples
+
+- `Purchasers`: goal `purchase`. The share of users who bought something.
+- `Sign-up conversion`: goal `sign_up`. The share of users who created an account.
+- `Purchasers in category ZYZ123`: goal `purchase`, with a property filter on `category_id`. The share of users who bought from that category.
+- `Purchases per purchaser`: a [Ratio](./ratio) metric with `Goal Count` of `purchase` as the **Numerator type** and `Goal Unique Count` of `purchase` as the **Denominator type**.
 
 ## Good to know
 
-- Great for conversion-style metrics.
-- More stable than total counts since each user counts once.
-- Does not capture purchase volume per user.
+- A few very active users can't skew the result, because each user counts at most once. That's also why outlier limits don't apply.
+- It doesn't show how often users do something. Use a [`Goal Count`](./goal-count) for volume, or a [`Goal Activity Period Count`](./activity-per-period) for how regularly they come back.
+- If you add a cancellation under **Goal relations**, a user stops counting as converted only when every event that counted for them has been cancelled. Cancelling one of Ana's three purchases leaves her at 1.
+- If you use [CUPED](../variance-reduction-cuped), the pre-exposure covariate is whether the user triggered the same goal before they were exposed. When CUPED is applied in an analysis, the adjusted values are no longer just 0 or 1, so the metric is analysed as a continuous metric instead of a binomial one.

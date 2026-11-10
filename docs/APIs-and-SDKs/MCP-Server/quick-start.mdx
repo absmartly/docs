@@ -31,7 +31,7 @@ In the dialog:
 - **Remote MCP server URL:**
 
 ```text
-https://mcp.absmartly.com/sse?absmartly-endpoint=https://your-instance.absmartly.com
+https://mcp.absmartly.com/mcp?absmartly-endpoint=https://your-instance.absmartly.com
 ```
 
 Replace `your-instance` with your ABsmartly subdomain.
@@ -42,9 +42,14 @@ Click **Add**, then **Connect**.
 
 ## 2. Sign in
 
-Claude Desktop opens your browser. Sign in with your normal ABsmartly
-credentials (SAML/SSO if your org uses it). When the browser confirms success,
-the connector is live.
+Claude Desktop opens your browser. Review the **Authorize Access** page, which
+shows that Claude is asking for access to your ABsmartly account, and click
+**Approve**. Then sign in with your normal ABsmartly credentials (SAML/SSO if
+your org uses it). When the browser confirms success, the connector is live.
+
+Your approval is remembered in that browser, so reconnecting later skips the
+consent page. See [OAuth & Client Registration](./oauth-clients) for what
+happens behind the scenes.
 
 :::tip
 If you didn't include `absmartly-endpoint` in the URL, the OAuth flow prompts
@@ -97,8 +102,7 @@ Show me the goals defined for the "checkout" application
 
 When you're ready to **create or change** something, the assistant will pause
 and show a preview / confirmation step — destructive actions like `start`,
-`stop`, `archive`, and `delete` always require explicit confirmation before
-they run.
+`stop`, `archive`, and `delete` always ask you to confirm before they run.
 
 ## Where to go next
 

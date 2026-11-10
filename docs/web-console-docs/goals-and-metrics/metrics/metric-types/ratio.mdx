@@ -1,64 +1,82 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Ratio
 
 ## Overview
 
-A Ratio metric compares two related metrics by dividing one value (the numerator) by another (the denominator).
-This creates a normalized measure that reveals the relationship between the two quantities rather than their absolute values.
+A `Ratio` metric answers the question: **how much of one thing happens for every one of another thing?**
 
-Ratio metrics are useful when you want to understand efficiency, conversion, quality, or per-user averages, because they remove scale effects and highlight how one metric behaves relative to another.
+You build it from two parts, a numerator and a denominator, each configured like a metric of its own. For each variant, ABsmartly adds up the numerator across all participants, adds up the denominator across all participants, and divides the first total by the second.
 
-## Examples
+This makes it a good fit for rates that aren't "per user", such as clicks per page view, revenue per order or purchases per active day.
 
-Suppose you track the following events:
+## How it's calculated
+
+Say you track `page_view` and `click` goals, and create a ratio with a `Goal Count` of `click` as the numerator and a `Goal Count` of `page_view` as the denominator.
 
 ```javascript
-context.track("click", {
-  element: "add_to_cart",
-  product_id: "ABC123"
-});
-
-context.track("page_view", {
-  page: "product_detail",
-  product_id: "ABC123"
-});
+context.track("page_view");
+context.track("click");
 ```
 
-You could build a `Click-through rate ratio` metric defined as:
-- **Numerator**: `Clicks per visitor`
-- **Denominator**: `Page views per visitor`
+Four users are in the same variant:
 
-This produces a meaningful relative measure that answers:
-“Out of all page views, how often do users click the add-to-cart button?”
+| User | `page_view` events | `click` events |
+|------|--------------------|----------------|
+| Ana  | 4                  | 2              |
+| Ben  | 1                  | 1              |
+| Cara | 5                  | 0              |
+| Dan  | 0                  | 1              |
 
-More examples:
-- `Average revenue per order`
--- Numerator: Revenue
--- Denominator: Orders
+The totals are 4 clicks and 10 page views, so the ratio is 4 / 10 = **0.4** clicks per page view. In the experiment results, both **Value** and **Mean** show 0.4. Hovering over Value shows the totals (Numerator 4, Denominator 10). Hovering over Mean shows the averages per participant (Numerator 4 / 4 = 1, Denominator 10 / 4 = 2.5).
 
-- `Purchases per active session`
--- Numerator: Purchase count
--- Denominator: Session count
+This is a ratio of totals, not an average of each user's own ratio. Averaging Ana (0.5), Ben (1) and Cara (0) would give 0.5, and Dan would have no ratio at all. With a ratio of totals, users with more page views carry more weight, and every participant can be included.
 
-- `Errors per request` (for performance / reliability metrics)
--- Numerator: Error events
--- Denominator: API requests
+Compare that with a [`Goal Count`](./goal-count) of `click` on the same data: a **Value** of 4 clicks and a **Mean** of 4 / 4 = 1 click per participant. The `Goal Count` tells you how much users clicked. The ratio tells you how often a page view led to a click.
 
-- `Unique products purchased per purchaser`
--- Numerator: Goal Property Unique Count (product_id)
--- Denominator: Unique purchasers
+## Creating the metric
 
-In all cases, the ratio reveals relative performance rather than total scale.
+When [creating a metric](../create), choose `Ratio` as the metric type, then:
+
+1. In **Numerator Configuration**, pick a **Numerator type** and set it up as you would that metric type: the **Goal**, plus the **Property**, **Activity interval** or **Retention period** if the type needs one, **Metric property filters** and, where the type allows it, **Outliers limit method**.
+2. In **Denominator Configuration**, do the same with a **Denominator type**. The denominator goal must share a datasource with the numerator goal.
+3. Optionally, under **Unit level conditions**, set **Unit conditions** to `Require denominator` (see below).
+4. In **Format, Scale & Precision**, choose how the ratio is displayed (see below).
+
+Any metric type except `Ratio` and `Custom SQL` can be used as the numerator or denominator, and the two sides can be different types.
+
+:::tip
+Both the Value and the Mean show the ratio, but a new metric starts with Value **Precision** set to `0` and the Mean shown as a percentage (Mean **Format** `{}%`, **Scale** `100`). With those defaults, the example above would show a Value of `0` and a Mean of `40.000%`. Set the Value precision, and the Mean format and scale, to match what your ratio measures: a percentage suits clicks per page view, but not revenue per order.
+:::
+
+## Require denominator
+
+By default, every participant's numerator counts, even if they have no denominator. In the example, Dan's click counts although he has no page views.
+
+With `Require denominator` set, a participant's numerator only counts if their denominator is not 0. Dan's click would be dropped, giving 3 / 10 = **0.3**. Use it when the numerator only makes sense for users who reached the denominator, such as payments per checkout, where a payment without a tracked checkout shouldn't count.
+
+## Reading the results
+
+In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** and **Mean** both show the ratio for the variant, and the **Metric total** row shows the total numerator divided by the total denominator across all variants. Unless the **GST** switch is on, you can hover over a variant's Value to see its numerator and denominator totals, and over its Mean to see their averages per participant.
+
+The **Relative impact** compares the ratio between variants, as a continuous metric. The **Impact per day** column shows `--` for ratio metrics.
+
+The confidence interval takes into account that one user can contribute many page views, and that a user's numerator and denominator tend to move together.
+
+A ratio can move because either side moved. If the ratio changes, check the Value tooltip in each variant to see whether the numerator, the denominator or both changed.
+
+## More examples
+
+- `Click-through rate`: `Goal Count` of `click` divided by `Goal Count` of `page_view`.
+- `Average order value`: `Goal Property` of `purchase` (`revenue`) divided by `Goal Count` of `purchase`.
+- `Items per order`: `Goal Property` of `purchase` (`items`) divided by `Goal Count` of `purchase`.
+- `Purchases per active day`: `Goal Count` of `purchase` divided by [`Goal Activity Period Count`](./activity-per-period) of `app_open` (1 day).
+- `Payments per checkout`: `Goal Unique Count` of `payment` divided by `Goal Unique Count` of `checkout`, with `Require denominator`.
 
 ## Good to know
 
-- Ratio metrics are derived metrics: they depend on two other existing metrics.
-- They allow you to normalize behaviors across traffic volumes, user counts, or content types.
-- Fluctuations in either numerator or denominator can change the ratio — interpreting ratios requires understanding both sides.
-- They are highly effective for comparing efficiency (e.g., clicks per page view), value (e.g., revenue per user), or quality (e.g., errors per request).
-- Outlier settings, goal filters, and definitions of numerator and denominator are inherited from their underlying metrics.
-- A ratio metric does not directly count events — instead, it evaluates the relationship between two already-defined metrics.
-- Changes to numerator or denominator definitions typically require versioning, since a ratio metric’s meaning depends entirely on those definitions.
+- **Metric property filters**, **Outliers limit method**, **Time filter** and **Goal relations** are set separately for the numerator and the denominator, and each side uses its own settings.
+- If you use [CUPED](../variance-reduction-cuped), the numerator and denominator are each adjusted using their own pre-exposure value over the same lookback period. The Numerator and Denominator shown in the tooltips are the adjusted values.
+- If the denominator total for a variant is 0, the ratio shows 0.

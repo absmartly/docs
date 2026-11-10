@@ -1,57 +1,73 @@
 ---
-sidebar_position: 8
+sidebar_position: 7
 ---
 
-# Activity per Period
+# Goal Activity Period Count
 
 ## Overview
 
-An `Activity per Period` metric measures **how frequently** a user performs a goal action across a configurable time window 
-— for example, _sessions per week_ or _orders per month_.
+A `Goal Activity Period Count` metric answers the question: **on how many separate days (or hours, or weeks) did each user do this?**
 
-Unlike a simple `Goal Count`, which sums all events per user, `Activity per Period` normalises activity into a **rate per period**, making it easier to compare user engagement over time and across cohorts of different exposure lengths.
+You pick a goal and an **activity interval**, for example 1 day. For each user, ABsmartly splits time into periods of that length and counts how many of those periods contain at least one goal event. Doing the action once or fifty times in the same period counts the same: one active period.
 
-You can configure:
+This makes it a good fit for questions about **habits and return visits** rather than volume, such as "did this change make people come back on more days?"
 
-- the **goal event** to track
-- the **period length** (e.g. day, week, month)
-- whether the period starts:
-    - from the user's first exposure to the experiment, or
-    - from the user's first occurrence of the goal event
+## How it's calculated
 
-## Examples
+Say you track an `app_open` goal and create a metric with an activity interval of **1 day**.
 
 ```javascript
-context.track("session_start", {
-  source: "homepage",
-  device: "mobile"
-});
+context.track("app_open");
 ```
 
-Imagine you want to measure **average sessions per week per user** during your experiment.
+Three users are exposed to the experiment:
 
-You can create a `Sessions per Week` metric by:
-- Selecting the `session_start` goal
-- Setting the `Period` to 7 days
-- Choosing whether periods start from the user's first exposure or first session
+| User | Exposed | `app_open` events after exposure | Active days | Value |
+|------|---------|----------------------------------|-------------|-------|
+| Ana  | Monday  | Monday (twice), Wednesday         | Monday, Wednesday | **2** |
+| Ben  | Monday  | Tuesday (12 times)                | Tuesday     | **1** |
+| Cara | Tuesday | none                              | none        | **0** |
 
-The metric then computes, for each user, the number of goal events per period, and aggregates the result across the experiment population.
+In the experiment results, this group would show a **Value** of 3 (2 + 1 + 0 active days in total) and a **Mean** of 3 / 3 = **1.0** active day per participant.
 
-**More examples**
+Compare that with a [`Goal Count`](./goal-count) on the same goal, which counts every event: Ana 3, Ben 12 and Cara 0, so a **Value** of 15 and a **Mean** of 5. Ben's burst of activity dominates the count, while the activity period count shows that Ana came back on more days.
 
-- `Orders per Month`:
-Average number of purchases per user per 30-day period.
+## Creating the metric
 
-- `Articles Read per Week`:
-Average number of articles read per user, per 7-day period.
+When [creating a metric](../create), choose `Goal Activity Period Count` as the metric type, then:
 
-- `Active Days per Week`:
-Average number of distinct days a user was active in a 7-day window.
+1. Select the goal you want to measure, for example `app_open`.
+2. Set the **Activity interval**: a number and a unit (`Hours`, `Days` or `Weeks`).
+3. Optionally add filters on the goal's properties, as with other goal-based metrics.
+
+The activity interval can be at most 4 weeks (28 days, or 672 hours).
+
+## How periods are defined
+
+Periods are currently **fixed time slots in UTC**, the same for every user. For example, a `1 day` interval means UTC calendar days, from 00:00 to 24:00 UTC. A `1 week` interval currently runs from Thursday 00:00 UTC to the following Thursday, so a goal event on Wednesday and another on Thursday count as two active weeks. Longer intervals are counted from 1 January 1970 UTC, so a `2 weeks` interval starts on alternate Thursdays, and an hourly interval that doesn't divide a day evenly, such as `5 hours`, won't always start at midnight.
+
+Because the slots don't start at the user's exposure, a user's first period can be partly over by the time they are exposed. With a 1-day interval, a user exposed at 23:50 UTC who triggers the goal at 23:55 and again at 00:05 has two active days, even though only ten minutes passed.
+
+## Reading the results
+
+In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the total number of active periods across all participants in the variant, and **Mean** is that total divided by the number of participants. The impact is calculated on the Mean, as with other continuous metrics such as `Goal Count`.
+
+If CUPED is active for the metric, both Value and Mean are CUPED-adjusted, so they won't match the raw count of active periods and can be fractional. Configuring CUPED isn't always enough: if the pre-exposure covariate doesn't correlate well enough with the metric, or the adjustment wouldn't reduce variance, ABsmartly falls back to the unadjusted values.
+
+Because the value counts periods rather than dividing by them, it grows the longer users stay in the experiment. A user exposed on day one has more chances to be active than a user exposed yesterday. That's fine for comparing variants, since both groups have the same mix of exposure times, but don't read the raw number as "days active per week".
+
+## More examples
+
+- `Active days`: goal `app_open`, interval `1 day`. How many different days users opened the app.
+- `Active weeks with a purchase`: goal `purchase`, interval `1 week`. How many different weeks users bought something.
+- `Active hours watching`: goal `video_play`, interval `1 hour`. How many different hours users started a video.
+- `Purchases per active day`: a [Ratio](./ratio) metric with a `Goal Count` of `purchase` as the numerator and a `Goal Activity Period Count` of `app_open` (1 day) as the denominator.
 
 ## Good to know
 
-- Useful when you care about **frequency** of an action rather than total volume or simple conversion.
-- More robust than `Goal Count` when users have different exposure lengths — the per-period normalisation makes long-tenured and short-tenured users directly comparable.
-- Filters on the goal event apply before the per-period rollup (for example: _purchases per week_ restricted to a specific category).
-- Changing the period length alters the meaning of the metric and will require a new version.
-- Ideal for experiments aimed at **engagement, habit formation, or retention frequency** — onboarding flows, notifications, recommendation systems, or loyalty mechanics.
+- Great for **engagement and habit** experiments: onboarding flows, notifications, reminders, streaks or loyalty features.
+- Less sensitive to bursts than `Goal Count`, because repeat events in the same period add nothing.
+- Filters on the goal apply before periods are counted, so `Active days with a purchase in category ZYZ123` only counts days with a matching purchase.
+- If you cancel goal events, a period stops counting only when every event in it has been cancelled.
+- If you use [CUPED](../variance-reduction-cuped), the pre-exposure covariate is the same count of active periods, measured over the lookback window before exposure.
+- Changing the activity interval changes what the metric means and requires a new metric version.
