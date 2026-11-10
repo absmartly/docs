@@ -69,6 +69,13 @@ This is the right surface for:
 See the [API examples](/docs/APIs-and-SDKs/Web-Console-API/examples/slack-integration)
 for end-to-end integrations such as a custom Slack notifier.
 
+**Authentication.** Requests are authenticated with an API key from
+**Settings → API Keys**, sent as `Authorization: Api-Key <key>`. If your own
+backend acts for users who are signed in to your identity provider, it can
+instead send their access tokens from that provider, so each call runs with
+that user's permissions. See
+[Federated Authentication](#federated-authentication).
+
 ### MCP Server
 
 The [MCP Server](/docs/APIs-and-SDKs/MCP-Server/overview) gives AI
@@ -83,6 +90,17 @@ Common starting points:
 - [Setup](/docs/APIs-and-SDKs/MCP-Server/setup) — every supported MCP client
 - [Usage Examples](/docs/APIs-and-SDKs/MCP-Server/usage-examples) — natural-language prompts that work today
 - [Tools Reference](/docs/APIs-and-SDKs/MCP-Server/tools-reference) — the full surface: 230+ commands across 33 groups
+
+### Federated Authentication
+
+[Federated Authentication](/docs/APIs-and-SDKs/Federated-Authentication/federated-oidc-tokens) lets your own backend
+call the Platform API and your instance's MCP server **on behalf of each of
+your users**, with access tokens issued by your own OpenID Connect identity
+provider, such as Microsoft Entra ID or Okta. Each call acts as the matching
+ABsmartly user, with exactly that user's permissions. It is enabled on request.
+
+- [Federated OIDC access tokens](/docs/APIs-and-SDKs/Federated-Authentication/federated-oidc-tokens) — how it works, token requirements, errors and security
+- [Microsoft Entra ID](/docs/APIs-and-SDKs/Federated-Authentication/microsoft-entra-id) — step-by-step setup with the On-Behalf-Of flow
 
 ### CLI
 
@@ -111,6 +129,7 @@ Common starting points:
 | Build automation, internal tools, or CI/CD integrations | [Platform API](/docs/APIs-and-SDKs/Web-Console-API/absmartly-web-console-api) |
 | Drive ABsmartly from Claude, Cursor or another AI assistant | [MCP Server](/docs/APIs-and-SDKs/MCP-Server/overview) |
 | Manage experiments from a terminal or CI/CD script | [CLI](/docs/APIs-and-SDKs/CLI-Documentation/) |
+| Call the API or MCP server from your own backend as each signed-in user | [Federated Authentication](/docs/APIs-and-SDKs/Federated-Authentication/federated-oidc-tokens) |
 | Visually edit pages for an A/B test without writing code | [LaunchPad browser extension](/docs/web-console-docs/launchpad-browser-extension/getting-started) |
 | Run experiments and configure the workspace from the UI | [Product Documentation](/docs/web-console-docs/overview) |
 
