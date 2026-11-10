@@ -64,7 +64,9 @@ Always read it next to a `Goal Unique Count` on the same goal. If the unique cou
 To measure the average wait only for users who reached the goal, create a [Ratio](./ratio) metric with:
 
 - a `Goal Time To Achievement` numerator on your goal, and
-- a `Goal Unique Count` denominator on the same goal.
+- a `Goal Unique Count` denominator on the same goal, with the same property filters, time filters and cancellation.
+
+If the two sides don't match, the denominator counts a different set of users and the Mean is no longer the average wait.
 
 Its Mean is the total time to first achievement divided by the number of users who reached the goal. For Ana, Ben and Cara that's 266,400 seconds / 2 = **133,200 seconds**, or 37 hours.
 
