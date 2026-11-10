@@ -6,7 +6,7 @@ sidebar_position: 6
 
 ## Overview
 
-A `Goal Retention` metric answers the question: **what share of users did this again after a set amount of time?**
+A `Goal Retention` metric answers the question: **what share of users were still doing this after a set amount of time?**
 
 You pick a goal and a **retention period**, for example 7 days. A user counts as retained if they trigger the goal at least once **at or after** the end of that period. The period starts either when the user was first exposed to the experiment or when they first triggered the goal.
 
@@ -56,7 +56,7 @@ If you add property filters, only matching events count, both for the first achi
 
 In the [metric results table](../../../experiments/interpreting-metrics-in-experiment-results), **Value** is the number of retained participants in the variant, and **Mean** is that number divided by the number of participants, shown as a percentage. It's analysed as a binomial metric, like `Goal Unique Count`. If the metric uses CUPED, Value and Mean are CUPED-adjusted, so Value is no longer a whole number of users.
 
-Users exposed less than one retention period ago haven't had the chance to be retained yet, but they still count as participants with a value of 0. So the Mean starts low and tends to rise as the experiment runs, and it reads lower than the true retention rate while recent users are still in their retention period. Both variants have the same mix of exposure times, so the comparison stays fair, but read the raw percentage with that in mind. The longer the retention period, the stronger the effect.
+Users exposed less than one retention period ago haven't had the chance to be retained yet, but they still count as participants with a value of 0. So the Mean starts low and tends to rise as the experiment runs, and it reads lower than the true retention rate while recent users are still in their retention period. Random assignment gives both variants a similar mix of exposure times, so the comparison stays fair, but read the raw percentage with that in mind. The longer the retention period, the stronger the effect.
 
 ## More examples
 
