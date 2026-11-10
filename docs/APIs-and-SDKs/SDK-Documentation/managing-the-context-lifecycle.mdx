@@ -33,6 +33,33 @@ request, use it throughout the request to check treatments and track goals, and 
 events are sent and the context is cleaned up before the request ends.
 :::
 
+:::info Python SDK: publish delay is in seconds, and defaults to 50 seconds
+In the Python SDK, `ContextConfig.publish_delay` is in **seconds**, not milliseconds,
+and it **defaults to 50**. That means a Python context waits up to 50 seconds after the
+first queued exposure or goal before it sends the batch. This is much longer than the
+Javascript SDK's delay, because `publishDelay` is in milliseconds in Javascript.
+
+To send events sooner, do one of these:
+
+- Call `context.publish()` when you need the events sent, for example at the end of a
+  request. `publish()` only sends queued events: the context stays open and keeps
+  refreshing.
+- Call `context.close()` before the process exits. `close()` sends queued events and also
+  stops automatic refresh. With the default configuration, the refresh timer keeps a
+  Python process running after `publish()` returns, so use `close()` to shut down.
+- Set a shorter delay, for example `context_config.publish_delay = 1` (1 second). A value
+  of `0` sends each batch immediately, on a background thread.
+
+Unlike the Javascript SDK, setting `publish_delay` to `-1` does **not** turn off automatic
+publishing in the Python SDK. A negative value acts like `0` and sends events immediately.
+
+```python
+context_config = ContextConfig()
+context_config.units = {"user_id": "user-12345"}
+context_config.publish_delay = 1  # seconds (default is 50)
+```
+:::
+
 Even in SDKs with auto-publishing enabled, there are times when you need to make sure
 events are sent right now, before moving on:
 
@@ -250,6 +277,11 @@ periodically re-fetch experiment data in the background.
 The unit for the refresh interval varies by SDK. Javascript, Java, Go, PHP, and
 Flutter use **milliseconds**. Python, Ruby, and Swift use **seconds**. .NET uses
 `TimeSpan`.
+
+In most SDKs, automatic refresh is off unless you set it. In the Python SDK,
+`refresh_interval` **defaults to 50 seconds**, so a Python context re-fetches experiment
+data every 50 seconds unless you change it. Set `refresh_interval = 0` (or any value
+less than or equal to `0`) to turn it off.
 :::
 
 <Tabs groupId="language">
@@ -271,6 +303,7 @@ const context = sdk.createContext(
 context_config = ContextConfig()
 context_config.units = {"user_id": "user-12345"}
 context_config.refresh_interval = 30  # 30 seconds (Python uses seconds, not milliseconds)
+# The default is 50 seconds. Set refresh_interval = 0 to turn automatic refresh off.
 
 ctx = sdk.create_context(context_config)
 ```
@@ -562,7 +595,7 @@ SDK default.
 const context = sdk.createContext(
   request,
   {
-    refreshInterval: 5 * 60 * 1000,
+    refreshPeriod: 5 * 60 * 1000, // 5 minutes, in ms
   },
   {
     timeout: 1500,
@@ -587,7 +620,7 @@ const controller = new absmartly.AbortController();
 const context = sdk.createContext(
   request,
   {
-    refreshInterval: 5 * 60 * 1000,
+    refreshPeriod: 5 * 60 * 1000, // 5 minutes, in ms
   },
   {
     signal: controller.signal,
