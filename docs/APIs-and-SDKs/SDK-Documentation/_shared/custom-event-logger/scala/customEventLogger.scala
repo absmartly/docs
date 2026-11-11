@@ -1,5 +1,6 @@
-import com.absmartly.sdk.EventLogger
+import com.absmartly.sdk.{EventLogger, SDK, SDKConfig}
 import io.circe.Json
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class CustomEventLogger extends EventLogger {
   override def logEvent(eventType: String, data: Json): Unit = {
@@ -23,3 +24,11 @@ class CustomEventLogger extends EventLogger {
     }
   }
 }
+
+val sdk = new SDK(SDKConfig(
+  endpoint = "https://your-company.absmartly.io/v1",
+  apiKey = "YOUR-API-KEY",
+  application = "website",
+  environment = "production",
+  eventLogger = new CustomEventLogger()
+))
