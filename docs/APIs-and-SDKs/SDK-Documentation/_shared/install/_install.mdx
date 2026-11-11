@@ -35,9 +35,11 @@ import RubyGemInstall from "!!raw-loader!./ruby/gem.sh";
 import FlutterInstall from "!!raw-loader!./flutter/install.yaml";
 
 import AngularInstall from "!!raw-loader!./angular/install.bash";
+import KotlinBuild from "!!raw-loader!./kotlin/install.bash";
 import KotlinInstall from "!!raw-loader!./kotlin/install.gradle";
 import CppInstall from "!!raw-loader!./cpp/install.bash";
 import CppCMake from "!!raw-loader!./cpp/CMakeLists.txt";
+import ScalaBuild from "!!raw-loader!./scala/install.bash";
 import ScalaInstall from "!!raw-loader!./scala/build.sbt";
 import ElixirInstall from "!!raw-loader!./elixir/install.ex";
 import RustInstall from "!!raw-loader!./rust/install.toml";
@@ -314,11 +316,14 @@ install the resulting tarball:
 The ABsmartly Kotlin SDK requires Kotlin 1.9 or later and runs on JVM 11+.
 :::
 
-**Gradle**
+The Kotlin SDK is not yet published to Maven Central. Build it from source and
+publish it to your local Maven repository:
 
-Replace \{VERSION\} with the latest SDK version available in MavenCentral.
+<CodeBlock language="bash">{KotlinBuild}</CodeBlock>
 
-<CodeBlock language="gradle">{KotlinInstall}</CodeBlock>
+Then add it to your `build.gradle.kts`:
+
+<CodeBlock language="kotlin">{KotlinInstall}</CodeBlock>
 
 </TabItem>
 
@@ -336,7 +341,16 @@ Replace \{VERSION\} with the latest SDK version available in MavenCentral.
 
 <TabItem value="scala" label="Scala">
 
-**SBT**
+:::info Compatibility
+The ABsmartly Scala SDK is built for Scala 2.13 and Scala 3.
+:::
+
+The Scala SDK is not yet published to Maven Central. Build it from source and
+publish it to your local Ivy repository, which sbt reads by default:
+
+<CodeBlock language="bash">{ScalaBuild}</CodeBlock>
+
+Then add it to your `build.sbt`:
 
 <CodeBlock language="scala">{ScalaInstall}</CodeBlock>
 
@@ -348,7 +362,8 @@ Replace \{VERSION\} with the latest SDK version available in MavenCentral.
 The ABsmartly Elixir SDK is compatible with Elixir 1.17+ and Erlang/OTP 25+.
 :::
 
-Add to your `mix.exs` dependencies:
+The Elixir SDK is not yet published to Hex. Add it to your `mix.exs`
+dependencies from GitHub, pinned to a commit:
 
 <CodeBlock language="elixir">{ElixirInstall}</CodeBlock>
 
