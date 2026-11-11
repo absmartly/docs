@@ -7,12 +7,10 @@
   window.absmartlyConfig = {
     endpoint: 'https://your-company.absmartly.io/v1',
     apiKey: 'YOUR-API-KEY',
-    application: {{ shop.name | json }},
+    application: 'website',
     environment: 'production',
-    units: {
-      session_id: {{ request.cookie.session_id | json }}{% if customer %},
-      customer_id: {{ customer.id | json }}{% endif %}
-    }
+    units: {}{% if customer %},
+    customerId: {{ customer.id | json }}{% endif %}
   };
 </script>
 
@@ -25,6 +23,16 @@
 <script>
   (function() {
     var config = window.absmartlyConfig;
+
+    // Shopify's Liquid request object has no cookies, so keep a visitor id in the browser.
+    var anonymousId = localStorage.getItem('absmartly_anonymous_id');
+    if (!anonymousId) {
+      anonymousId = crypto.randomUUID();
+      localStorage.setItem('absmartly_anonymous_id', anonymousId);
+    }
+    config.units.anonymous_id = anonymousId;
+    if (config.customerId) config.units.customer_id = config.customerId;
+
     var sdk = new absmartly.SDK({
       endpoint: config.endpoint,
       apiKey: config.apiKey,

@@ -48,41 +48,57 @@ function fakeAbsmartly() {
   return { absmartly: { SDK }, calls };
 }
 
-async function runSnippet(template, vars) {
+function fakeLocalStorage(initial = {}) {
+  const items = { ...initial };
+  return {
+    items,
+    getItem: (key) => (key in items ? items[key] : null),
+    setItem: (key, value) => {
+      items[key] = String(value);
+    },
+  };
+}
+
+async function runSnippet(template, vars, storage) {
   const html = render(template, vars);
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
   assert.strictEqual(scripts.length, 2, 'expected config and initialization <script> blocks');
   const { absmartly, calls } = fakeAbsmartly();
   const window = {};
-  const sandbox = vm.createContext({ window, absmartly });
+  const crypto = { randomUUID: () => 'generated-id' };
+  const sandbox = vm.createContext({ window, absmartly, localStorage: storage, crypto });
   for (const script of scripts) vm.runInContext(script, sandbox);
   await calls.context.ready();
   return { config: window.absmartlyConfig, window, calls };
 }
 
 const template = fs.readFileSync(SNIPPET, 'utf8');
-const hostile = `O'Brien's "Shop" \\ \n';alert(1);//`;
+// A Liquid value that would break out of a JS string if it were not JSON-encoded.
+const hostile = `42'; alert(1); //"\\`;
 
 const cases = [
   {
-    name: 'with customer and hostile values',
-    vars: { shop: { name: hostile }, request: { cookie: { session_id: hostile } }, customer: { id: 42 } },
-    expected: { session_id: hostile, customer_id: 42 },
+    name: 'new visitor with customer and hostile value',
+    vars: { customer: { id: hostile } },
+    stored: {},
+    expected: { anonymous_id: 'generated-id', customer_id: hostile },
   },
   {
-    name: 'without customer',
-    vars: { shop: { name: hostile }, request: { cookie: { session_id: 'abc' } } },
-    expected: { session_id: 'abc' },
+    name: 'returning visitor without customer',
+    vars: {},
+    stored: { absmartly_anonymous_id: 'stored-id' },
+    expected: { anonymous_id: 'stored-id' },
   },
 ];
 
 (async () => {
   let failed = 0;
-  for (const { name, vars, expected } of cases) {
+  for (const { name, vars, stored, expected } of cases) {
     try {
-      const { config, window, calls } = await runSnippet(template, vars);
-      assert.strictEqual(config.application, hostile);
+      const storage = fakeLocalStorage(stored);
+      const { config, window, calls } = await runSnippet(template, vars, storage);
       assert.deepStrictEqual({ ...config.units }, expected);
+      assert.strictEqual(storage.items.absmartly_anonymous_id, expected.anonymous_id);
       assert.deepStrictEqual({ ...calls.sdkOptions }, {
         endpoint: config.endpoint,
         apiKey: config.apiKey,
