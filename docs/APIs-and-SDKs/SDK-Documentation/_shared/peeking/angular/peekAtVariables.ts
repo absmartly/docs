@@ -1,1 +1,1 @@
-const buttonColor = absmartly.peekVariableValue('button_color', 'blue');
+const buttonColor = absmartly.peekVariableValue('button.color', 'blue');
