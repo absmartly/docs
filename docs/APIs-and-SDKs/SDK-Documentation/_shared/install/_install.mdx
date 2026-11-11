@@ -359,11 +359,13 @@ Then add it to your `build.sbt`:
 <TabItem value="elixir" label="Elixir">
 
 :::info Compatibility
-The ABsmartly Elixir SDK is compatible with Elixir 1.17+ and Erlang/OTP 25+.
+The ABsmartly Elixir SDK is compatible with Elixir 1.17+ and Erlang/OTP 26+.
 :::
 
 The Elixir SDK is not yet published to Hex. Add it to your `mix.exs`
-dependencies from GitHub, pinned to a commit:
+dependencies from GitHub, pinned to a commit. A git dependency does not bring its
+lock file with it, so also pin `hackney` and `quic` to the versions the SDK is
+tested with; the latest `hackney` requires OTP 27:
 
 <CodeBlock language="elixir">{ElixirInstall}</CodeBlock>
 
