@@ -121,6 +121,13 @@ import LiquidVariable from "!!raw-loader!./_shared/selecting-a-variable/liquid/s
 </TabItem>
 
 <TabItem value="liquid" label="Liquid (Shopify)">
+
+These filters read the Ruby SDK context passed to the template as `absmartly`, so
+they only work where your Ruby application renders Liquid. A Shopify theme renders
+before the browser context exists; there, use `window.absmartlyContext` from the
+[theme setup](./getting-started#import-and-initialise-the-sdk) with the Javascript
+SDK's methods once it is ready.
+
 <CodeBlock language="liquid">{LiquidVariable}</CodeBlock>
 </TabItem>
 
