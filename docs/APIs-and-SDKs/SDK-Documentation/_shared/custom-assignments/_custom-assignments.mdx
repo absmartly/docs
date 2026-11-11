@@ -35,6 +35,19 @@ import RubyCustomAssignments from "!!raw-loader!./ruby/customAssignments.rb";
 import FlutterCustomAssignment from "!!raw-loader!./flutter/customAssignment.dart";
 import FlutterCustomAssignments from "!!raw-loader!./flutter/customAssignments.dart";
 
+import AngularAssignment from "!!raw-loader!./angular/customAssignment.ts";
+import AngularAssignments from "!!raw-loader!./angular/customAssignments.ts";
+import KotlinAssignment from "!!raw-loader!./kotlin/customAssignment.kt";
+import KotlinAssignments from "!!raw-loader!./kotlin/customAssignments.kt";
+import CppAssignment from "!!raw-loader!./cpp/customAssignment.cpp";
+import CppAssignments from "!!raw-loader!./cpp/customAssignments.cpp";
+import ScalaAssignment from "!!raw-loader!./scala/customAssignment.scala";
+import ScalaAssignments from "!!raw-loader!./scala/customAssignments.scala";
+import ElixirAssignment from "!!raw-loader!./elixir/customAssignment.ex";
+import ElixirAssignments from "!!raw-loader!./elixir/customAssignments.ex";
+import RustAssignment from "!!raw-loader!./rust/customAssignment.rs";
+import RustAssignments from "!!raw-loader!./rust/customAssignments.rs";
+
 Set a variant for a single experiment, or use the batch method for multiple
 experiments at once. Both can be called before or after the context is ready.
 
@@ -158,6 +171,36 @@ For multiple experiments:
 
 <CodeBlock language="dart">{FlutterCustomAssignments}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularAssignment}</CodeBlock>
+<CodeBlock language="typescript">{AngularAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinAssignment}</CodeBlock>
+<CodeBlock language="kotlin">{KotlinAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppAssignment}</CodeBlock>
+<CodeBlock language="cpp">{CppAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaAssignment}</CodeBlock>
+<CodeBlock language="scala">{ScalaAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirAssignment}</CodeBlock>
+<CodeBlock language="elixir">{ElixirAssignments}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustAssignment}</CodeBlock>
+<CodeBlock language="rust">{RustAssignments}</CodeBlock>
 </TabItem>
 
 </Tabs>

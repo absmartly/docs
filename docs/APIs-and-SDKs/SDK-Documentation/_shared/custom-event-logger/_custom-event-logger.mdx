@@ -21,6 +21,14 @@ import RubyCustomEventLogger from "!!raw-loader!./ruby/customEventLogger.rb";
 import FlutterCustomEventLogger from "!!raw-loader!./flutter/customEventLogger.dart";
 import FlutterUsage from "!!raw-loader!./flutter/usage.dart";
 
+import AngularEventLogger from "!!raw-loader!./angular/customEventLogger.ts";
+import KotlinEventLogger from "!!raw-loader!./kotlin/customEventLogger.kt";
+import CppEventLogger from "!!raw-loader!./cpp/customEventLogger.cpp";
+import ScalaEventLogger from "!!raw-loader!./scala/customEventLogger.scala";
+import ElixirEventLogger from "!!raw-loader!./elixir/customEventLogger.ex";
+import RustEventLogger from "!!raw-loader!./rust/customEventLogger.rs";
+import LiquidEventLogger from "!!raw-loader!./liquid/customEventLogger.rb";
+
 The SDK can be instantiated with an event logger used for all contexts. In
 addition, most SDKs let you specify an event logger per context when calling
 `createContext`.
@@ -39,8 +47,9 @@ type. The SDK fires the following events:
 | close / finalize | Context is closed or finalized | `null` / `undefined` |
 
 :::note Naming differences
-Javascript, React, Vue, and Flutter use `"finalize"` for the close event.
-Python, Java, Go, Swift, .NET, PHP, and Ruby use `"close"`. The method and
+Javascript, React, Vue, Angular, Flutter, Scala, Elixir, and C++ use `"finalize"`
+for the close event. Python, Java, Kotlin, Go, Swift, .NET, PHP, Ruby, and Liquid
+use `"close"`. The method and
 event names in the code examples below match each SDK's convention.
 :::
 
@@ -127,6 +136,48 @@ interface with a `handleEvent()` method that receives the `Context` object and a
 <CodeBlock language="dart">{FlutterCustomEventLogger}</CodeBlock>
 
 <CodeBlock language="dart">{FlutterUsage}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+
+<CodeBlock language="typescript">{AngularEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+<CodeBlock language="kotlin">{KotlinEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+
+<CodeBlock language="cpp">{CppEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+
+<CodeBlock language="scala">{ScalaEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+
+<CodeBlock language="elixir">{ElixirEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+
+<CodeBlock language="rust">{RustEventLogger}</CodeBlock>
+
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+<CodeBlock language="ruby">{LiquidEventLogger}</CodeBlock>
 
 </TabItem>
 
