@@ -213,6 +213,9 @@ import { ABSmartlyService } from "@absmartly/angular-sdk";
   template: `
     @if (absmartly.loading()) {
       <p>Loading experiments...</p>
+    } @else if (absmartly.failed()) {
+      <p>Experiments are unavailable; showing the default experience.</p>
+      <app-main-content />
     } @else {
       <app-main-content />
     }
@@ -222,6 +225,11 @@ export class AppComponent {
   absmartly = inject(ABSmartlyService);
 }
 ```
+
+The example uses Angular 17's built-in control flow (`@if`). On Angular 16, use
+`*ngIf` instead, for example
+`<p *ngIf="absmartly.loading()">Loading experiments...</p>`, and import `NgIf`
+in the component.
 
 </TabItem>
 
