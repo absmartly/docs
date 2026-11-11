@@ -146,6 +146,12 @@ Go also provides `PublishAsync()` for non-blocking use.
 </TabItem>
 
 <TabItem value="rust" label="Rust">
+
+The published Rust SDK (0.1) does not send events to the collector. `publish()`
+passes the pending events to the context's event logger as a `publish` event and
+clears them, so your application must capture that payload and send it to the
+[collector API](/docs/APIs-and-SDKs/SDK-API/context-publish) itself:
+
 <CodeBlock language="rust">{RustPublish}</CodeBlock>
 </TabItem>
 

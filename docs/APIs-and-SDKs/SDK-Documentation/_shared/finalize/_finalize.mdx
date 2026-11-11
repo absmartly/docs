@@ -198,6 +198,11 @@ an error if any method that could generate an event is called.
 </TabItem>
 
 <TabItem value="rust" label="Rust">
+
+`finalize()` publishes any pending events first. In the Rust SDK (0.1) that means
+they are handed to the event logger rather than sent, so register the logger from
+[Publishing](#flushing-events-with-publish) before finalizing, or the events are lost.
+
 <CodeBlock language="rust">{RustFinalize}</CodeBlock>
 </TabItem>
 
