@@ -111,23 +111,28 @@ A cluster value is always text. The SDK converts the attribute it reads as follo
 - **Strings** are used exactly as they are. The string `"3.0"` is the cluster `"3.0"`,
   not `"3"`. An empty string gives no value.
 - **Whole numbers** become their base-10 text, so `3` is the cluster `"3"`.
-- **Floating-point numbers** are converted to a whole number by dropping the fractional
-  part (rounding towards zero), and then become base-10 text like any whole number. So
-  `3.0` and `3.9` are both the cluster `"3"`, and `-3.7` is `"-3"`. Very large numbers are
-  converted exactly, without losing precision. `NaN` and infinity give no value.
+- **Floating-point numbers with no fractional part**, such as `3.0`, `-3.0` or `1e20`,
+  become the same base-10 text as the equivalent whole number: `3.0` is the cluster `"3"`
+  and `1e20` is `"100000000000000000000"` (never exponent notation). Large values are
+  converted exactly, without losing precision.
+- **Floating-point numbers with a fractional part**, such as `3.7` or `-0.5`, give no
+  value. They are not rounded or truncated. `NaN` and infinity give no value either.
 - **Everything else** gives no value: `null`, booleans, objects and arrays.
 
-Because numbers are always converted to whole numbers, `3` and `3.0` are the same cluster
-in every SDK, including in languages such as JavaScript and Dart where they are the same
-number.
+Because a whole floating-point number is the same cluster as the integer, `3` and `3.0`
+are the same cluster in every SDK, including in languages such as JavaScript and Dart
+where they are the same number.
 
 | Attribute value | Cluster value |
 | --- | --- |
 | `3` | `"3"` |
 | `3.0` | `"3"` |
-| `3.9` | `"3"` |
-| `-3.7` | `"-3"` |
-| `-0.5` | `"0"` |
+| `-3.0` | `"-3"` |
+| `-0.0` | `"0"` |
+| `1e20` | `"100000000000000000000"` |
+| `3.7` | No value |
+| `3.5` | No value |
+| `-0.5` | No value |
 | `"3.0"` (string) | `"3.0"` |
 | `"lisbon"` (string) | `"lisbon"` |
 | `""` (empty string) | No value |
@@ -143,7 +148,7 @@ context is not eligible: it gets variant `0` and no exposure is recorded.
 :::tip
 If your cluster values are numeric identifiers, pass them as whole numbers or as strings,
 and use the same form everywhere. A string `"3.0"` and the number `3` are different
-clusters.
+clusters, and a number with a fractional part, such as `3.7`, is never a valid cluster.
 :::
 
 ## Assignment and exposures
