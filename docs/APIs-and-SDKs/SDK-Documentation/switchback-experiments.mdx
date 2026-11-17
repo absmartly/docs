@@ -1,0 +1,170 @@
+---
+sidebar_position: 11
+---
+
+# Switchback Experiments
+
+In a regular experiment, each user (or other unit) is randomly assigned a variant and
+keeps it. A **switchback experiment** randomizes groups of units, called **clusters**,
+over time instead. A cluster is something like a city, a store or a warehouse. Time is
+divided into fixed periods (for example one hour), and in each period every unit in the
+same cluster sees the same variant. When the next period starts, the cluster may
+"switch back" to a different variant.
+
+Switchbacks are useful when units affect each other, for example when riders and drivers
+in the same city share one marketplace, and giving half of them a new pricing algorithm
+would also change what the other half experiences.
+
+This page explains what a switchback means for your application code: how the SDK decides
+which cluster a unit belongs to, and which values it accepts as a cluster.
+
+## Supported SDKs
+
+Switchback experiments are supported by the following SDKs:
+
+- [Java](https://www.github.com/absmartly/java-sdk), from the first release after 1.8.0.
+
+Support in the other SDKs is coming. An SDK without switchback support still receives
+switchback experiments, but it ignores the cluster configuration and does not follow the
+schedule. Upgrade every application that serves a switchback experiment to a supported
+SDK version before you start the experiment.
+
+## What changes in your code
+
+Nothing in the way you call the SDK. You still create a context with your units and call
+`getTreatment()` (or read a variable) with the experiment name. The difference is that
+the SDK also needs to know which cluster the unit is in, and it reads that from the
+context's [attributes](./targeting-and-audiences#passing-user-attributes-for-targeting).
+
+```java
+final ContextConfig contextConfig = ContextConfig.create()
+    .setUnit("session_id", "5ebf06d8cb5d8137290c4abb64155584fbdb64d8")
+    .setUnit("store_id", "store-0042");
+
+final Context context = sdk.createContext(contextConfig)
+    .waitUntilReady();
+
+// The attribute the switchback's cluster is configured to read
+context.setAttribute("city", "lisbon");
+
+final int treatment = context.getTreatment("checkout_flow_switchback");
+```
+
+The variant you get back depends on the cluster (`"lisbon"`) and on the current time
+period, not on the unit's identifier. Two users in Lisbon in the same hour get the same
+variant.
+
+:::tip
+Set the cluster attribute before you call `getTreatment()`. The SDK reads the cluster
+when it resolves the treatment for a period, and keeps it for the rest of that period.
+:::
+
+## How the SDK finds the cluster
+
+When you set up a switchback in the Web Console, you choose a **switchback cluster**.
+The cluster defines, for each unit type it is linked to, which attribute holds the
+cluster value. For example, the `city` cluster might read the attribute `city` for
+`session_id` units and `store/city` for `store_id` units.
+
+When you call `getTreatment()`, the SDK works out the cluster like this:
+
+1. **Linked units.** The SDK looks at the context units whose unit types are linked to
+   the cluster. If the context has none of them, the experiment does not apply to this
+   context: you get variant `0` (control) and no exposure is recorded.
+2. **Cluster values.** Going through the linked unit types in a fixed order, the SDK reads
+   the configured attribute and turns it into a cluster value (see
+   [Cluster values](#cluster-values) below). A unit whose attribute is missing or does
+   not give a value is skipped.
+3. **First value wins.** The first unit that gives a value is the **serving unit**, and
+   its value is the cluster. The experiment's exposure is recorded for that unit.
+4. **Units must agree.** If another linked unit gives a *different* value, the units
+   disagree and the context is **not eligible** for the experiment.
+5. **Allowed values.** If the experiment is restricted to a list of cluster values in the
+   Web Console, a cluster that is not on the list is not eligible either. An empty list
+   allows every value.
+
+When the context is not eligible (no unit gives a value, the units disagree, or the value
+is not allowed), you get variant `0` (control) and **no exposure is recorded**, so the
+context does not count towards the experiment's results.
+[Overrides](./targeting-and-audiences#overriding-variants-for-development-and-qa) still
+apply.
+
+### Attribute paths
+
+A cluster attribute can point inside a nested attribute value. Segments are separated by
+`/`:
+
+| Path | Reads |
+| --- | --- |
+| `city` | The `city` attribute |
+| `store/city` | The `city` key inside the `store` attribute |
+| `stores/0/city` | The `city` key of the first item in the `stores` list |
+| `'a/b'` | The key `a/b` (quotes make a segment literal) |
+
+A path that contains a `.` is not supported, so `store.city` never finds a value. Use
+`store/city` to read a nested key.
+
+## Cluster values
+
+A cluster value is always text. The SDK converts the attribute it reads as follows:
+
+- **Strings** are used exactly as they are. The string `"3.0"` is the cluster `"3.0"`,
+  not `"3"`. An empty string gives no value.
+- **Whole numbers** become their base-10 text, so `3` is the cluster `"3"`.
+- **Floating-point numbers with no fractional part**, such as `3.0`, `-3.0` or `1e20`,
+  become the same base-10 text as the equivalent whole number: `3.0` is the cluster `"3"`
+  and `1e20` is `"100000000000000000000"` (never exponent notation). Large values are
+  converted exactly, without losing precision.
+- **Floating-point numbers with a fractional part**, such as `3.7` or `-0.5`, give no
+  value. They are not rounded or truncated. `NaN` and infinity give no value either.
+- **Everything else** gives no value: `null`, booleans, objects and arrays.
+
+Because a whole floating-point number is the same cluster as the integer, `3` and `3.0`
+are the same cluster in every SDK, including in languages such as JavaScript and Dart
+where they are the same number.
+
+| Attribute value | Cluster value |
+| --- | --- |
+| `3` | `"3"` |
+| `3.0` | `"3"` |
+| `-3.0` | `"-3"` |
+| `-0.0` | `"0"` |
+| `1e20` | `"100000000000000000000"` |
+| `3.7` | No value |
+| `3.5` | No value |
+| `-0.5` | No value |
+| `"3.0"` (string) | `"3.0"` |
+| `"lisbon"` (string) | `"lisbon"` |
+| `""` (empty string) | No value |
+| `true` / `false` | No value |
+| `null` | No value |
+| `NaN`, `Infinity`, `-Infinity` | No value |
+| An object, such as `{"id": 3}` | No value |
+| An array, such as `[3]` | No value |
+
+A unit whose attribute gives no value is skipped. If no linked unit gives a value, the
+context is not eligible: it gets variant `0` and no exposure is recorded.
+
+:::tip
+If your cluster values are numeric identifiers, pass them as whole numbers or as strings,
+and use the same form everywhere. A string `"3.0"` and the number `3` are different
+clusters, and a number with a fractional part, such as `3.7`, is never a valid cluster.
+:::
+
+## Assignment and exposures
+
+Once the cluster is known, the SDK picks the variant from the experiment's schedule for
+the current period. It needs no call to the server: given the same experiment data,
+attributes and time, every supported SDK and the ABsmartly Collector pick the same
+variant.
+
+- The variant can change when a new period starts. Call `getTreatment()` when you need
+  the variant, rather than storing it for longer than a period.
+- The SDK records one exposure per experiment and period, under the serving unit.
+- Before the experiment's schedule starts, there is no period to draw from: the context
+  gets variant `0` and no exposure is recorded. Overrides, assignment rules and full-on
+  are checked first, so they still apply before the start. Custom assignments only apply
+  once the schedule has started.
+- [Overrides](./targeting-and-audiences#overriding-variants-for-development-and-qa),
+  [custom assignments](./targeting-and-audiences#custom-assignments) and full-on work
+  as they do for regular experiments. Holdouts never apply to switchbacks.
