@@ -161,8 +161,10 @@ variant.
 - The variant can change when a new period starts. Call `getTreatment()` when you need
   the variant, rather than storing it for longer than a period.
 - The SDK records one exposure per experiment and period, under the serving unit.
-- Before the experiment's schedule starts, the context gets variant `0` and no exposure
-  is recorded.
+- Before the experiment's schedule starts, there is no period to draw from: the context
+  gets variant `0` and no exposure is recorded. Overrides, assignment rules and full-on
+  are checked first, so they still apply before the start. Custom assignments only apply
+  once the schedule has started.
 - [Overrides](./targeting-and-audiences#overriding-variants-for-development-and-qa),
   [custom assignments](./targeting-and-audiences#custom-assignments) and full-on work
   as they do for regular experiments. Holdouts never apply to switchbacks.
