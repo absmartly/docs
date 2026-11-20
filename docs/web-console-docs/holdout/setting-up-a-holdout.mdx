@@ -1,0 +1,172 @@
+---
+sidebar_position: 2
+title: "Setting up a Holdout"
+description: "Create a holdout, configure its type, experiment inclusion, traffic allocation, metrics and schedule, then start it."
+---
+
+import Image from "../../../src/components/Image";
+
+# Setting up a Holdout
+
+A step by step guide to creating a holdout, configuring it and starting it.
+
+Open the **Holdouts** page from the left navigation. It lists every holdout on your platform, along
+with its status, tracking unit, traffic allocation, metrics and schedule.
+
+<Image maxWidth="48rem" centered img="holdout/holdouts-list.png" alt="The Holdouts page listing holdout groups" />
+
+## Creating a holdout
+
+Click **New holdout**, then choose:
+
+- **Tracking unit** (required): the unit used to identify visitors. It is fixed once the holdout is
+  created, and only experiments using this unit can join it.
+- **Teams** (optional): the teams that own the holdout. You can choose more than one. The Team
+  Admins of these teams manage the holdout, and it covers the experiments of these teams and their
+  child teams. You can only add teams where you are a Team Admin. Leave it empty to create a general
+  holdout, owned by your top-level team, which covers experiments from all teams. Only `FullAdmin`
+  users can create a general holdout.
+
+A team can only own one holdout per tracking unit, so there can be at most one general holdout per
+tracking unit. Holdouts are always owned by teams, never by individual users. See
+[Permissions](./overview#permissions).
+
+Click **Create holdout** to open its configuration page.
+
+<Image maxWidth="40rem" centered img="holdout/configure-holdout.png" alt="The Configure Holdout page" />
+
+## General
+
+Give the holdout a **Name** and an optional **Description**. These appear on the Holdouts page and at
+the top of the report, so describe what the holdout covers, for example
+`Holdout group for all experiments tracking visitors by device`.
+
+## Configuration
+
+### Holdout type
+
+Choose whether to hold out one group or two. This affects how the holdout results are compared.
+
+- **Simple holdout** (default): one held-out control group, kept out of all experiments and
+  compared against everyone else. Best for measuring the total cumulative impact of your
+  experimentation programme.
+- **Advanced holdout**: adds a second held-out group that only sees features already shipped to
+  100% of traffic, so you can isolate the impact of experiments from the impact of what was kept.
+
+:::caution
+Advanced holdouts use more of your traffic. Because of the additional held-out group, fewer visitors
+remain available for experiments, and experiments may need to run longer to collect enough
+participants for reliable results.
+:::
+
+See [Simple and advanced holdouts](./overview#simple-and-advanced-holdouts) for how the two types
+compare.
+
+### Tracking unit
+
+The **tracking unit** chosen when the holdout was created is shown here and cannot be changed. Only
+experiments that track visitors with this unit are part of this holdout.
+
+### Teams
+
+The teams that own the holdout. Their Team Admins manage it, and it covers the experiments of these
+teams and their child teams. You can only add teams where you are a Team Admin. Leave it empty for a
+general holdout.
+
+### Experiment inclusion
+
+Choose how experiments join this holdout.
+
+- **Opt-out** (default): all experiments on the holdout's tracking unit, from its teams and
+  their child teams, are included automatically. An experiment's owners can request to exclude it.
+- **Opt-in**: experimenters add their experiment to this holdout from the experiment form. Only
+  experiments from the holdout's teams and their child teams can be added, and only
+  opted-in experiments take part.
+
+### Traffic allocation
+
+Choose what share of this unit's traffic is held out, between **1% and 10%**.
+
+| Holdout type | Recommended allocation |
+| --- | --- |
+| Simple | **3%** |
+| Advanced | **6%**, with 3% for each held-out group |
+
+The allocation covers the held-out groups only. The **No Holdout** group they are compared against
+is sampled from the rest of the population to match their size.
+
+:::tip
+Increasing the allocation lets you detect smaller cumulative effects, but keeps more visitors away
+from the improvements you have shipped. If you are unsure, start with the recommended allocation.
+:::
+
+## Metrics
+
+Select the metrics used to evaluate the holdout, from your existing metric catalogue. A holdout can
+use up to **5 metrics**.
+
+Only metrics compatible with the holdout's tracking unit are shown, and the active filter is
+displayed above the selector. A metric defined on a different unit cannot be computed for this
+holdout, so it does not appear in the list.
+
+Choose metrics that reflect the overall health of your product rather than the success of any one
+feature. A holdout measures the combined effect of everything you shipped, so top-line business
+metrics are the ones worth watching.
+
+## Schedule
+
+### Duration
+
+Choose a **duration** of **3 months**, **6 months**, **12 months** or **Until stopped**. Set a
+**start date**, and the end date is calculated for you.
+
+A longer period accumulates more experiments and more data, which makes small cumulative effects
+easier to detect. A shorter period gives you a completed, archived result sooner and refreshes the
+randomisation more often. Three months suits platforms running many experiments; six or twelve
+months suit those with fewer experiments or slower-moving metrics.
+
+A holdout set to run **Until stopped** has no end date. It runs as a single period until you stop
+it.
+
+### Restart automatically when holdout ends
+
+When this is enabled, a new holdout period with the same configuration begins immediately once the
+current one ends, and visitors are randomised again from scratch. A visitor who was in the holdout
+group during one period might not be in it during the next.
+
+Automatic restart does not apply to holdouts set to run **Until stopped**, since they have no end
+date. It is also disabled when a holdout is stopped manually.
+
+## Starting and stopping
+
+Save the configuration, then start the holdout when you are ready. Running holdouts show a
+**Running** status on the Holdouts page, along with their current period's dates.
+
+:::caution
+Changes saved while a holdout is running only apply to the **next** period. This covers every
+setting, including experiment inclusion. The current period keeps the configuration it started
+with, so its dataset stays internally consistent. To change a running holdout immediately, stop it
+first, then save.
+:::
+
+## Adding and excluding experiments
+
+With **Opt-in** inclusion, experimenters add their experiment to the holdout from the experiment
+form. Anyone who can edit an experiment can add it.
+
+With **Opt-out** inclusion, every experiment on the holdout's tracking unit, from its teams
+and their child teams, is included automatically. To exclude an experiment, its owners request the
+exclusion, and the people who can edit the holdout grant or refuse it. Owning the experiment is not
+enough on its own.
+
+Grant an exclusion only when withholding a change is genuinely not acceptable, such as a legal or
+compliance requirement, or a fix that has to reach every visitor. Each exclusion means the holdout
+group has been exposed to that experiment, which moves the baseline a little further from the
+unchanged product and weakens the comparison.
+
+If you expect to exclude many experiments, consider **Opt-in** inclusion instead, so that only the
+experiments you choose take part.
+
+## Next steps
+
+Once the holdout is running, see [Reading holdout results](./reading-holdout-results).
