@@ -1,3 +1,5 @@
+import Image from "../../../src/components/Image";
+
 # November 2026
 
 ## Overview
@@ -14,7 +16,9 @@ Behind the scenes, we are working on some major new features which we plan to re
 
 ## Custom Unit Assignment (Beta)
 
-The redesigned experiment form gives you more control over which units take part in an experiment and which variant they see.
+The redesigned experiment form gives experimenters more control over **who sees what**. With **override rules**, you can force specific visitors or groups of visitors into a particular variant while **excluding them from the analysis**.
+
+For example, you can let your team test Variant B in production, or give a group of beta testers access to a new experience, without including their activity in the experiment results. Rules use visitor attributes to identify the groups you want to target. You can serve a specific variant or split the group's traffic across variants.
 
 :::warning Override rules: opt-in beta
 Override rules, including split traffic rules, are **in beta and not enabled by default**. **Update the SDKs first** in every application that will use them, then **contact our team to request activation** through your usual support channel.
@@ -22,24 +26,11 @@ Override rules, including split traffic rules, are **in beta and not enabled by 
 Older SDK versions ignore override rules. Updating your SDKs does not enable the feature automatically. See [SDK requirements](/docs/web-console-docs/experiments/unit-assignment#sdk-requirements).
 :::
 
-### Tracking and Unit assignments
-
-The **Audiences** section has been split into two sections:
-
-- **Tracking** holds the tracking unit and the applications.
-- **Unit assignments** holds everything that decides which units take part and which variant they see: the eligibility rules, the traffic allocation and variant split, the optional override rules and the participant estimate.
-
-Audience filters are now called **eligibility rules** in the new form. They appear in an **Experiment rules** card, and override rules appear in their own card when you turn on **Advanced**.
-
-### Override rules can split traffic
-
-Until now an override rule could only send matching units to a single variant. An override rule can now also **split traffic**: units matching the rule are spread across all variants using a split you choose for that rule, independently of the experiment's own split. As before, units assigned by an override rule are excluded from the analysis.
-
-For example, you could give returning customers a 50/50 split while new customers stay on the experiment's 90/10 split. Rules that serve a single variant are now shown as **Serve Control**, **Serve Variant B** and so on.
-
 ### Assignment summary
 
 A new **Assignment summary** in the Unit assignments section spells out, from top to bottom, how a unit is assigned: override rules first, then the eligibility rules, then the fallback for everyone else. It updates live as you edit the rules, traffic allocation and variant split, so you can check the result before starting the experiment.
+
+<Image maxWidth="50rem" centered img="experiment-create/assignment-summary.png" alt="Assignment summary showing internal and beta users served Variant B and excluded from analysis, eligible units randomised 50/50, and everyone else shown Control" />
 
 See the [Unit Assignment documentation](/docs/web-console-docs/experiments/unit-assignment) for details on eligibility rules, override rules and the assignment summary.
 
