@@ -1,0 +1,81 @@
+---
+sidebar_position: 3
+title: "Composite Goals"
+description: "Combine several existing goals into a single goal, with optional event filters and property mappings, so one metric can measure them all."
+---
+
+# Composite Goals
+
+A composite goal combines several existing goals into a single goal. A unit achieves the composite goal when it completes **any one** of the goals it is made of.
+
+Composite goals are useful when the same outcome is tracked under different goal names. For example:
+
+- A purchase is tracked as `payment_web` on the website and `payment_app` in the mobile app
+- A sign-up event was renamed from `signup` to `registration` and older code still sends the old name
+- Several micro-conversions such as `add_to_wishlist`, `share_product` and `save_for_later` together describe engagement
+
+Instead of building a separate metric for each goal, you create one composite goal and build your [metrics](../metrics/overview) on top of it, exactly as you would with any other goal.
+
+## Creating a composite goal
+
+Composite goals are created from `Settings` > `Goals`, in the same way as any other [goal](./create).
+
+1. Enter a **Goal name** and a **Description**
+2. Set **Goal type** to `Composite Goal`
+3. In **Component Goals**, select the goals to combine
+4. Optionally, filter the events counted from each component goal
+5. Optionally, map the properties you want to use in metrics
+6. Add **Owners** and **Tags**, then save
+
+{/* TODO: screenshot of the composite goal form, static/img/goals/composite-goal-form.png */}
+
+### Component goals
+
+Select at least two goals using **Select a goal**, and use **Add another goal** to add more. Each goal can only be used once in the same composite goal.
+
+Only simple goals can be used as component goals. A composite goal cannot be made of other composite goals, and archived goals cannot be selected.
+
+:::note
+The **Goal type** and the list of component goals cannot be changed once the composite goal has been created. To combine a different set of goals, create a new composite goal. The event filters and property mappings can still be edited at any time.
+:::
+
+### Filtering events
+
+By default, every event from a component goal counts towards the composite goal. Expand **Filter events** under a component goal to count only the events whose properties match specific conditions.
+
+For example, if `payment_web` is also used for gift card purchases, you could filter it on `product_type` so that only product purchases count towards the composite goal.
+
+The filter is written against the properties of that specific component goal, so each component goal has its own filter. Choosing a different goal for a row clears its filter.
+
+### Property mapping
+
+Component goals don't always use the same names for the same data. For example, `payment_web` might send the amount as `total` while `payment_app` sends it as `amount`.
+
+**Property Mapping** lets you define properties on the composite goal and map them to the matching property of each component goal:
+
+1. Click **Add another property** and enter a **Property name** for the composite goal, for example `revenue`
+2. Under **Map to component goal properties**, enter the property each component goal uses, for example `total` for `payment_web` and `amount` for `payment_app`
+
+| Composite goal property | `payment_web` | `payment_app` |
+|-------------------------|---------------|---------------|
+| `revenue`               | `total`       | `amount`      |
+| `currency`              | `currency`    | `currency_code` |
+
+The mapped properties can then be used in metrics built on the composite goal, both as the metric's [property](../metrics/create#property) and in [property filters](../metrics/create#property-filters).
+
+## Using composite goals in metrics
+
+A composite goal can be selected as the goal of a metric like any other goal. The metric then counts the events of every component goal, after applying each goal's event filter.
+
+For example, with a composite goal `purchase` combining `payment_web` and `payment_app`:
+
+- A **goal count** metric counts purchases made on both the website and the app
+- A **goal property** metric on `revenue` sums `total` from `payment_web` and `amount` from `payment_app`
+
+:::info
+Composite goals cannot currently be used as the foreign goal of a [goal relation](../metrics/create#goal-relations), such as a cancellation or a refund.
+:::
+
+## Tracking composite goals
+
+Nothing changes in your code. Composite goals are built from the goals you already track with the SDK's `track` method, so you don't send events for the composite goal itself. See [Goal Events](../../events/goal-events) for more details on tracking goals.

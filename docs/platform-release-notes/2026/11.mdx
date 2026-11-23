@@ -1,0 +1,127 @@
+# November 2026
+
+## Overview
+
+This release introduces **custom unit assignment** in the redesigned experiment form. The Audiences section has been rebuilt around how units are tracked and assigned, override rules can now split traffic across variants, and a new assignment summary shows exactly how each unit will be assigned.
+
+**Composite goals** are now available to everyone, letting you combine several goals into one so a single metric can measure them all.
+
+The redesigned form also brings back the **JSON editor**, lets you **drop and paste screenshots**, and restores the **primary metric graph**.
+
+**New SDK releases** add support for override rules alongside other backwards-compatible improvements.
+
+Behind the scenes, we are working on some major new features which we plan to release before the end of the year. Stay tuned!
+
+---
+
+## Custom Unit Assignment (Beta)
+
+The redesigned experiment form gives you more control over which units take part in an experiment and which variant they see.
+
+:::warning Override rules: opt-in beta
+Override rules, including split traffic rules, are **in beta and not enabled by default**. **Update the SDKs first** in every application that will use them, then **contact our team to request activation** through your usual support channel.
+
+Older SDK versions ignore override rules. Updating your SDKs does not enable the feature automatically. See [SDK requirements](/docs/web-console-docs/experiments/unit-assignment#sdk-requirements).
+:::
+
+### Tracking and Unit assignments
+
+The **Audiences** section has been split into two sections:
+
+- **Tracking** holds the tracking unit and the applications.
+- **Unit assignments** holds everything that decides which units take part and which variant they see: the eligibility rules, the traffic allocation and variant split, the optional override rules and the participant estimate.
+
+Audience filters are now called **eligibility rules** in the new form. They appear in an **Experiment rules** card, and override rules appear in their own card when you turn on **Advanced**.
+
+### Override rules can split traffic
+
+Until now an override rule could only send matching units to a single variant. An override rule can now also **split traffic**: units matching the rule are spread across all variants using a split you choose for that rule, independently of the experiment's own split. As before, units assigned by an override rule are excluded from the analysis.
+
+For example, you could give returning customers a 50/50 split while new customers stay on the experiment's 90/10 split. Rules that serve a single variant are now shown as **Serve Control**, **Serve Variant B** and so on.
+
+### Assignment summary
+
+A new **Assignment summary** in the Unit assignments section spells out, from top to bottom, how a unit is assigned: override rules first, then the eligibility rules, then the fallback for everyone else. It updates live as you edit the rules, traffic allocation and variant split, so you can check the result before starting the experiment.
+
+See the [Unit Assignment documentation](/docs/web-console-docs/experiments/unit-assignment) for details on eligibility rules, override rules and the assignment summary.
+
+:::info Beta: we'd love your feedback
+Custom unit assignment is in beta. Contact us to enable it on your account, and let us know how you are using override rules and what you'd like to see next. Reach out via your usual support channel.
+:::
+
+---
+
+## Composite Goals
+
+You can now combine several existing goals into a single **composite goal**. A unit achieves the composite goal when it completes any one of its component goals, and you can build metrics on it just like any other goal.
+
+This is useful when the same outcome is tracked under different names, for example a purchase tracked as `payment_web` on your website and `payment_app` in your mobile app. Instead of a separate metric for each, one metric on the composite goal covers both.
+
+When creating a goal, set **Goal type** to `Composite Goal` and select the goals to combine. You can also:
+
+- **Filter events** from each component goal, so only the events you care about count towards the composite goal
+- **Map properties**, so a property such as `revenue` can be read from `total` in one goal and `amount` in another
+
+Nothing changes in your code: composite goals are built from the goals you already track.
+
+See the [Composite Goals documentation](/docs/web-console-docs/goals-and-metrics/goals/composite-goals) for more details.
+
+---
+
+## Experiment Form Improvements
+
+The redesigned experiment form keeps improving thanks to feedback from the open beta.
+
+### JSON editor
+
+The JSON editor is back. A toggle lets you switch between the visual editor and JSON for variant configurations and override rules, which makes larger configurations easier to write, review and copy across experiments.
+
+### Drop and paste screenshots
+
+You can now drag image files onto a variant's screenshot tile, or paste them, instead of browsing for the file. Dropped and pasted images go through the same type and size checks and crop dialog as picked files. Files which are not images are rejected with a clear message.
+
+### Primary metric graph
+
+The graph showing the primary metric's mean and standard deviation over the last four weeks is back in the Analysis section.
+
+:::info Classic form deprecation: send us your feedback
+The classic experiment form will be **deprecated in the next release**. There is still time to try the redesigned form and send us your feedback before that happens.
+
+These improvements came directly from your feedback. Tell us what you like, what gets in your way, and especially why you switch back to the classic form if you do. Reach out via your usual support channel.
+:::
+
+---
+
+## SDK Releases
+
+New SDK releases add support for the [override rules described above](#custom-unit-assignment-beta), alongside various other backwards-compatible improvements. There are no breaking changes.
+
+| SDK | Latest version |
+|-----|----------------|
+| Java | 1.10.0 |
+| JavaScript | 1.14.0 |
+| .NET | 1.4.1 |
+| Go | 1.2.0 |
+| PHP | 1.1.0 |
+| Ruby | 1.4.0 |
+| Swift | 1.5.0 |
+| Flutter (`absmartly_sdk`) | 2.2.0 |
+| Android | 1.0.0 |
+| Angular | 1.0.0 |
+| React | 1.4.3 |
+| Vue 2 | 1.2.2 |
+| Vue 3 | 1.0.2 |
+| Elixir | 1.0.0 |
+| Liquid | 1.0.0 |
+| Python | 0.3.0 |
+| C++ | 1.0.0 |
+
+:::warning Override rules remain an opt-in beta
+Update your SDKs in every relevant application **before requesting activation** of override rules. Installing a new SDK does not turn the feature on: contact our team through your usual support channel to have it enabled for your account.
+:::
+
+---
+
+## Questions or Feedback?
+
+We're always happy to help, so reach out through your usual support channel if you have any questions or want to explore how to make the most of these new capabilities.
