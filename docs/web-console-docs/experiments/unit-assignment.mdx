@@ -1,0 +1,134 @@
+---
+sidebar_position: 5
+title: "Unit Assignment"
+description: "Control which units take part in an experiment and which variant they see, with eligibility rules, traffic allocation, override rules and the assignment summary."
+---
+
+import Image from "../../../src/components/Image";
+
+# Unit Assignment
+
+In the redesigned experiment form, the **Unit assignments** section decides which units take part in an experiment or feature, and which variant each of them sees. It brings together:
+
+- [Eligibility rules](#eligibility-rules): who is eligible to take part
+- [Traffic allocation and variant split](#traffic-allocation-and-variant-split): how much of the eligible traffic enters the experiment, and how it is split between variants
+- [Override rules](#override-rules): units forced into a variant, or into their own traffic split, and excluded from the analysis
+- [Assignment summary](#assignment-summary): a live view of how every unit will be assigned
+
+The tracking unit and the applications are set in the **Tracking** section, just above. See [Create an experiment](./creating-an-experiment#tracking-unit) for more details on choosing them.
+
+## Eligibility rules
+
+Eligibility rules, previously called the **targeting audience**, define which units are eligible to take part in the experiment. For example, you could run the experiment only for units on an `android` device, or only for units whose language is `en`.
+
+The rules are shown in the **Experiment rules** card, under **Eligibility**. Each rule is made of one or more conditions on an attribute, and rules can be combined with `AND` or `OR`. The attributes are passed to the SDK in your code as [context attributes](/docs/APIs-and-SDKs/SDK-Documentation/targeting-and-audiences#passing-user-attributes-for-targeting).
+
+### Audience enforced
+
+The **Audience enforced** switch decides what happens to units which don't match the eligibility rules:
+
+- **Audience enforced**: only units matching the eligibility rules take part in the experiment. Other units are shown the control variant, but their data is not tracked.
+- **Audience not enforced**: every unit takes part, and it is up to you to make sure only eligible units are shown the experiment in your code. ABsmartly shows an [audience mismatch](./experiment-health-checks#audience-mismatch) warning when units not matching the rules are exposed.
+
+## Traffic allocation and variant split
+
+Below the eligibility rules, the **Experiment rules** card also holds:
+
+- **Traffic allocation**: the percentage of eligible units which enter the experiment
+- **Variant split**: how the units in the experiment are split between the variants, for example 50/50
+
+The estimated number of participants is updated as you change the tracking unit, the applications and the eligibility rules.
+
+<Image maxWidth="50rem" centered img="experiment-create/unit-assignments.png" alt="Unit assignments with an English-language eligibility rule, audience enforcement, traffic allocation and a 50/50 variant split" />
+
+## Override rules
+
+:::warning Beta: SDK update and activation required
+Override rules, including split traffic rules, are a **beta feature and are not enabled by default**.
+
+1. **Update the SDKs first** in every application that will use override rules to a version supporting the feature. Older SDK versions ignore override rules.
+2. **Ask our team to enable the beta** for your account through your usual support channel.
+
+Updating your SDKs does not enable the feature automatically. The **Advanced** switch and **Override rules** card are only available after the feature has been turned on for your account.
+:::
+
+Override rules force specific units into a variant, regardless of the experiment's own split. They are useful when:
+
+- **Testing and QA**: your team needs to see a specific variant in production, before or during the experiment
+- **Internal or beta users**: a group such as employees or beta testers should always see the new variant
+- **Partners or key accounts**: some units must always see a specific experience
+
+:::info Overridden units are excluded from the analysis
+Units assigned by an override rule see the variant chosen by the rule, but they are **excluded from the experiment results**. Override rules don't affect the statistics of the experiment.
+:::
+
+To add override rules, turn on **Advanced** at the top of the Unit assignments section. The **Override rules** card appears above the experiment rules. Once an experiment has override rules, **Advanced** stays on until they are all removed.
+
+### Creating an override rule
+
+Each override rule has:
+
+1. A **Rule name**, for example `Internal users` or `Beta testers`
+2. One or more **conditions** on the unit's [context attributes](/docs/APIs-and-SDKs/SDK-Documentation/targeting-and-audiences#passing-user-attributes-for-targeting), for example `email` ends with `@yourcompany.com`
+3. An **action**, which decides the variant of the units matching the rule:
+   - **Serve** a variant, for example **Serve Control** or **Serve Variant B**: every matching unit sees that variant
+   - **Split traffic**: matching units are spread across the variants with their own split
+
+Rules are evaluated from top to bottom, and a unit is assigned by the first rule it matches. Use the arrows to change the order of the rules.
+
+| Rule name | Condition | Action |
+|-----------|-----------|--------|
+| Internal Users | `is_internal` is `true` | Serve Variant B |
+| Beta Users | `is_beta` is `true` | Serve Variant B |
+
+<Image maxWidth="50rem" centered img="experiment-create/override-rules.png" alt="Override rules serving Variant B to internal users and beta users, with a reminder to update the SDK" />
+
+### Split traffic
+
+With **Split traffic**, units matching the rule are not all forced into the same variant. Instead, they are spread across every variant using a split you choose for that rule, independently of the experiment's own split. For example, beta testers could get a 50/50 split while the rest of your users stay on the experiment's 90/10 split.
+
+Choosing **Split traffic** starts with an even split. Click the split to edit the share of each variant: you can lock a variant's share while adjusting the others, and **Reset** goes back to an even split. The shares must add up to 100%.
+
+A split traffic rule uses the same randomisation as the experiment, so a rule with the same split as the experiment keeps every unit on the variant it would have had anyway.
+
+:::note
+If you change the number of variants, every split traffic rule is reset to an even split across the new variants.
+:::
+
+### Override rules on running experiments
+
+Override rules can be changed while the experiment is running, for example to add a new tester. A warning reminds you that changing them on a running experiment might affect its outcome, since the units moving in or out of an override rule join or leave the analysis.
+
+### JSON editor
+
+Override rules can also be edited as JSON. Use the JSON toggle in the **Override rules** card to switch between the fields and the JSON editor, for example to copy the rules from one experiment to another.
+
+## Assignment summary
+
+The **Assignment summary**, at the bottom of the Unit assignments section, spells out how each unit will be assigned, evaluated from top to bottom.
+
+<Image maxWidth="50rem" centered img="experiment-create/assignment-summary.png" alt="Assignment summary showing internal and beta users excluded from analysis, eligible units randomised 50/50, and everyone else served Control" />
+
+The order of evaluation is:
+
+1. **Override rules**: if a unit matches an override rule, it is served the rule's variant, or split with the rule's split, and excluded from the analysis
+2. **Eligibility rules**: if the unit matches the eligibility rules, it is randomised into the experiment with the experiment's traffic allocation and split
+3. **Everyone else**: remaining units are not served a specific variant and are not eligible for the experiment. They are shown the control variant and excluded from the analysis.
+
+The summary updates live as you edit the rules, the traffic allocation and the variant split, so you can check the result before starting the experiment.
+
+## SDK requirements
+
+Override rules are evaluated by the SDK running in your application, and are only supported by recent SDK versions. Older SDK versions ignore them, so units matching an override rule would be assigned like any other unit.
+
+Before using override rules, and especially split traffic rules, make sure every application running the experiment uses a supported SDK version.
+
+See the [SDK releases in the November 2026 release notes](/docs/platform-release-notes/2026/11#sdk-releases) for the latest versions. After updating the SDKs in all relevant applications, contact our team through your usual support channel to request activation of the beta.
+
+:::note Override rules and SDK overrides
+Override rules are different from the [overrides set in your code](/docs/APIs-and-SDKs/SDK-Documentation/targeting-and-audiences#overriding-variants-for-development-and-qa) with the SDK. Override rules are configured in the Web Console and apply to every unit matching their conditions. SDK overrides are set in code for a specific context, typically for development and QA.
+:::
+
+## Availability
+
+Override rules, including split traffic rules, are **in beta and not available by default**. Update the SDKs in all relevant applications first, then contact our team through your usual support channel to request activation for your account. The assignment summary is also in beta.
