@@ -28,3 +28,6 @@ jobs:
           
       - name: Build production bundle
         run: yarn build
+
+      - name: Test Liquid snippets
+        run: node test-liquid-snippets.js

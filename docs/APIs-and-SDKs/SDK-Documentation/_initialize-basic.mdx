@@ -1,5 +1,8 @@
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+import LiquidThemeInitialize from "!!raw-loader!./_shared/initialize/liquid/initialize.liquid";
 
 <Tabs groupId="language">
 
@@ -494,6 +497,153 @@ final ABSmartly sdk = ABSmartly(sdkConfig);
 
 </TabItem>
 
+<TabItem value="angular" label="Angular">
+
+The Angular SDK wraps the Javascript SDK. Register it in your application config;
+it initialises the SDK and creates a context for the `units` you pass:
+
+```ts
+import { ApplicationConfig } from "@angular/core";
+import { provideABSmartly } from "@absmartly/angular-sdk";
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideABSmartly({
+      endpoint: "https://your-company.absmartly.io/v1",
+      apiKey: "YOUR-API-KEY",
+      environment: "production",
+      application: "website",
+      units: { user_id: "user-12345" },
+    }),
+  ],
+};
+```
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+```kotlin
+import com.absmartly.sdk.*
+
+val clientConfig = ClientConfig.create()
+    .setEndpoint("https://your-company.absmartly.io/v1")
+    .setAPIKey("YOUR-API-KEY")
+    .setApplication("website")
+    .setEnvironment("production")
+
+val sdkConfig = ABSmartlyConfig.create()
+    .setClient(Client.create(clientConfig))
+
+val sdk = ABsmartly.create(sdkConfig)
+```
+
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+
+```scala
+import com.absmartly.sdk.{SDK, SDKConfig}
+import scala.concurrent.ExecutionContext.Implicits.global
+
+val config = SDKConfig(
+  endpoint = "https://your-company.absmartly.io/v1",
+  apiKey = "YOUR-API-KEY",
+  environment = "production",
+  application = "website"
+)
+
+val sdk = new SDK(config)
+```
+
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+
+```elixir
+alias ABSmartly.SDK
+
+{:ok, sdk} = SDK.new(
+  endpoint: "https://your-company.absmartly.io/v1",
+  api_key: "YOUR-API-KEY",
+  application: "website",
+  environment: "production"
+)
+```
+
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+
+```cpp
+#include <absmartly/sdk.h>
+#include <absmartly/sdk_config.h>
+#include <absmartly/client.h>
+#include <absmartly/client_config.h>
+#include <absmartly/default_http_client.h>
+#include <memory>
+
+absmartly::ClientConfig client_config;
+client_config.endpoint = "https://your-company.absmartly.io/v1";
+client_config.api_key = "YOUR-API-KEY";
+client_config.application = "website";
+client_config.environment = "production";
+
+auto http_client = std::make_shared<absmartly::DefaultHTTPClient>();
+auto client = std::make_shared<absmartly::Client>(client_config, http_client);
+
+absmartly::SDKConfig sdk_config;
+sdk_config.client = client;
+
+auto sdk = absmartly::SDK::create(sdk_config);
+```
+
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+
+The published Rust SDK (0.1) does not connect to ABsmartly itself, so it takes no
+endpoint or API key. Your application fetches the context data and passes it in
+when [creating a context](#create-a-new-context-request).
+
+```rust
+use absmartly_sdk::sdk::{SDKOptions, SDK};
+
+let sdk = SDK::new(SDKOptions::default());
+```
+
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+The Liquid SDK renders experiments in Liquid templates on the server, using the
+[Ruby SDK](https://github.com/absmartly/ruby-sdk) for the connection. Configure it
+once when your application starts:
+
+```ruby
+require "absmartly"
+require "absmartly/liquid"
+
+Absmartly.configure_client do |config|
+  config.endpoint = "https://your-company.absmartly.io/v1"
+  config.api_key = "YOUR-API-KEY"
+  config.application = "website"
+  config.environment = "production"
+end
+```
+
+<details>
+<summary>Running experiments in the browser from a Shopify theme</summary>
+
+A Shopify theme cannot run Ruby. To run experiments in the browser instead, load
+the Javascript SDK from your `theme.liquid` layout and pass it values from Liquid:
+
+<CodeBlock language="liquid">{LiquidThemeInitialize}</CodeBlock>
+
+</details>
+
+</TabItem>
+
 </Tabs>
 
 Every SDK requires four options:
@@ -522,6 +672,11 @@ Most SDKs use the names and defaults above. A few differ:
 - **Swift**: `retries` defaults to `3` (not `5`). Timeouts are in seconds, not milliseconds.
 - **PHP**: `retries` and `timeout` are `int` types. The event logger accepts a `ContextEventLoggerCallback` or any `ContextEventLogger` implementation.
 - **Flutter/Dart**: Does not expose `retries`, `timeout`, or `eventLogger` as top-level options. These are configured through the client config.
+- **Elixir**: `api_key` instead of `apiKey`. `retries` and `timeout` are keyword options to `SDK.new`. The event handler is passed per context as `event_handler`.
+- **C++**: `api_key` instead of `apiKey`, set on `ClientConfig`. The event logger is set as `context_event_handler` on `SDKConfig`.
+- **Scala**: `retries`, `timeout` and `eventLogger` are optional `SDKConfig` parameters.
+- **Rust**: The published 0.1 SDK takes none of these options because your application fetches context data itself.
+- **Liquid**: Configured through the Ruby SDK (`api_key`, `event_logger`).
 :::
 
 </details>

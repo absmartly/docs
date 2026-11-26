@@ -1,0 +1,8 @@
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.absmartly:absmartly-sdk-kotlin:1.0.0")
+}

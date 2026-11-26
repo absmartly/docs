@@ -252,6 +252,80 @@ context.setUnits({
 
 </TabItem>
 
+<TabItem value="angular" label="Angular">
+
+```ts
+absmartly.setUnit("db_user_id", "1000013");
+```
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+```kotlin
+context.setUnit("db_user_id", "1000013")
+
+context.setUnits(mapOf(
+    "db_user_id" to "1000013"
+))
+```
+
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+
+```scala
+context.setUnit("db_user_id", "1000013")
+
+context.setUnits(Map(
+  "db_user_id" -> "1000013"
+))
+```
+
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+
+```elixir
+Context.set_unit(context, "db_user_id", "1000013")
+
+Context.set_units(context, %{
+  "db_user_id" => "1000013"
+})
+```
+
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+
+```cpp
+context->set_unit("db_user_id", "1000013");
+
+context->set_units({
+    {"db_user_id", "1000013"}
+});
+```
+
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+
+```rust
+context.set_unit("db_user_id", "1000013")?;
+```
+
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+Units are set on the Ruby SDK context that the drop wraps:
+
+```ruby
+context.set_unit("db_user_id", "1000013")
+```
+
+</TabItem>
+
 </Tabs>
 
 :::caution
@@ -469,6 +543,33 @@ final Context? context = sdk.createContext(contextConfig);
 
 </TabItem>
 
+<TabItem value="angular" label="Angular">
+
+```ts
+provideABSmartly({
+  endpoint: "https://your-company.absmartly.io/v1",
+  apiKey: "YOUR-API-KEY",
+  environment: "production",
+  application: "website",
+  units: { user_id: "user-12345" },
+  refreshPeriod: 30000, // 30000 ms = 30 seconds
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+```kotlin
+val contextConfig = ContextConfig.create()
+    .setUnit("user_id", "user-12345")
+    .setRefreshInterval(30000) // 30000 ms = 30 seconds
+
+val context = sdk.createContext(contextConfig).waitUntilReady()
+```
+
+</TabItem>
+
 </Tabs>
 
 **Manual refresh:** Call the `refresh()` method when you know experiment data might have
@@ -573,6 +674,66 @@ context.refresh()
 
 ```dart
 context.refresh();
+```
+
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+
+```ts
+await absmartly.refresh();
+```
+
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+
+```kotlin
+context.refresh().join()
+```
+
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+
+```scala
+context.refresh()
+```
+
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+
+```elixir
+Context.refresh(context)
+```
+
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+
+```cpp
+context->refresh();
+```
+
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+
+The Rust SDK does not fetch data itself. Fetch fresh context data and pass it in:
+
+```rust
+let fresh_data: ContextData = serde_json::from_str(&api_response)?;
+
+context.refresh(fresh_data);
+```
+
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+```ruby
+context.refresh
 ```
 
 </TabItem>

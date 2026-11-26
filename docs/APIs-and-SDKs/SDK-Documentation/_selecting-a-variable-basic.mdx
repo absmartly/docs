@@ -14,6 +14,14 @@ import PHPSelectingAVariable from "!!raw-loader!./_shared/selecting-a-variable/p
 import RubySelectingAVariable from "!!raw-loader!./_shared/selecting-a-variable/ruby/selectingAVariable.rb";
 import FlutterSelectingAVariable from "!!raw-loader!./_shared/selecting-a-variable/flutter/selectingAVariable.dart";
 
+import AngularVariable from "!!raw-loader!./_shared/selecting-a-variable/angular/selectingAVariable.ts";
+import KotlinVariable from "!!raw-loader!./_shared/selecting-a-variable/kotlin/selectingAVariable.kt";
+import CppVariable from "!!raw-loader!./_shared/selecting-a-variable/cpp/selectingAVariable.cpp";
+import ScalaVariable from "!!raw-loader!./_shared/selecting-a-variable/scala/selectingAVariable.scala";
+import ElixirVariable from "!!raw-loader!./_shared/selecting-a-variable/elixir/selectingAVariable.ex";
+import RustVariable from "!!raw-loader!./_shared/selecting-a-variable/rust/selectingAVariable.rs";
+import LiquidVariable from "!!raw-loader!./_shared/selecting-a-variable/liquid/selectingAVariable.liquid";
+
 <Tabs groupId="language">
 
 <TabItem value="js" label="Javascript">
@@ -86,6 +94,41 @@ import FlutterSelectingAVariable from "!!raw-loader!./_shared/selecting-a-variab
 
 <CodeBlock language="dart">{FlutterSelectingAVariable}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularVariable}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinVariable}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppVariable}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaVariable}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirVariable}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustVariable}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+These filters read the Ruby SDK context passed to the template as `absmartly`, so
+they only work where your Ruby application renders Liquid. A Shopify theme renders
+before the browser context exists; there, use `window.absmartlyContext` from the
+[theme setup](./getting-started#import-and-initialise-the-sdk) with the Javascript
+SDK's methods once it is ready.
+
+<CodeBlock language="liquid">{LiquidVariable}</CodeBlock>
 </TabItem>
 
 </Tabs>

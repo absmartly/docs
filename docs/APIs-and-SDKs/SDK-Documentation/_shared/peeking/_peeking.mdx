@@ -25,15 +25,31 @@ import RubyPeekAtVariable from "!!raw-loader!./ruby/peekAtVariables.rb";
 import FlutterPeekAtVariant from "!!raw-loader!./flutter/peekAtVariants.dart";
 import FlutterPeekAtVariable from "!!raw-loader!./flutter/peekAtVariables.dart";
 
+import AngularPeekVariants from "!!raw-loader!./angular/peekAtVariants.ts";
+import AngularPeekVariables from "!!raw-loader!./angular/peekAtVariables.ts";
+import KotlinPeekVariants from "!!raw-loader!./kotlin/peekAtVariants.kt";
+import KotlinPeekVariables from "!!raw-loader!./kotlin/peekAtVariables.kt";
+import CppPeekVariants from "!!raw-loader!./cpp/peekAtVariants.cpp";
+import CppPeekVariables from "!!raw-loader!./cpp/peekAtVariables.cpp";
+import ScalaPeekVariants from "!!raw-loader!./scala/peekAtVariants.scala";
+import ScalaPeekVariables from "!!raw-loader!./scala/peekAtVariables.scala";
+import ElixirPeekVariants from "!!raw-loader!./elixir/peekAtVariants.ex";
+import ElixirPeekVariables from "!!raw-loader!./elixir/peekAtVariables.ex";
+import RustPeekVariants from "!!raw-loader!./rust/peekAtVariants.rs";
+import RustPeekVariables from "!!raw-loader!./rust/peekAtVariables.rs";
+import LiquidPeekVariants from "!!raw-loader!./liquid/peekAtVariants.liquid";
+import LiquidPeekVariables from "!!raw-loader!./liquid/peekAtVariables.liquid";
+
 ## Peeking at treatments
 
 The peek method returns the variant number just like `treatment()`, but without
 recording an exposure. The method name varies by SDK:
 
-- **Javascript, React, Vue**: `peek()`
+- **Javascript, React, Vue, Angular, Scala, Elixir, C++, Rust**: `peek()`
 - **Python, Ruby**: `peek_treatment()`
-- **PHP, Swift, Java, Flutter/Dart**: `peekTreatment()`
+- **PHP, Swift, Java, Kotlin, Flutter/Dart**: `peekTreatment()`
 - **Go, .NET**: `PeekTreatment()`
+- **Liquid**: the `absmartly_peek` filter
 
 <Tabs groupId="language">
 
@@ -121,13 +137,49 @@ recording an exposure. The method name varies by SDK:
 
 </TabItem>
 
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustPeekVariants}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+
+These filters read the Ruby SDK context passed to the template as `absmartly`, so
+they only work where your Ruby application renders Liquid. A Shopify theme renders
+before the browser context exists; there, use `window.absmartlyContext` from the
+[theme setup](./getting-started#import-and-initialise-the-sdk) with the Javascript
+SDK's methods once it is ready.
+
+<CodeBlock language="liquid">{LiquidPeekVariants}</CodeBlock>
+</TabItem>
+
 </Tabs>
 
 ## Peeking at variables
 
 The peek variable method returns the variable value just like `variableValue()`,
-but without recording an exposure. It's called `peekVariableValue()` in most SDKs
-and `peek_variable_value()` in Python and Ruby.
+but without recording an exposure. It's called `peekVariableValue()` in most SDKs,
+`peek_variable_value()` in Python, Ruby, Elixir, C++ and Rust, and the
+`absmartly_peek_variable` filter in Liquid.
 
 <Tabs groupId="language">
 
@@ -201,6 +253,34 @@ and `peek_variable_value()` in Python and Ruby.
 
 <CodeBlock language="dart">{FlutterPeekAtVariable}</CodeBlock>
 
+</TabItem>
+
+<TabItem value="angular" label="Angular">
+<CodeBlock language="typescript">{AngularPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="kotlin" label="Kotlin">
+<CodeBlock language="kotlin">{KotlinPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="cpp" label="C++">
+<CodeBlock language="cpp">{CppPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="scala" label="Scala">
+<CodeBlock language="scala">{ScalaPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="elixir" label="Elixir">
+<CodeBlock language="elixir">{ElixirPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="rust" label="Rust">
+<CodeBlock language="rust">{RustPeekVariables}</CodeBlock>
+</TabItem>
+
+<TabItem value="liquid" label="Liquid (Shopify)">
+<CodeBlock language="liquid">{LiquidPeekVariables}</CodeBlock>
 </TabItem>
 
 </Tabs>
