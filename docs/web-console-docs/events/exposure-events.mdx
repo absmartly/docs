@@ -125,8 +125,8 @@ the whole number.
 
 | Bit value | Name | Meaning |
 |-----------|------|---------|
-| `1` | eligible | The unit was eligible to participate. When this is **0**, traffic allocation was below 100% and this unit fell outside it. |
-| `2` | assigned | The assignment logic ran for this exposure. When this is **0**, no variant was actually assigned. |
+| `1` | eligible | The unit fell inside the experiment's traffic allocation. When this is **0**, traffic allocation was below 100% and this unit fell outside it. The unit still went through assignment (so `assigned` is `1`) but it sees the control variant and is not part of the experiment. |
+| `2` | assigned | The SDK ran the traffic allocation check for this unit. When this is **0**, that check never ran and the unit sees the control variant. This happens when the experiment isn't running or isn't found, the unit type isn't set on the context, a strict audience doesn't match, the unit is held out by a holdout, or the variant came from an override or an assignment rule. |
 | `4` | overridden | The assignment was overridden by the SDK. |
 | `8` | full on | The experiment was full on (100% on a single variant) when the event was ingested. |
 | `16` | custom | The exposure used a custom assignment. |
@@ -149,6 +149,22 @@ That's a clean exposure: the visitor was eligible and got assigned a variant.
 Compare it with `flags = 66` (`0100 0010`), where bit `2` (assigned) and bit
 `64` (crawler) are set but bit `1` (eligible) isn't. That row is a bot, so it
 shouldn't count as a participant.
+
+### Eligible versus assigned
+
+The two bits answer different questions, and they can disagree:
+
+- **Assigned** asks whether the SDK ran the traffic allocation check for this unit.
+- **Eligible** asks what that check decided: was the unit inside the allocation?
+
+For an experiment with 50% traffic allocation, a unit that hashes into the
+excluded half has `assigned = 1` and `eligible = 0`. It was evaluated, kept out
+of the experiment and shown control, so it doesn't count as a participant.
+
+`assigned` stays **0** when the check never ran. In that case `eligible` keeps
+its default of `1`, so a row with `assigned = 0` is not an unlucky unit outside
+the allocation. Check the other bits (`overridden`, `audience mismatch`) and the
+experiment's state to see why.
 
 ### Matching the UI's participant count
 
